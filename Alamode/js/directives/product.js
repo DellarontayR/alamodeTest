@@ -1,4 +1,4 @@
-app.directive('product', function() { 
+alamode.directive('product', function() { 
   return {
       restrict: 'E',
       scope:{

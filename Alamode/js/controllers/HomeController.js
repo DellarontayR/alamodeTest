@@ -1,4 +1,4 @@
-app.controller('HomeController', ['$scope', function($scope) {
+alamode.controller('HomeController', ['$scope', function($scope) {
 
 	$scope.addToCheckout = function(productId){
 		$scope.products.push({img:"imgs/applgoo.png",title:'DANCE',ingredients:'Ingredients',price:4.00});
