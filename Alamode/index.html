@@ -18,6 +18,7 @@
     </header>
 
     <div class="gallery" ng-controller="HomeController"> 
+        <product ng-repeat="product in products" info="product"></product>
         
     </div>
     <button type="button" ng-click="addToOrder(order)">Add to orders </button>

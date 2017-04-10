@@ -1,9 +1,8 @@
 <div class="product">
   <div class="container">
-    <img ng-src="{{ product.url }}">
+    <img ng-src="{{ product.img }}">
     <h2 class="product-title"> {{product.title}}</h2>
-    <p class="product-ingredients">{{product.product-ingredients}} </p>
-    <p class="product-price"> {{product.price}}</p>
-     <!--  <img src=""-->
+    <p class="product-ingredients">{{product.ingredients}} </p>
+    <p class="product-price"> {{product.price | currency}</p>
   </div>
 </div>

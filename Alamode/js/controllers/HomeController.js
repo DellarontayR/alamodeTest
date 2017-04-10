@@ -16,19 +16,19 @@ app.controller('HomeController', ['$scope', function($scope) {
     	price: 0.99 
 	}, 
  	{ 
-    	icon: 'imgs/applogo.png', 
+    	img: 'imgs/applogo.png', 
     	title: 'Shutterbugg', 
     	ingredients: 'Chico Dusty', 
     	price: 2.99 
   	}, 
  	{ 
-    	icon: 'imgs/applogo.png', 
+    	img: 'imgs/applogo.png', 
     	title: 'Gameboard', 
     	ingredients: 'Armando Perez', 
     	price: 1.99 
   	},  
  	{
-		icon: 'imgs/applogo.png',
+		img: 'imgs/applogo.png',
 		title: 'Forecast',
 		ingredients: 'Forecast',
 		price: 1.99
