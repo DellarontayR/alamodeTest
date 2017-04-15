@@ -1,7 +1,8 @@
-var User = require('../app/models/user');
+var User = require('../models/user');
 
 
-modules.export = function(router){
+module.exports = function(router){ 
+
     router.post('/users', function(req,res){
     var user = new User();
     user.username = req.body.username;
@@ -19,6 +20,6 @@ modules.export = function(router){
                 res.send("User created");
             }
         });
-    }
-});
-}
+    } });
+    return router;
+};

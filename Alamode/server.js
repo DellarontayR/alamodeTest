@@ -5,14 +5,15 @@ var morgan = require('morgan');
 var mongoose = require('mongoose');
 
 var bodyParser = require('body-parser');
-
-var appRoutes = require('./app/routes/api')(router);
 var router = express.Router();
+var appRoutes = require('./app/routes/api')(router);
+var path = require('path');
 
 app.use(morgan('dev'));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({extended:true}));
-app.use(appRoutes);
+app.use(express.static(__dirname + '/public'));
+app.use('/api',appRoutes);
 
 mongoose.Promise = global.Promise;
 mongoose.connect('mongodb://localhost:27017/test', function(err){
@@ -23,11 +24,14 @@ mongoose.connect('mongodb://localhost:27017/test', function(err){
     }
 });
 
-
-
-app.get('/home', function(req,res){
-    res.send("Hello I see you over there");
+app.get('*',function(req,res){
+    res.sendFile(path.join(__dirname + '/public/views/index.html'));
 });
+
+
+/*app.get('/home', function(req,res){
+    res.send("Hello I see you over there");
+});*/
 
 app.listen(port, function(){
     console.log("Api started on port" + port);
