@@ -2,7 +2,7 @@
   "name": "alamode",
   "version": "1.0.0",
   "description": "yeah",
-  "main": "index.js",
+  "main": "server.js",
   "dependencies": {
     "angular": "^1.6.3",
     "angular-ui-bootstrap": "^2.5.0",
