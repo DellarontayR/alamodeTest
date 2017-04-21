@@ -1,19 +1,6 @@
-var alamode = angular.module('alamode',['ngRoute']);
-
-var User = require('../../app/models/user');
-
-alamode.config(function ($routeProvider){
-    $routeProvider.when('/',{
-        //controller: 'HomeController',
-        templateUrl: '../views/home.html'
-    }).when('/about',{
-        templateUrl: '../views/about.html'
-    }).otherwise({
-        redirectTo: '/'
-    });
-
-    $locationProvider.html5Mode({
-        enabled:true,
-        requireBase: false
-    });
+angular.module('alamode',['appRoutes']).config(function(){
+    console.log("Testing alamode main");
 });
+console.log("app.js works");
+//var User = require('../../app/models/user');
+//var alamode = 
