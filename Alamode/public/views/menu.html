@@ -1,0 +1,14 @@
+ <div ng-controller="MenuController"> 
+        <ul class="gallery">
+            <li ng-repeat="product in products">
+              
+                 <img ng-src="{{ product.img }}">
+                 <h2 class="product-title"> {{product.title}}</h2>
+                <p class="product-ingredients">{{product.ingredients}} </p>
+                 <p class="product-price"> {{product.price | currency}}</p>
+            </li>
+        </ul>
+        
+     <button type="button" ng-click="addToCheckout(0)">Add to orders </button>
+
+</div>

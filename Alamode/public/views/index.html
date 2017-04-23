@@ -4,7 +4,7 @@
      <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.3/angular.min.js"></script>
     <script src="https://code.angularjs.org/1.6.3/angular-route.min.js"></script>
     
-    <link main="../css/home.css" rel="stylesheet"/>
+    <link href="../css/home.css" rel="stylesheet"/>
     <script src= "../js/app.js"></script>
     <script src="../js/routes.js"></script>
     <script
@@ -17,7 +17,7 @@
 
 </head>
 <body>
-    <nav class="navbar navbar-inverse navbar-fixed-top">
+    <nav id="fullnav" class="navbar navbar-inverse navbar-fixed-top">
       <div class="container">
         <div class="navbar-header">
           <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
@@ -27,8 +27,12 @@
             <span class="icon-bar"></span>
 
           </button>
-          <a class="navbar-brand" href="/home">álamode</a>
+          <a class="navbar-brand" href="/home">          <img src="../imgs/alamode.png"/>
+</a>
           <a class="navbar-brand" href="/about">about. us</a>
+          <a class="navbar-brand" href="/menu">menu. </a>
+          <a class="navbar-brand" href="/order">order.online </a>
+          <a class="navbar-brand" href="/big">big.ass.orders </a>
         </div>
         <div id="navbar" class="navbar-collapse collapse">
           <form class="navbar-form navbar-right">
@@ -43,37 +47,6 @@
         </div><!--/.navbar-collapse -->
       </div>
     </nav>
-
-
-
-    <div class="jumbotron">
-      <div class="container">
-        <h1>álamode For all</h1>
-        <p><a class="btn btn-primary btn-lg" href="/about" role="button">Learn more &raquo;</a></p>
-      </div>
-    </div>
-    <header>
-        <h1> álamode </h1>
-        <h1> about. </h1>
-        <h1> menu. </h1>
-        <h1> order.online </h1>
-        <h1> big.ass.orders </h1>
-    </header>
-
-     <div class="gallery" ng-controller="HomeController"> 
-        <ul>
-            <li ng-repeat="product in products">
-                 <img ng-src="{{ product.img }}">
-                 <h2 class="product-title"> {{product.title}}</h2>
-                <p class="product-ingredients">{{product.ingredients}} </p>
-                 <p class="product-price"> {{product.price | currency}}</p>
-                <product info="product"></product>
-            </li>
-        </ul>
-        
-    </div>
-    <button type="button" ng-click="addToCheckout(0)">Add to orders </button>
-
     <div ng-view></div>
 </body>
 </html>

@@ -1,4 +1,4 @@
-angular.module('alamode.controllers',[]).controller('HomeController', ['$scope', function($scope) {
+angular.module('alamode.controllers',[]).controller('MenuController', ['$scope', function($scope) {
 	$scope.addToCheckout = function(productId){
 		$scope.products.push({img:"imgs/applogo.png",title:'DANCE',ingredients:'Ingredients',price:4.00});
 	};

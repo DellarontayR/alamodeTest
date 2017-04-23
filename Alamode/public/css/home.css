@@ -1,5 +1,15 @@
-html{
-      background-image: 
+.gallery{
+      list-style-type: none;
+}
+/* navbar */
+#fullnav{
+    background-color: #ffcc00;
+    border-color: #ffcc00;
+}
+
+/* Title */
+.navbar-default .navbar-brand {
+    color: #542084;
 }
 
 body{

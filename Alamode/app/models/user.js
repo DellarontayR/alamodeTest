@@ -2,12 +2,48 @@ var mongoose = require('mongoose');
 mongoose.Promise = global.Promise;
 var Schema = mongoose.Schema;
 var bcrypt = require('bcrypt-nodejs');
+var titlize = require('mongoose-title-case'); // Import Mongoose Title Case Plugin
+var validate = require('mongoose-validator'); // Import Mongoose Validator Plugin
 
 
+// Username Validator
+var usernameValidator = [
+    validate({
+        validator: 'isLength',
+        arguments: [3, 25],
+        message: 'Username should be between {ARGS[0]} and {ARGS[1]} characters'
+    }),
+    validate({
+        validator: 'isAlphanumeric',
+        message: 'Username must contain letters and numbers only'
+    })
+];
+
+// Password Validator
+var passwordValidator = [
+    validate({
+        validator: 'matches',
+        arguments: /^(?=.*?[a-z])(?=.*?[A-Z])(?=.*?[\d])(?=.*?[\W]).{8,35}$/,
+        message: 'Password needs to have at least one lower case, one uppercase, one number, one special character, and must be at least 8 characters but no more than 35.'
+    }),
+    validate({
+        validator: 'isLength',
+        arguments: [8, 35],
+        message: 'Password should be between {ARGS[0]} and {ARGS[1]} characters'
+    })
+];
+
+
+// User Mongoose Schema
 var UserSchema = new Schema({
-    username: {type:String, lowercase:true, required:true, unique:true},
-    password:{type: String, required:true},
-    email:{ type: String, required:true,lowercase:true,unique:true}
+    name: { type: String, required: true},
+    username: { type: String, lowercase: true, required: true, unique: true, validate: usernameValidator },
+    password: { type: String, required: true, validate: passwordValidator, select: false },
+    email: { type: String, required: true, lowercase: true, unique: true},
+    active: { type: Boolean, required: true, default: false },
+    temporarytoken: { type: String, required: true },
+    resettoken: { type: String, required: false },
+    permission: { type: String, required: true, default: 'moderator' }
 });
 
 
@@ -20,16 +56,3 @@ UserSchema.pre('save',function(next){
     });
 });
 module.exports = mongoose.model('User',UserSchema);
-
-
-var blogSchema = new Schema({
-    title: String,
-    author: String,
-    body: String,
-    comments: [{body: String, date: Date}],
-    hidden: Boolean,
-    meta:{
-        votes: Number,
-        favs: Number
-    }
-});
