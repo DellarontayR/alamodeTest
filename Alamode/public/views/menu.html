@@ -1,13 +1,65 @@
  <div ng-controller="MenuController"> 
-        <ul class="gallery">
-            <li ng-repeat="product in products">
-              
-                 <img ng-src="{{ product.img }}">
-                 <h2 class="product-title"> {{product.title}}</h2>
-                <p class="product-ingredients">{{product.ingredients}} </p>
-                 <p class="product-price"> {{product.price | currency}}</p>
-            </li>
-        </ul>
+
+<div class="product">
+<md-card ng-repeat="product in products">
+  <md-card-header>
+    <md-card-avatar>
+      <img class="md-user-avatar" ng-src="{{product.img}}">
+    </md-card-avatar>
+    <md-card-header-text>
+      <span class="md-title">{{product.title}}</span>
+      <span class="md-subhead">{{product.description}}</span>
+    </md-card-header-text>
+  </md-card-header>
+  <img ng-src="{{product.img}}" class="md-card-image" alt="image caption">
+  <md-card-title>
+    <md-card-title-text>
+      <span class="md-headline">Card headline</span>
+      <span class="md-subhead">Card subheader</span>
+    </md-card-title-text>
+  </md-card-title>
+  <md-card-actions layout="row" layout-align="start center">
+    <md-button>Action 1</md-button>
+    <md-button>Action 2</md-button>
+    <md-card-icon-actions>
+      <md-button class="md-icon-button" aria-label="icon">
+        <md-icon md-svg-icon="icon"></md-icon>
+      </md-button>
+    </md-card-icon-actions>
+  </md-card-actions>
+  <md-card-content>
+    <p>
+     Card content
+    </p>
+  </md-card-content>
+</md-card>
+    
+ <md-card  ng-repeat="product in products" class="md-blue-theme" layout="column" md-theme-watch>
+        <md-card-title>
+          <md-card-title-text>
+            <span class="md-headline">{{product.title}}</span>
+            <span class="md-subhead">{{product.description}}</span>
+          </md-card-title-text>
+          <md-card-title-media>
+            <div class="md-media-lg card-media" ng-src="{{product.img}}"></div>
+          </md-card-title-media>
+        </md-card-title>
+        <md-card-actions layout="row" layout-align="end center">
+          <md-button class="btn-primary">Add to checkout</md-button>
+          <md-button class="btn-warning">Remove from checkout</md-button>
+        </md-card-actions>
+      </md-card>
+</div>
+
+
+    <ul class="gallery">
+        <li ng-repeat="product in products">
+                <img ng-src="{{ product.img }}">
+                <h2 class="product-title"> {{product.title}}</h2>
+            <p class="product-ingredients">{{product.ingredients}} </p>
+                <p class="product-price"> {{product.price | currency}}</p>
+        </li>
+    </ul>
         
      <button type="button" ng-click="addToCheckout(0)">Add to orders </button>
 

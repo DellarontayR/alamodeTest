@@ -5,6 +5,8 @@ angular.module('appRoutes',['ngRoute']).config(function ($routeProvider, $locati
         templateUrl: '../../views/home.html'
     }).when('/about',{
         templateUrl: '../../views/about.html'
+    }).when('/menu',{
+        templateUrl: '../../views/menu.html'
     }).otherwise({
         redirectTo: '/'
     });

@@ -5,6 +5,7 @@
 #fullnav{
     background-color: #ffcc00;
     border-color: #ffcc00;
+    color:#542084;
 }
 
 /* Title */
@@ -12,11 +13,18 @@
     color: #542084;
 }
 
+html {
+      text-align: center;
+      border:10px;
+
+}
 body{
-      width:auto;
-      height:auto;
-      background: #542084;
-      background-color: #542084;
+      border:10px;
+      display: inline-block;
+    margin: 0px auto;
+    text-align: center;
+    /*background-image: url(../imgs/GuiltyXHealthy.jpg);*/
+      
 }
 
 header{
