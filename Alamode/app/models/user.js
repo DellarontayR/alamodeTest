@@ -43,7 +43,7 @@ var UserSchema = new Schema({
     active: { type: Boolean, required: true, default: false },
     temporarytoken: { type: String, required: true },
     resettoken: { type: String, required: false },
-    permission: { type: String, required: true, default: 'moderator' }
+    permission: { type: String, required: true, default: 'customer' }
 });
 
 

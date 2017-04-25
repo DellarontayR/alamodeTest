@@ -29,10 +29,6 @@ app.get('*',function(req,res){
 });
 
 
-/*app.get('/home', function(req,res){
-    res.send("Hello I see you over there");
-});*/
-
 app.listen(port, function(){
     console.log("Api started on port" + port);
 }

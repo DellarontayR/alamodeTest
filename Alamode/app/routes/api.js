@@ -15,11 +15,11 @@ module.exports = function(router) {
     // };
 
     // Nodemailer options (use with g-mail or SMTP)
-    var client = nodemailer.createTransport({
-        service: 'Zoho',
+    let client = nodemailer.createTransport({
+        service: 'Gmail',
         auth: {
-            user: 'cruiserweights@zoho.com', // Your email address
-            pass: 'PAssword123!@#' // Your password
+            user: 'dellreadus@gmail.com', // Your email address
+            pass: '41508046' // Your password
         },
         tls: { rejectUnauthorized: false }
     });

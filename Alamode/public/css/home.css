@@ -12,10 +12,22 @@
 .navbar-default .navbar-brand {
     color: #542084;
 }
-
+/*.leftguilty .rightpleasure{
+    max-height:100%; max-width:100%;
+}*/
+.leftguilty img{
+    max-height:100%; max-width:100%;
+}
+.rightpleasure img{
+    max-height:100%; max-width:100%;
+}
+.main-view{
+    margin-top: 60px;
+}
 html {
       text-align: center;
       border:10px;
+      background-color: #542084;
 
 }
 body{
@@ -24,7 +36,6 @@ body{
     margin: 0px auto;
     text-align: center;
     /*background-image: url(../imgs/GuiltyXHealthy.jpg);*/
-      
 }
 
 header{

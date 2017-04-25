@@ -9,25 +9,25 @@ angular.module('alamode.controllers',[]).controller('MenuController', ['$scope',
 
   $scope.products = [ 
   	{ 
-    	img: 'imgs/alamode.png', 
+    	img: 'imgs/strawberrycopy.png', 
     	title: 'MOVE', 
     	ingredients: 'MOVE, Inc.', 
     	price: 0.99 
 	}, 
  	{ 
-    	img: 'imgs/alamode.png', 
+    	img: 'imgs/strawberrycopy.png', 
     	title: 'Shutterbugg', 
     	ingredients: 'Chico Dusty', 
     	price: 2.99 
   	}, 
  	{ 
-    	img: 'imgs/alamode.png', 
+    	img: 'imgs/strawberrycopy.png', 
     	title: 'Gameboard', 
     	ingredients: 'Armando Perez', 
     	price: 1.99 
   	},  
  	{
-		img: 'imgs/alamode.png',
+		img: 'imgs/strawberrycopy.png',
 		title: 'Forecast',
 		ingredients: 'Forecast',
 		price: 1.99
