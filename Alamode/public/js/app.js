@@ -1,3 +1,3 @@
-angular.module('alamode',['appRoutes','alamode.controllers']).config(function(){
-    console.log("Testing alamode main");
+var alamode = angular.module('alamode',['appRoutes','alamode.controllers','userServices','authServices']).config(function(){
+    
 });

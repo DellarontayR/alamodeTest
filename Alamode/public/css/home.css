@@ -7,14 +7,30 @@
     border-color: #ffcc00;
     color:#542084;
 }
+.cart{
+    right: 0px;
+    display: inline-block;
+}
 
+.navtab{
+    vertical-align: middle;
+    display: inline-block;
+    text-align: center;
+}
+.product-image{
+    width: 300px;
+    height: 300px;
+}
 /* Title */
 .navbar-default .navbar-brand {
     color: #542084;
 }
-/*.leftguilty .rightpleasure{
-    max-height:100%; max-width:100%;
-}*/
+
+.totheright{
+    position: absolute;
+    right: 0px;
+    
+}
 .leftguilty img{
     max-height:100%; max-width:100%;
 }
@@ -28,8 +44,8 @@ html {
       text-align: center;
       border:10px;
       background-color: #542084;
-
 }
+
 body{
       border:10px;
       display: inline-block;
@@ -40,4 +56,19 @@ body{
 
 header{
        background-color: #542084;
+}
+
+@media only screen and (min-width: 768px) {
+    /* tablets and desktop */
+}
+
+@media only screen and (max-width: 767px) {
+    /* phones */
+    .product{
+
+    }
+}
+
+@media only screen and (max-width: 767px) and (orientation: portrait) {
+    /* portrait phones */
 }

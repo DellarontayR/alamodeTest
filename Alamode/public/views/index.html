@@ -1,42 +1,80 @@
 <!DOCTYPE html>
 <html lang="en" ng-app="alamode">
  <head>
-     <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.3/angular.min.js"></script>
+     <meta name="viewport" content="width=device-width, initial-scale=1">
+
+      <!--disables scroll if replacing other meta tag
+     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">-->
+
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.3/angular.min.js"></script>
     <script src="https://code.angularjs.org/1.6.3/angular-route.min.js"></script>
     
     <link href="../css/home.css" rel="stylesheet"/>
+    <link href="../css/product.css" rel="stylesheet"/>
+    <link href="../css/sc-btn.css" rel="stylesheet"/>
+
+    <script src="https://use.fontawesome.com/3bab7734df.js"></script>
+
     <script src= "../js/app.js"></script>
     <script src="../js/routes.js"></script>
+
+    <!-- Alamode Services -->
+    <script src="../js/services/authServices.js"></script>
+    <script src="../js/services/cartServices.js"></script>
+    <script src="../js/services/userServices.js"></script>
+
+    <!-- Alamode Controllers -->
+    <script src="../js/controllers/MainController.js"></script>
+    <script src="../js/controllers/MenuController.js"></script>
+    <script src="../js/controllers/UserController.js"></script>
+
+    <!-- JQuery-->
     <script
-  src="https://code.jquery.com/jquery-3.2.1.min.js"
-  integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4="
-  crossorigin="anonymous"></script>
-  <script src="../js/controllers/MenuController.js"></script>
-    <!-- Latest compiled and minified CSS -->
-<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/mdbootstrap/4.3.0/css/mdb.min.css">
+    src="https://code.jquery.com/jquery-3.2.1.min.js"
+    integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4="
+    crossorigin="anonymous"></script>
+
+    <!-- Latest compiled and minified CSS Bootstrap -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/mdbootstrap/4.3.0/css/mdb.min.css">
+
+    <title>álamode</title>
 </head>
+
 <body>
     <nav id="fullnav" class="navbar navbar-inverse navbar-fixed-top">
-      <div class="container">
+      <div class="fluid-container">
         <div class="navbar-header">
+          
+          <a style="margin-bottom:10px" class="navbar-brand" href="/home">          
+            <img  src="../imgs/alamode.png"/>
+          </a>
+          <div class="navtab"> 
+            <a class="navbar-brand" href="/about">about. us</a>
+            <a class="navbar-brand" href="/menu">menu.</a>
+            <a class="navbar-brand" href="/signin">order.online </a>
+            <a class="navbar-brand" href="/big">big.ass.orders </a>
+            <div class="totheright">
+                <button type="button" class="btn btn-link"> Sign in</button>
+                <button type="button" class="btn btn-danger"> Sign up</button>
+                <button type="button"  class="fa fa-shopping-cart btn btn-secondary" aria-hidden="true">Shopping cart</button>
+          </div>
+          </div>
+          
+
+          <!-- Menu bar for navbar in mobile modes-->
           <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
             <span class="sr-only">Toggle navigation</span>
             <span class="icon-bar"></span>
             <span class="icon-bar"></span>
             <span class="icon-bar"></span>
-
           </button>
-          <a class="navbar-brand" href="/home">          
-            <img src="../imgs/alamode.png"/>
-          </a>
-          <a class="navbar-brand" href="/about">about. us</a>
-          <a class="navbar-brand" href="/menu">menu. </a>
-          <a class="navbar-brand" href="/order">order.online </a>
-          <a class="navbar-brand" href="/big">big.ass.orders </a>
+
         </div>
       </div>
     </nav>
+
+    <!-- Main Angular view where routes will be rendered-->
     <div class="container">
       <div class="main-view" ng-view></div>
     </div>
@@ -49,7 +87,7 @@
             <div class="row">
 
                 <!--First column-->
-                <div class="col-md-6">
+                <div class="col-md-6 col-xs-6">
                     <h5 class="title">Footer Content</h5>
                     <p>Here you can use rows and columns here to organize your footer content.</p>
                 </div>
@@ -59,10 +97,9 @@
                 <div class="col-md-6">
                     <h5 class="title">Links</h5>
                     <ul>
-                        <li><a href="#!">Link 1</a></li>
-                        <li><a href="#!">Link 2</a></li>
-                        <li><a href="#!">Link 3</a></li>
-                        <li><a href="#!">Link 4</a></li>
+                        <li><a href="#!">about. us</a></li>
+                        <li><a href="#!">contact</a></li>
+                        <li><a href="#!">Order more!</a></li>
                     </ul>
                 </div>
                 <!--/.Second column-->

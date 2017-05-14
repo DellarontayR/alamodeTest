@@ -1,6 +1,6 @@
 var User = require('../models/user'); // Import User Model
 var jwt = require('jsonwebtoken'); // Import JWT Package
-var secret = 'harrypotter'; // Create custom secret for use in JWT
+var secret = 'zm!_0@0hu_7&ii-@j&0wpm3t%ojnvmjx6j0!1*&j@x51&mdzk@'; // Create custom secret for use in JWT
 var nodemailer = require('nodemailer'); // Import Nodemailer Package
 // var sgTransport = require('nodemailer-sendgrid-transport'); // Import Nodemailer Sengrid Transport Package
 
@@ -25,6 +25,21 @@ module.exports = function(router) {
     });
     // var client = nodemailer.createTransport(sgTransport(options)); // Use if using sendgrid configuration
     // End Sendgrid Configuration Settings  
+
+    //router.post('')
+    //should have post apis for order configuration, stripe user implementation, and other features
+
+    router.post('/cart',function(req,res){
+        // Possibly requires user session to create user cart
+        // 
+        
+    });
+    router.post('/additemtocart/:itemid',function(req,res){
+        // 
+    });
+    router.get('/cart',function(req,res){
+
+    });
 
     // Route to register new users  
     router.post('/users', function(req, res) {
@@ -70,11 +85,11 @@ module.exports = function(router) {
                 } else {
                     // Create e-mail object to send to user
                     var email = {
-                        from: 'MEAN Stack Staff, cruiserweights@zoho.com',
-                        to: [user.email, 'gugui3z24@gmail.com'],
+                        from: 'álamode Staff, alamodetechnology@gmail.com',
+                        to: [user.email, 'alamodetechnology@gmail.com'],
                         subject: 'Your Activation Link',
-                        text: 'Hello ' + user.name + ', thank you for registering at localhost.com. Please click on the following link to complete your activation: http://www.herokutestapp3z24.com/activate/' + user.temporarytoken,
-                        html: 'Hello<strong> ' + user.name + '</strong>,<br><br>Thank you for registering at localhost.com. Please click on the link below to complete your activation:<br><br><a href="http://www.herokutestapp3z24.com/activate/' + user.temporarytoken + '">http://www.herokutestapp3z24.com/activate/</a>'
+                        text: 'Hello ' + user.name + ', thank you for registering at localhost.com. Please click on the following link to complete your activation: http://localhost:8080/activate/' + user.temporarytoken,
+                        html: 'Hello<strong> ' + user.name + '</strong>,<br><br>Thank you for registering at localhost.com. Please click on the link below to complete your activation:<br><br><a href="http://localhost:8080/activate/' + user.temporarytoken + '">http://localhost:8080/activate/</a>'
                     };
                     // Function to send e-mail to the user
                     client.sendMail(email, function(err, info) {
@@ -97,8 +112,8 @@ module.exports = function(router) {
             if (err) {
                 // Create an e-mail object that contains the error. Set to automatically send it to myself for troubleshooting.
                 var email = {
-                    from: 'MEAN Stack Staff, cruiserweights@zoho.com',
-                    to: 'gugui3z24@gmail.com',
+                    from: 'álamode Staff, alamodetechnology@gmail.com',
+                    to: 'alamodetechnology@gmail.com',
                     subject: 'Error Logged',
                     text: 'The following error has been reported in the MEAN Stack Application: ' + err,
                     html: 'The following error has been reported in the MEAN Stack Application:<br><br>' + err
@@ -129,8 +144,8 @@ module.exports = function(router) {
             if (err) {
                 // Create an e-mail object that contains the error. Set to automatically send it to myself for troubleshooting.
                 var email = {
-                    from: 'MEAN Stack Staff, cruiserweights@zoho.com',
-                    to: 'gugui3z24@gmail.com',
+                    from: 'álamode Staff, alamodetechnology@gmail.com',
+                    to: 'alamodetechnology@gmail.com',
                     subject: 'Error Logged',
                     text: 'The following error has been reported in the MEAN Stack Application: ' + err,
                     html: 'The following error has been reported in the MEAN Stack Application:<br><br>' + err
@@ -162,8 +177,8 @@ module.exports = function(router) {
             if (err) {
                 // Create an e-mail object that contains the error. Set to automatically send it to myself for troubleshooting.
                 var email = {
-                    from: 'MEAN Stack Staff, cruiserweights@zoho.com',
-                    to: 'gugui3z24@gmail.com',
+                    from: 'álamode Staff, alamodetechnology@gmail.com',
+                    to: 'alamodetechnology@gmail.com',
                     subject: 'Error Logged',
                     text: 'The following error has been reported in the MEAN Stack Application: ' + err,
                     html: 'The following error has been reported in the MEAN Stack Application:<br><br>' + err
@@ -208,8 +223,8 @@ module.exports = function(router) {
             if (err) {
                 // Create an e-mail object that contains the error. Set to automatically send it to myself for troubleshooting.
                 var email = {
-                    from: 'MEAN Stack Staff, cruiserweights@zoho.com',
-                    to: 'gugui3z24@gmail.com',
+                    from: 'álamode Staff, alamodetechnology@gmail.com',
+                    to: 'alamodetechnology@gmail.com',
                     subject: 'Error Logged',
                     text: 'The following error has been reported in the MEAN Stack Application: ' + err,
                     html: 'The following error has been reported in the MEAN Stack Application:<br><br>' + err
@@ -242,7 +257,7 @@ module.exports = function(router) {
                             } else {
                                 // If save succeeds, create e-mail object
                                 var email = {
-                                    from: 'MEAN Stack Staff, cruiserweights@zoho.com',
+                                    from: 'álamode Staff, alamodetechnology@gmail.com',
                                     to: user.email,
                                     subject: 'Account Activated',
                                     text: 'Hello ' + user.name + ', Your account has been successfully activated!',
@@ -267,8 +282,8 @@ module.exports = function(router) {
             if (err) {
                 // Create an e-mail object that contains the error. Set to automatically send it to myself for troubleshooting.
                 var email = {
-                    from: 'MEAN Stack Staff, cruiserweights@zoho.com',
-                    to: 'gugui3z24@gmail.com',
+                    from: 'álamode Staff, alamodetechnology@gmail.com',
+                    to: 'alamodetechnology@gmail.com',
                     subject: 'Error Logged',
                     text: 'The following error has been reported in the MEAN Stack Application: ' + err,
                     html: 'The following error has been reported in the MEAN Stack Application:<br><br>' + err
@@ -312,8 +327,8 @@ module.exports = function(router) {
             if (err) {
                 // Create an e-mail object that contains the error. Set to automatically send it to myself for troubleshooting.
                 var email = {
-                    from: 'MEAN Stack Staff, cruiserweights@zoho.com',
-                    to: 'gugui3z24@gmail.com',
+                    from: 'álamode Staff, alamodetechnology@gmail.com',
+                    to: 'alamodetechnology@gmail.com',
                     subject: 'Error Logged',
                     text: 'The following error has been reported in the MEAN Stack Application: ' + err,
                     html: 'The following error has been reported in the MEAN Stack Application:<br><br>' + err
@@ -337,7 +352,7 @@ module.exports = function(router) {
                     } else {
                         // If user successfully saved to database, create e-mail object
                         var email = {
-                            from: 'MEAN Stack Staff, cruiserweights@zoho.com',
+                            from: 'álamode Staff, alamodetechnology@gmail.com',
                             to: user.email,
                             subject: 'Activation Link Request',
                             text: 'Hello ' + user.name + ', You recently requested a new account activation link. Please click on the following link to complete your activation: https://immense-dusk-71112.herokuapp.com/activate/' + user.temporarytoken,
@@ -365,7 +380,7 @@ module.exports = function(router) {
                 } else {
                     // If e-mail found in database, create e-mail object
                     var email = {
-                        from: 'Localhost Staff, cruiserweights@zoho.com',
+                        from: 'álamode Staff, alamodetechnology@gmail.com',
                         to: user.email,
                         subject: 'Localhost Username Request',
                         text: 'Hello ' + user.name + ', You recently requested your username. Please save it in your files: ' + user.username,
@@ -392,8 +407,8 @@ module.exports = function(router) {
             if (err) {
                 // Create an e-mail object that contains the error. Set to automatically send it to myself for troubleshooting.
                 var email = {
-                    from: 'MEAN Stack Staff, cruiserweights@zoho.com',
-                    to: 'gugui3z24@gmail.com',
+                    from: 'álamode Staff, alamodetechnology@gmail.com',
+                    to: 'alamodetechnology@gmail.com',
                     subject: 'Error Logged',
                     text: 'The following error has been reported in the MEAN Stack Application: ' + err,
                     html: 'The following error has been reported in the MEAN Stack Application:<br><br>' + err
@@ -422,7 +437,7 @@ module.exports = function(router) {
                         } else {
                             // Create e-mail object to send to user
                             var email = {
-                                from: 'MEAN Stack Staff, cruiserweights@zoho.com',
+                                from: 'álamode Staff, alamodetechnology@gmail.com',
                                 to: user.email,
                                 subject: 'Reset Password Request',
                                 text: 'Hello ' + user.name + ', You recently request a password reset link. Please click on the link below to reset your password:<br><br><a href="http://www.herokutestapp3z24.com/reset/' + user.resettoken,
@@ -451,7 +466,7 @@ module.exports = function(router) {
             if (err) {
                 // Create an e-mail object that contains the error. Set to automatically send it to myself for troubleshooting.
                 var email = {
-                    from: 'MEAN Stack Staff, cruiserweights@zoho.com',
+                    from: 'álamode Staff, alamodetechnology@gmail.com',
                     to: 'gugui3z24@gmail.com',
                     subject: 'Error Logged',
                     text: 'The following error has been reported in the MEAN Stack Application: ' + err,
@@ -491,8 +506,8 @@ module.exports = function(router) {
             if (err) {
                 // Create an e-mail object that contains the error. Set to automatically send it to myself for troubleshooting.
                 var email = {
-                    from: 'MEAN Stack Staff, cruiserweights@zoho.com',
-                    to: 'gugui3z24@gmail.com',
+                    from: 'álamode Staff, alamodetechnology@gmail.com',
+                    to: 'alamodetechnology@gmail.com',
                     subject: 'Error Logged',
                     text: 'The following error has been reported in the MEAN Stack Application: ' + err,
                     html: 'The following error has been reported in the MEAN Stack Application:<br><br>' + err
@@ -520,7 +535,7 @@ module.exports = function(router) {
                         } else {
                             // Create e-mail object to send to user
                             var email = {
-                                from: 'MEAN Stack Staff, cruiserweights@zoho.com',
+                                from: 'álamode Staff, alamodetechnology@gmail.com',
                                 to: user.email,
                                 subject: 'Password Recently Reset',
                                 text: 'Hello ' + user.name + ', This e-mail is to notify you that your password was recently reset at localhost.com',
@@ -569,8 +584,8 @@ module.exports = function(router) {
             if (err) {
                 // Create an e-mail object that contains the error. Set to automatically send it to myself for troubleshooting.
                 var email = {
-                    from: 'MEAN Stack Staff, cruiserweights@zoho.com',
-                    to: 'gugui3z24@gmail.com',
+                    from: 'álamode Staff, alamodetechnology@gmail.com',
+                    to: 'alamodetechnology@gmail.com',
                     subject: 'Error Logged',
                     text: 'The following error has been reported in the MEAN Stack Application: ' + err,
                     html: 'The following error has been reported in the MEAN Stack Application:<br><br>' + err
@@ -603,8 +618,8 @@ module.exports = function(router) {
             if (err) {
                 // Create an e-mail object that contains the error. Set to automatically send it to myself for troubleshooting.
                 var email = {
-                    from: 'MEAN Stack Staff, cruiserweights@zoho.com',
-                    to: 'gugui3z24@gmail.com',
+                    from: 'álamode Staff, alamodetechnology@gmail.com',
+                    to: 'alamodetechnology@gmail.com',
                     subject: 'Error Logged',
                     text: 'The following error has been reported in the MEAN Stack Application: ' + err,
                     html: 'The following error has been reported in the MEAN Stack Application:<br><br>' + err
@@ -636,8 +651,8 @@ module.exports = function(router) {
             if (err) {
                 // Create an e-mail object that contains the error. Set to automatically send it to myself for troubleshooting.
                 var email = {
-                    from: 'MEAN Stack Staff, cruiserweights@zoho.com',
-                    to: 'gugui3z24@gmail.com',
+                    from: 'álamode Staff, alamodetechnology@gmail.com',
+                    to: 'alamodetechnology@gmail.com',
                     subject: 'Error Logged',
                     text: 'The following error has been reported in the MEAN Stack Application: ' + err,
                     html: 'The following error has been reported in the MEAN Stack Application:<br><br>' + err
@@ -657,8 +672,8 @@ module.exports = function(router) {
                     if (err) {
                         // Create an e-mail object that contains the error. Set to automatically send it to myself for troubleshooting.
                         var email = {
-                            from: 'MEAN Stack Staff, cruiserweights@zoho.com',
-                            to: 'gugui3z24@gmail.com',
+                            from: 'álamode Staff, alamodetechnology@gmail.com',
+                            to: 'alamodetechnology@gmail.com',
                             subject: 'Error Logged',
                             text: 'The following error has been reported in the MEAN Stack Application: ' + err,
                             html: 'The following error has been reported in the MEAN Stack Application:<br><br>' + err
@@ -703,8 +718,8 @@ module.exports = function(router) {
             if (err) {
                 // Create an e-mail object that contains the error. Set to automatically send it to myself for troubleshooting.
                 var email = {
-                    from: 'MEAN Stack Staff, cruiserweights@zoho.com',
-                    to: 'gugui3z24@gmail.com',
+                    from: 'álamode Staff, alamodetechnology@gmail.com',
+                    to: 'alamodetechnology@gmail.com',
                     subject: 'Error Logged',
                     text: 'The following error has been reported in the MEAN Stack Application: ' + err,
                     html: 'The following error has been reported in the MEAN Stack Application:<br><br>' + err
@@ -733,8 +748,8 @@ module.exports = function(router) {
                             if (err) {
                                 // Create an e-mail object that contains the error. Set to automatically send it to myself for troubleshooting.
                                 var email = {
-                                    from: 'MEAN Stack Staff, cruiserweights@zoho.com',
-                                    to: 'gugui3z24@gmail.com',
+                                    from: 'álamode Staff, alamodetechnology@gmail.com',
+                                    to: 'alamodetechnology@gmail.com',
                                     subject: 'Error Logged',
                                     text: 'The following error has been reported in the MEAN Stack Application: ' + err,
                                     html: 'The following error has been reported in the MEAN Stack Application:<br><br>' + err
@@ -766,8 +781,8 @@ module.exports = function(router) {
             if (err) {
                 // Create an e-mail object that contains the error. Set to automatically send it to myself for troubleshooting.
                 var email = {
-                    from: 'MEAN Stack Staff, cruiserweights@zoho.com',
-                    to: 'gugui3z24@gmail.com',
+                    from: 'álamode Staff, alamodetechnology@gmail.com',
+                    to: 'alamodetechnology@gmail.com',
                     subject: 'Error Logged',
                     text: 'The following error has been reported in the MEAN Stack Application: ' + err,
                     html: 'The following error has been reported in the MEAN Stack Application:<br><br>' + err
@@ -794,8 +809,8 @@ module.exports = function(router) {
                             if (err) {
                                 // Create an e-mail object that contains the error. Set to automatically send it to myself for troubleshooting.
                                 var email = {
-                                    from: 'MEAN Stack Staff, cruiserweights@zoho.com',
-                                    to: 'gugui3z24@gmail.com',
+                                    from: 'álamode Staff, alamodetechnology@gmail.com',
+                                    to: 'alamodetechnology@gmail.com',
                                     subject: 'Error Logged',
                                     text: 'The following error has been reported in the MEAN Stack Application: ' + err,
                                     html: 'The following error has been reported in the MEAN Stack Application:<br><br>' + err
@@ -839,8 +854,8 @@ module.exports = function(router) {
             if (err) {
                 // Create an e-mail object that contains the error. Set to automatically send it to myself for troubleshooting.
                 var email = {
-                    from: 'MEAN Stack Staff, cruiserweights@zoho.com',
-                    to: 'gugui3z24@gmail.com',
+                    from: 'álamode Staff, alamodetechnology@gmail.com',
+                    to: 'alamodetechnology@gmail.com',
                     subject: 'Error Logged',
                     text: 'The following error has been reported in the MEAN Stack Application: ' + err,
                     html: 'The following error has been reported in the MEAN Stack Application:<br><br>' + err
@@ -869,8 +884,8 @@ module.exports = function(router) {
                                 if (err) {
                                     // Create an e-mail object that contains the error. Set to automatically send it to myself for troubleshooting.
                                     var email = {
-                                        from: 'MEAN Stack Staff, cruiserweights@zoho.com',
-                                        to: 'gugui3z24@gmail.com',
+                                        from: 'álamode Staff, alamodetechnology@gmail.com',
+                                        to: 'alamodetechnology@gmail.com',
                                         subject: 'Error Logged',
                                         text: 'The following error has been reported in the MEAN Stack Application: ' + err,
                                         html: 'The following error has been reported in the MEAN Stack Application:<br><br>' + err
@@ -916,8 +931,8 @@ module.exports = function(router) {
                                 if (err) {
                                     // Create an e-mail object that contains the error. Set to automatically send it to myself for troubleshooting.
                                     var email = {
-                                        from: 'MEAN Stack Staff, cruiserweights@zoho.com',
-                                        to: 'gugui3z24@gmail.com',
+                                        from: 'álamode Staff, alamodetechnology@gmail.com',
+                                        to: 'alamodetechnology@gmail.com',
                                         subject: 'Error Logged',
                                         text: 'The following error has been reported in the MEAN Stack Application: ' + err,
                                         html: 'The following error has been reported in the MEAN Stack Application:<br><br>' + err
@@ -963,8 +978,8 @@ module.exports = function(router) {
                                 if (err) {
                                     // Create an e-mail object that contains the error. Set to automatically send it to myself for troubleshooting.
                                     var email = {
-                                        from: 'MEAN Stack Staff, cruiserweights@zoho.com',
-                                        to: 'gugui3z24@gmail.com',
+                                        from: 'álamode Staff, alamodetechnology@gmail.com',
+                                        to: 'alamodetechnology@gmail.com',
                                         subject: 'Error Logged',
                                         text: 'The following error has been reported in the MEAN Stack Application: ' + err,
                                         html: 'The following error has been reported in the MEAN Stack Application:<br><br>' + err
@@ -1010,8 +1025,8 @@ module.exports = function(router) {
                                 if (err) {
                                     // Create an e-mail object that contains the error. Set to automatically send it to myself for troubleshooting.
                                     var email = {
-                                        from: 'MEAN Stack Staff, cruiserweights@zoho.com',
-                                        to: 'gugui3z24@gmail.com',
+                                        from: 'álamode Staff, alamodetechnology@gmail.com',
+                                        to: 'alamodetechnology@gmail.com',
                                         subject: 'Error Logged',
                                         text: 'The following error has been reported in the MEAN Stack Application: ' + err,
                                         html: 'The following error has been reported in the MEAN Stack Application:<br><br>' + err
