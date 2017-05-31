@@ -1,4 +1,6 @@
-angular.module('alamode.controllers',['authServices','userServices','cartServices']).controller('MenuController', ['$scope', function($scope) {
+'use strict';
+// angular.module('alamode.controllers',['authServices','userServices','cartServices'])
+alamode.controller('MenuController', ['$scope', function($scope) {
 	$scope.addToCheckout = function(productId){
 		$scope.products.push({img:"imgs/applogo.png",title:'DANCE',ingredients:'Ingredients',price:4.00});
 	};

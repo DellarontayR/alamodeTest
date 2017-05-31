@@ -44,6 +44,7 @@ html {
       text-align: center;
       border:10px;
       background-color: #542084;
+      margin: 0px;
 }
 
 body{
@@ -64,11 +65,16 @@ header{
 
 @media only screen and (max-width: 767px) {
     /* phones */
-    .product{
-
-    }
+    
 }
 
 @media only screen and (max-width: 767px) and (orientation: portrait) {
     /* portrait phones */
+}
+
+@media(min-width: 992px){
+
+}
+@media(min-width: 1200px){
+
 }

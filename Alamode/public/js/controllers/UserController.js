@@ -1,9 +1,30 @@
-angular.module('alamode.controllers.userCtrl', ['userServices'])
+'use strict';
 
+// angular.module('alamode.controllers', ['userServices'])
+alamode.
 // Controller: regCtrl is used for users to register an account
-.controller('regCtrl', function($http, $location, $timeout, User, $scope) {
+controller('regCtrl', function($http, $location, $timeout, User, $scope) {
 
     var app = this;
+
+    this.registerUser = function(userData,valid,confirmed){
+        app.disabled = true;
+        app.loading = true; 
+        app.errorMsg = false;
+
+        if(valid && confirmed){
+            app.userData.name =app.userData.firstName + " " + app.userData.lastName;
+            User.register(app.userData).then(function(data){
+                if(data.data.success){
+                    $timeout(function(){
+                        $location.path('/login');
+                    }, 2000);
+                }else{
+                    app.errorMsg = data.data.message;
+                }
+            });
+        }
+    }
 
     // Custom function that registers the user in the database      
     this.regUser = function(regData, valid, confirmed) {

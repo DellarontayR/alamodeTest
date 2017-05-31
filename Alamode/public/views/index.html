@@ -2,7 +2,6 @@
 <html lang="en" ng-app="alamode">
  <head>
      <meta name="viewport" content="width=device-width, initial-scale=1">
-
       <!--disables scroll if replacing other meta tag
      <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">-->
 
@@ -41,38 +40,61 @@
     <title>álamode</title>
 </head>
 
-<body>
-    <nav id="fullnav" class="navbar navbar-inverse navbar-fixed-top">
-      <div class="fluid-container">
-        <div class="navbar-header">
-          
-          <a style="margin-bottom:10px" class="navbar-brand" href="/home">          
-            <img  src="../imgs/alamode.png"/>
-          </a>
-          <div class="navtab"> 
-            <a class="navbar-brand" href="/about">about. us</a>
-            <a class="navbar-brand" href="/menu">menu.</a>
-            <a class="navbar-brand" href="/signin">order.online </a>
-            <a class="navbar-brand" href="/big">big.ass.orders </a>
-            <div class="totheright">
-                <button type="button" class="btn btn-link"> Sign in</button>
-                <button type="button" class="btn btn-danger"> Sign up</button>
-                <button type="button"  class="fa fa-shopping-cart btn btn-secondary" aria-hidden="true">Shopping cart</button>
-          </div>
-          </div>
-          
+<body ng-controller="mainCtrl as main" ng-show="main.loadme" ng-cloak>
+        <!--<md-content>
+        <md-toolbar class="md-hue-2">
+        <div class="md-toolbar-tools">
+            <md-button class="md-icon-button" aria-label="Settings" ng-disabled="true">
+            <md-icon md-svg-icon="img/icons/menu.svg"></md-icon>
+            </md-button>
 
-          <!-- Menu bar for navbar in mobile modes-->
-          <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
-            <span class="sr-only">Toggle navigation</span>
-            <span class="icon-bar"></span>
-            <span class="icon-bar"></span>
-            <span class="icon-bar"></span>
-          </button>
+            <h2 flex md-truncate>Toolbar with Disabled/Enabled Icon Buttons</h2>
 
+            <md-button class="md-icon-button" aria-label="Favorite">
+            <md-icon md-svg-icon="img/icons/favorite.svg" style="color: greenyellow;"></md-icon>
+            </md-button>
+
+            <md-button class="md-icon-button" aria-label="More">
+            <md-icon md-svg-icon="img/icons/more_vert.svg"></md-icon>
+            </md-button>
         </div>
-      </div>
-    </nav>
+        </md-toolbar>
+        
+        </md-content>-->
+        <div class="container">
+
+
+        <nav id="fullnav" class="navbar navbar-inverse navbar-fixed-top">
+        <div class="fluid-container">
+            <div class="navbar-header">
+            
+            <a style="margin-bottom:10px" class="navbar-brand" href="/home">          
+                <img  src="../imgs/alamode.png"/>
+            </a>
+            <div class="navtab"> 
+                <a class="navbar-brand" href="/about">about. us</a>
+                <a class="navbar-brand" href="/menu">menu.</a>
+                <a class="navbar-brand" href="/signin">order.online </a>
+                <a class="navbar-brand" href="/big">big.ass.orders </a>
+                <div class="totheright">
+                    <button type="button" class="btn btn-link"> Sign in</button>
+                    <button type="button" class="btn btn-danger"> Sign up</button>
+                    <button type="button"  class="fa fa-shopping-cart btn btn-secondary" aria-hidden="true">Shopping cart</button>
+            </div>
+            </div>
+            
+
+            <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            </div>
+        </div>
+        </nav>-->
+    </div>
+
 
     <!-- Main Angular view where routes will be rendered-->
     <div class="container">
@@ -81,11 +103,9 @@
 
 
     <footer class="page-footer primary-color-dark center-on-small-only">
-
         <!--Footer Links-->
         <div class="container">
             <div class="row">
-
                 <!--First column-->
                 <div class="col-md-6 col-xs-6">
                     <h5 class="title">Footer Content</h5>

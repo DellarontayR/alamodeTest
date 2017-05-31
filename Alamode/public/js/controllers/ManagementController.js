@@ -1,7 +1,8 @@
-angular.module('alamode.controllers', [])
+'use strict';
+// angular.module('alamode.controllers', [])
 
 // Controller: User to control the management page and managing of user accounts
-.controller('managementCtrl', function(User, $scope) {
+alamode.controller('managementCtrl', function(User, $scope) {
     var app = this;
 
     app.loading = true; // Start loading icon on page load

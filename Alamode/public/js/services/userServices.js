@@ -1,3 +1,4 @@
+'use strict';
 angular.module('userServices', [])
 
 .factory('User', function($http) {
@@ -6,6 +7,10 @@ angular.module('userServices', [])
     // Register users in database
     userFactory.create = function(regData) {
         return $http.post('/api/users', regData);
+    };
+
+    userFactory.register = function(regData){
+        return $http.post('/api/register-user',userData);
     };
 
     // Check if username is available at registration

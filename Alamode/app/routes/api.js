@@ -1,4 +1,7 @@
+'use strict';
+
 var User = require('../models/user'); // Import User Model
+var Product = require('../models/product');
 var jwt = require('jsonwebtoken'); // Import JWT Package
 var secret = 'zm!_0@0hu_7&ii-@j&0wpm3t%ojnvmjx6j0!1*&j@x51&mdzk@'; // Create custom secret for use in JWT
 var nodemailer = require('nodemailer'); // Import Nodemailer Package
@@ -40,6 +43,77 @@ module.exports = function(router) {
     router.get('/cart',function(req,res){
 
     });
+
+    router.get('/products',function(req,res){
+        var product = new Product();
+        Product.find({},function(req,res){}).select('title description pricing imagePath').exec(function(err,products){
+            if(err){
+                res.json({success:false});
+            }else{
+                if(!products){
+                    res.json({success:false});
+
+                }else{
+                    res.json({success: true, products: products});
+                }
+            }
+        });
+        // var user = new User(); // Create new User object
+        // user.username = req.body.username; // Save username from request to User object
+        // user.password = req.body.password; // Save password from request to User object
+        // user.email = req.body.email; // Save email from request to User object
+        // user.name = req.body.name; // Save name from request to User object
+        // user.temporarytoken = jwt.sign({ username: user.username, email: user.email },
+        //      secret, { expiresIn: '24h' }); // Create a token for activating account through e-mail
+    });
+
+    router.post('/products',function(req,res){
+        var product = new Product();
+        product.title = req.body.title;
+        product.description = req.body.description;
+        product.pricing = req.body.pricing;
+        product.imagePath = req.body.pricing;
+
+        product.save(function(err){
+            if(err){
+                if(err.errors !=null){
+                    if(err.errors.name){
+                        res.json({success:false, message: err.errors.name.message});
+                    }
+                }
+            }
+        })
+
+    });
+
+    router.post('/register-user',function(req,res){
+        var user = new User();
+        user.username = req.body.username;
+        user.password = req.body.password;
+        user.email = req.body.email;
+        user.name = req.body.name;
+        user.temporarytoken = jwt.sign({username: user.username,email:user.email},secret,{expiresIn:'7d'});
+
+        if (req.body.username === null || req.body.username === '' || req.body.password === null
+          || req.body.password === '' || req.body.email === null || req.body.email === '' || req.body.name === null 
+          || req.body.name === '') {
+            res.json({ success: false, message: 'Ensure username, email, and password were provided' });
+        } else{
+            user.save(function(err){
+                if(err){
+                    res.json({success: false, message: 'naww'});
+                }else{
+                    if(!user){
+                        res.json({success:false,message: 'naww'});
+                    }else{
+                        res.json({success:true, message: 'User registered'});
+                    }
+                }
+            });
+        }
+    });
+
+
 
     // Route to register new users  
     router.post('/users', function(req, res) {

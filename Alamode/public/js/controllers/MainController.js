@@ -1,6 +1,8 @@
-angular.module('alamode.controllers',['authServices','userServices'])
-
-.controller('mainController',function(Auth,$timeout,$location,$rootScope,$window,$interval,User,AuthToken,$scope){
+'use strict';
+// angular.module('alamode.controllers',['authServices','userServices'])
+// angular.module('alamode.controllers',['authServices','userServices']).
+alamode.controller('mainCtrl',function(Auth,$timeout,$location,$rootScope,$window,$interval,User,AuthToken,$scope){
+console.log('partway');
 
 
     var app = this;
@@ -9,6 +11,8 @@ angular.module('alamode.controllers',['authServices','userServices'])
 
     // Check if user's session has expired upon opening page for the first time
     if (Auth.isLoggedIn()) {
+        console.log(' is logged');
+
         // Check if a the token expired
         Auth.getUser().then(function(data) {
             // Check if the returned user is undefined (expired)
@@ -20,6 +24,7 @@ angular.module('alamode.controllers',['authServices','userServices'])
             }
         });
     }
+    console.log('after is logged');
 
     // Function to run an interval that checks if the user's token has expired
     app.checkSession = function() {
@@ -51,6 +56,8 @@ angular.module('alamode.controllers',['authServices','userServices'])
             }, 30000);
         }
     };
+
+    console.log('check session');
 
     app.checkSession(); // Ensure check is ran check, even if user refreshes
 
