@@ -1,14 +1,38 @@
 'use strict';
-// angular.module('alamode.controllers',['authServices','userServices'])
-// angular.module('alamode.controllers',['authServices','userServices']).
-alamode.controller('mainCtrl',function(Auth,$timeout,$location,$rootScope,$window,$interval,User,AuthToken,$scope){
-console.log('partway');
 
+alamode.controller('mainCtrl',function(Auth,$timeout,$location,$rootScope,$window,$interval,User,AuthToken,$scope){
 
     var app = this;
     app.loadme = false; // Hide main HTML until data is obtained in AngularJS
     if ($window.location.pathname === '/') app.home = true; // Check if user is on home page to show home page div
 
+    app.demo = {};
+    app.demo.cart = {};
+    app.demo.canBack = false;
+    app.demo.canForward = false;
+    app.demo.attemptsBackward = 0;
+    app.demo.startOrder = function(){
+        // require('nw.gui').Window.get().showDevTools();
+        $location.path('/menu');
+    };
+
+    app.demo.activateArduino = function(){
+        
+    };
+
+    app.demo.attemptHistoryBack = function(){
+        app.demo.attemptsBackward++;
+
+        $window.history.back();
+    };
+
+    app.demo.attemptHistoryForward = function(){
+        app.demo.attemptsBackward--;
+        $window.history.forward();
+
+    };
+    
+    
     // Check if user's session has expired upon opening page for the first time
     if (Auth.isLoggedIn()) {
         console.log(' is logged');

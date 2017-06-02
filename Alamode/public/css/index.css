@@ -1,0 +1,13 @@
+.indexBody{
+    width:100%;
+    height:100%;
+    margin: 0px;
+
+}
+
+.alamodeHeader .row button{
+    border-bottom: 1px solid black;
+    text-align: left;
+    display: inline-block;
+    left: 0px;
+}

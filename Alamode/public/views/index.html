@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en" ng-app="alamode">
  <head>
-     <meta name="viewport" content="width=device-width, initial-scale=1">
+     <meta name="viewport" content="width=device-width, initial-scale=1  maximum-scale=1, user-scalable=no">
       <!--disables scroll if replacing other meta tag
      <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">-->
 
@@ -11,6 +11,8 @@
     <link href="../css/home.css" rel="stylesheet"/>
     <link href="../css/product.css" rel="stylesheet"/>
     <link href="../css/sc-btn.css" rel="stylesheet"/>
+    <link href="../css/test.css" rel="stylesheet"/>
+    <link href="../css/index.css" rel="stylesheet"/>
 
     <script src="https://use.fontawesome.com/3bab7734df.js"></script>
 
@@ -40,30 +42,8 @@
     <title>álamode</title>
 </head>
 
-<body ng-controller="mainCtrl as main" ng-show="main.loadme" ng-cloak>
-        <!--<md-content>
-        <md-toolbar class="md-hue-2">
-        <div class="md-toolbar-tools">
-            <md-button class="md-icon-button" aria-label="Settings" ng-disabled="true">
-            <md-icon md-svg-icon="img/icons/menu.svg"></md-icon>
-            </md-button>
-
-            <h2 flex md-truncate>Toolbar with Disabled/Enabled Icon Buttons</h2>
-
-            <md-button class="md-icon-button" aria-label="Favorite">
-            <md-icon md-svg-icon="img/icons/favorite.svg" style="color: greenyellow;"></md-icon>
-            </md-button>
-
-            <md-button class="md-icon-button" aria-label="More">
-            <md-icon md-svg-icon="img/icons/more_vert.svg"></md-icon>
-            </md-button>
-        </div>
-        </md-toolbar>
-        
-        </md-content>-->
-        <div class="container">
-
-
+<body class="indexBody" ng-controller="mainCtrl as main" ng-show="main.loadme" ng-cloak>
+        <!--<div>
         <nav id="fullnav" class="navbar navbar-inverse navbar-fixed-top">
         <div class="fluid-container">
             <div class="navbar-header">
@@ -82,38 +62,38 @@
                     <button type="button"  class="fa fa-shopping-cart btn btn-secondary" aria-hidden="true">Shopping cart</button>
             </div>
             </div>
-            
-
-            <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
-                <span class="sr-only">Toggle navigation</span>
-                <span class="icon-bar"></span>
-                <span class="icon-bar"></span>
-                <span class="icon-bar"></span>
-            </button>
             </div>
         </div>
-        </nav>-->
+        </nav>
+        </div>-->
+
+    <div class="container alamode-header">
+        <div class="row">
+            <button ng-click="main.demo.attemptHistoryBack()" class="btn btn-lg btn-outline-secondary" ng-disabled="window.history.length > 0">
+                <i class="fa fa-angle-left" style="font-size:48px;color:#542084"></i>
+
+            </button>
+            <button ng-click="main.demo.attemptHistoryForward()" class="btn btn-lg btn-outline-secondary" ng-disabled="main.demo.attemptsBackward > 0">
+                <i class="fa fa-angle-right" style="font-size:48px;color:#ffcc00"></i>
+
+            </button>
+
+        </div>
+        
     </div>
-
-
     <!-- Main Angular view where routes will be rendered-->
-    <div class="container">
+    <div>
       <div class="main-view" ng-view></div>
     </div>
 
 
-    <footer class="page-footer primary-color-dark center-on-small-only">
-        <!--Footer Links-->
+    <!--<footer class="page-footer primary-color-dark center-on-small-only">
         <div class="container">
             <div class="row">
-                <!--First column-->
                 <div class="col-md-6 col-xs-6">
-                    <h5 class="title">Footer Content</h5>
-                    <p>Here you can use rows and columns here to organize your footer content.</p>
+                    <h5 class="title">Get Treats</h5>
                 </div>
-                <!--/.First column-->
 
-                <!--Second column-->
                 <div class="col-md-6">
                     <h5 class="title">Links</h5>
                     <ul>
@@ -122,20 +102,21 @@
                         <li><a href="#!">Order more!</a></li>
                     </ul>
                 </div>
-                <!--/.Second column-->
             </div>
         </div>
-        <!--/.Footer Links-->
 
-        <!--Copyright-->
         <div class="footer-copyright">
             <div class="container-fluid">
                 © 2017 Copyright: álamode
                  <a href="http://alamodeorders.com"> alamodeorders.com </a>
             </div>
         </div>
-        <!--/.Copyright-->
-
-    </footer>
+    </footer>-->
 </body>
+<!-- AngularJS Material Dependencies -->
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.3.15/angular-animate.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.3.15/angular-aria.js"></script>
+
+    <!-- AngularJS Material Javascript using GitCDN to load directly from `bower-material/master` -->
+    <script src="https://gitcdn.link/repo/angular/bower-material/master/angular-material.js"></script>
 </html>

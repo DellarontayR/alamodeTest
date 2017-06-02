@@ -1,8 +1,16 @@
 {
-  "name": "alamode",
-  "version": "1.0.0",
-  "description": "yeah",
-  "main": "server.js",
+  "name": "alamodee",
+  "description": "álamode application",
+  "main": "http://localhost:8080",
+  "node-main": "./server.js",
+  "version": "0.23.0",
+  "window":{
+    "title": "álamode",
+    "toolbar": true,
+    "frame":false,
+    "height": 1000,
+    "width": 1000
+  },
   "dependencies": {
     "angular": "^1.6.3",
     "angular-ui-bootstrap": "^2.5.0",
@@ -22,7 +30,8 @@
   },
   "devDependencies": {},
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "nw ."
   },
   "author": "",
   "license": "ISC"
