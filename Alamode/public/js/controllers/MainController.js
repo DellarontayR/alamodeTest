@@ -22,14 +22,15 @@ alamode.controller('mainCtrl',function(Auth,$timeout,$location,$rootScope,$windo
 
     app.demo.attemptHistoryBack = function(){
         app.demo.attemptsBackward++;
-
+        console.log(app.demo.attemptsBackward);
         $window.history.back();
     };
 
     app.demo.attemptHistoryForward = function(){
         app.demo.attemptsBackward--;
-        $window.history.forward();
+        console.log(app.demo.attemptsBackward);
 
+        $window.history.forward();
     };
     
     
