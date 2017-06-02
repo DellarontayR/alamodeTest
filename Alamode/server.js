@@ -22,13 +22,13 @@ mongoose.Promise = global.Promise;
 /**
  * Connection to mongodb database on port: 27107
  */
-mongoose.connect('mongodb://localhost:27017/test', function(err){
-    if(err){
-        console.log("database not connected " + err);
-    }else{
-        console.log("database connected");
-    }
-});
+// mongoose.connect('mongodb://localhost:27017/test', function(err){
+//     if(err){
+//         console.log("database not connected " + err);
+//     }else{
+//         console.log("database connected");
+//     }
+// });
 /**
  * Redirect to main template of the single page application
  */
