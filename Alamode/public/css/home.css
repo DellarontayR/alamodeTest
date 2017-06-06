@@ -6,11 +6,19 @@
     display: block;
 }
 .home button{
-    font-size: 100px;
     vertical-align: middle;
     text-align: center;
     display: inline-block;
+    color: #542084;
 
+        border-color: #542084;
+        background-color: #ffcc00;
+
+
+}
+
+.home-button{
+     color: #542084;
 }
 .alamodeIntroduction{
     font-family: Georgia, 'Times New Roman', Times, serif;
