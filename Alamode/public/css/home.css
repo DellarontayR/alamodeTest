@@ -9,16 +9,22 @@
     vertical-align: middle;
     text-align: center;
     display: inline-block;
+    background-color: #ffcc00;
     color: #542084;
-
-        border-color: #542084;
-        background-color: #ffcc00;
-
+}
+.row{
+    display:flex;
+    align-content: center;
+    text-align: center;
 
 }
 
+
 .home-button{
      color: #542084;
+     display:block;
+     border-color: #542084;
+
 }
 .alamodeIntroduction{
     font-family: Georgia, 'Times New Roman', Times, serif;
