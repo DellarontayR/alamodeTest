@@ -24,6 +24,11 @@
     align-content: center;
     text-align: center;
 }
+
+.introText{
+    font-family: Georgia, 'Times New Roman', Times, serif;
+    color:#542084;
+}
 /* Non - Demo */
 .gallery{
       list-style-type: none;
