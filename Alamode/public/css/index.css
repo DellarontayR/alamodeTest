@@ -19,8 +19,9 @@
 
 .alamodeFooter{
     background-color: #542084;
-        color:#ffcc00;
+    color:#ffcc00;
     position: absolute;
+    float: bottom;
     bottom:0px;
     left:0px;
     width:100%;

@@ -3,6 +3,7 @@
     height:100%;
     text-align: center;
     align-content: center;
+    display: block;
 }
 .home button{
     font-size: 100px;
@@ -15,7 +16,13 @@
     font-family: Georgia, 'Times New Roman', Times, serif;
     background-color:#542084;
     color:#ffcc00;
-    left: 0px;
+    display: block;
+}
+
+.intro{
+    display: flex;
+    align-content: center;
+    text-align: center;
 }
 /* Non - Demo */
 .gallery{
