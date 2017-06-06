@@ -5,15 +5,18 @@
     align-content: center;
 }
 .home button{
-    width: 600px;
-    height: 600px;
     font-size: 100px;
     vertical-align: middle;
     text-align: center;
     display: inline-block;
 
 }
-
+.alamodeIntroduction{
+    font-family: Georgia, 'Times New Roman', Times, serif;
+    background-color:#542084;
+    color:#ffcc00;
+    left: 0px;
+}
 /* Non - Demo */
 .gallery{
       list-style-type: none;
