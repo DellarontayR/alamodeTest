@@ -2,8 +2,8 @@
 <html lang="en" ng-app="alamode">
  <head>
      <meta name="viewport" content="width=device-width, initial-scale=1  maximum-scale=1, user-scalable=no">
-      <!--disables scroll if replacing other meta tag
-     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">-->
+
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.6/css/bootstrap.min.css" integrity="sha384-rwoIResjU2yc3z8GV/NPeZWAv56rSmLldC3R/AZzGRnGxQQKnKkoFVhFQhNUwEyJ" crossorigin="anonymous">
 
     <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.3/angular.min.js"></script>
     <script src="https://code.angularjs.org/1.6.3/angular-route.min.js"></script>
@@ -39,73 +39,43 @@
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/mdbootstrap/4.3.0/css/mdb.min.css">
 
-    <title>álamode</title>
+    <title>Mookie Dough</title>
 </head>
 
 <body class="indexBody" ng-controller="mainCtrl as main" ng-show="main.loadme" ng-cloak>
-        <div>
-        <nav id="fullnav" class="navbar navbar-inverse navbar-fixed-top">
-        <div class="fluid-container">
-            <div class="row">
-                <a style="position:absolute;left:0px" class="alamodeHead navtab" href="/home">          
-                    <img  src="../imgs/alamode.png"/>
-                </a>
-                <div style="position:absolute;right:2px;">
-                    <i class="fa fa-user fa-3x" aria-hidden="true"></i>
-                    <i  class="fa fa-shopping-cart fa-3x" aria-hidden="true"></i>
-                </div>
+    
+    <<div class="pos-f-t">
+        <div class="collapse" id="navbarToggleExternalContent">
+            <div class="bg-inverse p-4">
+                <h4 class="text-white">Collapsed content</h4>
+                <span class="text-muted">Toggleable via the navbar brand.</span>
             </div>
         </div>
+        <nav class="navbar navbar-inverse bg-inverse">
+            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarToggleExternalContent" aria-controls="navbarToggleExternalContent" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="alamode-header" style="display:inline-block"> 
+                <h1 class="text-white" style="display:inline-block"> Mookie Dough LLC </h1>
+                <button style="display:inline-block"> Sign In </button>
+                <button style="display:inline-block"> Sign Up </button>
+            </div>
+
         </nav>
-        </div>
-
-    <!--<div class="container alamode-header">
-        <div class="row">
-            <button ng-click="main.demo.attemptHistoryBack()" class="btn btn-lg btn-outline-secondary" ng-disabled="window.history.length > 0">
-                <i class="fa fa-angle-left" style="font-size:48px;color:#542084"></i>
-
-            </button>
-            <button ng-click="main.demo.attemptHistoryForward()" class="btn btn-lg btn-outline-secondary" ng-disabled="main.demo.attemptsBackward < 0">
-                <i class="fa fa-angle-right" style="font-size:48px;color:#ffcc00"></i>
-
-            </button>
-
-        </div>
-    </div>-->
-    <!-- Main Angular view where routes will be rendered-->
-    <div class="container">
-        <div class="row">
-      <div class="main-view" ng-view></div>
-      </div>
     </div>
+    <!-- Main Angular view where routes will be rendered-->
 
-    <footer class="footer center-on-small-only alamodeFooter">
+    </div>
         <div class="container">
             <div class="row">
-                <div class="col-md-6 col-xs-6 col-xl-4">
-                    <h5 class="title">Get Snacks</h5>
-                </div>
-
-                <div class="col-md-6 col-xs-6">
-                    <h5 class="title">Useful Links</h5>
-                    <ul>
-                        <li><a href="/about">about. us</a></li>
-                        <li><a href="/contact">contact</a></li>
-                        <li><a href="/menu">Order more!</a></li>
-                    </ul>
-                </div>
+                    <div class="main-view" ng-view></div>
             </div>
         </div>
 
-        <div class="footer-copyright">
-            <div class="container-fluid">
-                © 2017 Copyright: álamode
-                 <a href="http://alamodeorders.com"> alamodeorders.com </a>
-            </div>
-        </div>
-    </footer>
-    
-</body>
+    </body>
+    <script src="https://code.jquery.com/jquery-3.1.1.slim.min.js" integrity="sha384-A7FZj7v+d/sdmMqp/nOQwliLvUsJfDHW+k9Omg/a/EheAdgtzNs3hpfag6Ed950n" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/tether/1.4.0/js/tether.min.js" integrity="sha384-DztdAPBWPRXSA/3eYEEUWrWCy7G5KFbe8fFjk5JAIxUYHKkDx6Qin1DkWx51bBrb" crossorigin="anonymous"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.6/js/bootstrap.min.js" integrity="sha384-vBWWzlZJ8ea9aCX4pEW3rVHjgjt7zpkNpZk+02D9phzyeVkE+jo0ieGizqPLForn" crossorigin="anonymous"></script>
 <!-- AngularJS Material Dependencies -->
     <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.3.15/angular-animate.js"></script>
     <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.3.15/angular-aria.js"></script>
