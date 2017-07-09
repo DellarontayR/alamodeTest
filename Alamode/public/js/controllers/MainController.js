@@ -6,6 +6,11 @@ alamode.controller('mainCtrl',function(Auth,$timeout,$location,$rootScope,$windo
     app.loadme = false; // Hide main HTML until data is obtained in AngularJS
     if ($window.location.pathname === '/') app.home = true; // Check if user is on home page to show home page div
 
+    app.user = {};
+
+    app.user.clickUser = function(){};
+
+
     app.demo = {};
     app.demo.cart = {};
     app.demo.canBack = false;

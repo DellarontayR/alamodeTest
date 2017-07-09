@@ -4,10 +4,10 @@
   "main": "http://localhost:8080",
   "node-main": "./server.js",
   "version": "0.23.0",
-  "window":{
+  "window": {
     "title": "álamode",
     "toolbar": true,
-    "frame":false,
+    "frame": false,
     "height": 1000,
     "width": 1000
   },
@@ -28,7 +28,12 @@
     "passport-facebook": "^2.1.1",
     "python": "^0.0.4"
   },
-  "devDependencies": {},
+  "devDependencies": {
+    "angular-mocks": "^1.6.5",
+    "jasmine-core": "^2.6.4",
+    "karma-jasmine": "^1.1.0",
+    "karma-phantomjs-launcher": "^1.0.4"
+  },
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "start": "nw ."
