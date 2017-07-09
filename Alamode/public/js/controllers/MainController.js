@@ -9,35 +9,15 @@ alamode.controller('mainCtrl',function(Auth,$timeout,$location,$rootScope,$windo
     app.user = {};
 
     app.user.clickUser = function(){};
+    // function buildToggler(componentId) {
+    //     return function() {
+    //         $mdSidenav(componentId).toggle();
+    //     };
+    // }
 
+    // app.toggleLeft = buildToggler('left');
+    // app.toggleRight = buildToggler('right');
 
-    app.demo = {};
-    app.demo.cart = {};
-    app.demo.canBack = false;
-    app.demo.canForward = false;
-    app.demo.attemptsBackward = 0;
-    app.demo.startOrder = function(){
-        // require('nw.gui').Window.get().showDevTools();
-        $location.path('/menu');
-    };
-
-    app.demo.activateArduino = function(){
-        
-    };
-
-    app.demo.attemptHistoryBack = function(){
-        app.demo.attemptsBackward++;
-        console.log(app.demo.attemptsBackward);
-        $window.history.back();
-    };
-
-    app.demo.attemptHistoryForward = function(){
-        app.demo.attemptsBackward--;
-        console.log(app.demo.attemptsBackward);
-
-        $window.history.forward();
-    };
-    
     
     // Check if user's session has expired upon opening page for the first time
     if (Auth.isLoggedIn()) {

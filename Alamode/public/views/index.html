@@ -30,6 +30,7 @@
     <script src="../js/controllers/MainController.js"></script>
     <script src="../js/controllers/MenuController.js"></script>
     <script src="../js/controllers/UserController.js"></script>
+    <script src="../js/controllers/HomeController.js"></script>
 
       <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.5.2/animate.min.css">
 
@@ -49,23 +50,17 @@
     <title>Mookie Dough</title>
 </head>
 
-<body class="indexBody" ng-controller="mainCtrl as main" ng-show="main.loadme" ng-cloak>
+    <body class="indexBody" ng-controller="mainCtrl as main" ng-show="main.loadme" ng-cloak>
 
-
-        <nav class="nav navbar navbar-inverse bg-inverse alamode-header">
+        <nav class="nav navbar alamode-header">
             <div class="container-fluid">
-                 <button type="button" class="navbar-toggle pull-left" data-toggle="collapse" data-target="#navbar-primary-collapse">
-                    <span class="sr-only">Toggle navigation</span>
-                    <span class="icon-bar"></span>
-                    <span class="icon-bar"></span>
-                 </button>
-                 
+                <div class="row">
                     <div class="main-title"> 
-                        <h3 class="text-white" style="display:inline-block"> Mookie Dough LLC </h3>
+                        <h3 class="text-black"> Mookie Dough</h3>
                     </div>
-                    
                     <i class="fa fa-user fa-4x pull-right dough-user" aria-hidden="true"></i>
                     <i class="fa fa-shopping-cart fa-4x pull-right dough-shopping-cart" aria-hidden="true"></i>
+                </div>
             </div>
         </nav>
        
