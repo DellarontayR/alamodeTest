@@ -1,5 +1,5 @@
 html{
-    background-color:white;
+    background-color:#e5e5e5;
 }
 
 body .main-view{
@@ -36,15 +36,15 @@ body {
     margin-left:0;
     margin-right:0;
     text-align: center;
-
+    display:flex;
+    align-content: center;
 }
 .mookie-content{
      flex: 1 0 auto;
 }
 
-.footer {
-    
-position: relative;
+.footer {  
+  position: relative;
   width: 100%;
   height: 60px;
   background-color: #f5f5f5;
@@ -67,13 +67,12 @@ position: relative;
 }
 
 .nav .navbar{
-    display:flex;
     align-content: center;
     align-items: center;
     width:100%;
     padding-bottom:0;
     position: absolute;
-        top:0em;
+    top:0em;
     left:0em;
 }
 
@@ -83,7 +82,6 @@ position: relative;
 }
 .main-title .text-black{
     display:block;
-    left:1em;
 }
 
 /* Standard Breakpoints for Mookie Dough web application*/

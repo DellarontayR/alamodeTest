@@ -14,7 +14,8 @@ var app = angular.module('appRoutes',['ngRoute'])
     }).
     when('/signin',{
         templateUrl: '../../views/user/signin.html'
-    }).when('/register',{
+    })
+    .when('/register',{
         templateUrl: '../../views/user/register.html',
         controller: 'regCtrl',
         controllerAs: 'register',

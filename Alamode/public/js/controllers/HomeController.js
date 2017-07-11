@@ -6,7 +6,10 @@ alamode.controller('HomeController', ['$scope','$location',function($scope, $loc
         $location.path('/menu');
         console.log("eat");
     };
-
+    home.modalShown = false;
+    home.toggleModal = function(){
+        home.modalShown = !home.modalShown;
+    };
     //Home Screen scenarios
     //User comes to home and is welcomed by bright images of cookie dough products
     //He has easy access to acccessing the menu in fun and spelled out verbiage

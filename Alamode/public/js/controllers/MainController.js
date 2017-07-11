@@ -9,14 +9,17 @@ alamode.controller('mainCtrl',function(Auth,$timeout,$location,$rootScope,$windo
     app.user = {};
 
     app.user.clickUser = function(){};
-    // function buildToggler(componentId) {
-    //     return function() {
-    //         $mdSidenav(componentId).toggle();
-    //     };
-    // }
 
-    // app.toggleLeft = buildToggler('left');
-    // app.toggleRight = buildToggler('right');
+    $('a.remove').click(function(){
+    event.preventDefault();
+    $( this ).parent().parent().parent().hide( 400 );
+
+    });
+
+    // Just for testing, show all items
+    $('a.btn.continue').click(function(){
+        $('li.items').show(400);
+    });
 
     
     // Check if user's session has expired upon opening page for the first time

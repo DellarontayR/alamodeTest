@@ -1,6 +1,8 @@
 'use strict';
 var User = require('../models/user'); // Import User Model
 var Product = require('../models/product');
+var Cart = require('../models/cart');
+var CartItem = require('../models/cartItem');
 var jwt = require('jsonwebtoken'); // Import JWT Package
 var secret = 'zm!_0@0hu_7&ii-@j&0wpm3t%ojnvmjx6j0!1*&j@x51&mdzk@'; // Create custom secret for use in JWT
 var nodemailer = require('nodemailer'); // Import Nodemailer Package
@@ -37,19 +39,32 @@ module.exports = function(router) {
         
     });
     
-    router.post('/additemtocart/:itemid',function(req,res){
-        // 
+    router.post('/additemtocart/:productTitle',function(req,res){
+        var id = req.params.productTitle;
+        var loginUser = req.body.username.toLowerCase();
+        Cart.findOne({usernameRef:loginUser}).select('usernameRef items').exec(function( err,cart){
+            if(err){
+                res.json({success:false,message:"No cart found for userRef"});
+            }
+            else{
+                Product.findOne({title:id}).select('title description price imagePath').exec(function(err,product){
+                    if(err){
+                        res.json({success:flase,message:'Item to be added to cart was not found in catalog'});
+                    }
+                    else{
+                        Cart.items.ad
+                    }
+                });
+            }
+        });
     });
 
-    router.get('/cart',function(req,res){
 
-    });
-
-    router.get('/products',function(req,res){
+    router.get('/get-products',function(req,res){
         var product = new Product();
         Product.find({},function(req,res){}).select('title description pricing imagePath').exec(function(err,products){
             if(err){
-                res.json({success:false});
+                res.json({success:false, message:"Error"});
             }else{
                 if(!products){
                     res.json({success:false});
@@ -61,56 +76,31 @@ module.exports = function(router) {
         });
     });
 
-    router.post('/products',function(req,res){
-        var product = new Product();
+    router.post('/add-catalog-item',function(req,res){
+        var product = new Product;
         product.title = req.body.title;
         product.description = req.body.description;
-        product.pricing = req.body.pricing;
-        product.imagePath = req.body.pricing;
-
-        product.save(function(err){
-            if(err){
-                if(err.errors !=null){
-                    if(err.errors.name){
-                        res.json({success:false, message: err.errors.name.message});
-                    }
-                }
-            }
-        })
-
-    });
-
-    router.post('/register-user',function(req,res){
-        console.log("api.js");
-
-        var user = new User();
-        user.username = req.body.username;
-        user.password = req.body.password;
-        user.email = req.body.email;
-        user.name = req.body.name;
-        
-        user.temporarytoken = jwt.sign({username: user.username,email:user.email},secret,{expiresIn:'7d'});
-        console.log("Bruh");
-        if (req.body.username === null || req.body.username === '' || req.body.password === null
-          || req.body.password === '' || req.body.email === null || req.body.email === '' || req.body.name === null 
-          || req.body.name === '') {
-            res.json({ success: false, message: 'Ensure username, email, and password were provided' });
-        } else{
-            user.save(function(err){
+        product.price = req.body.price;
+        product.imagePath = req.body.imagePath;
+        if(req.body.title == null || req.body.title =='' || req.body.description==null ||
+         req.body.description ==''|| req.body.price ==null || req.body.price=='' ||req.body.imagePath ==null || req.body.imagePath == ''){
+            res.json({success:false,message:"The uploaded item wasn't set correctly please try again. "});
+        }else{
+            product.save(function(err){
                 if(err){
-                    res.json({success: false, message: 'naww'});
-                }else{
-                    if(!user){
-                        res.json({success:false,message: 'naww'});
-                    }else{
-                        res.json({success:true, message: 'User registered'});
+                    res.json({success:false,message:err});
+                }
+                else{
+                    if(!product){
+                        res.json({success:false,message:"nawww"});
+                    }
+                    else{
+                        res.json({success:true,message:'Product set in catalog'});
                     }
                 }
             });
         }
     });
-
-
 
     // Route to register new users  
     router.post('/users', function(req, res) {
@@ -121,7 +111,6 @@ module.exports = function(router) {
         user.name = req.body.name; // Save name from request to User object
         user.temporarytoken = jwt.sign({ username: user.username, email: user.email }, secret, { expiresIn: '24h' }); // Create a token for activating account through e-mail
 
-        // Check if request is valid and not empty or null
         if (req.body.username === null || req.body.username === '' || req.body.password === null || req.body.password === '' || req.body.email === null || req.body.email === '' || req.body.name === null || req.body.name === '') {
             res.json({ success: false, message: 'Ensure username, email, and password were provided' });
         } else {
@@ -130,33 +119,35 @@ module.exports = function(router) {
                 if (err) {
                     // Check if any validation errors exists (from user model)
                     if (err.errors !== null) {
-                        if (err.errors.name) {
-                            res.json({ success: false, message: err.errors.name.message }); // Display error in validation (name)
-                        } else if (err.errors.email) {
-                            res.json({ success: false, message: err.errors.email.message }); // Display error in validation (email)
-                        } else if (err.errors.username) {
-                            res.json({ success: false, message: err.errors.username.message }); // Display error in validation (username)
-                        } else if (err.errors.password) {
-                            res.json({ success: false, message: err.errors.password.message }); // Display error in validation (password)
-                        } else {
-                            res.json({ success: false, message: err }); // Display any other errors with validation
-                        }
+                        // if (err.errors.name) {
+                        //     res.json({ success: false, message: err.errors.name.message }); // Display error in validation (name)
+                        // } else if (err.errors.email) {
+                        //     res.json({ success: false, message: err.errors.email.message }); // Display error in validation (email)
+                        // } else if (err.errors.username) {
+                        //     res.json({ success: false, message: err.errors.username.message }); // Display error in validation (username)
+                        // } else if (err.errors.password) {
+                        //     res.json({ success: false, message: err.errors.password.message }); // Display error in validation (password)
+                        // } else {
+                        //     res.json({ success: false, message: err }); // Display any other errors with validation
+                        // }
+                        res.json({success: false, message: err})
                     } else if (err) {
                         // Check if duplication error exists
-                        if (err.code == 11000) {
-                            if (err.errmsg[61] == "u") {
-                                res.json({ success: false, message: 'That username is already taken' }); // Display error if username already taken
-                            } else if (err.errmsg[61] == "e") {
-                                res.json({ success: false, message: 'That e-mail is already taken' }); // Display error if e-mail already taken
-                            }
-                        } else {
-                            res.json({ success: false, message: err }); // Display any other error
-                        }
+                        // if (err.code == 11000) {
+                        //     if (err.errmsg[61] == "u") {
+                        //         res.json({ success: false, message: 'That username is already taken' }); // Display error if username already taken
+                        //     } else if (err.errmsg[61] == "e") {
+                        //         res.json({ success: false, message: 'That e-mail is already taken' }); // Display error if e-mail already taken
+                        //     }
+                        // } else {
+                        //     res.json({ success: false, message: err }); // Display any other error
+                        // }
+                        res.json({success: false, message: ' Api Error'})
                     }
                 } else {
                     // Create e-mail object to send to user
                     var email = {
-                        from: 'álamode Staff, alamodetechnology@gmail.com',
+                        from: 'álamode Staff, alamodetechnology@localhost.com',
                         to: [user.email, 'alamodetechnology@gmail.com'],
                         subject: 'Your Activation Link',
                         text: 'Hello ' + user.name + ', thank you for registering at localhost.com. Please click on the following link to complete your activation: http://localhost:8080/activate/' + user.temporarytoken,

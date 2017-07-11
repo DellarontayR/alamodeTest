@@ -1,17 +1,7 @@
-<div class="product">
- <md-card md-theme="{{ showDarkTheme ? 'dark-grey' : 'default' }}" md-theme-watch>
-        <md-card-title>
-          <md-card-title-text>
-            <span class="md-headline">{{product.title}}</span>
-            <span class="md-subhead">{{product.descirption}}</span>
-          </md-card-title-text>
-          <md-card-title-media>
-            <div class="md-media-lg card-media" ng-src="{{product.img}}"></div>
-          </md-card-title-media>
-        </md-card-title>
-        <md-card-actions layout="row" layout-align="end center">
-          <md-button class="btn-primary">Add to checkout</md-button>
-          <md-button class="btn-warning">Remove from checkout</md-button>
-        </md-card-actions>
-      </md-card>
+<div class='ng-modal' ng-show='show'>
+  <div class='ng-modal-overlay' ng-click='hideModal()'></div>
+  <div class='ng-modal-dialog' ng-style='dialogStyle'>
+    <div class='ng-modal-close' ng-click='hideModal()'>X</div>
+    <div class='ng-modal-dialog-content' ng-transclude></div>
+  </div>
 </div>
