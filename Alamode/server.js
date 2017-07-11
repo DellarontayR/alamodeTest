@@ -40,7 +40,7 @@ app.get('*',function(req,res){
  * Server starts listening for requests and provide public html files and apis to public users
  */
 app.listen(port, function(){
-    console.log("Api started on port" + port);
+    console.log("Api started on port: " + port);
 }
 );
 

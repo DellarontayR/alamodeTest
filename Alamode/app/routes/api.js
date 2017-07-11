@@ -1,5 +1,4 @@
 'use strict';
-
 var User = require('../models/user'); // Import User Model
 var Product = require('../models/product');
 var jwt = require('jsonwebtoken'); // Import JWT Package
@@ -37,9 +36,11 @@ module.exports = function(router) {
         // 
         
     });
+    
     router.post('/additemtocart/:itemid',function(req,res){
         // 
     });
+
     router.get('/cart',function(req,res){
 
     });
@@ -58,13 +59,6 @@ module.exports = function(router) {
                 }
             }
         });
-        // var user = new User(); // Create new User object
-        // user.username = req.body.username; // Save username from request to User object
-        // user.password = req.body.password; // Save password from request to User object
-        // user.email = req.body.email; // Save email from request to User object
-        // user.name = req.body.name; // Save name from request to User object
-        // user.temporarytoken = jwt.sign({ username: user.username, email: user.email },
-        //      secret, { expiresIn: '24h' }); // Create a token for activating account through e-mail
     });
 
     router.post('/products',function(req,res){
@@ -87,13 +81,16 @@ module.exports = function(router) {
     });
 
     router.post('/register-user',function(req,res){
+        console.log("api.js");
+
         var user = new User();
         user.username = req.body.username;
         user.password = req.body.password;
         user.email = req.body.email;
         user.name = req.body.name;
+        
         user.temporarytoken = jwt.sign({username: user.username,email:user.email},secret,{expiresIn:'7d'});
-
+        console.log("Bruh");
         if (req.body.username === null || req.body.username === '' || req.body.password === null
           || req.body.password === '' || req.body.email === null || req.body.email === '' || req.body.name === null 
           || req.body.name === '') {
