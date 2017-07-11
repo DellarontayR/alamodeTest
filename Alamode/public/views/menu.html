@@ -1,5 +1,24 @@
-<div class="container-fluid productCatalog" ng-controller="MenuController"> 
-    <div ng-repeat="product in products" class="col-xl-6 col-lg-6 col-md-6 col-sm-12 col-xs-12">
-            
+<div class="container productCatalog" ng-controller="MenuController"> 
+    <div ng-repeat="product in products" class="col-xl-2 col-lg-2 col-md-3 col-sm-5 col-xs-5">
+        <div class="product">
+            <h1 class="product-title">{{product.title}}</h1>
+            <img class="product-image" src="{{product.img}}"/>
+            <p class="product-ingredients"> {{ingredients}}</p>
+            <p class="product-price">{{product.price}}</p>
+    <md-button class="md-fab" aria-label="Eat cake">
+                +
+            </md-button>
+
+            <md-button class="md-fab" aria-label="Eat cake">
+            <md-icon>+</md-icon>
+        </md-button>            
+
+
+        </div>
     </div>
 </div>
+
+<!--img: 'imgs/Competition.jpg', 
+    	title: 'Gameboard', 
+    	ingredients: 'Armando Perez', 
+    	price: 1.99 -->

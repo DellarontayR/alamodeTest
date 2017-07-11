@@ -17,25 +17,25 @@ alamode.controller('MenuController', ['$scope', function($scope) {
 	
   $scope.products = [ 
   	{ 
-    	img: 'imgs/nomedia.png', 
+    	img: 'imgs/Competition.jpg', 
     	title: 'MOVE', 
     	ingredients: 'MOVE, Inc.', 
     	price: 0.99 
 	}, 
  	{ 
-    	img: 'imgs/nomedia.png', 
+    	img: 'imgs/Competition.jpg', 
     	title: 'Shutterbugg', 
     	ingredients: 'Chico Dusty', 
     	price: 2.99 
   	}, 
  	{ 
-    	img: 'imgs/nomedia.png', 
+    	img: 'imgs/Competition.jpg', 
     	title: 'Gameboard', 
     	ingredients: 'Armando Perez', 
     	price: 1.99 
   	},  
  	{
-		img: 'imgs/nomedia.png',
+		img: 'imgs/Competition.jpg',
 		title: 'Forecast',
 		ingredients: 'Forecast',
 		price: 1.99
