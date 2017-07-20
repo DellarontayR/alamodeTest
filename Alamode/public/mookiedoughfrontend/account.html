@@ -1,0 +1,522 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <title>Mookie Dough | User Account</title>
+
+  <!--SEO Meta Tags-->
+  <meta name="description" content="Mookie Dough- The only Complete Edible Cookie Dough Eating Experience " />
+  <meta name="keywords" content="cookie dough, edible cookie dough, chocolate chip cookie dough, mookie, mookie dough, 24/7 cookie dough store, 24/7 cookie dough, " />
+  <meta name="author" content="Mookie Dough" />
+
+  <!--Mobile Specific Meta Tag-->
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+
+  <!--Favicon-->
+  <link rel="shortcut icon" href="favicon.ico" type="image/x-icon">
+  <link rel="icon" href="favicon.ico" type="image/x-icon">
+
+  <!-- Google Material Icons -->
+  <link href="css/vendor/material-icons.min.css" rel="stylesheet" media="screen">
+
+  <!-- Brand Icons -->
+  <link href="css/vendor/socicon.min.css" rel="stylesheet" media="screen">
+
+  <!-- Bootstrap -->
+  <link href="css/vendor/bootstrap.min.css" rel="stylesheet" media="screen">
+
+  <!-- Theme Styles -->
+  <link href="css/theme.min.css" rel="stylesheet" media="screen">
+
+  <!-- Page Preloading -->
+  <script src="js/vendor/page-preloading.js"></script>
+</head>
+
+<!-- Body -->
+<!-- Adding/Removing class ".page-preloading" is enabling/disabling background smooth page transition effect and spinner. Make sure you also added/removed link to page-preloading.js script in the <head> of the document. -->
+<body class="page-preloading">
+
+  <!-- Page Pre-Loader -->
+  <div class="page-preloader">
+    <div class="preloader">
+      <img src="img/preloader.gif" alt="Preloader">
+    </div>
+  </div><!-- .page-preloader -->
+
+  <!-- Page Wrapper -->
+  <div class="page-wrapper">
+
+    <!-- Navbar -->
+    <!-- Remove ".navbar-sticky" class to make navigation bar scrollable with the page. -->
+    <header class="navbar navbar-sticky">
+
+      <!-- Site Logo -->
+      <a href="home-v2.html" class="site-logo visible-desktop">
+        <img src="img/websiteheaderlogo.png">
+      </a><!-- site-logo.visible-desktop -->
+      <a href="index.html" class="site-logo visible-mobile">
+        <span>[</span> Mookie <span>]</span>
+      </a><!-- site-logo.visible-mobile -->
+
+
+      <!-- Main Navigation -->
+      <!-- Control the position of navigation via modifier classes: "text-left, text-center, text-right" -->
+      <!-- Main Navigation -->
+      <!-- Control the position of navigation via modifier classes: "text-left, text-center, text-right" -->
+      <nav class="main-navigation text-center">
+        <ul class="menu">
+          <li class="menu-item-has-children">
+            <a href="#">Shop</a>
+            <ul class="sub-menu">
+              <li><a href="cookiedough/cookiedoughmainshop.html">Cookie Dough</a></li>
+              <li><a href="minicookiedough/minicookiedoughmainshop.html">Mini Cookie Dough</a></li>
+              <li><a href="organicvalley/milkmainshop.html">Ice Cold Milk</a></li>
+            </ul>
+          </li>
+          <li><a href="about.html">About</a></li>
+          <li><a href="contacts.html">Contacts</a></li>
+          <li><a href="faq.html">FAQ</a></li>
+          <li><a href="fuegophotos.html">Fuego Photos</a></li>
+        </ul><!-- .menu -->
+      </nav><!-- .main-navigation -->
+
+      <!-- Toolbar -->
+      <div class="toolbar">
+        <div class="inner">
+          <a href="#" class="mobile-menu-toggle"><i class="material-icons menu"></i></a>
+          <a href="account.html"><i class="material-icons person"></i></a>
+          <div class="cart-btn">
+            <a href="shopping-cart.html">
+              <i>
+                <span class="material-icons shopping_basket"></span>
+                <span class="count">2</span>
+              </i>
+            </a>
+            <!-- Cart Dropdown -->
+            <div class="cart-dropdown">
+              <div class="cart-item">
+                <a href="shop-single.html" class="item-thumb">
+                  <img src="img/cart/item01.jpg" alt="Item">
+                </a>
+                <div class="item-details">
+                  <h3 class="item-title"><a href="shop-single.html">Concrete Lamp</a></h3>
+                  <h4 class="item-price">1 x $85.90</h4>
+                </div>
+                <a href="#" class="close-btn">
+                  <i class="material-icons close"></i>
+                </a>
+              </div><!-- .cart-item -->
+              <div class="cart-item">
+                <a href="shop-single.html" class="item-thumb">
+                  <img src="img/cart/item02.jpg" alt="Item">
+                </a>
+                <div class="item-details">
+                  <h3 class="item-title"><a href="shop-single.html">Storage Box</a></h3>
+                  <h4 class="item-price">2 x $38.00</h4>
+                </div>
+                <a href="#" class="close-btn">
+                  <i class="material-icons close"></i>
+                </a>
+              </div><!-- .cart-item -->
+              <div class="cart-subtotal">
+                <div class="column">
+                  <span>Subtotal:</span>
+                </div>
+                <div class="column">
+                  <span class="amount">$161.90</span>
+                </div>
+              </div>
+            </div><!-- .cart-dropdown -->
+          </div><!-- .cart-btn -->
+        </div><!-- .inner -->
+      </div><!-- .toolbar -->
+    </header><!-- .navbar.navbar-sticky -->
+
+    <!-- Featured Image -->
+    <div class="featured-image" style="background-image: url(img/featured-image/account.jpg);"></div>
+
+    <!-- Content -->
+    <section class="container padding-top-3x">
+      <h1 class="mobile-center">Hey, <span class="text-semibold">Kevin</span></h1>
+      <div class="row padding-top">
+        <div class="col-sm-9 padding-bottom-2x">
+          <!-- Nav Tabs -->
+          <ul class="nav-tabs mobile-center" role="tablist">
+            <li class="active"><a href="#profile" role="tab" data-toggle="tab">
+              <i class="material-icons person"></i>
+              Profile
+            </a></li>
+            <li><a href="#orders" role="tab" data-toggle="tab">
+              <i class="material-icons shopping_cart"></i>
+              Orders (3)
+            </a></li>
+            <li><a href="#whishlist" role="tab" data-toggle="tab">
+              <i class="material-icons favorite"></i>
+              Whishlist (6)
+            </a></li>
+          </ul><!-- .nav-tabs -->
+
+          <!-- Tab Panes -->
+          <div class="tab-content">
+            <div role="tabpanel" class="tab-pane transition fade scale in active" id="profile">
+              <form method="post">
+                <div class="row">
+                  <div class="col-sm-6">
+                    <div class="form-element">
+                      <label for="first_name">First Name</label>
+                      <input type="text" id="first_name" class="form-control" value="">
+                    </div>
+                  </div>
+                  <div class="col-sm-6">
+                    <div class="form-element">
+                      <label for="last_name">Last Name</label>
+                      <input type="text" id="last_name" class="form-control" value="">
+                    </div>
+                  </div>
+                </div>
+                <div class="row">
+                  <div class="col-sm-6">
+                    <div class="form-element">
+                      <label for="email">Email Address</label>
+                      <input type="email" id="email" class="form-control" value="">
+                    </div>
+                  </div>
+                  <div class="col-sm-6">
+                    <div class="form-element">
+                      <label for="phone">Phone Number</label>
+                      <input type="text" id="phone" class="form-control" value="">
+                    </div>
+                  </div>
+                </div>
+                <div class="row">
+                  <div class="col-sm-6">
+                    <div class="form-element">
+                      <label for="password">Password</label>
+                      <input type="password" id="password" class="form-control" value="">
+                    </div>
+                  </div>
+                  <div class="col-sm-6">
+                    <div class="form-element">
+                      <label for="password_confirm">Confirm Password</label>
+                      <input type="password" id="password_confirm" class="form-control" value="">
+                    </div>
+                  </div>
+                </div>
+                <div class="form-element">
+                  <label for="address">Address</label>
+                  <input type="text" id="address" class="form-control" value="">
+                </div>
+                <div class="row">
+                  <div class="col-sm-6">
+                    <div class="form-element">
+                      <label for="country">Country</label>
+                      <input type="text" id="country" class="form-control" value="">
+                    </div>
+                  </div>
+                  <div class="col-sm-6">
+                    <div class="form-element">
+                      <label for="state">State</label>
+                      <input type="text" id="state" class="form-control" value="">
+                    </div>
+                  </div>
+                </div>
+                <div class="row">
+                  <div class="col-sm-6">
+                    <div class="form-element">
+                      <label for="city">City</label>
+                      <input type="text" id="city" class="form-control" value="">
+                    </div>
+                  </div>
+                  <div class="col-sm-6">
+                    <div class="form-element">
+                      <label for="zip">ZIP Code</label>
+                      <input type="text" id="zip" class="form-control" value="00000">
+                    </div>
+                  </div>
+                </div>
+                <div class="row">
+                  <div class="col-sm-6">
+                    <label class="checkbox space-top">
+                      <input type="checkbox" checked> Subscribe me to newsletter
+                    </label>
+                  </div>
+                  <div class="col-sm-6 text-right mobile-center">
+                    <button type="submit" class="btn btn-primary waves-effect waves-light">Update Profile</button>
+                  </div>
+                </div>
+              </form>
+            </div><!-- .tab-pane#profile -->
+            <div role="tabpanel" class="tab-pane transition fade scale" id="orders">
+              <div class="table-responsive">
+                <table>
+                  <thead>
+                    <tr>
+                      <th>Order #</th>
+                      <th>Date Purchased</th>
+                      <th>Status</th>
+                      <th>Total</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr>
+                      <td><a href="#">31719DA0567</a></td>
+                      <td>December 06, 2016</td>
+                      <td><span class="text-warning">In Progress</span></td>
+                      <td>$1,350.00</td>
+                    </tr>
+                    <tr>
+                      <td><a href="#">22018770CV7</a></td>
+                      <td>November 11, 206</td>
+                      <td><span class="text-danger">Canceled</span></td>
+                      <td>$475.60</td>
+                    </tr>
+                    <tr>
+                      <td><a href="#">4B33FG45520</a></td>
+                      <td>September 23, 2016</td>
+                      <td><span class="text-success">Delivered</span></td>
+                      <td>$2,140.80</td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+            </div><!-- .tab-pane#orders -->
+            <div role="tabpanel" class="tab-pane transition fade scale" id="whishlist">
+              <div class="row">
+                <!-- Item -->
+                <div class="col-md-4 col-sm-6">
+                  <div class="shop-item">
+                    <div class="shop-thumbnail">
+                      <a href="shop-single.html" class="item-link"></a>
+                      <img src="img/shop/th02.jpg" alt="Shop item">
+                      <div class="shop-item-tools">
+                        <a href="#" class="add-to-whishlist" data-toggle="tooltip" title="Remove from wishlist">
+                          <i class="material-icons close"></i>
+                        </a>
+                        <a href="#" class="add-to-cart">
+                          <em>Add to Cart</em>
+                          <svg x="0px" y="0px" width="32px" height="32px" viewBox="0 0 32 32">
+                            <path stroke-dasharray="19.79 19.79" stroke-dashoffset="19.79" fill="none" stroke="#FFFFFF" stroke-width="2" stroke-linecap="square" stroke-miterlimit="10" d="M9,17l3.9,3.9c0.1,0.1,0.2,0.1,0.3,0L23,11"></path>
+                          </svg>
+                        </a>
+                      </div>
+                    </div>
+                    <div class="shop-item-details">
+                      <h3 class="shop-item-title"><a href="shop-single.html">Shoulder Bag</a></h3>
+                      <span class="shop-item-price">
+                        $125.00
+                      </span>
+                    </div>
+                  </div><!-- .shop-item -->
+                </div>
+                <!-- Item -->
+                <div class="col-md-4 col-sm-6">
+                  <div class="shop-item">
+                    <div class="shop-thumbnail">
+                      <a href="shop-single.html" class="item-link"></a>
+                      <img src="img/shop/th05.jpg" alt="Shop item">
+                      <div class="shop-item-tools">
+                        <a href="#" class="add-to-whishlist" data-toggle="tooltip" title="Remove from wishlist">
+                          <i class="material-icons close"></i>
+                        </a>
+                        <a href="#" class="add-to-cart">
+                          <em>Add to Cart</em>
+                          <svg x="0px" y="0px" width="32px" height="32px" viewBox="0 0 32 32">
+                            <path stroke-dasharray="19.79 19.79" stroke-dashoffset="19.79" fill="none" stroke="#FFFFFF" stroke-width="2" stroke-linecap="square" stroke-miterlimit="10" d="M9,17l3.9,3.9c0.1,0.1,0.2,0.1,0.3,0L23,11"></path>
+                          </svg>
+                        </a>
+                      </div>
+                    </div>
+                    <div class="shop-item-details">
+                      <h3 class="shop-item-title"><a href="shop-single.html">Wall Clock</a></h3>
+                      <span class="shop-item-price">
+                        $69.00
+                      </span>
+                    </div>
+                  </div><!-- .shop-item -->
+                </div>
+                <!-- Item -->
+                <div class="col-md-4 col-sm-6">
+                  <div class="shop-item">
+                    <div class="shop-thumbnail">
+                      <a href="shop-single.html" class="item-link"></a>
+                      <img src="img/shop/th06.jpg" alt="Shop item">
+                      <div class="shop-item-tools">
+                        <a href="#" class="add-to-whishlist" data-toggle="tooltip" title="Remove from wishlist">
+                          <i class="material-icons close"></i>
+                        </a>
+                        <a href="#" class="add-to-cart">
+                          <em>Add to Cart</em>
+                          <svg x="0px" y="0px" width="32px" height="32px" viewBox="0 0 32 32">
+                            <path stroke-dasharray="19.79 19.79" stroke-dashoffset="19.79" fill="none" stroke="#FFFFFF" stroke-width="2" stroke-linecap="square" stroke-miterlimit="10" d="M9,17l3.9,3.9c0.1,0.1,0.2,0.1,0.3,0L23,11"></path>
+                          </svg>
+                        </a>
+                      </div>
+                    </div>
+                    <div class="shop-item-details">
+                      <h3 class="shop-item-title"><a href="shop-single.html">LED Lighting</a></h3>
+                      <span class="shop-item-price">
+                        $130.00
+                      </span>
+                    </div>
+                  </div><!-- .shop-item -->
+                </div>
+                <!-- Item -->
+                <div class="col-md-4 col-sm-6">
+                  <div class="shop-item">
+                    <div class="shop-thumbnail">
+                      <a href="shop-single.html" class="item-link"></a>
+                      <img src="img/shop/th08.jpg" alt="Shop item">
+                      <div class="shop-item-tools">
+                        <a href="#" class="add-to-whishlist" data-toggle="tooltip" title="Remove from wishlist">
+                          <i class="material-icons close"></i>
+                        </a>
+                        <a href="#" class="add-to-cart">
+                          <em>Add to Cart</em>
+                          <svg x="0px" y="0px" width="32px" height="32px" viewBox="0 0 32 32">
+                            <path stroke-dasharray="19.79 19.79" stroke-dashoffset="19.79" fill="none" stroke="#FFFFFF" stroke-width="2" stroke-linecap="square" stroke-miterlimit="10" d="M9,17l3.9,3.9c0.1,0.1,0.2,0.1,0.3,0L23,11"></path>
+                          </svg>
+                        </a>
+                      </div>
+                    </div>
+                    <div class="shop-item-details">
+                      <h3 class="shop-item-title"><a href="shop-single.html">Hook Basket</a></h3>
+                      <span class="shop-item-price">
+                        $112.35
+                      </span>
+                    </div>
+                  </div><!-- .shop-item -->
+                </div>
+                <!-- Item -->
+                <div class="col-md-4 col-sm-6">
+                  <div class="shop-item">
+                    <div class="shop-thumbnail">
+                      <a href="shop-single.html" class="item-link"></a>
+                      <img src="img/shop/th11.jpg" alt="Shop item">
+                      <div class="shop-item-tools">
+                        <a href="#" class="add-to-whishlist" data-toggle="tooltip" title="Remove from wishlist">
+                          <i class="material-icons close"></i>
+                        </a>
+                        <a href="#" class="add-to-cart">
+                          <em>Add to Cart</em>
+                          <svg x="0px" y="0px" width="32px" height="32px" viewBox="0 0 32 32">
+                            <path stroke-dasharray="19.79 19.79" stroke-dashoffset="19.79" fill="none" stroke="#FFFFFF" stroke-width="2" stroke-linecap="square" stroke-miterlimit="10" d="M9,17l3.9,3.9c0.1,0.1,0.2,0.1,0.3,0L23,11"></path>
+                          </svg>
+                        </a>
+                      </div>
+                    </div>
+                    <div class="shop-item-details">
+                      <h3 class="shop-item-title"><a href="shop-single.html">Stylish Chair</a></h3>
+                      <span class="shop-item-price">
+                        $417.00
+                      </span>
+                    </div>
+                  </div><!-- .shop-item -->
+                </div>
+                <!-- Item -->
+                <div class="col-md-4 col-sm-6">
+                  <div class="shop-item">
+                    <div class="shop-thumbnail">
+                      <a href="shop-single.html" class="item-link"></a>
+                      <img src="img/shop/th15.jpg" alt="Shop item">
+                      <div class="shop-item-tools">
+                        <a href="#" class="add-to-whishlist" data-toggle="tooltip" title="Remove from wishlist">
+                          <i class="material-icons close"></i>
+                        </a>
+                        <a href="#" class="add-to-cart">
+                          <em>Add to Cart</em>
+                          <svg x="0px" y="0px" width="32px" height="32px" viewBox="0 0 32 32">
+                            <path stroke-dasharray="19.79 19.79" stroke-dashoffset="19.79" fill="none" stroke="#FFFFFF" stroke-width="2" stroke-linecap="square" stroke-miterlimit="10" d="M9,17l3.9,3.9c0.1,0.1,0.2,0.1,0.3,0L23,11"></path>
+                          </svg>
+                        </a>
+                      </div>
+                    </div>
+                    <div class="shop-item-details">
+                      <h3 class="shop-item-title"><a href="shop-single.html">Tissue Holder</a></h3>
+                      <span class="shop-item-price">
+                        $76.40
+                      </span>
+                    </div>
+                  </div><!-- .shop-item -->
+                </div>
+              </div>
+            </div><!-- .tab-pane#whishlist -->
+          </div><!-- .tab-content -->
+        </div><!-- .col-sm-8 -->
+
+        <!-- Sidebar -->
+        <div class="col-sm-3 padding-bottom-2x">
+          <aside class="mobile-center">
+            <h3>Your Mookie Dough points:</h3>
+            <h3><span class="text-semibold">1356</span> <span class="h5">points</span></h3>
+            <p class="text-sm text-gray">You can spend these points on our products</p>
+            <a href="shop-boxed-sl.html" class="btn btn-default btn-ghost icon-left btn-block">
+              <i class="material-icons arrow_back"></i>
+              Go to Shop
+            </a>
+
+          </aside>
+        </div><!-- .col-sm-4 -->
+      </div><!-- .row -->
+    </section><!-- .container -->
+
+    <!-- Footer -->
+    <footer class="footer space-top-2x">
+      <div class="column">
+        <p class="text-sm">Need support? Call <span class="text-primary">001 (917) 555-4836</span></p>
+        <div class="social-bar text-center space-bottom">
+          <a href="#" class="sb-skype" data-toggle="tooltip" data-placement="top" title="Skype">
+            <i class="socicon-skype"></i>
+          </a>
+          <a href="#" class="sb-facebook" data-toggle="tooltip" data-placement="top" title="Facebook">
+            <i class="socicon-facebook"></i>
+          </a>
+          <a href="#" class="sb-google-plus" data-toggle="tooltip" data-placement="top" title="" data-original-title="Google+">
+            <i class="socicon-googleplus"></i>
+          </a>
+          <a href="#" class="sb-twitter" data-toggle="tooltip" data-placement="top" title="Twitter">
+            <i class="socicon-twitter"></i>
+          </a>
+          <a href="#" class="sb-instagram" data-toggle="tooltip" data-placement="top" title="" data-original-title="Instagram">
+            <i class="socicon-instagram"></i>
+          </a>
+        </div><!-- .social-bar -->
+        <p class="copyright">&copy; 2016. Mookie Dough LLC</p>
+      </div><!-- .column -->
+      <div class="column">
+        <h3 class="widget-title">
+          Subscription
+          <small>To receive latest offers and discounts from the shop.</small>
+        </h3>
+        <form action="" method="post" target="_blank" class="subscribe-form" novalidate>
+          <input type="email" class="form-control" name="EMAIL" placeholder="Your e-mail">
+          <!-- real people should not fill this in and expect good things - do not remove this or risk form bot signups-->
+          <div style="position: absolute; left: -5000px;" aria-hidden="true"><input type="text" name="" tabindex="-1" value=""></div>
+          <button type="submit"><i class="material-icons send"></i></button>
+        </form>
+      </div><!-- .column -->
+      <div class="column">
+        <h3 class="widget-title">
+          Payment Methods
+          <small>We support one of the following payment methods.</small>
+        </h3>
+        <div class="cards"><img src="img/cards.png" alt="Cards"></div>
+        <!-- Scroll To Top Button -->
+        <div class="scroll-to-top-btn"><i class="material-icons trending_flat"></i></div>
+      </div><!-- .column -->
+    </footer><!-- .footer -->
+
+  </div><!-- .page-wrapper -->
+
+  <!-- JavaScript (jQuery) libraries, plugins and custom scripts -->
+  <script src="js/vendor/jquery-2.1.4.min.js"></script>
+  <script src="js/vendor/bootstrap.min.js"></script>
+  <script src="js/vendor/smoothscroll.js"></script>
+  <script src="js/vendor/velocity.min.js"></script>
+  <script src="js/vendor/waves.min.js"></script>
+  <script src="js/vendor/icheck.min.js"></script>
+  <script src="js/scripts.js"></script>
+
+</body><!-- <body> -->
+
+</html>
