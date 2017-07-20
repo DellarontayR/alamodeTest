@@ -4,16 +4,26 @@ var app = angular.module('appRoutes',['ngRoute'])
 
 .config(function ($routeProvider, $locationProvider){
     $routeProvider.when('/',{
-        templateUrl: '../../views/home.html'
+        templateUrl: '../mookiedoughfrontend/home-v2.html',
+        authenticated: false
+
     }).
     when('/about',{
-        templateUrl: '../../views/about.html'
+        templateUrl: '../../views/about.html',
+        authenticated: false
+
     }).
     when('/menu',{
-        templateUrl: '../../views/menu.html'
+        templateUrl: '../../views/menu.html',
+        controller: 'MenuController',
+        controllerAs: 'menu',
+        authenticated: false
     }).
     when('/signin',{
-        templateUrl: '../../views/user/signin.html'
+        templateUrl: '../../views/user/signin.html',
+        controller: 'regCtrl',
+        controllerAs: 'signin',
+        authenticated: false
     })
     .when('/register',{
         templateUrl: '../../views/user/register.html',

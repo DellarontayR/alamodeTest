@@ -8,18 +8,20 @@ alamode.controller('mainCtrl',function(Auth,$timeout,$location,$rootScope,$windo
 
     app.user = {};
 
-    app.user.clickUser = function(){};
+    //Bempah code for cart manager could be switched with really chepa modal
+    // $('a.remove').click(function(){
+    // event.preventDefault();
+    // $( this ).parent().parent().parent().hide( 400 );
 
-    $('a.remove').click(function(){
-    event.preventDefault();
-    $( this ).parent().parent().parent().hide( 400 );
+    // });
 
-    });
+    // // Just for testing, show all items
+    // $('a.btn.continue').click(function(){
+    //     $('li.items').show(400);
+    // });
 
-    // Just for testing, show all items
-    $('a.btn.continue').click(function(){
-        $('li.items').show(400);
-    });
+    //main controller nees to keep user session, also checks every 30 seconds with $interval -- Check session
+    //main controller neeeds to signin, loging, auth
 
     
     // Check if user's session has expired upon opening page for the first time
@@ -37,11 +39,13 @@ alamode.controller('mainCtrl',function(Auth,$timeout,$location,$rootScope,$windo
             }
         });
     }
+
     console.log('after is logged');
 
     // Function to run an interval that checks if the user's token has expired
     app.checkSession = function() {
         // Only run check if user is logged in
+
         if (Auth.isLoggedIn()) {
             app.checkingSession = true; // Use variable to keep track if the interval is already running
             // Run interval ever 30000 milliseconds (30 seconds) 
@@ -73,66 +77,6 @@ alamode.controller('mainCtrl',function(Auth,$timeout,$location,$rootScope,$windo
     console.log('check session');
 
     app.checkSession(); // Ensure check is ran check, even if user refreshes
-
-    // Function to open bootstrap modal     
-    var showModal = function(option) {
-        app.choiceMade = false; // Clear choiceMade on startup
-        app.modalHeader = undefined; // Clear modalHeader on startup
-        app.modalBody = undefined; // Clear modalBody on startup
-        app.hideButton = false; // Clear hideButton on startup
-
-        // Check which modal option to activate (option 1: session expired or about to expire; option 2: log the user out)      
-        if (option === 1) {
-            app.modalHeader = 'Timeout Warning'; // Set header
-            app.modalBody = 'Your session will expired in 30 minutes. Would you like to renew your session?'; // Set body
-            $("#myModal").modal({ backdrop: "static" }); // Open modal
-            // Give user 10 seconds to make a decision 'yes'/'no'
-            $timeout(function() {
-                if (!app.choiceMade) app.endSession(); // If no choice is made after 10 seconds, select 'no' for them
-            }, 10000);
-        } else if (option === 2) {
-            app.hideButton = true; // Hide 'yes'/'no' buttons
-            app.modalHeader = 'Logging Out'; // Set header
-            $("#myModal").modal({ backdrop: "static" }); // Open modal
-            // After 1000 milliseconds (2 seconds), hide modal and log user out
-            $timeout(function() {
-                Auth.logout(); // Logout user
-                $location.path('/logout'); // Change route to clear user object
-                hideModal(); // Close modal
-            }, 2000);
-        }
-    };
-
-    // Function that allows user to renew their token to stay logged in (activated when user presses 'yes')
-    app.renewSession = function() {
-        app.choiceMade = true; // Set to true to stop 10-second check in option 1
-        // Function to retrieve a new token for the user
-        User.renewSession(app.username).then(function(data) {
-            // Check if token was obtained
-            if (data.data.success) {
-                AuthToken.setToken(data.data.token); // Re-set token
-                app.checkSession(); // Re-initiate session checking
-            } else {
-                app.modalBody = data.data.message; // Set error message
-            }
-        });
-        hideModal(); // Close modal
-    };
-
-    // Function to expire session and logout (activated when user presses 'no)
-    app.endSession = function() {
-        app.choiceMade = true; // Set to true to stop 10-second check in option 1
-        hideModal(); // Hide modal
-        // After 1 second, activate modal option 2 (log out)
-        $timeout(function() {
-            showModal(2); // logout user
-        }, 1000);
-    };
-
-    // Function to hide the modal
-    var hideModal = function() {
-        $("#myModal").modal('hide'); // Hide modal once criteria met
-    };
 
     // Check if user is on the home page
     $rootScope.$on('$routeChangeSuccess', function() {

@@ -102,6 +102,10 @@ controller('regCtrl', function($http, $location, $timeout, User, $scope) {
     };
 })
 
+.controller('signInCtrl', function($http, $location, $timeout, User, $scope) {
+    var app = this;
+})
+
 // Custom directive to check matching passwords 
 .directive('match', function() {
     return {

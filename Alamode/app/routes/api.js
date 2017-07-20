@@ -29,35 +29,64 @@ module.exports = function(router) {
     });
     // var client = nodemailer.createTransport(sgTransport(options)); // Use if using sendgrid configuration
     // End Sendgrid Configuration Settings  
+    //     title: {type:String, lowercase:true, required:true, unique:true},
+    // description:{type: String, required:true},
+    // price:{ type: Number, required:true},
+    // imagePath:{type:String, required:true}
 
     //router.post('')
     //should have post apis for order configuration, stripe user implementation, and other features
-
-    router.post('/cart',function(req,res){
-        // Possibly requires user session to create user cart
-        // 
-        
-    });
-    
-    router.post('/additemtocart/:productTitle',function(req,res){
-        var id = req.params.productTitle;
-        var loginUser = req.body.username.toLowerCase();
-        Cart.findOne({usernameRef:loginUser}).select('usernameRef items').exec(function( err,cart){
+    router.post('/add-cart-item/:productName', function(req,res){
+        var title = req.params.productName;
+        Cart.findOne({usernameRef:loginUser}).select('usernameRef items').exec(function(err,cart){
             if(err){
-                res.json({success:false,message:"No cart found for userRef"});
+                res.json({success:false, message: "Cart could not be found"});
             }
             else{
-                Product.findOne({title:id}).select('title description price imagePath').exec(function(err,product){
-                    if(err){
-                        res.json({success:flase,message:'Item to be added to cart was not found in catalog'});
-                    }
-                    else{
-                        Cart.items.ad
-                    }
-                });
+                if(!cart){
+                    res.json({success:false, message: "Cart could not be found"});
+                }
+                else{
+                    Product.findOne({title: title}).select().exec(function(err,product){
+                        Cart.items.push(product);
+                        Cart.save(function(err){
+                            if(err){
+                                res.json({success:false, message: "Product could not be added to cart"});
+                            }
+                            else{
+                                if(!product){
+                                    res.json({success:false, message: "Product could not be added to cart"});
+                                }
+                                else{
+                                    res.json({success:true, message:"Product was successfully added to cart"});
+                                }
+                            }
+                        });
+                    });
+
+                }
             }
         });
     });
+
+    router.post('/remove-cart-item/:productName', function(req,res){
+        var title = req.params.productName;
+
+        Cart.findOneAndRemove({usernameRef:loginUser}).select('usernameRef items').exec(function(err,cart){
+            if(err){
+                res.json({success:false, message:"Cart item removal has ecountered an error"});
+            }
+            else{
+                if(!cart){
+                    res.json({success:false, message:"Cart item removal has ecountered an error"});
+                }
+                else{
+                    res.json({success:false, message:"Cart item removal was successful"});
+                }
+            }
+        });
+    });
+
 
 
     router.get('/get-products',function(req,res){

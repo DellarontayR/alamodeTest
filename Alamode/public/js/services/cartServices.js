@@ -15,4 +15,7 @@ angular.module('cartServices',[])
     cartFactory.checkout = function(checkout){
         return $http.post('/api/cart-checkout',checkout);
     };
+
+    return cartFactory;
+    //Integrate stripe api at some point. Not necesssary for sprint
 });

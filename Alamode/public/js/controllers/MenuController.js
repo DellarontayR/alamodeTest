@@ -1,44 +1,40 @@
 'use strict';
 // angular.module('alamode.controllers',['authServices','userServices','cartServices'])
-alamode.controller('MenuController', ['$scope', function($scope) {
-	$scope.addToCheckout = function(productId){
-		$scope.products.push({img:"imgs/applogo.png",title:'DANCE',ingredients:'Ingredients',price:4.00});
+alamode.controller('MenuController',function($scope, Product,Cart) {
+
+	var app = this;
+
+	app.getProducts = function(){
+		app.products = Product.getProducts();
 	};
 
-	$scope.attemptRemoveFromCheckout = function(productId){
+	app.getProducts();
+});
 
-	};
 
-//Menu controller needs to get nearest kiosk's inventory
-//MVP would be a  list of products from MongoDB
-	$scope.getProducts = function(){
-
-	};
-	
-  $scope.products = [ 
-  	{ 
-    	img: 'imgs/Competition.jpg', 
-    	title: 'MOVE', 
-    	ingredients: 'MOVE, Inc.', 
-    	price: 0.99 
-	}, 
- 	{ 
-    	img: 'imgs/Competition.jpg', 
-    	title: 'Shutterbugg', 
-    	ingredients: 'Chico Dusty', 
-    	price: 2.99 
-  	}, 
- 	{ 
-    	img: 'imgs/Competition.jpg', 
-    	title: 'Gameboard', 
-    	ingredients: 'Armando Perez', 
-    	price: 1.99 
-  	},  
- 	{
-		img: 'imgs/Competition.jpg',
-		title: 'Forecast',
-		ingredients: 'Forecast',
-		price: 1.99
-    } 
-	];
-}]);
+// app.products = [ 
+//   	{ 
+//     	img: 'imgs/Competition.jpg', 
+//     	title: 'MOVE', 
+//     	ingredients: 'MOVE, Inc.', 
+//     	price: 0.99 
+// 	}, 
+//  	{ 
+//     	img: 'imgs/Competition.jpg', 
+//     	title: 'Shutterbugg', 
+//     	ingredients: 'Chico Dusty', 
+//     	price: 2.99 
+//   	}, 
+//  	{ 
+//     	img: 'imgs/Competition.jpg', 
+//     	title: 'Gameboard', 
+//     	ingredients: 'Armando Perez', 
+//     	price: 1.99 
+//   	},  
+//  	{
+// 		img: 'imgs/Competition.jpg',
+// 		title: 'Forecast',
+// 		ingredients: 'Forecast',
+// 		price: 1.99
+//     } 
+// 	];
