@@ -1,41 +1,54 @@
 "use strict";
+console.log("what");
 
 var app = angular.module('appRoutes',['ngRoute'])
 
 .config(function ($routeProvider, $locationProvider){
     $routeProvider.when('/',{
-        templateUrl: '../mookiedoughfrontend/home-v2.html',
+        templateUrl: '../mookiedoughfrontend/home.html',
         authenticated: false
 
     }).
     when('/about',{
-        templateUrl: '../../views/about.html',
+        templateUrl: '../mookiedoughfrontend/about.html',
         authenticated: false
 
     }).
-    when('/menu',{
-        templateUrl: '../../views/menu.html',
+    when('/cookiedoughmainshop',{
+        templateUrl: '../mookiedoughfrontend/cookiedough/cookiedoughmainshop.html',
+        authenticated: false
+    }).
+    when('/localfavmainshop',{
+        templateUrl: '../mookiedoughfrontend/localfav/localfavmainshop.html',
+        authenticated: false
+    }).
+
+    when('/minicookiedoughmainshop.html',{
+        templateUrl: '../mookiedoughfrontend/minicookiedough/minicookiedoughmainshop.html',
+        authenticated: false
+    }).
+    when('/milkmainshop',{
+        templateUrl: '../mookiedoughfrontend/organicvalley/milkmainshop.html',
+        authenticated: false
+    }).
+    when('/home',{
+        templateUrl: '../mookiedoughfrontend/home.html',
         controller: 'MenuController',
         controllerAs: 'menu',
         authenticated: false
-    }).
-    when('/signin',{
-        templateUrl: '../../views/user/signin.html',
-        controller: 'regCtrl',
-        controllerAs: 'signin',
-        authenticated: false
-    })
+    })//No menu for mookiedoughfrontend just use home page
     .when('/register',{
-        templateUrl: '../../views/user/register.html',
+        templateUrl: '../mookiedoughfrontend/login.html',
         controller: 'regCtrl',
         controllerAs: 'register',
         authenticated: false
     })
     // Route: User Profile
-    .when('/profile', {
-        templateUrl: '../../views/user/profile.html',
+    .when('/account', {
+        templateUrl: '../mookiedoughfrontend/account.html',
         authenticated: true
     })
+    .when('/')
     // Route: Facebook Callback Result            
     .when('/facebook/:token', {
         templateUrl: '../../views/user/social/social.html',
@@ -43,7 +56,34 @@ var app = angular.module('appRoutes',['ngRoute'])
         controllerAs: 'facebook',
         authenticated: false
     })
-
+    .when('/shop-single',{
+        templateUrl: '../mookiedoughfrontend/shop-single.html',
+        authenticated: false
+    })
+    .when('/shopping-cart',{
+        templateUrl: '../mookiedoughfrontend/shopping-cart.html',
+        authenticated: false
+    })
+    .when('/faq', {
+        templateUrl: '../mookiedoughfrontend/faq.html',
+        authenticated: false
+    })
+    .when('/contacts', {
+        templateUrl: '../mookiedoughfrontend/contacts.html',
+        authenticated: false
+    })
+    .when('/fuegophotos', {
+        templateUrl: '../mookiedoughfrontend/fuegophotos.html',
+        authenticated: false
+    })
+    .when('/checkout',{
+        templateUrl: '../mookiedoughfrontend/checkout.html',
+        authenticated: true
+    })
+    .when('/blog', {
+        templateUrl: '../mookiedoughfrontend/blog.html',
+        authenticated: false
+    })
     // Route: Twitter Callback Result
     .when('/twitter/:token', {
         templateUrl: '../../views/user/social/social.html',
@@ -51,7 +91,6 @@ var app = angular.module('appRoutes',['ngRoute'])
         controllerAs: 'twitter',
         authenticated: false
     })
-
     // Route: Google Callback Result
     .when('/google/:token', {
         templateUrl: '../../views/user/social/social.html',
@@ -224,3 +263,5 @@ app.run(['$rootScope', 'Auth', '$location', 'User', function($rootScope, Auth, $
         }
     });
 }]);
+
+console.log("what");

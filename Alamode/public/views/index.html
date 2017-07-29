@@ -2,38 +2,42 @@
 <html lang="en" ng-app="alamode">
 
 <head>
-  <meta charset="utf-8">
-  <title>Mookie Dough</title>
+    <meta charset="utf-8">
+    <title>Mookie Dough</title>
 
-  <!--SEO Meta Tags-->
-  <meta name="description" content="Mookie Dough Company LLC" />
-  <meta name="keywords" content="One stop shop for the best edible cookie dough. Did we mention that we are available 24/7?!" />
-  <meta name="author" content="Mookie Dough LLC" />
+    <!--SEO Meta Tags-->
+    <meta name="description" content="Mookie Dough Company LLC" />
+    <meta name="keywords" content="One stop shop for the best edible cookie dough. Did we mention that we are available 24/7?!" />
+    <meta name="author" content="Mookie Dough LLC" />
 
-  <!--Mobile Specific Meta Tag-->
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+    <!--Mobile Specific Meta Tag-->
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
 
-  <!--Favicon-->
-  <link rel="shortcut icon" href="favicon.ico" type="image/x-icon">
-  <link rel="icon" href="favicon.ico" type="image/x-icon">
+    <!--Favicon-->
+    <link rel="shortcut icon" href="../mookiedoughfrontend/favicon.ico" type="image/x-icon">
+    <link rel="icon" href="../mookiedoughfrontend/favicon.ico" type="image/x-icon">
 
-  <!-- Google Material Icons -->
-  <link href="../mookiedoughfrontend/css/vendor/material-icons.min.css" rel="stylesheet" media="screen">
+    <!-- Google Material Icons -->
+    <link href="../mookiedoughfrontend/css/vendor/material-icons.min.css" rel="stylesheet" media="screen">
 
-  <!-- Brand Icons -->
-  <link href="../mookiedoughfrontend/css/vendor/socicon.min.css" rel="stylesheet" media="screen">
+    <!-- Brand Icons -->
+    <link href="../mookiedoughfrontend/css/vendor/socicon.min.css" rel="stylesheet" media="screen">
 
-  <!-- Bootstrap -->
-  <link href="../mookiedoughfrontend/css/vendor/bootstrap.min.css" rel="stylesheet" media="screen">
+    <!-- Bootstrap -->
+    <link href="../mookiedoughfrontend/css/vendor/bootstrap.min.css" rel="stylesheet" media="screen">
 
-  <!-- Theme Styles -->
-  <link href="../mookiedoughfrontend/css/theme.min.css" rel="stylesheet" media="screen">
+    <!-- Theme Styles -->
+    <link href="../mookiedoughfrontend/css/theme.min.css" rel="stylesheet" media="screen">
 
-  <!-- Page Preloading -->
-  <script src="../mookiedoughfrontend/js/vendor/page-preloading.js"></script>
+    <!-- Page Preloading -->
+    <script src="../mookiedoughfrontend/js/vendor/page-preloading.js"></script>
 
-  <!-- Modernizr -->
-  <script src="../mookiedoughfrontend/js/vendor/modernizr.custom.js"></script>
+    <!-- Modernizr -->
+    <script src="../mookiedoughfrontend/js/vendor/modernizr.custom.js"></script>
+      <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.5.6/angular.js"></script>
+      <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.5.6/angular-route.js"></script>
+      <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.5.6/angular-mocks.js"></script>
+
 
 
     <script src= "../js/app.js"></script>
@@ -46,7 +50,7 @@
     <script src="../js/services/productServices.js"></script>
 
 
-    <script src="../js/directives/product.js"></script>
+     <script src="../js/directives/product.js"></script> 
     <!-- Alamode Controllers -->
     <script src="../js/controllers/MainController.js"></script>
     <script src="../js/controllers/MenuController.js"></script>
@@ -55,30 +59,28 @@
 
 </head>
 
-<!-- Body -->
-<!-- Adding/Removing class ".page-preloading" is enabling/disabling background smooth page transition effect and spinner. Make sure you also added/removed link to page-preloading.js script in the <head> of the document. -->
+
 <body class="page-preloading">
 
-  <!-- Page Pre-Loader -->
-  <div class="page-preloader">
-    <div class="preloader">
-      <img src="../mookiedoughfrontend/img/preloader.gif" alt="Preloader">
-    </div>
-  </div><!-- .page-preloader -->
+        <!-- Page Pre-Loader -->
+    <div class="page-preloader">
+        <div class="preloader">
+        <img src="../mookiedoughfrontend/img/preloader.gif" alt="Preloader">
+        </div>
+    </div><!-- .page-preloader -->
 
-  <!-- Page Wrapper -->
-  <div class="page-wrapper">
+    <div class="page-wrapper">
 
-    <!-- Navbar -->
+         <!-- Navbar -->
     <!-- Remove ".navbar-sticky" class to make navigation bar scrollable with the page. -->
     <header class="navbar navbar-sticky">
 
       <!-- Site Logo -->
-      <a href="../mookiedoughfrontend/home-v2.html" class="site-logo visible-desktop">
-          <img src="../mookiedoughfrontend/img/websiteheaderlogo.png">
+      <a href="/home" class="site-logo visible-desktop">
+    <img src="../mookiedoughfrontend/img/websiteheaderlogo.png">
       </a><!-- site-logo.visible-desktop -->
-      <a href="../mookiedoughfrontend/home-v2.html" class="site-logo visible-mobile">
-        <span>[</span> Mookie <span>]</span>
+      <a href="/home" class="site-logo visible-mobile">
+    <span>[</span> Mookie <span>]</span>
       </a><!-- site-logo.visible-mobile -->
 
       <!-- Main Navigation -->
@@ -90,15 +92,15 @@
           <li class="menu-item-has-children">
             <a href="#">Shop</a>
             <ul class="sub-menu">
-              <li><a href="../mookiedoughfrontend/cookiedough/cookiedoughmainshop.html">Cookie Dough</a></li>
-              <li><a href="../mookiedoughfrontend/minicookiedough/minicookiedoughmainshop.html">Mini Cookie Dough</a></li>
-              <li><a href="../mookiedoughfrontend/organicvalley/milkmainshop.html">Ice Cold Milk</a></li>
+              <li><a href=/"cookiedoughmainshop">Cookie Dough</a></li>
+              <li><a href="/minicookiedoughmainshop">Mini Cookie Dough</a></li>
+              <li><a href="/milkmainshop">Ice Cold Milk</a></li>
             </ul>
           </li>
-          <li><a href="../mookiedoughfrontend/about.html">About</a></li>
-          <li><a href="../mookiedoughfrontend/contacts.html">Contacts</a></li>
-          <li><a href="../mookiedoughfrontend/faq.html">FAQ</a></li>
-          <li><a href="../mookiedoughfrontend/fuegophotos.html">Fuego Photos</a></li>
+          <li><a href="/about">About</a></li>
+          <li><a href="/contacts">Contacts</a></li>
+          <li><a href="/faq">FAQ</a></li>
+          <li><a href="/fuegophotos">Fuego Photos</a></li>
         </ul><!-- .menu -->
       </nav><!-- .main-navigation -->
 
@@ -106,9 +108,9 @@
       <div class="toolbar">
         <div class="inner">
           <a href="#" class="mobile-menu-toggle"><i class="material-icons menu"></i></a>
-          <a href="../mookiedoughfrontend/account.html"><i class="material-icons person"></i></a>
+          <a href="/account"><i class="material-icons person"></i></a>
           <div class="cart-btn">
-            <a href="../mookiedoughfrontend/shopping-cart.html">
+            <a href="/shopping-cart">
               <i>
                 <span class="material-icons shopping_basket"></span>
                 <span class="count">2</span>
@@ -117,11 +119,11 @@
             <!-- Cart Dropdown -->
             <div class="cart-dropdown">
               <div class="cart-item">
-                <a href="../mookiedoughfrontend/shop-single.html" class="item-thumb">
+                <a href="/shop-single" class="item-thumb">
                   <img src="../mookiedoughfrontend/img/cart/item02.jpg" alt="Item">
                 </a>
                 <div class="item-details">
-                  <h3 class="item-title"><a href="../mookiedoughfrontend/shop-single.html">Chocolate Chip Cookie Dough</a></h3>
+                  <h3 class="item-title"><a href="/shop-single">Chocolate Chip Cookie Dough</a></h3>
                   <h4 class="item-price">2 x $8.00</h4>
                 </div>
                 <a href="#" class="close-btn">
@@ -143,472 +145,16 @@
     </header><!-- .navbar.navbar-sticky -->
 
 
- <!-- <div class="container-fluid mookie-content">
+    <!-- Main Angular view where routes will be rendered-->
+    <div>
         <div class="row">
             <div class="container">
                 <div class="main-view" ng-view></div>
                 </div>
         </div>
-    </div> -->
+    </div>
 
-
-    <!-- Featured Categories -->
-    <section class="container-fluid" style="padding-top: 7px;">
-      <div class="row">
-        <div class="col-md-6">
-          <a href="../mookiedoughfrontend/cookiedough/cookiedoughmainshop.html" class="category-tile">
-            <div class="inner">
-              <div class="column">
-                <h3 class="space-bottom-half">Signature Cookie Dough</h3>
-                <p class="text-sm text-gray">Starting from $5.99</p>
-              </div>
-              <div class="column">
-                <div class="category-thumb">
-                  <img src="http://via.placeholder.com/600x674" alt="Category">
-                </div>
-              </div>
-            </div>
-          </a>
-        </div>
-        <div class="col-md-6">
-          <a href="../mookiedoughfrontend/organicvalley/milkmainshop.html" class="category-tile">
-            <div class="inner">
-              <div class="column">
-                <h3>Ice Cold Organic Milk</h3>
-                <p class="text-sm text-gray">Starting from $2.29</p>
-              </div>
-              <div class="column">
-                <div class="category-thumb">
-                  <img src="http://via.placeholder.com/600x674" alt="Category">
-                </div>
-              </div>
-            </div>
-          </a>
-        </div>
-        <div class="col-md-6">
-          <a href="../mookiedoughfrontend/localfav/localfavmainshop.html" class="category-tile">
-            <div class="inner">
-              <div class="column">
-                <h3>Local Favorites</h3>
-                <p class="text-sm text-gray">Starting from $5.99</p>
-              </div>
-              <div class="column">
-                <div class="category-thumb">
-                  <img src="http://via.placeholder.com/600x674" alt="Category">
-                </div>
-              </div>
-            </div>
-          </a>
-        </div>
-        <div class="col-md-6">
-          <a href="../mookiedoughfrontend/minicookiedough/minicookiedoughmainshop.html" class="category-tile">
-            <div class="inner">
-              <div class="column">
-                <h3>Mini Cookie Dough</h3>
-                <p class="text-sm text-gray">Starting from $3.99</p>
-              </div>
-              <div class="column">
-                <div class="category-thumb">
-                  <img src="http://via.placeholder.com/600x674" alt="Category">
-                </div>
-              </div>
-            </div>
-          </a>
-        </div>
-      </div><!-- .row -->
-    </section><!-- .container-fluid -->
-
-    <!-- Product Grid -->
-    <section class="container padding-top-3x">
-
-      <!-- Bestsellers -->
-      <h3 class="text-center">Bestsellers</h3>
-      <div class="row padding-top">
-        <!-- Item -->
-        <div class="col-md-4 col-sm-6">
-          <div class="shop-item">
-            <div class="shop-thumbnail">
-              <span class="item-rating text-warning">
-                <i class="material-icons star"></i>
-                <i class="material-icons star"></i>
-                <i class="material-icons star"></i>
-                <i class="material-icons star"></i>
-                <i class="material-icons star"></i>
-              </span>
-              <a href="../mookiedoughfrontend/shop-single.html" class="item-link"></a>
-              <img src="http://via.placeholder.com/500x455" alt="Shop item">
-              <div class="shop-item-tools">
-                <a href="#" class="add-to-whishlist" data-toggle="tooltip" data-placement="top" title="" data-original-title="Wishlist">
-                  <i class="material-icons favorite_border"></i>
-                </a>
-                <a href="#" class="add-to-cart">
-                  <em>Add to Cart</em>
-                  <svg x="0px" y="0px" width="32px" height="32px" viewBox="0 0 32 32">
-                    <path stroke-dasharray="19.79 19.79" stroke-dashoffset="19.79" fill="none" stroke="#FFFFFF" stroke-width="2" stroke-linecap="square" stroke-miterlimit="10" d="M9,17l3.9,3.9c0.1,0.1,0.2,0.1,0.3,0L23,11"></path>
-                  </svg>
-                </a>
-              </div>
-            </div>
-            <div class="shop-item-details">
-              <h3 class="shop-item-title"><a href="../mookiedoughfrontend/shop-single.html">Oreo Cookie Dough Half Pint</a></h3>
-              <span class="shop-item-price">
-                $5.99
-              </span>
-            </div>
-          </div><!-- .shop-item -->
-        </div><!-- .col-md-4.col-sm-6 -->
-        <div class="col-md-4 col-sm-6">
-          <div class="shop-item">
-            <div class="shop-thumbnail">
-              <span class="item-rating text-warning">
-                <i class="material-icons star"></i>
-                <i class="material-icons star"></i>
-                <i class="material-icons star"></i>
-                <i class="material-icons star"></i>
-                <i class="material-icons star_border"></i>
-              </span>
-              <a href="../mookiedoughfrontend/shop-single.html" class="item-link"></a>
-              <img src="http://via.placeholder.com/500x455" alt="Shop item">
-              <div class="shop-item-tools">
-                <a href="#" class="add-to-whishlist" data-toggle="tooltip" data-placement="top" title="" data-original-title="Wishlist">
-                  <i class="material-icons favorite_border"></i>
-                </a>
-                <a href="#" class="add-to-cart">
-                  <em>Add to Cart</em>
-                  <svg x="0px" y="0px" width="32px" height="32px" viewBox="0 0 32 32">
-                    <path stroke-dasharray="19.79 19.79" stroke-dashoffset="19.79" fill="none" stroke="#FFFFFF" stroke-width="2" stroke-linecap="square" stroke-miterlimit="10" d="M9,17l3.9,3.9c0.1,0.1,0.2,0.1,0.3,0L23,11"></path>
-                  </svg>
-                </a>
-              </div>
-            </div>
-            <div class="shop-item-details">
-              <h3 class="shop-item-title"><a href="shop-single.html">Organic Valley Chocolate Milk</a></h3>
-              <span class="shop-item-price">
-                $2.25
-              </span>
-            </div>
-          </div><!-- .shop-item -->
-        </div>
-        <!-- Item -->
-        <div class="col-md-4 col-sm-6">
-          <div class="shop-item">
-            <div class="shop-thumbnail">
-
-              <a href="../mookiedoughfrontend/shop-single.html" class="item-link"></a>
-              <img src="http://via.placeholder.com/500x455" alt="Shop item">
-              <div class="shop-item-tools">
-                <a href="#" class="add-to-whishlist" data-toggle="tooltip" data-placement="top" title="" data-original-title="Wishlist">
-                  <i class="material-icons favorite_border"></i>
-                </a>
-                <a href="#" class="add-to-cart">
-                  <em>Add to Cart</em>
-                  <svg x="0px" y="0px" width="32px" height="32px" viewBox="0 0 32 32">
-                    <path stroke-dasharray="19.79 19.79" stroke-dashoffset="19.79" fill="none" stroke="#FFFFFF" stroke-width="2" stroke-linecap="square" stroke-miterlimit="10" d="M9,17l3.9,3.9c0.1,0.1,0.2,0.1,0.3,0L23,11"></path>
-                  </svg>
-                </a>
-              </div>
-            </div>
-            <div class="shop-item-details">
-              <h3 class="shop-item-title"><a href="../mookiedoughfrontend/shop-single.html">Chocolate Chip Quarter Pint</a></h3>
-              <span class="shop-item-price">
-                $3.99
-              </span>
-            </div>
-          </div><!-- .shop-item -->
-        </div><!-- .col-md-4.col-sm-6 -->
-      </div><!-- .row -->
-    </section><!-- .container -->
-
-    <!-- Special Offer -->
-    <section class="fw-section bg-gray padding-top padding-bottom-2x space-top-3x">
-      <div class="container">
-
-        <!-- Special Offer -->
-        <div class="info-box text-center">
-          <h2 class="padding-top">Lakers Win <span class="text-danger">Free Cookie Dough at Staples Center!</span></h2>
-          <a href="../mookiedoughfrontend/shop-single.html" class="inline">
-            <img src="http://via.placeholder.com/1100x340" alt="Special Offer">
-          </a>
-          <!-- <h3 class="lead text-normal space-bottom-half"><a href="shop-single.html" class="link-title">Living Room Sofa Transformer</a></h3> -->
-          <span class="lead text-normal text-gray text-crossed">$5.99</span>
-          <span class="h4 text-normal text-danger">$Free</span><br>
-
-
-        </div><!-- .info-box -->
-      </div>
-    </section>
-
-    <!-- New Arrivals -->
-
-  <section class="container padding-top-3x space-top-half">
-      <h3 class="text-center">Mookie's Specials</h3>
-      <div class="row padding-top">
-        <div class="col-lg-3 col-sm-6">
-          <div class="shop-item">
-            <div class="shop-thumbnail">
-              <span class="shop-label text-danger">Sale</span>
-              <a href="#" class="item-link"></a>
-              <img src="http://via.placeholder.com/500x455" alt="Shop item">
-              <div class="shop-item-tools">
-                <a href="#" class="add-to-whishlist" data-toggle="tooltip" data-placement="top" title="" data-original-title="Wishlist">
-                  <i class="material-icons favorite_border"></i>
-                </a>
-                <a href="#" class="add-to-cart">
-                  <em>Add to Cart</em>
-                  <svg x="0px" y="0px" width="32px" height="32px" viewBox="0 0 32 32">
-                    <path stroke-dasharray="19.79 19.79" stroke-dashoffset="19.79" fill="none" stroke="#FFFFFF" stroke-width="2" stroke-linecap="square" stroke-miterlimit="10" d="M9,17l3.9,3.9c0.1,0.1,0.2,0.1,0.3,0L23,11"></path>
-                  </svg>
-                </a>
-              </div>
-            </div>
-            <div class="shop-item-details">
-              <h3 class="shop-item-title"><a href="#">First</a></h3>
-              <span class="shop-item-price">
-                <span class="old-price">$69.00</span>
-                $48.00
-              </span>
-            </div>
-          </div><!-- .shop-item -->
-        </div><!-- .col-lg-3.col-sm-6 -->
-        <div class="col-lg-3 col-sm-6">
-          <div class="shop-item">
-            <div class="shop-thumbnail">
-              <a href="#" class="item-link"></a>
-              <img src="http://via.placeholder.com/500x455" alt="Shop item">
-              <div class="shop-item-tools">
-                <a href="#" class="add-to-whishlist" data-toggle="tooltip" data-placement="top" title="" data-original-title="Wishlist">
-                  <i class="material-icons favorite_border"></i>
-                </a>
-                <a href="#" class="add-to-cart">
-                  <em>Add to Cart</em>
-                  <svg x="0px" y="0px" width="32px" height="32px" viewBox="0 0 32 32">
-                    <path stroke-dasharray="19.79 19.79" stroke-dashoffset="19.79" fill="none" stroke="#FFFFFF" stroke-width="2" stroke-linecap="square" stroke-miterlimit="10" d="M9,17l3.9,3.9c0.1,0.1,0.2,0.1,0.3,0L23,11"></path>
-                  </svg>
-                </a>
-              </div>
-            </div>
-            <div class="shop-item-details">
-              <h3 class="shop-item-title"><a href="#">First</a></h3>
-              <span class="shop-item-price">
-                $130.00
-              </span>
-            </div>
-          </div><!-- .shop-item -->
-        </div><!-- .col-lg-3.col-sm-6 -->
-        <div class="col-lg-3 col-sm-6">
-          <div class="shop-item">
-            <div class="shop-thumbnail">
-              <a href="#" class="item-link"></a>
-              <img src="http://via.placeholder.com/500x455" alt="Shop item">
-              <div class="shop-item-tools">
-                <a href="#" class="add-to-whishlist" data-toggle="tooltip" data-placement="top" title="" data-original-title="Wishlist">
-                  <i class="material-icons favorite_border"></i>
-                </a>
-                <a href="#" class="add-to-cart">
-                  <em>Add to Cart</em>
-                  <svg x="0px" y="0px" width="32px" height="32px" viewBox="0 0 32 32">
-                    <path stroke-dasharray="19.79 19.79" stroke-dashoffset="19.79" fill="none" stroke="#FFFFFF" stroke-width="2" stroke-linecap="square" stroke-miterlimit="10" d="M9,17l3.9,3.9c0.1,0.1,0.2,0.1,0.3,0L23,11"></path>
-                  </svg>
-                </a>
-              </div>
-            </div>
-            <div class="shop-item-details">
-              <h3 class="shop-item-title"><a href="#">First</a></h3>
-              <span class="shop-item-price">
-                $178.00
-              </span>
-            </div>
-          </div><!-- .shop-item -->
-        </div><!-- .col-lg-3.col-sm-6 -->
-        <div class="col-lg-3 col-sm-6">
-          <div class="shop-item">
-            <div class="shop-thumbnail">
-              <a href="#" class="item-link"></a>
-              <img src="http://via.placeholder.com/500x455" alt="Shop item">
-              <div class="shop-item-tools">
-                <a href="#" class="add-to-whishlist" data-toggle="tooltip" data-placement="top" title="" data-original-title="Wishlist">
-                  <i class="material-icons favorite_border"></i>
-                </a>
-                <a href="#" class="add-to-cart">
-                  <em>Add to Cart</em>
-                  <svg x="0px" y="0px" width="32px" height="32px" viewBox="0 0 32 32">
-                    <path stroke-dasharray="19.79 19.79" stroke-dashoffset="19.79" fill="none" stroke="#FFFFFF" stroke-width="2" stroke-linecap="square" stroke-miterlimit="10" d="M9,17l3.9,3.9c0.1,0.1,0.2,0.1,0.3,0L23,11"></path>
-                  </svg>
-                </a>
-              </div>
-            </div>
-            <div class="shop-item-details">
-              <h3 class="shop-item-title"><a href="#">First</a></h3>
-              <span class="shop-item-price">
-                $112.35
-              </span>
-            </div>
-          </div><!-- .shop-item -->
-        </div><!-- .col-lg-3.col-sm-6 -->
-        <div class="col-lg-3 col-sm-6">
-          <div class="shop-item">
-            <div class="shop-thumbnail">
-              <a href="../mookiedoughfrontend/shop-single.html" class="item-link"></a>
-              <img src="http://via.placeholder.com/500x455" alt="Shop item">
-              <div class="shop-item-tools">
-                <a href="#" class="add-to-whishlist" data-toggle="tooltip" data-placement="top" title="Wishlist">
-                  <i class="material-icons favorite_border"></i>
-                </a>
-                <a href="#" class="add-to-cart">
-                  <em>Add to Cart</em>
-                  <svg x="0px" y="0px" width="32px" height="32px" viewBox="0 0 32 32">
-                    <path stroke-dasharray="19.79 19.79" stroke-dashoffset="19.79" fill="none" stroke="#FFFFFF" stroke-width="2" stroke-linecap="square" stroke-miterlimit="10" d="M9,17l3.9,3.9c0.1,0.1,0.2,0.1,0.3,0L23,11"/>
-                  </svg>
-                </a>
-              </div>
-            </div>
-            <div class="shop-item-details">
-              <h3 class="shop-item-title"><a href="../mookiedoughfrontend/shop-single.html">First</a></h3>
-              <span class="shop-item-price">
-                $299.00
-              </span>
-            </div>
-          </div><!-- .shop-item -->
-        </div><!-- .col-lg-3.col-sm-6 -->
-        <div class="col-lg-3 col-sm-6">
-          <div class="shop-item">
-            <div class="shop-thumbnail">
-              <a href="../mookiedoughfrontend/shop-single.html" class="item-link"></a>
-              <img src="http://via.placeholder.com/500x455" alt="Shop item">
-              <div class="shop-item-tools">
-                <a href="#" class="add-to-whishlist" data-toggle="tooltip" data-placement="top" title="Wishlist">
-                  <i class="material-icons favorite_border"></i>
-                </a>
-                <a href="#" class="add-to-cart">
-                  <em>Add to Cart</em>
-                  <svg x="0px" y="0px" width="32px" height="32px" viewBox="0 0 32 32">
-                    <path stroke-dasharray="19.79 19.79" stroke-dashoffset="19.79" fill="none" stroke="#FFFFFF" stroke-width="2" stroke-linecap="square" stroke-miterlimit="10" d="M9,17l3.9,3.9c0.1,0.1,0.2,0.1,0.3,0L23,11"/>
-                  </svg>
-                </a>
-              </div>
-            </div>
-            <div class="shop-item-details">
-              <h3 class="shop-item-title"><a href="../mookiedoughfrontend/shop-single.html">First</a></h3>
-              <span class="shop-item-price">
-                $19.80
-              </span>
-            </div>
-          </div><!-- .shop-item -->
-        </div><!-- .col-lg-3.col-sm-6 -->
-        <div class="col-lg-3 col-sm-6">
-          <div class="shop-item">
-            <div class="shop-thumbnail">
-              <a href="../mookiedoughfrontend/shop-single.html" class="item-link"></a>
-              <img src="http://via.placeholder.com/500x455" alt="Shop item">
-              <div class="shop-item-tools">
-                <a href="#" class="add-to-whishlist" data-toggle="tooltip" data-placement="top" title="Wishlist">
-                  <i class="material-icons favorite_border"></i>
-                </a>
-                <a href="#" class="add-to-cart">
-                  <em>Add to Cart</em>
-                  <svg x="0px" y="0px" width="32px" height="32px" viewBox="0 0 32 32">
-                    <path stroke-dasharray="19.79 19.79" stroke-dashoffset="19.79" fill="none" stroke="#FFFFFF" stroke-width="2" stroke-linecap="square" stroke-miterlimit="10" d="M9,17l3.9,3.9c0.1,0.1,0.2,0.1,0.3,0L23,11"/>
-                  </svg>
-                </a>
-              </div>
-            </div>
-            <div class="shop-item-details">
-              <h3 class="shop-item-title"><a href="../mookiedoughfrontend/shop-single.html">First</a></h3>
-              <span class="shop-item-price">
-                $76.40
-              </span>
-            </div>
-          </div><!-- .shop-item -->
-        </div><!-- .col-lg-3.col-sm-6 -->
-        <div class="col-lg-3 col-sm-6">
-          <div class="shop-item">
-            <div class="shop-thumbnail">
-              <a href="../mookiedoughfrontend/shop-single.html" class="item-link"></a>
-              <img src="http://via.placeholder.com/500x455" alt="Shop item">
-              <div class="shop-item-tools">
-                <a href="#" class="add-to-whishlist" data-toggle="tooltip" data-placement="top" title="Wishlist">
-                  <i class="material-icons favorite_border"></i>
-                </a>
-                <a href="#" class="add-to-cart">
-                  <em>Add to Cart</em>
-                  <svg x="0px" y="0px" width="32px" height="32px" viewBox="0 0 32 32">
-                    <path stroke-dasharray="19.79 19.79" stroke-dashoffset="19.79" fill="none" stroke="#FFFFFF" stroke-width="2" stroke-linecap="square" stroke-miterlimit="10" d="M9,17l3.9,3.9c0.1,0.1,0.2,0.1,0.3,0L23,11"/>
-                  </svg>
-                </a>
-              </div>
-            </div>
-            <div class="shop-item-details">
-              <h3 class="shop-item-title"><a href="../mookiedoughfrontend/shop-single.html">First</a></h3>
-              <span class="shop-item-price">
-                $27.00
-              </span>
-            </div>
-          </div><!-- .shop-item -->
-        </div><!-- .col-lg-3.col-sm-6 -->
-      </div><!-- .row -->
-    </section><!-- .container -->
-
-    <!-- Video Popup -->
-
-    <div class="fw-section space-top-2x padding-top-3x padding-bottom-3x" style="background-image: url(img/video_bg.jpg);">
-      <div class="container padding-top-3x padding-bottom-3x text-center">
-        <div class="space-top-3x space-bottom">
-          <!-- Add ".light-skin" class to alter appearance. -->
-          <a href="https://player.vimeo.com/video/135832597?color=77cde3&title=0&byline=0&portrait=0" class="video-popup-btn">
-            <i class="material-icons play_arrow"></i>
-          </a>
-        </div>
-        <p class="space-bottom-2x">Are you happy?</p>
-      </div>
-    </div><!-- .fw-section -->
-
-    <!-- Features -->
-    <section class="container space-top space-bottom padding-top-3x padding-bottom-3x">
-      <div class="row">
-        <!-- Feature -->
-        <div class="col-md-3 col-sm-6">
-          <div class="feature text-center">
-            <div class="feature-icon">
-              <i class="material-icons location_on"></i>
-            </div>
-            <h4 class="feature-title">24/7 Convienent Locations</h4>
-            <p class="feature-text">Access to Amazing Cookie Dough and Milk Through Our Smart Fridges</p>
-          </div>
-        </div>
-        <!-- Feature -->
-        <div class="col-md-3 col-sm-6">
-          <div class="feature text-center">
-            <div class="feature-icon">
-              <i class="material-icons autorenew"></i>
-            </div>
-            <h4 class="feature-title">Predictive AI For Freshest</h4>
-            <p class="feature-text">We use powerful artificial intelligence to deliver the best cookie dough</p>
-          </div>
-        </div>
-        <!-- Feature -->
-        <div class="col-md-3 col-sm-6">
-          <div class="feature text-center">
-            <div class="feature-icon">
-              <i class="material-icons headset_mic"></i>
-            </div>
-            <h4 class="feature-title">Customer Feedback</h4>
-            <p class="feature-text">We always try to be available for our customers</p>
-          </div>
-        </div>
-        <!-- Feature -->
-        <div class="col-md-3 col-sm-6">
-          <div class="feature text-center">
-            <div class="feature-icon">
-              <i class="material-icons credit_card"></i>
-            </div>
-            <h4 class="feature-title">Secure Online Payments</h4>
-            <p class="feature-text">We posess SSL / Secure Certificate</p>
-          </div>
-        </div>
-      </div><!-- .row -->
-    </section><!-- .container -->
-
-    <!-- Footer -->
+     <!-- Footer -->
     <footer class="footer">
       <div class="column">
         <p class="text-sm">Need support? Call <span class="text-primary">1 (650) 555-9999</span></p>
@@ -654,8 +200,8 @@
       </div><!-- .column -->
     </footer><!-- .footer -->
 
-  </div><!-- .page-wrapper -->
 
+</div>
   <!-- JavaScript (jQuery) libraries, plugins and custom scripts -->
   <script src="js/vendor/jquery-2.1.4.min.js"></script>
   <script src="js/vendor/bootstrap.min.js"></script>
@@ -666,7 +212,21 @@
   <script src="js/vendor/jquery.downCount.js"></script>
   <script src="js/vendor/magnific-popup.min.js"></script>
   <script src="js/scripts.js"></script>
+    
 
-</body><!-- <body> -->
+</body>
+    <!-- Bootstrap 4 Dependencies -->
+    <!-- <script src="https://code.jquery.com/jquery-3.1.1.slim.min.js" integrity="sha384-A7FZj7v+d/sdmMqp/nOQwliLvUsJfDHW+k9Omg/a/EheAdgtzNs3hpfag6Ed950n" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/tether/1.4.0/js/tether.min.js" integrity="sha384-DztdAPBWPRXSA/3eYEEUWrWCy7G5KFbe8fFjk5JAIxUYHKkDx6Qin1DkWx51bBrb" crossorigin="anonymous"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.6/js/bootstrap.min.js" integrity="sha384-vBWWzlZJ8ea9aCX4pEW3rVHjgjt7zpkNpZk+02D9phzyeVkE+jo0ieGizqPLForn" crossorigin="anonymous"></script>
+     -->
+    <!-- AngularJS Material Dependencies -->
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.3.15/angular-animate.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.3.15/angular-aria.js"></script>
+
+    <!-- AngularJS Material Javascript using GitCDN to load directly from `bower-material/master` -->
+    <script src="https://gitcdn.link/repo/angular/bower-material/master/angular-material.js"></script>
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
 
 </html>
