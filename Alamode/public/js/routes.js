@@ -14,6 +14,38 @@ var app = angular.module('appRoutes',['ngRoute'])
         authenticated: false
 
     }).
+    when('single-post01',{
+        templateUrl: '../mookiedoughfrontend/blog/single-post01.html',
+        authenticated: false
+    }).
+    when('single-post02',{
+        templateUrl: '../mookiedoughfrontend/blog/single-post02.html',
+        authenticated: false
+    }).
+    when('single-post03',{
+        templateUrl: '../mookiedoughfrontend/blog/single-post03.html',
+        authenticated: false
+    }).
+    when('single-post04',{
+        templateUrl: '../mookiedoughfrontend/blog/single-post04.html',
+        authenticated: false
+    }).
+    when('/minicookiesncreme',{
+        templateUrl: '../mookiedoughfrontend/minicookiedough/minicookiesncreme.html',
+        authenticated: false
+    }).
+    when('/minimamachocochip',{
+        templateUrl: '../mookiedoughfrontend/minicookiedough/minimamachocochip.html',
+        authenticated: false
+    }).
+    when('/minilowfat_milk',{
+        templateUrl: '../mookiedoughfrontend/minicookiedough/lowfat_milk.html',
+        authenticated: false
+    }).
+    when('/minibirthdaybatter',{
+        templateUrl: '../mookiedoughfrontend/minicookiedough/minibirthdaybatter.html',
+        authenticated: false
+    }).
     when('/cookiedoughmainshop',{
         templateUrl: '../mookiedoughfrontend/cookiedough/cookiedoughmainshop.html',
         authenticated: false
@@ -23,7 +55,7 @@ var app = angular.module('appRoutes',['ngRoute'])
         authenticated: false
     }).
 
-    when('/minicookiedoughmainshop.html',{
+    when('/minicookiedoughmainshop',{
         templateUrl: '../mookiedoughfrontend/minicookiedough/minicookiedoughmainshop.html',
         authenticated: false
     }).
@@ -46,9 +78,8 @@ var app = angular.module('appRoutes',['ngRoute'])
     // Route: User Profile
     .when('/account', {
         templateUrl: '../mookiedoughfrontend/account.html',
-        authenticated: true
+        authenticated: false
     })
-    .when('/')
     // Route: Facebook Callback Result            
     .when('/facebook/:token', {
         templateUrl: '../../views/user/social/social.html',
@@ -84,6 +115,32 @@ var app = angular.module('appRoutes',['ngRoute'])
         templateUrl: '../mookiedoughfrontend/blog.html',
         authenticated: false
     })
+    .when('/oreos',{
+        templateUrl: '../mookiedoughfrontend/cookiedough/oreos.html',
+        authenticated: false
+    })
+    .when('/choco_milk',{
+        templateUrl: '../mookiedoughfrontend/organicvalley/choco_milk.html',
+        authenticated: false
+    })
+     .when('/lowfat_milk',{
+        templateUrl: '../mookiedoughfrontend/organicvalley/lowfat_milk.html',
+        authenticated: false
+    })
+    .when('/wholeorganic_milk.html',{
+        templateUrl: '../mookiedoughfrontend/organicvalley/wholeorganic_milk.html',
+        authenticated: false
+    })
+    
+    .when('/mamachocohip',{
+        templateUrl: '../mookiedoughfrontend/cookiedough/mamachocochip.html',
+        authenticated: false
+    })
+    .when('/birthdaybatter',{
+        templateUrl: '../mookiedoughfrontend/cookiedough/birthdaybatter.html',
+        authenticated: false
+    })
+
     // Route: Twitter Callback Result
     .when('/twitter/:token', {
         templateUrl: '../../views/user/social/social.html',
