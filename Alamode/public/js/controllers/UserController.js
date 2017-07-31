@@ -4,7 +4,7 @@
 alamode.
 // Controller: regCtrl is used for users to register an account
 controller('regCtrl', function($http, $location, $timeout, User, $scope) {
-
+console.log('regCtrl active');
     var app = this;
 
     this.registerUser = function(userData,valid,confirmed){
@@ -23,6 +23,25 @@ controller('regCtrl', function($http, $location, $timeout, User, $scope) {
                     app.errorMsg = data.data.message;
                 }
             });
+        }
+    };
+
+    this.registerMookie = function(regData){
+        if(true){
+            app.regData.name = app.regData.firstName + " " + app.regData.lastName;
+            User.registerMookie(app.regData).then(function(data){
+                if(data.data.success){
+                    //login
+                    console.log("mookie register success");
+                    $timeout(function(){
+                        $location.path('/home');
+                    }, 2000);
+                }
+                else{
+                    //Display Error of some kind
+                    //or get the error from data.data.message
+                }
+            })
         }
     }
 
@@ -101,11 +120,6 @@ controller('regCtrl', function($http, $location, $timeout, User, $scope) {
         });
     };
 })
-
-.controller('signInCtrl', function($http, $location, $timeout, User, $scope) {
-    var app = this;
-})
-
 // Custom directive to check matching passwords 
 .directive('match', function() {
     return {

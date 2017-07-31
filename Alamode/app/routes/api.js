@@ -34,7 +34,6 @@ module.exports = function(router) {
     // price:{ type: Number, required:true},
     // imagePath:{type:String, required:true}
 
-    //router.post('')
     //should have post apis for order configuration, stripe user implementation, and other features
     router.post('/add-cart-item/:productName', function(req,res){
         var title = req.params.productName;
@@ -130,6 +129,48 @@ module.exports = function(router) {
             });
         }
     });
+    router.post('/register-mookie',function(req,res){
+        var user = new User();
+        //json body needs username, passowrd, email, name
+        user.username = req.body.username;
+        user.password = req.body.passowrd;
+        user.email = req.body.email;
+        user.name = req.body.name;
+
+        user.temporarytoken = jwt.sign({username: user.username, email: user.email},secret,{expiresIn: '7d'});
+
+        if (req.body.username === null || req.body.username === '' || req.body.password === null || req.body.password === '' || 
+            req.body.email === null || req.body.email === '' || req.body.name === null || req.body.name === '') {
+            res.json({ success: false, message: 'Ensure username, email, and password were provided' });
+        } else {
+            user.save(function(err){
+                if(err){
+                    res.json({success:false, message:err});
+                }
+                else{
+                    // Create e-mail object to send to user
+                    var email = {
+                        from: 'álamode Staff, alamodetechnology@localhost.com',
+                        to: [user.email, 'alamodetechnology@gmail.com'],
+                        subject: 'Your Activation Link',
+                        text: 'Hello ' + user.name + ', thank you for registering at localhost.com. Please click on the following link to complete your activation: http://localhost:8080/activate/' + user.temporarytoken,
+                        html: 'Hello<strong> ' + user.name + '</strong>,<br><br>Thank you for registering at localhost.com. Please click on the link below to complete your activation:<br><br><a href="http://localhost:8080/activate/' + user.temporarytoken + '">http://localhost:8080/activate/</a>'
+                    };
+                    // Function to send e-mail to the user
+                    client.sendMail(email, function(err, info) {
+                        if (err) {
+                            console.log(err); // If error with sending e-mail, log to console/terminal
+                        } else {
+                            console.log(info); // Log success message to console if sent
+                            console.log(user.email); // Display e-mail that it was sent to
+                        }
+                    });
+                    res.json({ success: true, message: 'Account registered! Please check your e-mail for activation link.' }); // Send success message back to controller/request
+                }
+            })
+        }
+    });
+
 
     // Route to register new users  
     router.post('/users', function(req, res) {
@@ -146,33 +187,7 @@ module.exports = function(router) {
             // Save new user to database
             user.save(function(err) {
                 if (err) {
-                    // Check if any validation errors exists (from user model)
-                    if (err.errors !== null) {
-                        // if (err.errors.name) {
-                        //     res.json({ success: false, message: err.errors.name.message }); // Display error in validation (name)
-                        // } else if (err.errors.email) {
-                        //     res.json({ success: false, message: err.errors.email.message }); // Display error in validation (email)
-                        // } else if (err.errors.username) {
-                        //     res.json({ success: false, message: err.errors.username.message }); // Display error in validation (username)
-                        // } else if (err.errors.password) {
-                        //     res.json({ success: false, message: err.errors.password.message }); // Display error in validation (password)
-                        // } else {
-                        //     res.json({ success: false, message: err }); // Display any other errors with validation
-                        // }
-                        res.json({success: false, message: err})
-                    } else if (err) {
-                        // Check if duplication error exists
-                        // if (err.code == 11000) {
-                        //     if (err.errmsg[61] == "u") {
-                        //         res.json({ success: false, message: 'That username is already taken' }); // Display error if username already taken
-                        //     } else if (err.errmsg[61] == "e") {
-                        //         res.json({ success: false, message: 'That e-mail is already taken' }); // Display error if e-mail already taken
-                        //     }
-                        // } else {
-                        //     res.json({ success: false, message: err }); // Display any other error
-                        // }
-                        res.json({success: false, message: ' Api Error'})
-                    }
+                    res.json({success:false,message: err});
                 } else {
                     // Create e-mail object to send to user
                     var email = {

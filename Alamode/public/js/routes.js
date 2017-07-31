@@ -78,7 +78,9 @@ var app = angular.module('appRoutes',['ngRoute'])
     // Route: User Profile
     .when('/account', {
         templateUrl: '../mookiedoughfrontend/account.html',
-        authenticated: false
+        authenticated: false,
+        controller: 'regCtrl',
+        controllerAs: 'user'
     })
     // Route: Facebook Callback Result            
     .when('/facebook/:token', {

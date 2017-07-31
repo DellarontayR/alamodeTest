@@ -9,6 +9,10 @@ angular.module('userServices', [])
         return $http.post('/api/users', regData);
     };
 
+    userFactory.registerMookie = function(regData){
+        return $http.post('/api/register-mookie', regData);
+    };
+
     userFactory.register = function(regData){
         return $http.post('/api/register-user',userData);
     };
