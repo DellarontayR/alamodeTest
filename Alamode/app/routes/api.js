@@ -479,16 +479,16 @@ module.exports = function(router) {
         });
     });
 
-    // router.get('/getusers',function(req,res){
-    //     User.find({},function(err,users){
-    //         if(err){
-    //             res.json({success:false,message:"get user list failed"});
-    //         }
-    //         else{
-    //             res.json({success: true, users: users});
-    //         }
-    //     });
-    // });
+    router.get('/getusers',function(req,res){
+        User.find({}).select('email username').exec(function(err,user){
+            if(err){
+                res.json({success:false, message:"User List retrieval failed"});
+            }
+            else{
+                res.json({success:true, users:users});
+            }
+        });
+    });
 
     // Route to send user's username to e-mail
     router.get('/resetusername/:email', function(req, res) {

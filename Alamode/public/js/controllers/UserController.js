@@ -3,7 +3,7 @@
 // angular.module('alamode.controllers', ['userServices'])
 alamode.
 // Controller: regCtrl is used for users to register an account
-controller('regCtrl', function($http, $location, $timeout, User, $scope) {
+controller('regCtrl', function($http, $location, $timeout, User, $scope, Auth) {
 console.log('regCtrl active');
     var app = this;
     app.data ={};
@@ -34,6 +34,9 @@ console.log('regCtrl active');
             if(data.data.success){
                 console.log("mookie register success");
                 app.message = "Login Successful";
+                Auth.login(app.regData);
+                app.message = "Login after nightsfsdf";
+
                 $timeout(function(){
                     $location.path('/home');
                 }, 2000);
@@ -44,6 +47,7 @@ console.log('regCtrl active');
             }
         });
     };
+
 
     // Custom function that registers the user in the database      
     this.regUser = function(regData, valid, confirmed) {

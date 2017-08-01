@@ -53,7 +53,8 @@ var app = angular.module('appRoutes',['ngRoute'])
     when('/testusers',{
         templateUrl: '../views/testusers.html',
         authenticated: false,
-        controller: 'MenuController'
+        controller: 'TestController',
+        controllerAs: 'database'
     }).
     when('/localfavmainshop',{
         templateUrl: '../mookiedoughfrontend/localfav/localfavmainshop.html',
@@ -70,7 +71,7 @@ var app = angular.module('appRoutes',['ngRoute'])
     }).
     when('/home',{
         templateUrl: '../mookiedoughfrontend/home.html',
-        controller: 'MenuController',
+        controller: 'TestController',
         controllerAs: 'menu',
         authenticated: false
     })//No menu for mookiedoughfrontend just use home page
