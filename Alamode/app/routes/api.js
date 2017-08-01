@@ -129,13 +129,21 @@ module.exports = function(router) {
             });
         }
     });
+
     router.post('/register-mookie',function(req,res){
         var user = new User();
         //json body needs username, passowrd, email, name
         user.username = req.body.username;
-        user.password = req.body.passowrd;
+        user.password = req.body.password;
         user.email = req.body.email;
-        user.name = req.body.name;
+        user.phonenumber = req.body.phonenumber;
+        user.zipcode = req.body.zipcode;
+        user.address = req.body.address;
+        user.state = req.body.state;
+        user.city = req.body.city;
+        user.country = req.body.country;
+        console.log(user.phonenumber + " this is the phonenumber");
+
 
         user.temporarytoken = jwt.sign({username: user.username, email: user.email},secret,{expiresIn: '7d'});
 
@@ -148,23 +156,23 @@ module.exports = function(router) {
                     res.json({success:false, message:err});
                 }
                 else{
-                    // Create e-mail object to send to user
-                    var email = {
-                        from: 'álamode Staff, alamodetechnology@localhost.com',
-                        to: [user.email, 'alamodetechnology@gmail.com'],
-                        subject: 'Your Activation Link',
-                        text: 'Hello ' + user.name + ', thank you for registering at localhost.com. Please click on the following link to complete your activation: http://localhost:8080/activate/' + user.temporarytoken,
-                        html: 'Hello<strong> ' + user.name + '</strong>,<br><br>Thank you for registering at localhost.com. Please click on the link below to complete your activation:<br><br><a href="http://localhost:8080/activate/' + user.temporarytoken + '">http://localhost:8080/activate/</a>'
-                    };
-                    // Function to send e-mail to the user
-                    client.sendMail(email, function(err, info) {
-                        if (err) {
-                            console.log(err); // If error with sending e-mail, log to console/terminal
-                        } else {
-                            console.log(info); // Log success message to console if sent
-                            console.log(user.email); // Display e-mail that it was sent to
-                        }
-                    });
+                    // // Create e-mail object to send to user
+                    // var email = {
+                    //     from: 'álamode Staff, alamodetechnology@localhost.com',
+                    //     to: [user.email, 'alamodetechnology@gmail.com'],
+                    //     subject: 'Your Activation Link',
+                    //     text: 'Hello ' + user.name + ', thank you for registering at localhost.com. Please click on the following link to complete your activation: http://localhost:8080/activate/' + user.temporarytoken,
+                    //     html: 'Hello<strong> ' + user.name + '</strong>,<br><br>Thank you for registering at localhost.com. Please click on the link below to complete your activation:<br><br><a href="http://localhost:8080/activate/' + user.temporarytoken + '">http://localhost:8080/activate/</a>'
+                    // };
+                    // // Function to send e-mail to the user
+                    // client.sendMail(email, function(err, info) {
+                    //     if (err) {
+                    //         console.log(err); // If error with sending e-mail, log to console/terminal
+                    //     } else {
+                    //         console.log(info); // Log success message to console if sent
+                    //         console.log(user.email); // Display e-mail that it was sent to
+                    //     }
+                    // });
                     res.json({ success: true, message: 'Account registered! Please check your e-mail for activation link.' }); // Send success message back to controller/request
                 }
             })
@@ -278,6 +286,7 @@ module.exports = function(router) {
 
     // Route for user logins
     router.post('/authenticate', function(req, res) {
+        console.log('before anything');
         var loginUser = (req.body.username).toLowerCase(); // Ensure username is checked in lowercase against database
         User.findOne({ username: loginUser }).select('email username password active').exec(function(err, user) {
             if (err) {
@@ -308,6 +317,7 @@ module.exports = function(router) {
                     if (!req.body.password) {
                         res.json({ success: false, message: 'No password provided' }); // Password was not provided
                     } else {
+                        console.log("compare password");
                         var validPassword = user.comparePassword(req.body.password); // Check if password matches password provided by user 
                         if (!validPassword) {
                             res.json({ success: false, message: 'Could not authenticate password' }); // Password does not match password in database
@@ -474,6 +484,17 @@ module.exports = function(router) {
             }
         });
     });
+
+    // router.get('/getusers',function(req,res){
+    //     User.find({},function(err,users){
+    //         if(err){
+    //             res.json({success:false,message:"get user list failed"});
+    //         }
+    //         else{
+    //             res.json({success: true, users: users});
+    //         }
+    //     });
+    // });
 
     // Route to send user's username to e-mail
     router.get('/resetusername/:email', function(req, res) {
@@ -742,9 +763,12 @@ module.exports = function(router) {
                 res.json({ success: false, message: 'Something went wrong. This error has been logged and will be addressed by our staff. We apologize for this inconvenience!' });
             } else {
                 // Check if username was found in database
+                console.log("user ");
                 if (!user) {
                     res.json({ success: false, message: 'No user was found' }); // Return an error
                 } else {
+                                    console.log("user true");
+
                     res.json({ success: true, permission: user.permission }); // Return the user's permission
                 }
             }

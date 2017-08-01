@@ -46,7 +46,7 @@ var UserSchema = new Schema({
     city: {type:String, required: true},
     zipcode: {type:String, required:true},
 
-    active: { type: Boolean, required: true, default: false },
+    active: { type: Boolean, required: true, default: true },
     temporarytoken: { type: String, required: true },
     resettoken: { type: String, required: false },
     permission: { type: String, required: true, default: 'customer' }
@@ -61,4 +61,9 @@ UserSchema.pre('save',function(next){
         next();
     });
 });
+
+UserSchema.methods.comparePassword = function(password) {
+    return bcrypt.compareSync(password, this.password); // Returns true if password matches, false if doesn't
+};
+
 module.exports = mongoose.model('User',UserSchema);

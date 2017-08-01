@@ -5,11 +5,15 @@ angular.module('authServices', [])
 // Factor: Auth handles all login/logout functions	
 .factory('Auth', function($http, AuthToken) {
     var authFactory = {}; // Create the factory object
-    console.log("auth");
     // Function to log the user in
+     
     authFactory.login = function(loginData) {
         return $http.post('/api/authenticate', loginData).then(function(data) {
+                    console.log("during post");
+
             AuthToken.setToken(data.data.token); // Endpoint will return a token to set
+            console.log(data.data.token);
+            console.log(data);
             return data;
         });
     };

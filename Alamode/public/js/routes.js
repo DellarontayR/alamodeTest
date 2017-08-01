@@ -50,6 +50,11 @@ var app = angular.module('appRoutes',['ngRoute'])
         templateUrl: '../mookiedoughfrontend/cookiedough/cookiedoughmainshop.html',
         authenticated: false
     }).
+    when('/testusers',{
+        templateUrl: '../views/testusers.html',
+        authenticated: false,
+        controller: 'MenuController'
+    }).
     when('/localfavmainshop',{
         templateUrl: '../mookiedoughfrontend/localfav/localfavmainshop.html',
         authenticated: false

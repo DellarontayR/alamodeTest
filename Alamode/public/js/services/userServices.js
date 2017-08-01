@@ -4,15 +4,25 @@ angular.module('userServices', [])
 .factory('User', function($http) {
     var userFactory = {}; // Create the userFactory object
 
-    // Register users in database
-    userFactory.create = function(regData) {
-        return $http.post('/api/users', regData);
-    };
-
+    //services for mookie dough
     userFactory.registerMookie = function(regData){
         return $http.post('/api/register-mookie', regData);
     };
 
+    userFactory.signInMookie = function(data){
+        return $http.post('/api/signin-mookie',data);
+    };
+
+    userFactory.getUsers = function(){
+        return $http.get('/api/getusers');
+    };
+
+
+    // Register users in database
+    userFactory.create = function(regData) {
+        return $http.post('/api/users', regData);
+    };
+    
     userFactory.register = function(regData){
         return $http.post('/api/register-user',userData);
     };

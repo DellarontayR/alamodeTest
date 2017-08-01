@@ -6,6 +6,7 @@ alamode.
 controller('regCtrl', function($http, $location, $timeout, User, $scope) {
 console.log('regCtrl active');
     var app = this;
+    app.data ={};
 
     this.registerUser = function(userData,valid,confirmed){
         app.disabled = true;
@@ -28,7 +29,8 @@ console.log('regCtrl active');
 
     this.registerMookie = function(regData){
         if(true){
-            app.regData.name = app.regData.firstName + " " + app.regData.lastName;
+            app.regData.username = app.regData.firstName;// + " " + app.regData.lastName;
+            console.log("user name being bassed" + app.regData.username);
             User.registerMookie(app.regData).then(function(data){
                 if(data.data.success){
                     //login
@@ -38,12 +40,14 @@ console.log('regCtrl active');
                     }, 2000);
                 }
                 else{
+                 console.log("mookie register not success");
+                console.log(data.data.message);
                     //Display Error of some kind
                     //or get the error from data.data.message
                 }
             })
         }
-    }
+    };
 
     // Custom function that registers the user in the database      
     this.regUser = function(regData, valid, confirmed) {
