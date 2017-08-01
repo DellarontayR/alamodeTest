@@ -10,9 +10,9 @@
       <div class="row padding-top">
         <div class="col-md-4 padding-bottom">
           <h3>Login</h3>
-          <form method="post" class="login-form">
-            <input type="text" class="form-control" placeholder="Username" required>
-            <input type="password" class="form-control" placeholder="Password" required>
+          <form method="post" class="login-form" ng-submit="main.doLogin(user.loginData)">
+            <input type="text" class="form-control" placeholder="Username" required ng-model="user.loginData.email">
+            <input type="password" class="form-control" placeholder="Password" required ng-model="user.loginData.password">
             <div class="form-footer">
               <div class="rememberme">
                 <label class="checkbox">
@@ -28,9 +28,9 @@
         <div class="col-md-4 col-md-offset-1">
           <h3>Register</h3>
           <div class="inner">
-            <form method="post" class="login-form">
-              <input type="email" class="form-control" placeholder="E-mail" required>
-              <input type="password" class="form-control" placeholder="Password" required>
+            <form method="post" class="login-form" ng-submit="user.registerMookie(regData)">
+              <input type="text" class="form-control" placeholder="E-mail" required ng-model="user.regData.email">
+              <input type="password" class="form-control" placeholder="Password" required ng-model="user.regData.password">
               <input type="password" class="form-control" placeholder="Repeat password" required>
               <div class="form-footer">
                 <div class="rememberme"></div>
@@ -41,6 +41,9 @@
             </form><!-- .login-form -->
           </div><!-- .inner -->
         </div><!-- .col-md-4.col-md-offset-1 -->
+
+
+
         <div class="col-md-3 padding-top-2x">
           <a href="#" class="social-signup-btn ssb-facebook">
             <i class="socicon-facebook"></i>

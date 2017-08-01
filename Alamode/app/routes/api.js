@@ -133,22 +133,15 @@ module.exports = function(router) {
     router.post('/register-mookie',function(req,res){
         var user = new User();
         //json body needs username, passowrd, email, name
-        user.username = req.body.username;
-        user.password = req.body.password;
         user.email = req.body.email;
-        user.phonenumber = req.body.phonenumber;
-        user.zipcode = req.body.zipcode;
-        user.address = req.body.address;
-        user.state = req.body.state;
-        user.city = req.body.city;
-        user.country = req.body.country;
-        console.log(user.phonenumber + " this is the phonenumber");
-
+        user.password = req.body.password;
+        user.username = req.body.email;
+                    console.log("register not started");
 
         user.temporarytoken = jwt.sign({username: user.username, email: user.email},secret,{expiresIn: '7d'});
-
+        
         if (req.body.username === null || req.body.username === '' || req.body.password === null || req.body.password === '' || 
-            req.body.email === null || req.body.email === '' || req.body.name === null || req.body.name === '') {
+            req.body.email === null || req.body.email === '') {
             res.json({ success: false, message: 'Ensure username, email, and password were provided' });
         } else {
             user.save(function(err){
@@ -173,6 +166,7 @@ module.exports = function(router) {
                     //         console.log(user.email); // Display e-mail that it was sent to
                     //     }
                     // });
+                    console.log("register successful");
                     res.json({ success: true, message: 'Account registered! Please check your e-mail for activation link.' }); // Send success message back to controller/request
                 }
             })
@@ -287,26 +281,26 @@ module.exports = function(router) {
     // Route for user logins
     router.post('/authenticate', function(req, res) {
         console.log('before anything');
-        var loginUser = (req.body.username).toLowerCase(); // Ensure username is checked in lowercase against database
-        User.findOne({ username: loginUser }).select('email username password active').exec(function(err, user) {
+        var loginUser = (req.body.email).toLowerCase(); // Ensure username is checked in lowercase against database
+        User.findOne({ email: loginUser }).select('email username password active').exec(function(err, user) {
             if (err) {
                 // Create an e-mail object that contains the error. Set to automatically send it to myself for troubleshooting.
-                var email = {
-                    from: 'álamode Staff, alamodetechnology@gmail.com',
-                    to: 'alamodetechnology@gmail.com',
-                    subject: 'Error Logged',
-                    text: 'The following error has been reported in the MEAN Stack Application: ' + err,
-                    html: 'The following error has been reported in the MEAN Stack Application:<br><br>' + err
-                };
-                // Function to send e-mail to myself
-                client.sendMail(email, function(err, info) {
-                    if (err) {
-                        console.log(err); // If error with sending e-mail, log to console/terminal
-                    } else {
-                        console.log(info); // Log success message to console if sent
-                        console.log(user.email); // Display e-mail that it was sent to
-                    }
-                });
+                // var email = {
+                //     from: 'álamode Staff, alamodetechnology@gmail.com',
+                //     to: 'alamodetechnology@gmail.com',
+                //     subject: 'Error Logged',
+                //     text: 'The following error has been reported in the MEAN Stack Application: ' + err,
+                //     html: 'The following error has been reported in the MEAN Stack Application:<br><br>' + err
+                // };
+                // // Function to send e-mail to myself
+                // client.sendMail(email, function(err, info) {
+                //     if (err) {
+                //         console.log(err); // If error with sending e-mail, log to console/terminal
+                //     } else {
+                //         console.log(info); // Log success message to console if sent
+                //         console.log(user.email); // Display e-mail that it was sent to
+                //     }
+                // });
                 res.json({ success: false, message: 'Something went wrong. This error has been logged and will be addressed by our staff. We apologize for this inconvenience!' });
             } else {
                 // Check if user is found in the database (based on username)           
@@ -702,6 +696,7 @@ module.exports = function(router) {
 
     // Route to get the currently logged in user    
     router.post('/me', function(req, res) {
+        console.log(req.decoded);
         res.send(req.decoded); // Return the token acquired from middleware
     });
 

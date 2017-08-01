@@ -7,7 +7,6 @@ alamode.controller('mainCtrl',function(Auth,$timeout,$location,$rootScope,$windo
     if ($window.location.pathname === '/') app.home = true; // Check if user is on home page to show home page div
 
     app.user = {};
-    app.u
 
     //Bempah code for cart manager could be switched with really chepa modal
     // $('a.remove').click(function(){
@@ -67,7 +66,7 @@ alamode.controller('mainCtrl',function(Auth,$timeout,$location,$rootScope,$windo
                     var timeCheck = expireTime.exp - timeStamp; // Subtract to get remaining time of token
                     // Check if token has less than 30 minutes till expiration
                     if (timeCheck <= 1800) {
-                        showModal(1); // Open bootstrap modal and let user decide what to do
+                        // showModal(1); // Open bootstrap modal and let user decide what to do
                         $interval.cancel(interval); // Stop interval
                     }
                 }
@@ -157,7 +156,7 @@ alamode.controller('mainCtrl',function(Auth,$timeout,$location,$rootScope,$windo
         console.log(loginData);
         // Function that performs login
         Auth.login(loginData).then(function(data) {
-                    console.log("look for errors");
+            console.log("look for errors");
 
             // Check if login was successful 
             if (data.data.success) {

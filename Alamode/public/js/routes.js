@@ -77,7 +77,7 @@ var app = angular.module('appRoutes',['ngRoute'])
     .when('/register',{
         templateUrl: '../mookiedoughfrontend/login.html',
         controller: 'regCtrl',
-        controllerAs: 'register',
+        controllerAs: 'user',
         authenticated: false
     })
     // Route: User Profile
@@ -319,10 +319,10 @@ app.run(['$rootScope', 'Auth', '$location', 'User', function($rootScope, Auth, $
                 }
             } else if (next.$$route.authenticated === false) {
                 // If authentication is not required, make sure is not logged in
-                if (Auth.isLoggedIn()) {
-                    event.preventDefault(); // If user is logged in, prevent accessing route
-                    $location.path('/profile'); // Redirect to profile instead
-                }
+                // if (Auth.isLoggedIn()) {
+                //     event.preventDefault(); // If user is logged in, prevent accessing route
+                //     $location.path('/profile'); // Redirect to profile instead
+                // }
             }
         }
     });
