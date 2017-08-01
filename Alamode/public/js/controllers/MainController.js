@@ -5,7 +5,8 @@ alamode.controller('mainCtrl',function(Auth,$timeout,$location,$rootScope,$windo
     var app = this;
     app.loadme = false; // Hide main HTML until data is obtained in AngularJS
     if ($window.location.pathname === '/') app.home = true; // Check if user is on home page to show home page div
-    app.message = "You suck";
+    app.username = "";
+    app.message = "Welcome" + app.username;
     app.user = {};
 
     //Bempah code for cart manager could be switched with really chepa modal

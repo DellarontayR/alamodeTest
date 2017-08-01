@@ -7,7 +7,6 @@ controller('regCtrl', function($http, $location, $timeout, User, $scope, Auth) {
 console.log('regCtrl active');
     var app = this;
     app.data ={};
-    app.message = "fuck";
 
     this.registerUser = function(userData,valid,confirmed){
         app.disabled = true;
@@ -36,7 +35,6 @@ console.log('regCtrl active');
                 console.log("mookie register success");
                 app.message = "Login Successful";
                 Auth.login(app.regData);
-                app.message = "Login after nightsfsdf";
 
                 $timeout(function(){
                     $location.path('/home');
