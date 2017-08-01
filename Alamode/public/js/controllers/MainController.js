@@ -5,7 +5,7 @@ alamode.controller('mainCtrl',function(Auth,$timeout,$location,$rootScope,$windo
     var app = this;
     app.loadme = false; // Hide main HTML until data is obtained in AngularJS
     if ($window.location.pathname === '/') app.home = true; // Check if user is on home page to show home page div
-
+    app.message = "You suck";
     app.user = {};
 
     //Bempah code for cart manager could be switched with really chepa modal
@@ -165,6 +165,7 @@ alamode.controller('mainCtrl',function(Auth,$timeout,$location,$rootScope,$windo
                 app.successMsg = data.data.message + '...Redirecting'; // Create Success Message then redirect
                 // Redirect to home page after two milliseconds (2 seconds)
                 console.log("success");
+                showModal();
                 $timeout(function() {
                     $location.path('/'); // Redirect to home
                     app.loginData = ''; // Clear login form
@@ -196,5 +197,16 @@ alamode.controller('mainCtrl',function(Auth,$timeout,$location,$rootScope,$windo
                         Auth.logout(); // Logout user
 
         // showModal(2); // Activate modal that logs out user
+    };
+
+     var hideModal = function() {
+        $("#myModal").modal('hide'); // Hide modal once criteria met
+    };
+
+     // Function to open bootstrap modal     
+    var showModal = function() {
+            app.modalHeader = 'Sign in notifaction'; // Set header
+            app.modalBody = 'Thank you for signing in'; // Set body
+            $("#myModal").modal({ backdrop: "static" }); // Open modal
     };
 });

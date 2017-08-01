@@ -7,6 +7,7 @@ controller('regCtrl', function($http, $location, $timeout, User, $scope, Auth) {
 console.log('regCtrl active');
     var app = this;
     app.data ={};
+    app.message = "fuck";
 
     this.registerUser = function(userData,valid,confirmed){
         app.disabled = true;
