@@ -2,7 +2,7 @@
   "name": "alamodee",
   "description": "álamode application",
   "main": "http://localhost:8080",
-  "node-main": "./server.js",
+  "node-main": "./app.js",
   "version": "0.23.0",
   "dependencies": {
     "angular": "^1.6.3",

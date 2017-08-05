@@ -157,8 +157,6 @@ alamode.controller('mainCtrl',function(Auth,$timeout,$location,$rootScope,$windo
         console.log(loginData);
         // Function that performs login
         Auth.login(loginData).then(function(data) {
-            console.log("look for errors");
-
             // Check if login was successful 
             if (data.data.success) {
                 app.loading = false; // Stop bootstrap loading icon
