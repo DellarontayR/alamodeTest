@@ -61,7 +61,9 @@
     <script src="../js/controllers/MainController.js"></script>
     <script src="../js/controllers/MenuController.js"></script>
     <script src="../js/controllers/UserController.js"></script>
-    <script src="../js/controllers/HomeController.js"></script>
+    <script src="../js/controllers/HomeController.js"></script>   
+     <script src="../js/controllers/TestController.js"></script>
+
 
 </head>
 
@@ -114,14 +116,16 @@
       <div class="toolbar">
         <div class="inner">
           <a href="#" class="mobile-menu-toggle"><i class="material-icons menu"></i></a>
-          <a href="/testusers">Test</a>
+          <!-- <a href="/testusers" sytle="position:relative;">{{main.message}}</a> -->
 
           <a href="/register"><i class="material-icons person"></i></a>
           <div class="cart-btn">
-            <a href="/shopping-cart">
+             <!-- <a href="/testusers">  -->
+            <a href="/shopping-cart">  
+
               <i>
                 <span class="material-icons shopping_basket"></span>
-                <span class="count">2</span>
+                <span class="count">{{main.numberofcartitems}}</span>
               </i>
             </a>
             <!-- Cart Dropdown -->
@@ -152,24 +156,25 @@
       </div><!-- .toolbar -->
     </header><!-- .navbar.navbar-sticky -->
 
-        <div class="modal fade" id="myModal" role="dialog">
-          <div class="modal-dialog">
-            <div class="modal-content">
-              <div class="modal-header">
-                <button type="button" class="close" data-dismiss="modal">&times;</button>
-                <h4 class="modal-title">Mookie dough sign in verifcation</h4>
-              </div>
-              <div class="modal-body">
-                <p>We're glad you're stuffing your face with cookie dough.</p>
-              </div>
-            </div>
+    <div class="modal fade" id="myModal" role="dialog">
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal">&times;</button>
+            <h4 class="modal-title">Mookie dough sign in verifcation</h4>
+          </div>
+          <div class="modal-body">
+            <p>We're glad you're stuffing your face with cookie dough.</p>
           </div>
         </div>
-
-      <div style="padding-top: 80px;">
-    <!-- Main Angular view where routes will be rendered-->
-    <div class="main-view" ng-view></div>
       </div>
+    </div>
+
+
+    <div style="padding-top: 80px;">
+        <!-- Main Angular view where routes will be rendered-->
+        <div class="main-view" ng-view></div>
+    </div>
 
      <!-- Footer -->
     <footer class="footer">

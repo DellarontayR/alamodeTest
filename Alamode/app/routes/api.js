@@ -218,23 +218,6 @@ module.exports = function(router) {
     router.post('/checkusername', function(req, res) {
         User.findOne({ username: req.body.username }).select('username').exec(function(err, user) {
             if (err) {
-                // Create an e-mail object that contains the error. Set to automatically send it to myself for troubleshooting.
-                var email = {
-                    from: 'álamode Staff, alamodetechnology@gmail.com',
-                    to: 'alamodetechnology@gmail.com',
-                    subject: 'Error Logged',
-                    text: 'The following error has been reported in the MEAN Stack Application: ' + err,
-                    html: 'The following error has been reported in the MEAN Stack Application:<br><br>' + err
-                };
-                // Function to send e-mail to myself
-                client.sendMail(email, function(err, info) {
-                    if (err) {
-                        console.log(err); // If error with sending e-mail, log to console/terminal
-                    } else {
-                        console.log(info); // Log success message to console if sent
-                        console.log(user.email); // Display e-mail that it was sent to
-                    }
-                });
                 res.json({ success: false, message: 'Something went wrong. This error has been logged and will be addressed by our staff. We apologize for this inconvenience!' });
             } else {
                 if (user) {
@@ -250,23 +233,6 @@ module.exports = function(router) {
     router.post('/checkemail', function(req, res) {
         User.findOne({ email: req.body.email }).select('email').exec(function(err, user) {
             if (err) {
-                // Create an e-mail object that contains the error. Set to automatically send it to myself for troubleshooting.
-                var email = {
-                    from: 'álamode Staff, alamodetechnology@gmail.com',
-                    to: 'alamodetechnology@gmail.com',
-                    subject: 'Error Logged',
-                    text: 'The following error has been reported in the MEAN Stack Application: ' + err,
-                    html: 'The following error has been reported in the MEAN Stack Application:<br><br>' + err
-                };
-                // Function to send e-mail to myself
-                client.sendMail(email, function(err, info) {
-                    if (err) {
-                        console.log(err); // If error with sending e-mail, log to console/terminal
-                    } else {
-                        console.log(info); // Log success message to console if sent
-                        console.log(user.email); // Display e-mail that it was sent to
-                    }
-                });
                 res.json({ success: false, message: 'Something went wrong. This error has been logged and will be addressed by our staff. We apologize for this inconvenience!' });
             } else {
                 if (user) {
@@ -280,27 +246,9 @@ module.exports = function(router) {
 
     // Route for user logins
     router.post('/authenticate', function(req, res) {
-        console.log('before anything');
         var loginUser = (req.body.email).toLowerCase(); // Ensure username is checked in lowercase against database
         User.findOne({ email: loginUser }).select('email username password active').exec(function(err, user) {
             if (err) {
-                // Create an e-mail object that contains the error. Set to automatically send it to myself for troubleshooting.
-                // var email = {
-                //     from: 'álamode Staff, alamodetechnology@gmail.com',
-                //     to: 'alamodetechnology@gmail.com',
-                //     subject: 'Error Logged',
-                //     text: 'The following error has been reported in the MEAN Stack Application: ' + err,
-                //     html: 'The following error has been reported in the MEAN Stack Application:<br><br>' + err
-                // };
-                // // Function to send e-mail to myself
-                // client.sendMail(email, function(err, info) {
-                //     if (err) {
-                //         console.log(err); // If error with sending e-mail, log to console/terminal
-                //     } else {
-                //         console.log(info); // Log success message to console if sent
-                //         console.log(user.email); // Display e-mail that it was sent to
-                //     }
-                // });
                 res.json({ success: false, message: 'Something went wrong. This error has been logged and will be addressed by our staff. We apologize for this inconvenience!' });
             } else {
                 // Check if user is found in the database (based on username)           
@@ -311,7 +259,6 @@ module.exports = function(router) {
                     if (!req.body.password) {
                         res.json({ success: false, message: 'No password provided' }); // Password was not provided
                     } else {
-                        console.log("compare password");
                         var validPassword = user.comparePassword(req.body.password); // Check if password matches password provided by user 
                         if (!validPassword) {
                             res.json({ success: false, message: 'Could not authenticate password' }); // Password does not match password in database
@@ -331,23 +278,6 @@ module.exports = function(router) {
     router.put('/activate/:token', function(req, res) {
         User.findOne({ temporarytoken: req.params.token }, function(err, user) {
             if (err) {
-                // Create an e-mail object that contains the error. Set to automatically send it to myself for troubleshooting.
-                var email = {
-                    from: 'álamode Staff, alamodetechnology@gmail.com',
-                    to: 'alamodetechnology@gmail.com',
-                    subject: 'Error Logged',
-                    text: 'The following error has been reported in the MEAN Stack Application: ' + err,
-                    html: 'The following error has been reported in the MEAN Stack Application:<br><br>' + err
-                };
-                // Function to send e-mail to myself
-                client.sendMail(email, function(err, info) {
-                    if (err) {
-                        console.log(err); // If error with sending e-mail, log to console/terminal
-                    } else {
-                        console.log(info); // Log success message to console if sent
-                        console.log(user.email); // Display e-mail that it was sent to
-                    }
-                });
                 res.json({ success: false, message: 'Something went wrong. This error has been logged and will be addressed by our staff. We apologize for this inconvenience!' });
             } else {
                 var token = req.params.token; // Save the token from URL for verification 
@@ -367,7 +297,7 @@ module.exports = function(router) {
                             } else {
                                 // If save succeeds, create e-mail object
                                 var email = {
-                                    from: 'álamode Staff, alamodetechnology@gmail.com',
+                                    from: 'Mookie Dough staff, readus@mookiedough.com',
                                     to: user.email,
                                     subject: 'Account Activated',
                                     text: 'Hello ' + user.name + ', Your account has been successfully activated!',
@@ -480,7 +410,7 @@ module.exports = function(router) {
     });
 
     router.get('/getusers',function(req,res){
-        User.find({}).select('email username').exec(function(err,user){
+        User.find({}).select('email username').exec(function(err,users){
             if(err){
                 res.json({success:false, message:"User List retrieval failed"});
             }

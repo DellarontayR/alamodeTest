@@ -1,13 +1,13 @@
 'use strict';
 
 alamode.controller('mainCtrl',function(Auth,$timeout,$location,$rootScope,$window,$interval,User,AuthToken,$scope){
-    console.log("main controller active");
     var app = this;
-    app.loadme = false; // Hide main HTML until data is obtained in AngularJS
     if ($window.location.pathname === '/') app.home = true; // Check if user is on home page to show home page div
     app.username = "";
     app.message = "Welcome" + app.username;
     app.user = {};
+
+    app.numberofcartitems =0;
 
     //Bempah code for cart manager could be switched with really chepa modal
     // $('a.remove').click(function(){
@@ -20,14 +20,10 @@ alamode.controller('mainCtrl',function(Auth,$timeout,$location,$rootScope,$windo
     // $('a.btn.continue').click(function(){
     //     $('li.items').show(400);
     // });
-
-    //main controller nees to keep user session, also checks every 30 seconds with $interval -- Check session
-    //main controller neeeds to signin, loging, auth
-
     
     // Check if user's session has expired upon opening page for the first time
     if (Auth.isLoggedIn()) {
-        console.log(' is logged in');
+        console.log('User is logged in');
 
         // Check if a the token expired
         Auth.getUser().then(function(data) {
@@ -40,8 +36,6 @@ alamode.controller('mainCtrl',function(Auth,$timeout,$location,$rootScope,$windo
             }
         });
     }
-
-    console.log('after is logged');
 
     // Function to run an interval that checks if the user's token has expired
     app.checkSession = function() {
@@ -74,9 +68,7 @@ alamode.controller('mainCtrl',function(Auth,$timeout,$location,$rootScope,$windo
             }, 30000);
         }
     };
-
-    console.log('check session');
-
+    
     app.checkSession(); // Ensure check is ran check, even if user refreshes
 
     // Check if user is on the home page

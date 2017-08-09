@@ -11,7 +11,7 @@
         <div class="col-md-4 padding-bottom">
           <h3>Login</h3>
           <form method="post" class="login-form" ng-submit="main.doLogin(user.loginData)">
-            <input type="text" class="form-control" placeholder="Username" required ng-model="user.loginData.email">
+            <input type="email" class="form-control" placeholder="Email" required ng-model="user.loginData.email">
             <input type="password" class="form-control" placeholder="Password" required ng-model="user.loginData.password">
             <div class="form-footer">
               <div class="rememberme">
@@ -25,7 +25,7 @@
             </div>
             <div class="form-element">
                <h1> {{main.message}}</h1>
-              </div>
+            </div>
           </form><!-- .login-form -->
         </div><!-- .col-md-4 -->
 
@@ -33,9 +33,13 @@
           <h3>Register</h3>
           <div class="inner">
             <form method="post" class="login-form" ng-submit="user.registerMookie(regData)">
-              <input type="text" class="form-control" placeholder="E-mail" required ng-model="user.regData.email">
+              <input type="email" class="form-control" placeholder="E-mail" required ng-model="user.regData.email">
+              <input type="text" class="form-control" placeholder="Username" required ng-model="user.regData.username">
               <input type="password" class="form-control" placeholder="Password" required ng-model="user.regData.password">
-              <input type="password" class="form-control" placeholder="Repeat password" required>
+              <input type="password" name="password" class="form-control"  required ng-disabled="register.disabled"
+               class="form-control" type="password" name="confirmPassword" placeholder="Confirm Password *" match="{{[password]}}"
+                ng-change="register.regData.password = confirm" ng-model="confirm">
+
               <div class="form-footer">
                 <div class="rememberme"></div>
                 <div class="form-submit">

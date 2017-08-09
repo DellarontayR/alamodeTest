@@ -7,17 +7,17 @@ var validate = require('mongoose-validator'); // Import Mongoose Validator Plugi
 
 
 // // Username Validator
-// var usernameValidator = [
-//     validate({
-//         validator: 'isLength',
-//         arguments: [3, 25],
-//         message: 'Username should be between {ARGS[0]} and {ARGS[1]} characters'
-//     }),
-//     validate({
-//         validator: 'isAlphanumeric',
-//         message: 'Username must contain letters and numbers only'
-//     })
-// ];
+var usernameValidator = [
+    validate({
+        validator: 'isLength',
+        arguments: [3, 25],
+        message: 'Username should be between {ARGS[0]} and {ARGS[1]} characters'
+    }),
+    validate({
+        validator: 'isAlphanumeric',
+        message: 'Username must contain letters and numbers only'
+    })
+];
 
 // Password Validator
 var passwordValidator = [
@@ -36,7 +36,7 @@ var passwordValidator = [
 
 // User Mongoose Schema
 var UserSchema = new Schema({
-    username: { type: String, lowercase: true, required: true, unique: true},//, validate: usernameValidator },
+    username: { type: String, lowercase: true, required: true, unique: true, validate: usernameValidator },
     password: { type: String, required: true, validate: passwordValidator, select: false },
     email: { type: String, required: true, lowercase: true, unique: true},
     // phonenumber: {type: String, required: true},
