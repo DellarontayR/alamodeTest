@@ -7,6 +7,8 @@ controller('regCtrl', function($http, $location, $timeout, User, $scope, Auth) {
 console.log('regCtrl active');
     var app = this;
     app.data ={};
+    app.mookieMessage = false;
+    app.regMessage = false;
 
     this.registerUser = function(userData,valid,confirmed){
         app.disabled = true;

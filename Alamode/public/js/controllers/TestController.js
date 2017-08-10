@@ -2,6 +2,7 @@
 
 alamode.controller('TestController', function($scope, $location, User) {
     var app = this;
+    app.users = false;
     User.getUsers().then(function(data){
         if(data.data.success){
             app.users = data.data.users;
@@ -12,7 +13,4 @@ alamode.controller('TestController', function($scope, $location, User) {
             console.log("There was an error getting the user list");
         }
     });
-
-                console.log(app.users);
-
 });

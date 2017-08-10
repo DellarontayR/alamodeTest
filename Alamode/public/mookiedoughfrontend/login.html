@@ -23,7 +23,7 @@
                 <button type="submit" class="btn btn-primary btn-block waves-effect waves-light">Login</button>
               </div>
             </div>
-            <div class="form-element">
+            <div class="form-element" ng-show="user.mookieMessage">
                <h1> {{main.message}}</h1>
             </div>
           </form><!-- .login-form -->
@@ -46,7 +46,7 @@
                   <button type="submit" class="btn btn-primary btn-block waves-effect waves-light">Sign up</button>
                 </div>
               </div>
-              <div class="form-element">
+              <div class="form-element" ng-show="user.regMessage">
                <h1> {{main.message}}</h1>
               </div>
             </form><!-- .login-form -->

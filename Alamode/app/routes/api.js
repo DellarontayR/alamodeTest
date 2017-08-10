@@ -135,9 +135,7 @@ module.exports = function(router) {
         //json body needs username, passowrd, email, name
         user.email = req.body.email;
         user.password = req.body.password;
-        user.username = req.body.email;
-                    console.log("register not started");
-
+        user.username = req.body.username;
         user.temporarytoken = jwt.sign({username: user.username, email: user.email},secret,{expiresIn: '7d'});
         
         if (req.body.username === null || req.body.username === '' || req.body.password === null || req.body.password === '' || 
@@ -149,23 +147,6 @@ module.exports = function(router) {
                     res.json({success:false, message:err});
                 }
                 else{
-                    // // Create e-mail object to send to user
-                    // var email = {
-                    //     from: 'álamode Staff, alamodetechnology@localhost.com',
-                    //     to: [user.email, 'alamodetechnology@gmail.com'],
-                    //     subject: 'Your Activation Link',
-                    //     text: 'Hello ' + user.name + ', thank you for registering at localhost.com. Please click on the following link to complete your activation: http://localhost:8080/activate/' + user.temporarytoken,
-                    //     html: 'Hello<strong> ' + user.name + '</strong>,<br><br>Thank you for registering at localhost.com. Please click on the link below to complete your activation:<br><br><a href="http://localhost:8080/activate/' + user.temporarytoken + '">http://localhost:8080/activate/</a>'
-                    // };
-                    // // Function to send e-mail to the user
-                    // client.sendMail(email, function(err, info) {
-                    //     if (err) {
-                    //         console.log(err); // If error with sending e-mail, log to console/terminal
-                    //     } else {
-                    //         console.log(info); // Log success message to console if sent
-                    //         console.log(user.email); // Display e-mail that it was sent to
-                    //     }
-                    // });
                     console.log("register successful");
                     res.json({ success: true, message: 'Account registered! Please check your e-mail for activation link.' }); // Send success message back to controller/request
                 }
