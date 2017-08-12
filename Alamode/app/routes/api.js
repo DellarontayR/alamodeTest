@@ -143,33 +143,7 @@ module.exports = function(router) {
             res.json({ success: false, message: 'Ensure username, email, and password were provided' });
         } else {
             user.save(function(err){
-                if(err){
-                    if(err.errors!=null){
-                          if (err.errors.email) {
-                            res.json({ success: false, message: err.errors.email.message }); // Display error in validation (email)
-                            } else if (err.errors.password) {
-                                res.json({ success: false, message: err.errors.password.message }); // Display error in validation (password)
-                            }
-                    }
-                    else if(err){
-                           // Check if duplication error exists
-                           res.json({ success: false, message: err});
-                    }
-                }
-                else{
-                    console.log("register successful");
-                    res.json({ success: true, message: 'Account registered! Please check your e-mail for activation link.' }); // Send success message back to controller/request
-                }
-            })
-        }
-    });
-
-
-    router.post('/mookie-login',function(req,res){
-        var login = (req.body.email).toLowerCase();
-
-        User.findOne({email:req.body.email}).select('email username password active').exec(function(err,user){
-            if(err){
+                 if(err){
                     if(err.errors!=null){
                           if (err.errors.email) {
                             res.json({ success: false, message: err.errors.email.message }); // Display error in validation (email)
@@ -190,6 +164,32 @@ module.exports = function(router) {
                         } else {
                             res.json({ success: false, message: err }); // Display any other error
                         }
+                    }
+                }
+                else{
+                    console.log("register successful");
+                    res.json({ success: true, message: 'Account registered! Please check your e-mail for activation link.' }); // Send success message back to controller/request
+                }
+            })
+        }
+    });
+
+
+    router.post('/mookie-login',function(req,res){
+        var login = (req.body.email).toLowerCase();
+
+        User.findOne({email:req.body.email}).select('email username password active').exec(function(err,user){
+                if(err){
+                    if(err.errors!=null){
+                          if (err.errors.email) {
+                            res.json({ success: false, message: err.errors.email.message }); // Display error in validation (email)
+                            } else if (err.errors.password) {
+                                res.json({ success: false, message: err.errors.password.message }); // Display error in validation (password)
+                            }
+                    }
+                    else if(err){
+                           // Check if duplication error exists
+                           res.json({ success: false, message: err});
                     }
                 }
                else{
