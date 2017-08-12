@@ -14,6 +14,7 @@ console.log('regCtrl active');
     app.username = "";
 
     if(Auth.isLoggedIn()){
+        app.loggedIn = true;
         Auth.getUser().then(function(data){
             app.username = data.data.username;
         });
@@ -27,39 +28,21 @@ console.log('regCtrl active');
                 app.loginMessage = true;
                 app.loginMsg = "User authentication successful";
                 app.username = data.token;
-                console.log('Login successful');
-                console.log('token');
-                console.log(data.token);
-                console.log('data.data.token');
-                console.log(data.data.token);
-                console.log(loginData.username);
-                console.log('user hopeful');
-                Auth.getUser().then(function(data){
-                    app.username = data.data.username;
-                    console.log(data);
-                });
-
-                
-
-
-                if (Auth.isLoggedIn()) {
-                    console.log('User is logged in');
-                    app.loggedIn= true;
-
-                    // Check if a the token expired
-                   
-                }
-
                 $timeout(function(){
                     app.loginMessage = false;
                     app.loginMsg = "";
                     $location.path('/account');
-
                 }, 2000);
             }
             else{
                 app.loginMessage = true;
-                app.loginMsg="User could not be signed in";
+                if(data.data.message){
+                    app.loginMsg=data.data.message;
+
+                }
+                else{
+                    app.loginMsg = "User could not be logged in.";
+                }
             }
         });
     };
@@ -89,9 +72,13 @@ console.log('regCtrl active');
             }
             else{
                 app.regMessage = true;
-                app.regMsg = "Error user could not be registered at this time";
-                console.log(app.message);
+                if(data.data.message){
+                    app.regMsg=data.data.message;
 
+                }
+                else{
+                    app.regMsg = "User could not be authenticated";
+                }
             }
         });
     };

@@ -144,7 +144,17 @@ module.exports = function(router) {
         } else {
             user.save(function(err){
                 if(err){
-                    res.json({success:false, message:err});
+                    if(err.errors!=null){
+                          if (err.errors.email) {
+                            res.json({ success: false, message: err.errors.email.message }); // Display error in validation (email)
+                            } else if (err.errors.password) {
+                                res.json({ success: false, message: err.errors.password.message }); // Display error in validation (password)
+                            }
+                    }
+                    else if(err){
+                           // Check if duplication error exists
+                           res.json({ success: false, message: 'User could not be authenticated'});
+                    }
                 }
                 else{
                     console.log("register successful");
@@ -160,32 +170,52 @@ module.exports = function(router) {
 
         User.findOne({email:req.body.email}).select('email username password active').exec(function(err,user){
             if(err){
-                res.json({success:false,message:"Something went wrong, user login failed"});
-            }
-            else{
-                if(!user){
-                    res.json({success:false,message:"Something went wrong, user login failed"});
-                }
-                else if(user){
-                    if(!req.body.password){
-                        res.json({success:false, message:'No password provided'});
+                    if(err.errors!=null){
+                          if (err.errors.email) {
+                            res.json({ success: false, message: err.errors.email.message }); // Display error in validation (email)
+                            } else if (err.errors.username) {
+                                res.json({ success: false, message: err.errors.username.message }); // Display error in validation (username)
+                            } else if (err.errors.password) {
+                                res.json({ success: false, message: err.errors.password.message }); // Display error in validation (password)
+                         }
                     }
-                    else{
-                        var validPassword = user.comparePassword(req.body.password);
-                        if(!validPassword){
-                            res.json({success:false, message:'Incorrect password or username provided'});
+                    else if(err){
+                           // Check if duplication error exists
+                        if (err.code == 11000) {
+                            if (err.errmsg[61] == "u") {
+                                res.json({ success: false, message: 'That username is already taken' }); // Display error if username already taken
+                            } else if (err.errmsg[61] == "e") {
+                                res.json({ success: false, message: 'That e-mail is already taken' }); // Display error if e-mail already taken
+                            }
+                        } else {
+                            res.json({ success: false, message: err }); // Display any other error
+                        }
+                    }
+                }
+               else{
+                    if(!user){
+                        res.json({success:false,message:"Something went wrong, user login failed"});
+                    }
+                    else if(user){
+                        if(!req.body.password){
+                            res.json({success:false, message:'No password provided'});
+                        }
+                        else{
+                            var validPassword = user.comparePassword(req.body.password);
+                            if(!validPassword){
+                                res.json({success:false, message:'Incorrect password or username provided'});
 
-                        }
-                        else if(!user.active){
-                            res.json({success:false,message: 'Account is not yet activated. Please activate.'});
-                        }
-                        else {
-                            var token = jwt.sign({username: user.username,email:user.email},secret,{expiresIn:'7d'});
-                            res.json({success:true, message: 'User authenticated!',token:token});
+                            }
+                            else if(!user.active){
+                                res.json({success:false,message: 'Account is not yet activated. Please activate.'});
+                            }
+                            else {
+                                var token = jwt.sign({username: user.username,email:user.email},secret,{expiresIn:'7d'});
+                                res.json({success:true, message: 'User authenticated!',token:token});
+                            }
                         }
                     }
                 }
-            }
         });
 
 

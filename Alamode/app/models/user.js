@@ -19,6 +19,20 @@ var usernameValidator = [
     })
 ];
 
+// User E-mail Validator
+var emailValidator = [
+    validate({
+        validator: 'matches',
+        arguments: /^[a-zA-Z0-9._%-]+@[a-zA-Z0-9.-]+.[a-zA-Z]{2,4}$/,
+        message: 'Email must be at least 3 characters, max 40 and must be in correct format'
+    }),
+    validate({
+        validator: 'isLength',
+        arguments: [3, 40],
+        message: 'Email should be between {ARGS[0]} and {ARGS[1]} characters'
+    })
+];
+
 // Password Validator
 var passwordValidator = [
     validate({
@@ -38,7 +52,7 @@ var passwordValidator = [
 var UserSchema = new Schema({
     username: { type: String, lowercase: true, required: true, unique: true, validate: usernameValidator },
     password: { type: String, required: true, validate: passwordValidator, select: false },
-    email: { type: String, required: true, lowercase: true, unique: true},
+    email: { type: String, required: true, lowercase: true, unique: true, validate:emailValidator},
     cart: {type:Schema.ObjectId, ref:'Cart',required:false},
     // phonenumber: {type: String, required: true},
     // address: {type:String, required: true},
