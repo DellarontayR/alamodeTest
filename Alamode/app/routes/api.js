@@ -153,7 +153,7 @@ module.exports = function(router) {
                     }
                     else if(err){
                            // Check if duplication error exists
-                           res.json({ success: false, message: 'User could not be authenticated'});
+                           res.json({ success: false, message: err});
                     }
                 }
                 else{
