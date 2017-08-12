@@ -1,5 +1,5 @@
 'use strict';
-
+console.log("here is stripe");
 // angular.module('alamode.controllers', ['userServices'])
 alamode.
 // Controller: regCtrl is used for users to register an account
@@ -7,44 +7,91 @@ controller('regCtrl', function($http, $location, $timeout, User, $scope, Auth) {
 console.log('regCtrl active');
     var app = this;
     app.data ={};
-    app.mookieMessage = false;
+    app.loginMessage = false;
     app.regMessage = false;
+    app.regMsg = "";
+    app.loginMsg = "";
+    app.username = "";
 
-    this.registerUser = function(userData,valid,confirmed){
-        app.disabled = true;
-        app.loading = true; 
-        app.errorMsg = false;
+    if(Auth.isLoggedIn()){
+        Auth.getUser().then(function(data){
+            app.username = data.data.username;
+        });
+    }
 
-        if(valid && confirmed){
-            app.userData.name =app.userData.firstName + " " + app.userData.lastName;
-            User.register(app.userData).then(function(data){
-                if(data.data.success){
-                    $timeout(function(){
-                        $location.path('/login');
-                    }, 2000);
-                }else{
-                    app.errorMsg = data.data.message;
-                }
-            });
-        }
-    };
+    this.mookieLogin = function(loginData){
+        app.loginMessage = false;
 
-    this.registerMookie = function(regData){
-        console.log("user name being bassed" + app.regData.email);
-        User.registerMookie(app.regData).then(function(data){
-            console.log(data);
+        Auth.login(loginData).then(function(data){
             if(data.data.success){
-                console.log("mookie register success");
-                app.message = "Login Successful";
-                Auth.login(app.regData);
+                app.loginMessage = true;
+                app.loginMsg = "User authentication successful";
+                app.username = data.token;
+                console.log('Login successful');
+                console.log('token');
+                console.log(data.token);
+                console.log('data.data.token');
+                console.log(data.data.token);
+                console.log(loginData.username);
+                console.log('user hopeful');
+                Auth.getUser().then(function(data){
+                    app.username = data.data.username;
+                    console.log(data);
+                });
+
+                
+
+
+                if (Auth.isLoggedIn()) {
+                    console.log('User is logged in');
+                    app.loggedIn= true;
+
+                    // Check if a the token expired
+                   
+                }
 
                 $timeout(function(){
-                    $location.path('/home');
+                    app.loginMessage = false;
+                    app.loginMsg = "";
+                    $location.path('/account');
+
                 }, 2000);
             }
             else{
-                app.message = "Error user could not be registered at this time";
+                app.loginMessage = true;
+                app.loginMsg="User could not be signed in";
+            }
+        });
+    };
+
+    this.mookieLogout = function(){
+        Auth.logout();
+    };
+
+    this.registerMookie = function(regData){
+        app.regMessage = false;
+
+        User.registerMookie(regData).then(function(data){
+            console.log(data);
+            if(data.data.success){
+                app.username = regData.username;
+                app.message = "Login Successful";
+                Auth.login(app.regData);
+                console.log('Register successful');
+                app.regMessage = true;
+                app.regMsg = "Sign up was successful";
+
+                $timeout(function(){
+                    app.regMessage = false;
+                    app.regMsg = "";
+                    $location.path('/account');
+                }, 2000);
+            }
+            else{
+                app.regMessage = true;
+                app.regMsg = "Error user could not be registered at this time";
                 console.log(app.message);
+
             }
         });
     };

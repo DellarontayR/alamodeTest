@@ -6,8 +6,10 @@ alamode.controller('mainCtrl',function(Auth,$timeout,$location,$rootScope,$windo
     app.username = "";
     app.message = "Welcome" + app.username;
     app.user = {};
-
+    app.justRegistered = false;
     app.numberofcartitems =0;
+    app.scopemessage = "hopppppe";
+    app.loggedIn = false;
 
     //Bempah code for cart manager could be switched with really chepa modal
     // $('a.remove').click(function(){
@@ -24,6 +26,7 @@ alamode.controller('mainCtrl',function(Auth,$timeout,$location,$rootScope,$windo
     // Check if user's session has expired upon opening page for the first time
     if (Auth.isLoggedIn()) {
         console.log('User is logged in');
+        app.loggedIn= true;
 
         // Check if a the token expired
         Auth.getUser().then(function(data) {
@@ -42,6 +45,8 @@ alamode.controller('mainCtrl',function(Auth,$timeout,$location,$rootScope,$windo
         // Only run check if user is logged in
 
         if (Auth.isLoggedIn()) {
+            app.loggedIn= true;
+
             app.checkingSession = true; // Use variable to keep track if the interval is already running
             // Run interval ever 30000 milliseconds (30 seconds) 
             var interval = $interval(function() {
@@ -87,6 +92,7 @@ alamode.controller('mainCtrl',function(Auth,$timeout,$location,$rootScope,$windo
         // Check if user is logged in
         if (Auth.isLoggedIn()) {
             // Custom function to retrieve user data
+            console.log("realling logged in though");
             Auth.getUser().then(function(data) {
                 if (data.data.username === undefined) {
                     app.isLoggedIn = false; // Variable to deactivate ng-show on index
@@ -145,8 +151,7 @@ alamode.controller('mainCtrl',function(Auth,$timeout,$location,$rootScope,$windo
         app.expired = false; // Clear expired whenever user attempts a login 
         app.disabled = true; // Disable form on submission
         $scope.alert = 'default'; // Set ng class
-        console.log("in login");
-        console.log(loginData);
+
         // Function that performs login
         Auth.login(loginData).then(function(data) {
             // Check if login was successful 
@@ -166,7 +171,7 @@ alamode.controller('mainCtrl',function(Auth,$timeout,$location,$rootScope,$windo
                 }, 2000);
             } else {
                 // Check if the user's account is expired
-                                console.log(" NOt success");
+                console.log("Login failed");
 
                 if (data.data.expired) {
                     app.expired = true; // If expired, set variable to enable "Resend Link" on login page
@@ -185,7 +190,12 @@ alamode.controller('mainCtrl',function(Auth,$timeout,$location,$rootScope,$windo
 
     // Function to logout the user
     app.logout = function() {
-                        Auth.logout(); // Logout user
+        Auth.logout(); // Logout user
+                app.loggedIn = false;
+
+        $location.path('/login');
+        app.loggedIn = false;
+        $scope.loggedIn = false;
 
         // showModal(2); // Activate modal that logs out user
     };
@@ -193,6 +203,7 @@ alamode.controller('mainCtrl',function(Auth,$timeout,$location,$rootScope,$windo
      var hideModal = function() {
         $("#myModal").modal('hide'); // Hide modal once criteria met
     };
+    
 
      // Function to open bootstrap modal     
     var showModal = function() {

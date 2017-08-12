@@ -9,14 +9,11 @@ angular.module('userServices', [])
         return $http.post('/api/register-mookie', regData);
     };
 
-    userFactory.signInMookie = function(data){
-        return $http.post('/api/signin-mookie',data);
-    };
+
 
     userFactory.getUsers = function(){
         return $http.get('/api/getusers');
     };
-
 
     // Register users in database
     userFactory.create = function(regData) {

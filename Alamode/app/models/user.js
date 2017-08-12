@@ -39,6 +39,7 @@ var UserSchema = new Schema({
     username: { type: String, lowercase: true, required: true, unique: true, validate: usernameValidator },
     password: { type: String, required: true, validate: passwordValidator, select: false },
     email: { type: String, required: true, lowercase: true, unique: true},
+    cart: {type:Schema.ObjectId, ref:'Cart',required:false},
     // phonenumber: {type: String, required: true},
     // address: {type:String, required: true},
     // country :{type:String, required:true},

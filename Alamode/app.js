@@ -12,7 +12,7 @@ var path = require('path');
 var passport = require('passport');
 var child_process = require('child_process');
 var stripe = require('stripe')('pk_test_EPjnzpxnrgvUiGWsYrJjqN5t');
-console.log(stripe);
+
 //var nwgui = require('passport');
 app.use(morgan('dev'));
 app.use(bodyParser.json());
@@ -25,7 +25,7 @@ mongoose.Promise = global.Promise;
  * Connection to mongodb database on port: 27107
  */
 mongoose.connect('mongodb://localhost:27017/test', function(err){
-    // mongoose.connect('mongodb://13.56.151.113:27017/production', function(err){
+// mongoose.connect('mongodb://13.56.151.113:27017/production', function(err){
 
     if(err){
         console.log("database not connected " + err);

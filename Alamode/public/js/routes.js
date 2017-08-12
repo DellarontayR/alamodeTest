@@ -1,5 +1,4 @@
 "use strict";
-console.log("what");
 
 var app = angular.module('appRoutes',['ngRoute'])
 
@@ -12,7 +11,6 @@ var app = angular.module('appRoutes',['ngRoute'])
     when('/about',{
         templateUrl: '../mookiedoughfrontend/about.html',
         authenticated: false
-
     }).
     when('single-post01',{
         templateUrl: '../mookiedoughfrontend/blog/single-post01.html',
@@ -101,7 +99,9 @@ var app = angular.module('appRoutes',['ngRoute'])
     })
     .when('/shopping-cart',{
         templateUrl: '../mookiedoughfrontend/shopping-cart.html',
-        authenticated: false
+        authenticated: false,
+        controller: 'CartController',
+        controllerAs: 'cartCtrl'
     })
     .when('/faq', {
         templateUrl: '../mookiedoughfrontend/faq.html',

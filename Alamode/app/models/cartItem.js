@@ -4,8 +4,7 @@ var Schema = mongoose.Schema;
 
 var CartItemSchema = new Schema({
 
-    usernameRef : {type:String,required:true,unique:true,lowercase:true},
-    items:[{}]
+    usernameRef : {type:String,required:true,unique:true,lowercase:true}
 });
 
 // person.friends.push(person);

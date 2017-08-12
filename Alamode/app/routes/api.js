@@ -155,6 +155,42 @@ module.exports = function(router) {
     });
 
 
+    router.post('/mookie-login',function(req,res){
+        var login = (req.body.email).toLowerCase();
+
+        User.findOne({email:req.body.email}).select('email username password active').exec(function(err,user){
+            if(err){
+                res.json({success:false,message:"Something went wrong, user login failed"});
+            }
+            else{
+                if(!user){
+                    res.json({success:false,message:"Something went wrong, user login failed"});
+                }
+                else if(user){
+                    if(!req.body.password){
+                        res.json({success:false, message:'No password provided'});
+                    }
+                    else{
+                        var validPassword = user.comparePassword(req.body.password);
+                        if(!validPassword){
+                            res.json({success:false, message:'Incorrect password or username provided'});
+
+                        }
+                        else if(!user.active){
+                            res.json({success:false,message: 'Account is not yet activated. Please activate.'});
+                        }
+                        else {
+                            var token = jwt.sign({username: user.username,email:user.email},secret,{expiresIn:'7d'});
+                            res.json({success:true, message: 'User authenticated!',token:token});
+                        }
+                    }
+                }
+            }
+        });
+
+
+
+    });
     // Route to register new users  
     router.post('/users', function(req, res) {
         var user = new User(); // Create new User object

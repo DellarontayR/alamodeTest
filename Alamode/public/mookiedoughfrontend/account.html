@@ -1,24 +1,15 @@
 <div class="page-wrapper">
 <!-- Featured Image -->
-    <div class="featured-image" style="background-image: url(../mookiedoughfrontend/img/featured-image/account.jpg);"></div>
+    <!-- <div class="featured-image" style="background-image: url(http://via.placeholder.com/1440x500);"></div> -->
 
     <!-- Content -->
     <section class="container padding-top-3x">
-      <h1 class="mobile-center">Hey, <span class="text-semibold">Kevin</span></h1>
+      <h1 class="mobile-center">Hey, <span class="text-semibold">{{user.username}}</span></h1>
       <div class="row padding-top">
         <div class="col-sm-9 padding-bottom-2x">
           <!-- Nav Tabs -->
           <ul class="nav-tabs mobile-center" role="tablist">
-            <li class="active"><a href="#profile" role="tab" data-toggle="tab">
-              <i class="material-icons person"></i>
-              Register
-            </a></li>
-            <li><a href="#SignIn" role="tab" data-toggle="tab">
-              <i class="material-icons person"></i>
-              Sign In
-            </a></li>
-
-            <li><a href="#orders" role="tab" data-toggle="tab">
+            <li class="active"><a href="#orders" role="tab" data-toggle="tab">
               <i class="material-icons shopping_cart"></i>
               Orders (3)
             </a></li>
@@ -30,144 +21,7 @@
 
           <!-- Tab Panes -->
           <div class="tab-content">
-            <div role="tabpanel" class="tab-pane transition fade scale in active" id="profile">
-              <form method="post" ng-submit="user.registerMookie(regData)">
-                <div class="row">
-                  <div class="col-sm-6">
-                    <div class="form-element">
-                      <label for="first_name">First Name</label>
-                      <input type="text" id="first_name" class="form-control" value="" ng-model="user.regData.firstName">
-                    </div>
-                  </div>
-                  <div class="col-sm-6">
-                    <div class="form-element">
-                      <label for="last_name">Last Name</label>
-                      <input type="text" id="last_name" class="form-control" value="" ng-model="user.regData.lastName">
-                    </div>
-                  </div>
-                </div>
-                <div class="row">
-                  <div class="col-sm-6">
-                    <div class="form-element">
-                      <label for="email">Email Address</label>
-                      <input type="email" id="email" class="form-control" value="" ng-model="user.regData.email">
-                    </div>
-                  </div>
-                  <div class="col-sm-6">
-                    <div class="form-element">
-                      <label for="phone">Phone Number</label>
-                      <input type="text" id="phone" class="form-control" value="" ng-model="user.regData.phonenumber">
-                    </div>
-                  </div>
-                </div>
-                <div class="row">
-                  <div class="col-sm-6">
-                    <div class="form-element">
-                      <label for="password">Password</label>
-                      <input type="password" id="password" class="form-control" value="" ng-model="user.regData.password">
-                    </div>
-                  </div>
-                  <div class="col-sm-6">
-                    <div class="form-element">
-                      <label for="password_confirm">Confirm Password</label>
-                      <input type="password" id="password_confirm" class="form-control" value="">
-                    </div>
-                  </div>
-                </div>
-                <div class="form-element">
-                  <label for="address">Address</label>
-                  <input type="text" id="address" class="form-control" value="" ng-model="user.regData.address">
-                </div>
-                <div class="row">
-                  <div class="col-sm-6">
-                    <div class="form-element">
-                      <label for="country">Country</label>
-                      <input type="text" id="country" class="form-control" value="" ng-model="user.regData.country">
-                    </div>
-                  </div>
-                  <div class="col-sm-6">
-                    <div class="form-element">
-                      <label for="state">State</label>
-                      <input type="text" id="state" class="form-control" value="" ng-model="user.regData.state">
-                    </div>
-                  </div>
-                </div>
-                <div class="row">
-                  <div class="col-sm-6">
-                    <div class="form-element">
-                      <label for="city">City</label>
-                      <input type="text" id="city" class="form-control" value="" ng-model="user.regData.city">
-                    </div>
-                  </div>
-                  <div class="col-sm-6">
-                    <div class="form-element">
-                      <label for="zip">ZIP Code</label>
-                      <input type="text" id="zip" class="form-control" value="00000" ng-model="user.regData.zipcode">
-                    </div>
-                  </div>
-                </div>
-                <div class="row">
-                  <div class="col-sm-6">
-                    <label class="checkbox space-top">
-                      <input type="checkbox" checked> Subscribe me to newsletter
-                    </label>
-                  </div>
-                  <div class="col-sm-6 text-right mobile-center">
-                    <button type="submit" class="btn btn-primary waves-effect waves-light">Sign Up</button>
-                  </div>
-                </div>
-                <div class="row">
-                  <div class="col-sm-6">
-                    <label class="form-element">
-                      <a href="/register"> Login</a>
-                    </label>
-                  </div>
-                </div>
-              </form>
-            </div><!-- .tab-pane#profile -->
-
-            <div role="tabpanel" class="tab-pane transition fade scale" id="SignIn">
-              <form method="post" ng-submit="main.doLogin(user.data)">
-                <div class="row">
-                  <div class="col-sm-6">
-                    <div class="form-element">
-                      <label for="email">Email Address</label>
-                      <input  id="email" class="form-control" value="" ng-model="user.data.username">
-                    </div>
-                  </div>
-                </div>
-                <div class="row">
-                  <div class="col-sm-6">
-                    <div class="form-element">
-                      <label for="password">Password</label>
-                      <input type="password" id="password" class="form-control" value="" ng-model="user.data.password">
-                    </div>
-                  </div>
-                </div>
-                <div class="row">
-                  <div class="col-sm-6">
-                    <label class="checkbox space-top">
-                      <input type="checkbox" checked> Subscribe me to newsletter
-                    </label>
-                  </div>
-                  <div class="col-sm-6 text-right mobile-center">
-                    <button type="submit" class="btn btn-primary waves-effect waves-light">Sign In</button>
-                  </div>
-                </div>
-
-                <div class="row">
-                  <div class="col-sm-6">
-                    <label class="form-element">
-                     {{app.message}}
-                    </label>
-                  </div>
-                </div>
-
-                </form>
-
-            </div>
-
-            <div role="tabpanel" class="tab-pane transition fade scale" id="orders">
+            <div role="tabpanel" class="tab-pane transition fade scale active" id="orders">
               <div class="table-responsive">
                 <table>
                   <thead>
@@ -370,7 +224,7 @@
             <h3>Your Mookie Dough points:</h3>
             <h3><span class="text-semibold">1356</span> <span class="h5">points</span></h3>
             <p class="text-sm text-gray">You can spend these points on our products</p>
-            <a href="shop-boxed-sl.html" class="btn btn-default btn-ghost icon-left btn-block">
+            <a href="/home" class="btn btn-default btn-ghost icon-left btn-block">
               <i class="material-icons arrow_back"></i>
               Go to Shop
             </a>
