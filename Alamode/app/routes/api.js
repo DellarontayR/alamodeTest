@@ -173,40 +173,6 @@ module.exports = function(router) {
                 })
             });
         }
-        
-        // Product.findById(req.body.productId).select('title price description imagePath').exec(function(err,product){
-        //     if(err){
-        //         res.json({success:false,message:'Item could not be added to user cart'});
-        //     }
-        //     else{
-        //         if(!product){
-        //             res.json({success:false,message:'Product could not be found'});
-        //         }
-        //         else{
-        //             Cart.findById(req.body.cartId).select().exec(function(err,cart){
-        //                 if(err || !cart){
-        //                     res.json({success:false,message:err});
-        //                 }
-        //                 else{
-        //                     console.log('cart');
-        //                     console.log(cart);
-        //                     var productData = {};
-        //                     productData.productId = product._id;
-        //                     productData.quantity = 1;
-        //                     cart.products.push({productId:product._id, qty:1});
-        //                     cart.save(function(err){
-        //                         if(err){
-        //                             res.json({success:false, message:'Product could not be pushed to cart'});
-        //                         }
-        //                         else{
-        //                             res.json({success:true,message:'Product was successfully added to cart', cart:cart});
-        //                         }
-        //                     });
-        //                 }
-        //             });
-        //         }
-        //     }
-        // });
     });
 
 

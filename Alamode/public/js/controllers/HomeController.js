@@ -50,11 +50,9 @@ alamode.controller('HomeController', function($scope, $location, Auth, User, Car
     };
     getProductsFromServer(function(catalogProducts){
         home.catalogProducts = catalogProducts;
-        $scope.apply();
     });
     getBestsellers(function(bestsellers){
         home.bestsellers = bestsellers;
-        $scope.apply();
     });
 
     console.log('hellllo from home');
