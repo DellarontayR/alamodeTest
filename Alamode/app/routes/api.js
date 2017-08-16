@@ -124,10 +124,6 @@ module.exports = function(router) {
     });
 
     router.post('/addItemToCart',function(req,res){
-        // productId, cartId
-        // product
-        // var product new product()
-
         console.log('we;re good');
         var product = new Product(req.body);
         if(req.body.title == null || req.body.title =='' || req.body.description==null ||

@@ -111,4 +111,39 @@
         </div><!-- .grid-item -->
       </div><!-- .isotope-grid -->
     </section><!-- .container-fluid -->
+
+    <script>
+	$(window).on('load', function(){
+
+		// Isotope Grid
+		var $grid = $('.isotope-grid');
+		if($grid.length > 0) {
+		  $grid.isotope({
+			  itemSelector: '.grid-item',
+			  transitionDuration: '0.7s',
+			  masonry: {
+			    columnWidth: '.grid-sizer',
+			    gutter: '.gutter-sizer'
+			  }
+		  });
+			setTimeout( function () {
+        $grid.isotope( 'layout' );
+      }, 1 );
+		}
+
+		// Filtering
+		if($('.filter-grid').length > 0) {
+		  var $filterGrid = $('.filter-grid');
+			$('.nav-filters').on( 'click', 'a', function(e) {
+				e.preventDefault();
+				$('.nav-filters li').removeClass('active');
+				$(this).parent().addClass('active');
+			  var $filterValue = $(this).attr('data-filter');
+			  $filterGrid.isotope({ filter: $filterValue });
+			});
+		}
+	});
+
+      <script>
+
   </div><!-- .page-wrapper -->

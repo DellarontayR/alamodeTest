@@ -118,7 +118,7 @@ alamode.controller('mainCtrl',function(Auth,$timeout,$location,$rootScope,$windo
                         app.addProductToDB(productData);
 
                         var productData2 ={};
-                        productData2.imagePath = "../imgs/cookiesnmilk.jpg";
+                        productData2.imagePath = "../imgs/CookiesNMilk.jpg";
                         productData2.price = 5.99;
                         productData2.description = "Oreo Cookie Dough Half Pint";
                         productData2.title = "Oreo Cookie Dough Half Pint";
@@ -151,6 +151,28 @@ alamode.controller('mainCtrl',function(Auth,$timeout,$location,$rootScope,$windo
         app.email = userData.userEmail;
         app.loadme = true;
     });
+
+    var getCurrentCart = function(callback){
+        var userData = {};
+        userData.userEmail = app.email;
+        User.getUserCart(userData).then(function(data){
+            if(data.data.success){
+                if(data.data.user.cart){
+
+
+                }
+                {
+
+                }
+
+            }
+            else{
+                console.log('no success');
+            }
+
+
+        });
+    };
     
 
 
