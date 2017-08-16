@@ -148,11 +148,10 @@ alamode.controller('mainCtrl',function(Auth,$timeout,$location,$rootScope,$windo
             }
         });
         }
-    };
-    
+    };    
 
 
-    app.mookieCheckSession = function(){
+    $scope.mookieCheckSession = function(){
         var interval = $interval(function(){
             app.checkUserState(function(userData){
                     app.username = userData.username;
@@ -165,10 +164,10 @@ alamode.controller('mainCtrl',function(Auth,$timeout,$location,$rootScope,$windo
                     });
                     app.loadme = true;
                 });
-        },1000);
+        },10000);
     };
 
-    app.mookieCheckSession();
+    $scope.mookieCheckSession();
     // Function to run an interval that checks if the user's token has expired
     app.checkSession = function() {
         // Only run check if user is logged in

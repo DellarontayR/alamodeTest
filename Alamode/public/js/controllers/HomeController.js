@@ -7,7 +7,7 @@ alamode.controller('HomeController', function($scope,$rootScope, $location, Auth
     home.isLoggedIn = false;
     home.userId = "";
     home.catalogProducts = false;
-    home.bestsellers = false;
+    home.bestsellers = false;        
 
 
     home.getProductsFromServer = function(callback){
