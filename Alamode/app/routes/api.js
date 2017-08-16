@@ -166,7 +166,6 @@ module.exports = function(router) {
                                 newCart.save(function(err,lastCart){
                                         console.log('how the fuck');
                                         console.log(lastCart);
-                                        console.log(newUser);
                                 });
                             }
                         });
