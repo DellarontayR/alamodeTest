@@ -12,6 +12,7 @@ alamode.controller('mainCtrl',function(Auth,$timeout,$location,$rootScope,$windo
     app.loggedIn = false;
     app.userEmail = "";
     app.userData = {};
+    app.loadme = true;
     
     app.tryAddCart = function(){
         console.log('try');
@@ -45,30 +46,6 @@ alamode.controller('mainCtrl',function(Auth,$timeout,$location,$rootScope,$windo
             }
         })
     };
-
-    app.checkForSeed = function(){
-        (function (){
-        Product.getCatalogProducts().then(function(data){
-            console.log('data from catalog');
-            console.log(data);
-            if(data.data.success){
-                console.log("get catalog list success");
-                home.catalogProducts = data.data.catalogProducts;
-            }
-            else{
-                console.log("get catalog list failure");
-            }
-        })
-
-    })();
-
-        if(true){
-
-        }
-        else{
-
-        }
-    };
     // app.addItemToCart("599278c4351a9be0902e738a","5993887661572d44c9bddaf2");
 
     // Check if user's session has expired upon opening page for the first time
@@ -99,6 +76,7 @@ alamode.controller('mainCtrl',function(Auth,$timeout,$location,$rootScope,$windo
     };
 
     app.checkForProducts = function(){
+        app.loadme=false;
         Product.getCatalogProducts().then(function(data){
             if(data.data.success){
                 console.log('catalog products found in mongodb server');
@@ -156,6 +134,7 @@ alamode.controller('mainCtrl',function(Auth,$timeout,$location,$rootScope,$windo
                         productData3.category = 'Bestseller';
                         app.addProductToDB(productData3);
                     })();
+
                 }
                 else{
                     console.log('Getting catalog products has caused errors');
@@ -169,6 +148,7 @@ alamode.controller('mainCtrl',function(Auth,$timeout,$location,$rootScope,$windo
     app.checkUserState(function(userData){
         app.username = userData.username;
         app.email = userData.userEmail;
+        app.loadme = true;
     });
     
 

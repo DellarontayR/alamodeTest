@@ -9,6 +9,7 @@ alamode.controller('HomeController', function($scope, $location, Auth, User, Car
     home.bestsellers = false;
 
 
+    console.log('hellllo from home');
     // Get Catalog products for display
     (function (){
         Product.getCatalogProducts().then(function(data){
@@ -56,6 +57,10 @@ alamode.controller('HomeController', function($scope, $location, Auth, User, Car
                 cartData.description = product.description;
                 cartData.title = product.title;
                 cartData.imagePath = product.imagePath;
+                //Complexity
+                //user scenarios
+                //A user is adding to no cart, create cart then add product
+                // A user is addin to cart with item already in it. findoneandupdate the quantity value when a product is available
                 cartData.qty = 1;
                 cartData.userId = data.data.user._id;
                 Cart.addItemToCart(cartData).then(function(data){
@@ -68,36 +73,22 @@ alamode.controller('HomeController', function($scope, $location, Auth, User, Car
                 });
             });
         });
-
-        console.log(product);
+    };
+    home.checkUserState = function(callback){
+        if(Auth.isLoggedIn()){
+                home.loggedIn = true;
+                Auth.getUser().then(function(data){
+                    var userData = {};
+                    userData.username = data.data.username;
+                    return callback(userData);
+            });
+        }
     };
 
-    if(Auth.isLoggedIn()){
-        home.loggedIn = true;
-        Auth.getUser().then(function(data){
-            home.username = data.data.username;
-            home.userId = data.data.id;
-        });
-    }
+    home.checkUserState(function(userDate){
+        home.username = userDate.username;
+    });
 
-    home.addToUserCart = function(cartData){
-        Cart.addCartToUser(home.userId).then(function(data){
-            if(data.data.success){
-                console.log(data);
-            }
-            else{
-
-            }
-        });
-    };
-
-    home.removeFromUserCart = function(cartData){
-
-    };
-
-    home.goEat  = function(){
-        $location.path('/menu');
-    };
     home.modalShown = false;
     home.toggleModal = function(){
         home.modalShown = !home.modalShown;
