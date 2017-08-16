@@ -7,7 +7,7 @@ alamode.controller('mainCtrl',function(Auth,$timeout,$location,$rootScope,$windo
     app.message = "Welcome" + app.username;
     app.user = {};
     app.justRegistered = false;
-    app.numberofcartitems = 0;
+    app.numberofcartitems = "";
     app.scopemessage = "hopppppe";
     app.loggedIn = false;
     app.userEmail = "";
@@ -23,13 +23,6 @@ alamode.controller('mainCtrl',function(Auth,$timeout,$location,$rootScope,$windo
             return callback(data);
         }
     };
-
-    app.seedProductList = function(){
-        
-    };
-
-
-
     app.tryAddCart = function(){
         console.log('try');
         app.userData = {};
@@ -53,23 +46,74 @@ alamode.controller('mainCtrl',function(Auth,$timeout,$location,$rootScope,$windo
     app.addProductToDB = function(productData){
         Product.seedProduct(productData).then(function(data){
             if(data.data.success){
-                console.log('seed data');
+                console.log('seed product data successful');
                 console.log(data);
-                console.log(data.data.message);
             }
             else{
-                console.log("error when seeding product");
-                console.log(data.data.message);
+                console.log("error when seeding product data");
+                console.log(data);
             }
         })
     };
-    var productData = {};
-    productData.imagePath = "../imgs/Media/localfav.jpg";
-    productData.price = 5.99;
-    productData.description = "Delicious birthday cake style cookie dough treat";
-    productData.title = "Birthday Surprise";
-    productData.catalogProduct = true;
-    // app.addProductToDB(productData);
+
+    // app.seedBestsellers = 
+    // (function(){
+    //     var productData = {};
+    //     productData.imagePath = "../imgs/Media/localfav.jpg";
+    //     productData.price = 5.99;
+    //     productData.description = "Delicious birthday cake style cookie dough treat";
+    //     productData.title = "Birthday Surprise";
+    //     productData.catalogProduct = true;
+    //     productData.category = 'Bestseller';
+    //     app.addProductToDB(productData);
+
+    //     var productData2 ={};
+    //     productData2.imagePath = "../imgs/cookiesnmilk.jpg";
+    //     productData2.price = 5.99;
+    //     productData2.description = "Oreo Cookie Dough Half Pint";
+    //     productData2.title = "Oreo Cookie Dough Half Pint";
+    //     productData2.catalogProduct = true;
+    //     productData2.category = 'Bestseller';
+    //     app.addProductToDB(productData2);
+
+    //     var productData3 ={};
+    //     productData3.imagePath = "../imgs/ChocolateChip.jpg";
+    //     productData3.price = 5.99;
+    //     productData3.description = "Chocolate Chip Quarter Pint";
+    //     productData3.title = "Chocolate Chip Quarter Pint";
+    //     productData3.catalogProduct = true;
+    //     productData3.category = 'Bestseller';
+    //     app.addProductToDB(productData3);
+    // })();
+
+    // app.seedBestsellers();
+
+    // app.seedProducts = 
+    // (function(){
+    //     var productData = {};
+    //     productData.imagePath = "../imgs/Media/peanutButter.jpg";
+    //     productData.price = 5.99;
+    //     productData.description = "Peanut Butter Quivering Goodness";
+    //     productData.title = "Peanut Butter Quivering Goodness";
+    //     productData.catalogProduct = true;
+    //     app.addProductToDB(productData);
+    //     var productData2 ={}
+    //     productData2.imagePath = "../imgs/Media/almondmilk.jpg";
+    //     productData2.price = 3.99;
+    //     productData2.description = "Refreshing almond milk";
+    //     productData2.title = "Refreshing almond milk";
+    //     productData2.catalogProduct = true;
+    //     app.addProductToDB(productData2);
+    //     var productData3 ={};
+    //     productData3.imagePath = "../imgs/Media/highbrewcoffee.jpg";
+    //     productData3.price = 3.99;
+    //     productData3.description = "High Brew Coffee";
+    //     productData3.title = "High Brew Coffee";
+    //     productData3.catalogProduct = true;
+    //     app.addProductToDB(productData3);
+    // })();
+
+    // app.seedProducts();
 
     app.seedCart = function(){
         var seedData = {};

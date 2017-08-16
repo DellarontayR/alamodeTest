@@ -1,18 +1,21 @@
 'use strict';
 
 alamode.controller('HomeController', function($scope, $location, Auth, User, Cart,Product) {
+
     var home = this;
     home.username = "";
     home.isLoggedIn = false;
     home.userId = "";
     home.catalogProducts = false;
-
+    home.bestsellers = false;
     // home.catalogProducts
+    console.log(home.bestsellers);
 
 
     console.log('now');
-    var now = (function (){
+    (function (){
         Product.getCatalogProducts().then(function(data){
+            console.log('data from catalog');
             console.log(data);
             if(data.data.success){
                 console.log("get catalog list success");
@@ -24,8 +27,30 @@ alamode.controller('HomeController', function($scope, $location, Auth, User, Car
         })
 
     })();
+  console.log('hey form home');
+
+    var best = {};
+    best.category = 'Bestseller';
+
+    (function(best){
+        Product.getProductCategory(best).then(function(data){
+            console.log(data);
+            if(data.data.success){
+                console.log('get bestsellers success');
+                console.log(data);
+                home.bestsellers = data.data.bestsellers;
+            }
+            else{
+                console.log('could not get bestsellers');
+            }
+        });
+    }(best));
+
     console.log('catalog products');
     console.log(home.catalogProducts);
+
+    console.log('bestsellers');
+    console.log(home.bestsellers);
 
     home.tryAddCart = function(productId){
         console.log(productId);

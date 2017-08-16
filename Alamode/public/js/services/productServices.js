@@ -18,6 +18,11 @@ angular.module('productServices',[])
         return $http.get('/api/getCatalogProducts');
     };
 
+    productFactory.getProductCategory = function(categoryData){
+        return $http.post('/api/getProductCategory',categoryData);
+    };
+
+
     productFactory.addProductToCatalog = function(product){
         return $http.post('/api/addProductToCatalog',product);
     };

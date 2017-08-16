@@ -171,7 +171,7 @@ module.exports = function(router) {
         else{
                 product.save(function(err,newProduct){
                     if(err){
-                        res.json({success:false,message:"Error product could not be added to product catalog"});
+                        res.json({success:false,message:err});
                     }
                     else{
                         if(!product){
@@ -187,11 +187,25 @@ module.exports = function(router) {
 
     router.get('/getCatalogProducts',function(req,res){
         Product.find({catalogProduct:true}).select().exec(function(err,catalogProducts){
+            console.log('made it to get catalog');
             if(err || !catalogProducts){
                 res.json({success:false,message:'Product list could not be found on server'});
             }
             else{
                 res.json({success:true,message:'Product list successfully returned',catalogProducts:catalogProducts});
+            }
+        });
+    });
+
+    router.post('/getProductCategory',function(req,res){
+        console.log('get product');
+        console.log(req.body);
+        Product.find({category:req.body.category}).select().exec(function(err,bestsellers){
+            if(err || !bestsellers){
+                res.json({success:false,message:'Product list could not be found on server'});
+            }
+            else{
+                res.json({success:true,message:'bestsellers incoming',bestsellers:bestsellers});
             }
         });
     });

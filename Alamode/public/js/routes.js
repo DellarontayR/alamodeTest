@@ -328,5 +328,3 @@ app.run(['$rootScope', 'Auth', '$location', 'User', function($rootScope, Auth, $
         }
     });
 }]);
-
-console.log("what");
