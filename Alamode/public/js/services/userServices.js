@@ -17,11 +17,13 @@ angular.module('userServices', [])
         return $http.get('/api/getUserId',);
     };
 
+    userFactory.getUserCart = function(userData){
+        return $http.post('/api/getCartFromUser',userData);
+    };
+    
+        /////////////////////////////////////////////////////////////////////
 
 
-
-
-    /////////////////////////////////////////////////////////////////////
 
     // Register users in database
     userFactory.create = function(regData) {
@@ -35,10 +37,6 @@ angular.module('userServices', [])
     // Check if username is available at registration
     userFactory.checkUsername = function(regData) {
         return $http.post('/api/checkusername', regData);
-    };
-
-    userFactory.getUserCart = function(userData){
-        return $http.post('/api/getCartFromUser',userData);
     };
 
     // Check if e-mail is available at registration

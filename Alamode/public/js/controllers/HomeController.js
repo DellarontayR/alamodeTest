@@ -1,18 +1,15 @@
 'use strict';
 
 alamode.controller('HomeController', function($scope, $location, Auth, User, Cart,Product) {
-
     var home = this;
     home.username = "";
     home.isLoggedIn = false;
     home.userId = "";
     home.catalogProducts = false;
     home.bestsellers = false;
-    // home.catalogProducts
-    console.log(home.bestsellers);
 
 
-    console.log('now');
+    // Get Catalog products for display
     (function (){
         Product.getCatalogProducts().then(function(data){
             console.log('data from catalog');
@@ -27,11 +24,11 @@ alamode.controller('HomeController', function($scope, $location, Auth, User, Car
         })
 
     })();
-  console.log('hey form home');
 
     var best = {};
     best.category = 'Bestseller';
 
+    // Get Bestseller products for display in model
     (function(best){
         Product.getProductCategory(best).then(function(data){
             console.log(data);
@@ -46,16 +43,34 @@ alamode.controller('HomeController', function($scope, $location, Auth, User, Car
         });
     }(best));
 
-    console.log('catalog products');
-    console.log(home.catalogProducts);
+    home.addToCart = function(product){
+        Auth.getUser().then(function(data){
+            home.userEmail = data.data.email;
+            home.username = data.data.username;
+            var userData = {};
+            userData.userEmail = data.data.email;
+            User.getUserCart(userData).then(function(data){
+                var cartData ={};
+                console.log(data);
+                cartData.price = product.price;
+                cartData.description = product.description;
+                cartData.title = product.title;
+                cartData.imagePath = product.imagePath;
+                cartData.qty = 1;
+                cartData.userId = data.data.user._id;
+                Cart.addItemToCart(cartData).then(function(data){
+                    if(data.data.success){
+                        home.message="cart updated";
+                    }
+                    else{
+                        home.message="home not updated";
+                    }
+                });
+            });
+        });
 
-    console.log('bestsellers');
-    console.log(home.bestsellers);
-
-    home.tryAddCart = function(productId){
-        console.log(productId);
+        console.log(product);
     };
-
 
     if(Auth.isLoggedIn()){
         home.loggedIn = true;

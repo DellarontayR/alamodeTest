@@ -4,16 +4,17 @@ alamode.controller('CartController', function($scope, $location, User, Cart, Aut
     var app = this;
     app.user = {};
     app.user.username = "";
-    // app.user.cart.items.coun
-    app.testCharge = function(){         
-        stripe.charges.create({
-        amount: 2000,
-        currency: "usd",
-        source: "tok_mastercard", // obtained with Stripe.js
-        metadata: {'order_id': '6735'}
-        });
 
-    }
+
+    // app.testCharge = function(){         
+    //     stripe.charges.create({
+    //     amount: 2000,
+    //     currency: "usd",
+    //     source: "tok_mastercard", // obtained with Stripe.js
+    //     metadata: {'order_id': '6735'}
+    //     });
+
+    // };
 
     if(Auth.isLoggedIn()){
         Auth.getUser().then(function(retData){
@@ -22,13 +23,5 @@ alamode.controller('CartController', function($scope, $location, User, Cart, Aut
             }
         });
     }
-
-    // Cart.addCartToUser(app.user).then(function(retData){
-    //     if(retData.data.success){
-    //         app.user.message = retData.data.message;
-    //         app.user.cart = retData.data.cart;
-    //     }
-    // });
-
 
 });

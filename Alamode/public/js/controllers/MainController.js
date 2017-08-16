@@ -12,17 +12,7 @@ alamode.controller('mainCtrl',function(Auth,$timeout,$location,$rootScope,$windo
     app.loggedIn = false;
     app.userEmail = "";
     app.userData = {};
-
-    var getEmail =function(userEmail){
-        app.userEmail = userEmail;
-        console.log("user email: " + app.userEmail);
-    };
-
-    var getEmailClosure =function(data,callback){
-        return function(){
-            return callback(data);
-        }
-    };
+    
     app.tryAddCart = function(){
         console.log('try');
         app.userData = {};
@@ -56,139 +46,43 @@ alamode.controller('mainCtrl',function(Auth,$timeout,$location,$rootScope,$windo
         })
     };
 
-    // app.seedBestsellers = 
-    // (function(){
-    //     var productData = {};
-    //     productData.imagePath = "../imgs/Media/localfav.jpg";
-    //     productData.price = 5.99;
-    //     productData.description = "Delicious birthday cake style cookie dough treat";
-    //     productData.title = "Birthday Surprise";
-    //     productData.catalogProduct = true;
-    //     productData.category = 'Bestseller';
-    //     app.addProductToDB(productData);
-
-    //     var productData2 ={};
-    //     productData2.imagePath = "../imgs/cookiesnmilk.jpg";
-    //     productData2.price = 5.99;
-    //     productData2.description = "Oreo Cookie Dough Half Pint";
-    //     productData2.title = "Oreo Cookie Dough Half Pint";
-    //     productData2.catalogProduct = true;
-    //     productData2.category = 'Bestseller';
-    //     app.addProductToDB(productData2);
-
-    //     var productData3 ={};
-    //     productData3.imagePath = "../imgs/ChocolateChip.jpg";
-    //     productData3.price = 5.99;
-    //     productData3.description = "Chocolate Chip Quarter Pint";
-    //     productData3.title = "Chocolate Chip Quarter Pint";
-    //     productData3.catalogProduct = true;
-    //     productData3.category = 'Bestseller';
-    //     app.addProductToDB(productData3);
-    // })();
-
-    // app.seedBestsellers();
-
-    // app.seedProducts = 
-    // (function(){
-    //     var productData = {};
-    //     productData.imagePath = "../imgs/Media/peanutButter.jpg";
-    //     productData.price = 5.99;
-    //     productData.description = "Peanut Butter Quivering Goodness";
-    //     productData.title = "Peanut Butter Quivering Goodness";
-    //     productData.catalogProduct = true;
-    //     app.addProductToDB(productData);
-    //     var productData2 ={}
-    //     productData2.imagePath = "../imgs/Media/almondmilk.jpg";
-    //     productData2.price = 3.99;
-    //     productData2.description = "Refreshing almond milk";
-    //     productData2.title = "Refreshing almond milk";
-    //     productData2.catalogProduct = true;
-    //     app.addProductToDB(productData2);
-    //     var productData3 ={};
-    //     productData3.imagePath = "../imgs/Media/highbrewcoffee.jpg";
-    //     productData3.price = 3.99;
-    //     productData3.description = "High Brew Coffee";
-    //     productData3.title = "High Brew Coffee";
-    //     productData3.catalogProduct = true;
-    //     app.addProductToDB(productData3);
-    // })();
-
-    // app.seedProducts();
-
-    app.seedCart = function(){
-        var seedData = {};
-        seedData.productId = "599252070f0b62b5cc1fd1f3";
-        seedData.quantity = 1;
-        Cart.seedCart(seedData).then(function(data){
-            console.log(seedData);
+    app.checkForSeed = function(){
+        (function (){
+        Product.getCatalogProducts().then(function(data){
+            console.log('data from catalog');
+            console.log(data);
             if(data.data.success){
-                console.log('seed cart successful');
-                console.log(data);
-
+                console.log("get catalog list success");
+                home.catalogProducts = data.data.catalogProducts;
             }
             else{
-                console.log('seed cart not successful');
-                console.log(data);
+                console.log("get catalog list failure");
             }
-        });
+        })
+
+    })();
+
+        if(true){
+
+        }
+        else{
+
+        }
     };
-
-    // app.seedCart();
-
-    app.addItemToCart = function(productId,cartId){
-        Auth.getUser().then(function(data){
-            app.userEmail = data.data.email;
-            var userData = {};
-            userData.userEmail = data.data.email;
-            console.log('important email');
-            console.log(data.data.email);
-            User.getUserCart(userData).then(function(innerData){
-                console.log('user data');
-                console.log(userData);
-                console.log(innerData);
-                var cartData={};
-                cartData.cartId=cartId;
-                cartData.productId = productId;
-                console.log('cartId');
-                console.log(cartData);
-
-                    Cart.addItemToCart(cartData).then(function(incart){
-                        console.log(incart);
-                        if(incart.data.success){
-                            console.log('item added to cart successuflly');
-                            console.log(incart);
-                        }
-                        else{
-                            console.log('Cart not updated');
-                            console.log(incart);
-                        }
-                    });
-            });
-            // cartData.cartId = data.data.cart;
-         
-        });
-    };
-
-    app.addToCart = function(){
-
-    };
-
     // app.addItemToCart("599278c4351a9be0902e738a","5993887661572d44c9bddaf2");
 
     // Check if user's session has expired upon opening page for the first time
-    if (Auth.isLoggedIn()) {
+
+    app.checkUserState = function(callback){
+        if (Auth.isLoggedIn()) {
         console.log('User is logged in');
         app.loggedIn= true;
         Auth.getUser().then(function(data){
             app.userEmail = data.data.email;
             app.userEmail = angular.copy(data.data.email);
-
-
-            // getEmail(data.data.email);
-            // app.tryAddCart();
-
-            console.log('user email');
-            console.log(app.userEmail);
+            var userData = {};
+            userData.userEmail = data.data.email;
+            userData.username = data.data.username;
             // Check if the returned user is undefined (expired)
             if (data.data.username === undefined) {
                 Auth.logout(); // Log the user out
@@ -196,9 +90,90 @@ alamode.controller('mainCtrl',function(Auth,$timeout,$location,$rootScope,$windo
                 $location.path('/'); // Redirect to home page
                 app.loadme = true; // Allow loading of page
             }
+            else{
+                return callback(userData);
+            }
         });
+        }   
+
+    };
+
+    app.checkForProducts = function(){
+        Product.getCatalogProducts().then(function(data){
+            if(data.data.success){
+                console.log('catalog products found in mongodb server');
+            }
+            else{
+                if(data.data.noProducts){
+                    (function(){
+                        var productData = {};
+                        productData.imagePath = "../imgs/Media/peanutButter.jpg";
+                        productData.price = 5.99;
+                        productData.description = "Peanut Butter Quivering Goodness";
+                        productData.title = "Peanut Butter Quivering Goodness";
+                        productData.catalogProduct = true;
+                        app.addProductToDB(productData);
+                        var productData2 ={}
+                        productData2.imagePath = "../imgs/Media/almondmilk.jpg";
+                        productData2.price = 3.99;
+                        productData2.description = "Refreshing almond milk";
+                        productData2.title = "Refreshing almond milk";
+                        productData2.catalogProduct = true;
+                        app.addProductToDB(productData2);
+                        var productData3 ={};
+                        productData3.imagePath = "../imgs/Media/highbrewcoffee.jpg";
+                        productData3.price = 3.99;
+                        productData3.description = "High Brew Coffee";
+                        productData3.title = "High Brew Coffee";
+                        productData3.catalogProduct = true;
+                        app.addProductToDB(productData3);
+                    })();
+                    (function(){
+                        var productData = {};
+                        productData.imagePath = "../imgs/Media/localfav.jpg";
+                        productData.price = 5.99;
+                        productData.description = "Delicious birthday cake style cookie dough treat";
+                        productData.title = "Birthday Surprise";
+                        productData.catalogProduct = true;
+                        productData.category = 'Bestseller';
+                        app.addProductToDB(productData);
+
+                        var productData2 ={};
+                        productData2.imagePath = "../imgs/cookiesnmilk.jpg";
+                        productData2.price = 5.99;
+                        productData2.description = "Oreo Cookie Dough Half Pint";
+                        productData2.title = "Oreo Cookie Dough Half Pint";
+                        productData2.catalogProduct = true;
+                        productData2.category = 'Bestseller';
+                        app.addProductToDB(productData2);
+
+                        var productData3 ={};
+                        productData3.imagePath = "../imgs/ChocolateChip.jpg";
+                        productData3.price = 5.99;
+                        productData3.description = "Chocolate Chip Quarter Pint";
+                        productData3.title = "Chocolate Chip Quarter Pint";
+                        productData3.catalogProduct = true;
+                        productData3.category = 'Bestseller';
+                        app.addProductToDB(productData3);
+                    })();
+                }
+                else{
+                    console.log('Getting catalog products has caused errors');
+                }
+            }
+        })
     }   
 
+    app.checkForProducts();
+
+    app.checkUserState(function(userData){
+        app.username = userData.username;
+        app.email = userData.userEmail;
+    });
+    
+
+
+    
     // Function to run an interval that checks if the user's token has expired
     app.checkSession = function() {
         // Only run check if user is logged in

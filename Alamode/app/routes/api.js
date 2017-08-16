@@ -56,7 +56,7 @@ module.exports = function(router) {
     router.post('/getCartFromUser',function(req,res){
         console.log('important email');
         console.log(req.body);
-        User.findOne({email:req.body.userEmail}).populate('cart').exec(function(err,user){
+        User.findOne({email:req.body.userEmail}).select().exec(function(err,user){
             if(err || !user){
                 console.log(err);
                 res.json({success:false,message:err});
@@ -124,45 +124,95 @@ module.exports = function(router) {
     });
 
     router.post('/addItemToCart',function(req,res){
-        Product.findById(req.body.productId).select('title price description imagePath').exec(function(err,product){
-            if(err){
-                res.json({success:false,message:'Item could not be added to user cart'});
-            }
-            else{
-                if(!product){
-                    res.json({success:false,message:'Product could not be found'});
-                }
-                else{
-                    Cart.findById(req.body.cartId).select().exec(function(err,cart){
-                        if(err || !cart){
-                            res.json({success:false,message:err});
-                        }
-                        else{
-                            console.log('cart');
-                            console.log(cart);
-                            var productData = {};
-                            productData.productId = product._id;
-                            productData.quantity = 1;
-                            cart.products.push({productId:product._id, qty:1});
-                            cart.save(function(err){
-                                if(err){
-                                    res.json({success:false, message:'Product could not be pushed to cart'});
-                                }
-                                else{
-                                    res.json({success:true,message:'Product was successfully added to cart', cart:cart});
-                                }
-                            });
-                        }
-                    });
-                }
-            }
-        });
+        // productId, cartId
+        // product
+        // var product new product()
+
+        console.log('we;re good');
+        var product = new Product(req.body);
+        if(req.body.title == null || req.body.title =='' || req.body.description==null ||
+         req.body.description ==''|| req.body.price ==null || req.body.price=='' ||req.body.imagePath ==null || req.body.imagePath == ''){
+            res.json({success:false,message:"The uploaded item wasn't set correctly please try again. "});
+        }
+        else{
+            product.save(function(err,newProduct){
+                User.findById(req.body.userId).select().exec(function(err,user){
+                    if(user.cart == null || user.cart == ""){
+                        var cart = new Cart();
+                        console.log('made it somewhere');
+                        cart.save(function(err,newCart){
+                            if(err){
+                                res.json({success:false,message:error});
+                            }
+                            else{
+                                user.cart = newCart._id;
+                                user.save(function(err,newUser){
+                                    newCart.products.push(newProduct);
+                                    newCart.save(function(err,lastCart){
+                                        console.log('how the fuck');
+                                        console.log(lastCart);
+                                        console.log(newUser);
+                                    });
+                                });
+                            }
+                        });
+                    }else{
+                        Cart.findById(user.cart).select().exec(function(err,newCart){
+                            if(err){
+                                res.json({success:false,message:'cart could not be found from user in this amazing mess'});
+                            }
+                            else{
+                                newCart.products.push(newProduct);
+                                newCart.save(function(err,lastCart){
+                                        console.log('how the fuck');
+                                        console.log(lastCart);
+                                        console.log(newUser);
+                                });
+                            }
+                        });
+                    }
+                })
+            });
+        }
+        
+        // Product.findById(req.body.productId).select('title price description imagePath').exec(function(err,product){
+        //     if(err){
+        //         res.json({success:false,message:'Item could not be added to user cart'});
+        //     }
+        //     else{
+        //         if(!product){
+        //             res.json({success:false,message:'Product could not be found'});
+        //         }
+        //         else{
+        //             Cart.findById(req.body.cartId).select().exec(function(err,cart){
+        //                 if(err || !cart){
+        //                     res.json({success:false,message:err});
+        //                 }
+        //                 else{
+        //                     console.log('cart');
+        //                     console.log(cart);
+        //                     var productData = {};
+        //                     productData.productId = product._id;
+        //                     productData.quantity = 1;
+        //                     cart.products.push({productId:product._id, qty:1});
+        //                     cart.save(function(err){
+        //                         if(err){
+        //                             res.json({success:false, message:'Product could not be pushed to cart'});
+        //                         }
+        //                         else{
+        //                             res.json({success:true,message:'Product was successfully added to cart', cart:cart});
+        //                         }
+        //                     });
+        //                 }
+        //             });
+        //         }
+        //     }
+        // });
     });
 
 
     router.post('/seedProduct',function(req,res){
         var product = new Product(req.body);
-        console.log(req.body);
 
         if(req.body.title == null || req.body.title =='' || req.body.description==null ||
          req.body.description ==''|| req.body.price ==null || req.body.price=='' ||req.body.imagePath ==null || req.body.imagePath == ''){
@@ -187,12 +237,18 @@ module.exports = function(router) {
 
     router.get('/getCatalogProducts',function(req,res){
         Product.find({catalogProduct:true}).select().exec(function(err,catalogProducts){
-            console.log('made it to get catalog');
-            if(err || !catalogProducts){
-                res.json({success:false,message:'Product list could not be found on server'});
+            if(err){
+                res.json({success:false,message:'There was an error while finding product'});
             }
             else{
-                res.json({success:true,message:'Product list successfully returned',catalogProducts:catalogProducts});
+                if(!catalogProducts || catalogProducts === undefined || catalogProducts.length ==0){
+                    res.json({success:false,message:'Could not find products',noProducts:true});
+                }
+                else{
+                    res.json({success:true,message:'Product list successfully returned',catalogProducts:catalogProducts});
+                    console.log('ya bitch');
+                    console.log(catalogProducts);
+                }
             }
         });
     });
@@ -212,7 +268,6 @@ module.exports = function(router) {
 
     router.post('/addCartToUser',function(req,res){
         var cart = new Cart();
-        cart.products.push({productId:req.body.productId},{qty:req.body.quantity});
         console.log('tried to add cart');
         console.log(req.body);
         cart.save(function(err,userCart){
@@ -220,9 +275,6 @@ module.exports = function(router) {
                 res.json({success:false, message:"err"});
             }
             else{
-                // User.findOneAndUpdate({email:req.body.email}).select().exec(function(err,user){
-                console.log('User Cart Id');
-                console.log(cart.id);
                 User.findOneAndUpdate({email:req.body.userEmail},{cart:userCart.id},{new:true}, function(err,user){
                     if(err){
                         res.json({success:false,message:'this is not it'});
@@ -289,28 +341,6 @@ module.exports = function(router) {
  
 
     // User apis
-
-
-    router.post('/addToCartFromUser',function(req,res){
-        User.findById(req.body.userId).select().exec(function(err,user){
-            if(err || !user){
-                res.json({success:false,message:'Could not get cart from user'});
-            }
-            else{
-                Cart.findById(user.cart).then(function(err,cart){
-                    if(err || !cart){
-                        res.json({success:false,message:'Could not find cart'});
-                    }
-                    else{
-                        cart.products.push()
-                        res.json({success:true,user:user});
-
-                    }
-                });
-            }
-        });
-    });
-
     router.post('/removeFromCartFromUser',function(req,res){
         User.findById(req.body.userId).select().exec(function(err,user){
             if(err || !user){
