@@ -69,9 +69,9 @@ var app = angular.module('appRoutes',['ngRoute'])
     }).
     when('/home',{
         templateUrl: '../mookiedoughfrontend/home.html',
-        controller: 'TestController',
-        controllerAs: 'menu',
-        authenticated: false
+        authenticated: false,
+        controller: 'HomeController',
+        controllerAs: 'home'
     })//No menu for mookiedoughfrontend just use home page
     .when('/register',{
         templateUrl: '../mookiedoughfrontend/login.html',

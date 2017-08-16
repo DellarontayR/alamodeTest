@@ -6,14 +6,22 @@ angular.module('userServices', [])
 
     //services for mookie dough
     userFactory.registerMookie = function(regData){
-        return $http.post('/api/register-mookie', regData);
+        return $http.post('/api/registerMookie', regData);
     };
-
-
 
     userFactory.getUsers = function(){
-        return $http.get('/api/getusers');
+        return $http.get('/api/getUsers');
     };
+
+    userFactory.getUserId = function(){
+        return $http.get('/api/getUserId',);
+    };
+
+
+
+
+
+    /////////////////////////////////////////////////////////////////////
 
     // Register users in database
     userFactory.create = function(regData) {
@@ -27,6 +35,10 @@ angular.module('userServices', [])
     // Check if username is available at registration
     userFactory.checkUsername = function(regData) {
         return $http.post('/api/checkusername', regData);
+    };
+
+    userFactory.getUserCart = function(userData){
+        return $http.post('/api/getCartFromUser',userData);
     };
 
     // Check if e-mail is available at registration

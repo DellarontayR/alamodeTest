@@ -77,7 +77,7 @@ console.log('regCtrl active');
 
                 }
                 else{
-                    app.regMsg = "User could not be authenticated";
+                    app.regMsg = "User could not be Registered";
                 }
             }
         });

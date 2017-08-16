@@ -10,89 +10,29 @@
         <!-- Cart -->
         <div class="col-sm-8 padding-bottom-2x">
           <p class="text-sm">
-
-            
-
-              <span class="text-gray">Currently</span> 3 items   
+            <span class="text-gray">Currently</span> {{cartCtrl.user.cart.items.count}} items   
             <span class="text-gray"> in cart</span>
           </p>
           <div class="shopping-cart">
-            <!--title,price,count,imgsrc for each Item  -->
 
-            <div class="item">
-              <a href="shop-single.html" class="item-thumb">
-                <img src="http://via.placeholder.com/276x249" alt="Item">
+            <div class="item" ng-repeat="cartItem in cartCtrl.user.cart.items">
+              <a href="" class="item-thumb">
+                <img ng-src="{{cartItem.img}}" alt="Item">
               </a>
               <div class="item-details">
-                <h3 class="item-title"><a href="shop-single.html">Mama's Chocolate Chip</a></h3>
-                <h4 class="item-price">$5.99</h4>
+                <h3 class="item-title">{{cartItem.title}}</h3>
+                <h4 class="item-price">{{cartItem.price}}</h4>
                 <div class="count-input">
-                  <a class="incr-btn" data-action="decrease" href="#">–</a>
-                  <input class="quantity" type="text" value="2">
+                  <a class="incr-btn" data-action="decrease" href="#">-</a>
+                  <input class="quantity" type="text" ng-value="{{cartItem.quantity}}">
                   <a class="incr-btn" data-action="increase" href="#">+</a>
                 </div>
               </div>
               <a href="#" class="item-remove" data-toggle="tooltip" data-placement="top" title="Remove">
                 <i class="material-icons remove_shopping_cart"></i>
               </a>
-            </div><!-- .item -->
+            </div>
 
-            <!-- These are different items that can be placed in later don't worry about shop-single.html for now implement backend integration with frontend for demos  -->
-            <!-- Item -->
-            <div class="item">
-              <a href="shop-single.html" class="item-thumb">
-                <img src="http://via.placeholder.com/276x249" alt="Item">
-              </a>
-              <div class="item-details">
-                <h3 class="item-title"><a href="shop-single.html">Mama's Chocolate Chip</a></h3>
-                <h4 class="item-price">$5.99</h4>
-                <div class="count-input">
-                  <a class="incr-btn" data-action="decrease" href="#">–</a>
-                  <input class="quantity" type="text" value="2">
-                  <a class="incr-btn" data-action="increase" href="#">+</a>
-                </div>
-              </div>
-              <a href="#" class="item-remove" data-toggle="tooltip" data-placement="top" title="Remove">
-                <i class="material-icons remove_shopping_cart"></i>
-              </a>
-            </div><!-- .item -->
-            <!-- Item -->
-            <div class="item">
-              <a href="shop-single.html" class="item-thumb">
-                <img src="http://via.placeholder.com/276x249" alt="Item">
-              </a>
-              <div class="item-details">
-                <h3 class="item-title"><a href="shop-single.html">Strawberry Organic Valley Milk</a></h3>
-                <h4 class="item-price">$2.29</h4>
-                <div class="count-input">
-                  <a class="incr-btn" data-action="decrease" href="#">–</a>
-                  <input class="quantity" type="text" value="2">
-                  <a class="incr-btn" data-action="increase" href="#">+</a>
-                </div>
-              </div>
-              <a href="#" class="item-remove" data-toggle="tooltip" data-placement="top" title="Remove">
-                <i class="material-icons remove_shopping_cart"></i>
-              </a>
-            </div><!-- .item -->
-            <!-- Item -->
-            <div class="item">
-              <a href="shop-single.html" class="item-thumb">
-                <img src="http://via.placeholder.com/276x249" alt="Item">
-              </a>
-              <div class="item-details">
-                <h3 class="item-title"><a href="shop-single.html">Mini Birthday Batter</a></h3>
-                <h4 class="item-price">$3.99</h4>
-                <div class="count-input">
-                  <a class="incr-btn" data-action="decrease" href="#">–</a>
-                  <input class="quantity" type="text" value="1">
-                  <a class="incr-btn" data-action="increase" href="#">+</a>
-                </div>
-              </div>
-              <a href="#" class="item-remove" data-toggle="tooltip" data-placement="top" title="Remove">
-                <i class="material-icons remove_shopping_cart"></i>
-              </a>
-            </div><!-- .item -->
-          </div><!-- .shopping-cart -->
           <!-- Coupon -->
           <div class="">
             <p class="text-gray text-sm">Have discount coupon?</p>

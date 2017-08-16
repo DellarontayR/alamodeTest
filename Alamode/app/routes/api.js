@@ -2,10 +2,15 @@
 var User = require('../models/user'); // Import User Model
 var Product = require('../models/product');
 var Cart = require('../models/cart');
-var CartItem = require('../models/cartItem');
 var jwt = require('jsonwebtoken'); // Import JWT Package
 var secret = 'zm!_0@0hu_7&ii-@j&0wpm3t%ojnvmjx6j0!1*&j@x51&mdzk@'; // Create custom secret for use in JWT
 var nodemailer = require('nodemailer'); // Import Nodemailer Package
+var stripe = require('stripe')('pk_test_EPjnzpxnrgvUiGWsYrJjqN5t');
+var mongoose = require('mongoose');
+mongoose.Promise = global.Promise;
+var Schema = mongoose.Schema;
+
+
 // var sgTransport = require('nodemailer-sendgrid-transport'); // Import Nodemailer Sengrid Transport Package
 
 module.exports = function(router) {
@@ -29,68 +34,215 @@ module.exports = function(router) {
     });
     // var client = nodemailer.createTransport(sgTransport(options)); // Use if using sendgrid configuration
     // End Sendgrid Configuration Settings  
-    //     title: {type:String, lowercase:true, required:true, unique:true},
-    // description:{type: String, required:true},
-    // price:{ type: Number, required:true},
-    // imagePath:{type:String, required:true}
 
-    //should have post apis for order configuration, stripe user implementation, and other features
-    router.post('/add-cart-item/:productName', function(req,res){
-        var title = req.params.productName;
-        Cart.findOne({usernameRef:loginUser}).select('usernameRef items').exec(function(err,cart){
-            if(err){
-                res.json({success:false, message: "Cart could not be found"});
+    // Cart apis
+
+    router.post('/cartCheckout',function(req,res){
+        
+    });
+
+    router.get('/getCart',function(req,res){
+        Cart.findById(req.body.cartId).select().exec(function(err,cart){
+            if(err || !cart){
+                res.json({success:false, message:'Cart could not be found'});
             }
             else{
-                if(!cart){
-                    res.json({success:false, message: "Cart could not be found"});
+                res.json({success:true, cart:cart});
+            }
+        });
+    });
+
+    
+    router.post('/getCartFromUser',function(req,res){
+        console.log('important email');
+        console.log(req.body);
+        User.findOne({email:req.body.userEmail}).populate('cart').exec(function(err,user){
+            if(err || !user){
+                console.log(err);
+                res.json({success:false,message:err});
+            }
+            else{
+                res.json({success:true,user:user});
+            }
+        });
+    });
+
+
+    router.get('/checkUserCart',function(req,res){
+        User.findById(req.body.userId).select().exec(function(err,user){
+            console.log(user.cart);
+            if(!user.cart || user.cart ==null){
+                res.json({success:false,message:'User does not have cart'});
+            }
+            else{
+                res.json({success:true,message:'User cart found. Ok for interaction'});
+            }
+        });
+    });
+    router.post('/removeItemFromCart',function(req,res){
+        Cart.findById(req.body.cartId).select().exec(function(err,cart){
+            if(err){
+                res.json({success:false,message:'Cart could not be found.'});
+            }
+            else{
+                var products = cart.get('products');
+                products.forEach(function(product) {
+                    if(product.product.id === req.body.productId){
+                        if(product.product.quantity >1){
+                            product.product.quantity--;
+                            // Cart.update({_id:cart.id},{'$pull':{'products':{ 'quantity':}}})
+                        }
+                        else if(product.product.quantity==1){
+                            product.product.quantity--;
+                            // cart.products.remove(product);
+                        }
+                    }
+                });
+                res.json({success:true,message:'At least I got the cart',cart:cart});
+            }
+        });
+
+//         Dive.update({ _id: diveId }, { "$pull": { "divers": { "user": userIdToRemove } }}, { safe: true, multi:true }, function(err, obj) {
+//     //do something smart
+// });
+
+    });
+
+    router.post('/seedCart',function(req,res){
+        var cart = new Cart();
+        cart.products.push({productId:req.body.productId,qty:req.body.quantity});
+        cart.save(function(err,cart){
+            if(err || !cart){
+                res.json({success:false,message:err});
+                console.log("errror");
+                console.log(err);
+            }
+            else{
+                res.json({success:true, message:'Cart was saved',cart:cart});
+            }
+        })
+    });
+
+    router.post('/addItemToCart',function(req,res){
+        Product.findById(req.body.productId).select('title price description imagePath').exec(function(err,product){
+            if(err){
+                res.json({success:false,message:'Item could not be added to user cart'});
+            }
+            else{
+                if(!product){
+                    res.json({success:false,message:'Product could not be found'});
                 }
                 else{
-                    Product.findOne({title: title}).select().exec(function(err,product){
-                        Cart.items.push(product);
-                        Cart.save(function(err){
-                            if(err){
-                                res.json({success:false, message: "Product could not be added to cart"});
-                            }
-                            else{
-                                if(!product){
-                                    res.json({success:false, message: "Product could not be added to cart"});
+                    Cart.findById(req.body.cartId).select().exec(function(err,cart){
+                        if(err || !cart){
+                            res.json({success:false,message:err});
+                        }
+                        else{
+                            console.log('cart');
+                            console.log(cart);
+                            var productData = {};
+                            productData.productId = product._id;
+                            productData.quantity = 1;
+                            cart.products.push({productId:product._id, qty:1});
+                            cart.save(function(err){
+                                if(err){
+                                    res.json({success:false, message:'Product could not be pushed to cart'});
                                 }
                                 else{
-                                    res.json({success:true, message:"Product was successfully added to cart"});
+                                    res.json({success:true,message:'Product was successfully added to cart', cart:cart});
                                 }
-                            }
-                        });
+                            });
+                        }
                     });
-
                 }
             }
         });
     });
 
-    router.post('/remove-cart-item/:productName', function(req,res){
-        var title = req.params.productName;
 
-        Cart.findOneAndRemove({usernameRef:loginUser}).select('usernameRef items').exec(function(err,cart){
-            if(err){
-                res.json({success:false, message:"Cart item removal has ecountered an error"});
+    router.post('/seedProduct',function(req,res){
+        var product = new Product(req.body);
+        console.log(req.body);
+
+        if(req.body.title == null || req.body.title =='' || req.body.description==null ||
+         req.body.description ==''|| req.body.price ==null || req.body.price=='' ||req.body.imagePath ==null || req.body.imagePath == ''){
+            res.json({success:false,message:"The uploaded item wasn't set correctly please try again. "});
+        }
+        else{
+                product.save(function(err,newProduct){
+                    if(err){
+                        res.json({success:false,message:"Error product could not be added to product catalog"});
+                    }
+                    else{
+                        if(!product){
+                            res.json({success:false,message:"Error product could not be added to product catalog"});
+                        }
+                        else{
+                            res.json({success:true,message:'Product added to catalog',newProduct});
+                        }
+                    }
+            });
+        }
+    });
+
+    router.get('/getCatalogProducts',function(req,res){
+        Product.find({catalogProduct:true}).select().exec(function(err,catalogProducts){
+            if(err || !catalogProducts){
+                res.json({success:false,message:'Product list could not be found on server'});
             }
             else{
-                if(!cart){
-                    res.json({success:false, message:"Cart item removal has ecountered an error"});
-                }
-                else{
-                    res.json({success:false, message:"Cart item removal was successful"});
-                }
+                res.json({success:true,message:'Product list successfully returned',catalogProducts:catalogProducts});
             }
         });
     });
 
+    router.post('/addCartToUser',function(req,res){
+        var cart = new Cart();
+        cart.products.push({productId:req.body.productId},{qty:req.body.quantity});
+        console.log('tried to add cart');
+        console.log(req.body);
+        cart.save(function(err,userCart){
+            if(err){
+                res.json({success:false, message:"err"});
+            }
+            else{
+                // User.findOneAndUpdate({email:req.body.email}).select().exec(function(err,user){
+                console.log('User Cart Id');
+                console.log(cart.id);
+                User.findOneAndUpdate({email:req.body.userEmail},{cart:userCart.id},{new:true}, function(err,user){
+                    if(err){
+                        res.json({success:false,message:'this is not it'});
 
+                    }
+                    else{
+                        res.json({success:true,message:'this is it',user:user});
 
-    router.get('/get-products',function(req,res){
+                    }
+                        console.log('user hope');
+                        console.log(user);
+                });
+                // User.find({email:req.body.email}).select('username email cart').exec(function(err,user){
+                // // User.findById(req.body.userId).select('username email cart').exec(function(err,user){
+                //     user.cart = userCart.id;
+                //     user.save(function(err){
+                //         if(err){
+                //             res.json({success:false, message:"Cart could not be updated"});
+                //         }
+                //         else{
+                //             res.json({success:true, message:"User Cart is ready to be used"});
+                //         }
+                //     });
+                // });
+            }
+        });
+        
+    });
+
+    //Product apis
+
+    router.get('/getProducts',function(req,res){
         var product = new Product();
-        Product.find({},function(req,res){}).select('title description pricing imagePath').exec(function(err,products){
+        Product.find({}).select('title description pricing imagePath').exec(function(err,products){
             if(err){
                 res.json({success:false, message:"Error"});
             }else{
@@ -104,33 +256,58 @@ module.exports = function(router) {
         });
     });
 
-    router.post('/add-catalog-item',function(req,res){
-        var product = new Product;
-        product.title = req.body.title;
-        product.description = req.body.description;
-        product.price = req.body.price;
-        product.imagePath = req.body.imagePath;
-        if(req.body.title == null || req.body.title =='' || req.body.description==null ||
-         req.body.description ==''|| req.body.price ==null || req.body.price=='' ||req.body.imagePath ==null || req.body.imagePath == ''){
-            res.json({success:false,message:"The uploaded item wasn't set correctly please try again. "});
-        }else{
-            product.save(function(err){
-                if(err){
-                    res.json({success:false,message:err});
+    router.get('/getProduct',function(req,res){
+        var product = new Product();
+        Product.findById(req.body.productId).select('title description pricing imagePath').exec(function(err,product){
+            if(err){
+                res.json({success:false, message:"Error, product could not be found on the server"});
+            }
+            else{
+                if(!product){
+                    res.json({success:false, message:"Error, product could not be found on the server"});
                 }
                 else{
-                    if(!product){
-                        res.json({success:false,message:"nawww"});
+                    res.json({success:true,product:product});
+                }
+            }
+        });
+    });
+ 
+
+    // User apis
+
+
+    router.post('/addToCartFromUser',function(req,res){
+        User.findById(req.body.userId).select().exec(function(err,user){
+            if(err || !user){
+                res.json({success:false,message:'Could not get cart from user'});
+            }
+            else{
+                Cart.findById(user.cart).then(function(err,cart){
+                    if(err || !cart){
+                        res.json({success:false,message:'Could not find cart'});
                     }
                     else{
-                        res.json({success:true,message:'Product set in catalog'});
+                        cart.products.push()
+                        res.json({success:true,user:user});
+
                     }
-                }
-            });
-        }
+                });
+            }
+        });
     });
 
-    router.post('/register-mookie',function(req,res){
+    router.post('/removeFromCartFromUser',function(req,res){
+        User.findById(req.body.userId).select().exec(function(err,user){
+            if(err || !user){
+                res.json({success:false,message:'Could not get cart from user'});
+            }
+            else{
+                res.json({success:true,user:user});
+            }
+        });
+    });
+    router.post('/registerMookie',function(req,res){
         var user = new User();
         //json body needs username, passowrd, email, name
         user.email = req.body.email;
@@ -211,7 +388,7 @@ module.exports = function(router) {
                             }
                             else {
                                 var token = jwt.sign({username: user.username,email:user.email},secret,{expiresIn:'7d'});
-                                res.json({success:true, message: 'User authenticated!',token:token});
+                                res.json({success:true, message: 'User authenticated!',token:token, user: user});
                             }
                         }
                     }
@@ -456,8 +633,8 @@ module.exports = function(router) {
         });
     });
 
-    router.get('/getusers',function(req,res){
-        User.find({}).select('email username').exec(function(err,users){
+    router.get('/getUsers',function(req,res){
+        User.find({}).select('email username permission cart').exec(function(err,users){
             if(err){
                 res.json({success:false, message:"User List retrieval failed"});
             }

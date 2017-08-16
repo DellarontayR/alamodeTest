@@ -11,8 +11,6 @@ var appRoutes = require('./app/routes/api')(router);
 var path = require('path');
 var passport = require('passport');
 var child_process = require('child_process');
-var stripe = require('stripe')('pk_test_EPjnzpxnrgvUiGWsYrJjqN5t');
-
 //var nwgui = require('passport');
 app.use(morgan('dev'));
 app.use(bodyParser.json());

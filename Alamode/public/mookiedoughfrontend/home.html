@@ -22,12 +22,12 @@
           <a href="/milkmainshop" class="category-tile">
             <div class="inner">
               <div class="column">
-                <h3>Ice Cold Organic Milk</h3>
+                <h3>Ice Cold Cold Brew</h3>
                 <p class="text-sm text-gray">Starting from $2.29</p>
               </div>
               <div class="column">
                 <div class="category-thumb">
-                  <img src="../imgs/ChocolateChip.jpg" alt="Category">
+                  <img src="../imgs/Media/petesbaridi.jpg" alt="Category">
                 </div>
               </div>
             </div>
@@ -42,7 +42,7 @@
               </div>
               <div class="column">
                 <div class="category-thumb">
-                  <img src="../imgs/CookiesNMilk.jpg" alt="Category">
+                  <img src="../imgs/Media/localfav.jpg" alt="Category">
                 </div>
               </div>
             </div>
@@ -116,13 +116,13 @@
                 <i class="material-icons star_border"></i>
               </span>
               <a href="/minicookiesncreme" class="item-link"></a>
-              <img src="../imgs/ChocolateChip.jpg" alt="Shop item">
+              <img src="../imgs/Media/localfav.jpg" alt="Shop item">
               <div class="shop-item-tools">
                 <a href="#" class="add-to-whishlist" data-toggle="tooltip" data-placement="top" title="" data-original-title="Wishlist">
                   <i class="material-icons favorite_border"></i>
                 </a>
                 <a href="#" class="add-to-cart">
-                  <em>Add to Cart</em>
+                  <em ng-click="main.addToCart()">Add to Cart</em>
                   <svg x="0px" y="0px" width="32px" height="32px" viewBox="0 0 32 32">
                     <path stroke-dasharray="19.79 19.79" stroke-dashoffset="19.79" fill="none" stroke="#FFFFFF" stroke-width="2" stroke-linecap="square" stroke-miterlimit="10" d="M9,17l3.9,3.9c0.1,0.1,0.2,0.1,0.3,0L23,11"></path>
                   </svg>
@@ -143,7 +143,7 @@
             <div class="shop-thumbnail">
 
               <a href="/minicookiesncreme" class="item-link"></a>
-              <img src="../imgs/ChocolateChip.jpg" alt="Shop item">
+              <img src="../imgs/cookiesnmilk.jpg" alt="Shop item">
               <div class="shop-item-tools">
                 <a href="#" class="add-to-whishlist" data-toggle="tooltip" data-placement="top" title="" data-original-title="Wishlist">
                   <i class="material-icons favorite_border"></i>
@@ -171,6 +171,33 @@
   <section class="container padding-top-3x space-top-half">
       <h3 class="text-center">Mookie's Specials</h3>
       <div class="row padding-top">
+
+        <div class="col-lg-3 col-sm-6" ng-repeat="catalogProduct in home.catalogProducts">
+          <div class="shop-item">
+            <div class="shop-thumbnail">
+              <span class="shop-label text-danger"> Maybe Sale</span>
+              <a href="#" class="item-link"></a>
+              <img ng-src="{{catalogProduct.imagePath}}" alt="Shop item">
+              <div class="shop-item-tools">
+                <a href="#" class="add-to-wishlist" data-toggle="tooltip" data-placements="top" title="" data-original-title="Wishlist">
+                  <i class="material-icons favorite_border"></i>
+                </a>
+                <a href="#" class="add-to-cart">
+                  <em ng-click="home.tryAddCart()"> Add to Cart</em>
+                  <svg x="0px" y="0px" width="32px" height="32px" viewBox="0 0 32 32">
+                    <path stroke-dasharray="19.79 19.79" stroke-dashoffset="19.79" fill="none" stroke="#FFFFFF" stroke-width="2" stroke-linecap="square" stroke-miterlimit="10" d="M9,17l3.9,3.9c0.1,0.1,0.2,0.1,0.3,0L23,11"></path>
+                  </svg></a></div></div>
+                  <div class="shop-item-details">
+                    <h3 class="shop-item-title"><a href="#">{{catalogProduct.title}}</a></h3>
+                    <span class="shop-item-price">
+                      <span class="old-price">$69.00</span>
+                      {{catalogProduct.price | currency}}
+                    </span>
+                  </div>
+          </div>
+          </div>
+
+
         <div class="col-lg-3 col-sm-6">
           <div class="shop-item">
             <div class="shop-thumbnail">
@@ -194,181 +221,6 @@
               <span class="shop-item-price">
                 <span class="old-price">$69.00</span>
                 $48.00
-              </span>
-            </div>
-          </div><!-- .shop-item -->
-        </div><!-- .col-lg-3.col-sm-6 -->
-        <div class="col-lg-3 col-sm-6">
-          <div class="shop-item">
-            <div class="shop-thumbnail">
-              <a href="#" class="item-link"></a>
-              <img src="../imgs/ChocolateChip.jpg" alt="Shop item">
-              <div class="shop-item-tools">
-                <a href="#" class="add-to-whishlist" data-toggle="tooltip" data-placement="top" title="" data-original-title="Wishlist">
-                  <i class="material-icons favorite_border"></i>
-                </a>
-                <a href="#" class="add-to-cart">
-                  <em>Add to Cart</em>
-                  <svg x="0px" y="0px" width="32px" height="32px" viewBox="0 0 32 32">
-                    <path stroke-dasharray="19.79 19.79" stroke-dashoffset="19.79" fill="none" stroke="#FFFFFF" stroke-width="2" stroke-linecap="square" stroke-miterlimit="10" d="M9,17l3.9,3.9c0.1,0.1,0.2,0.1,0.3,0L23,11"></path>
-                  </svg>
-                </a>
-              </div>
-            </div>
-            <div class="shop-item-details">
-              <h3 class="shop-item-title"><a href="#">First</a></h3>
-              <span class="shop-item-price">
-                $130.00
-              </span>
-            </div>
-          </div><!-- .shop-item -->
-        </div><!-- .col-lg-3.col-sm-6 -->
-        <div class="col-lg-3 col-sm-6">
-          <div class="shop-item">
-            <div class="shop-thumbnail">
-              <a href="#" class="item-link"></a>
-              <img src="../imgs/ChocolateChip.jpg" alt="Shop item">
-              <div class="shop-item-tools">
-                <a href="#" class="add-to-whishlist" data-toggle="tooltip" data-placement="top" title="" data-original-title="Wishlist">
-                  <i class="material-icons favorite_border"></i>
-                </a>
-                <a href="#" class="add-to-cart">
-                  <em>Add to Cart</em>
-                  <svg x="0px" y="0px" width="32px" height="32px" viewBox="0 0 32 32">
-                    <path stroke-dasharray="19.79 19.79" stroke-dashoffset="19.79" fill="none" stroke="#FFFFFF" stroke-width="2" stroke-linecap="square" stroke-miterlimit="10" d="M9,17l3.9,3.9c0.1,0.1,0.2,0.1,0.3,0L23,11"></path>
-                  </svg>
-                </a>
-              </div>
-            </div>
-            <div class="shop-item-details">
-              <h3 class="shop-item-title"><a href="#">First</a></h3>
-              <span class="shop-item-price">
-                $178.00
-              </span>
-            </div>
-          </div><!-- .shop-item -->
-        </div><!-- .col-lg-3.col-sm-6 -->
-        <div class="col-lg-3 col-sm-6">
-          <div class="shop-item">
-            <div class="shop-thumbnail">
-              <a href="#" class="item-link"></a>
-              <img src="../imgs/ChocolateChip.jpg" alt="Shop item">
-              <div class="shop-item-tools">
-                <a href="#" class="add-to-whishlist" data-toggle="tooltip" data-placement="top" title="" data-original-title="Wishlist">
-                  <i class="material-icons favorite_border"></i>
-                </a>
-                <a href="#" class="add-to-cart">
-                  <em>Add to Cart</em>
-                  <svg x="0px" y="0px" width="32px" height="32px" viewBox="0 0 32 32">
-                    <path stroke-dasharray="19.79 19.79" stroke-dashoffset="19.79" fill="none" stroke="#FFFFFF" stroke-width="2" stroke-linecap="square" stroke-miterlimit="10" d="M9,17l3.9,3.9c0.1,0.1,0.2,0.1,0.3,0L23,11"></path>
-                  </svg>
-                </a>
-              </div>
-            </div>
-            <div class="shop-item-details">
-              <h3 class="shop-item-title"><a href="#">First</a></h3>
-              <span class="shop-item-price">
-                $112.35
-              </span>
-            </div>
-          </div><!-- .shop-item -->
-        </div><!-- .col-lg-3.col-sm-6 -->
-        <div class="col-lg-3 col-sm-6">
-          <div class="shop-item">
-            <div class="shop-thumbnail">
-              <a href="" class="item-link"></a>
-              <img src="../imgs/ChocolateChip.jpg" alt="Shop item">
-              <div class="shop-item-tools">
-                <a href="#" class="add-to-whishlist" data-toggle="tooltip" data-placement="top" title="Wishlist">
-                  <i class="material-icons favorite_border"></i>
-                </a>
-                <a href="#" class="add-to-cart">
-                  <em>Add to Cart</em>
-                  <svg x="0px" y="0px" width="32px" height="32px" viewBox="0 0 32 32">
-                    <path stroke-dasharray="19.79 19.79" stroke-dashoffset="19.79" fill="none" stroke="#FFFFFF" stroke-width="2" stroke-linecap="square" stroke-miterlimit="10" d="M9,17l3.9,3.9c0.1,0.1,0.2,0.1,0.3,0L23,11"/>
-                  </svg>
-                </a>
-              </div>
-            </div>
-            <div class="shop-item-details">
-              <h3 class="shop-item-title"><a href="/minicookiesncreme">First</a></h3>
-              <span class="shop-item-price">
-                $299.00
-              </span>
-            </div>
-          </div><!-- .shop-item -->
-        </div><!-- .col-lg-3.col-sm-6 -->
-        <div class="col-lg-3 col-sm-6">
-          <div class="shop-item">
-            <div class="shop-thumbnail">
-              <a href="/minicookiesncreme" class="item-link"></a>
-              <img src="../imgs/ChocolateChip.jpg" alt="Shop item">
-              <div class="shop-item-tools">
-                <a href="#" class="add-to-whishlist" data-toggle="tooltip" data-placement="top" title="Wishlist">
-                  <i class="material-icons favorite_border"></i>
-                </a>
-                <a href="#" class="add-to-cart">
-                  <em>Add to Cart</em>
-                  <svg x="0px" y="0px" width="32px" height="32px" viewBox="0 0 32 32">
-                    <path stroke-dasharray="19.79 19.79" stroke-dashoffset="19.79" fill="none" stroke="#FFFFFF" stroke-width="2" stroke-linecap="square" stroke-miterlimit="10" d="M9,17l3.9,3.9c0.1,0.1,0.2,0.1,0.3,0L23,11"/>
-                  </svg>
-                </a>
-              </div>
-            </div>
-            <div class="shop-item-details">
-              <h3 class="shop-item-title"><a href="/minicookiesncreme">First</a></h3>
-              <span class="shop-item-price">
-                $19.80
-              </span>
-            </div>
-          </div><!-- .shop-item -->
-        </div><!-- .col-lg-3.col-sm-6 -->
-        <div class="col-lg-3 col-sm-6">
-          <div class="shop-item">
-            <div class="shop-thumbnail">
-              <a href="/minicookiesncreme" class="item-link"></a>
-              <img src="../imgs/ChocolateChip.jpg" alt="Shop item">
-              <div class="shop-item-tools">
-                <a href="#" class="add-to-whishlist" data-toggle="tooltip" data-placement="top" title="Wishlist">
-                  <i class="material-icons favorite_border"></i>
-                </a>
-                <a href="#" class="add-to-cart">
-                  <em>Add to Cart</em>
-                  <svg x="0px" y="0px" width="32px" height="32px" viewBox="0 0 32 32">
-                    <path stroke-dasharray="19.79 19.79" stroke-dashoffset="19.79" fill="none" stroke="#FFFFFF" stroke-width="2" stroke-linecap="square" stroke-miterlimit="10" d="M9,17l3.9,3.9c0.1,0.1,0.2,0.1,0.3,0L23,11"/>
-                  </svg>
-                </a>
-              </div>
-            </div>
-            <div class="shop-item-details">
-              <h3 class="shop-item-title"><a href="/minicookiesncreme">First</a></h3>
-              <span class="shop-item-price">
-                $76.40
-              </span>
-            </div>
-          </div><!-- .shop-item -->
-        </div><!-- .col-lg-3.col-sm-6 -->
-        <div class="col-lg-3 col-sm-6">
-          <div class="shop-item">
-            <div class="shop-thumbnail">
-              <a href="/minicookiesncreme" class="item-link"></a>
-              <img src="../imgs/ChocolateChip.jpg" alt="Shop item">
-              <div class="shop-item-tools">
-                <a href="#" class="add-to-whishlist" data-toggle="tooltip" data-placement="top" title="Wishlist">
-                  <i class="material-icons favorite_border"></i>
-                </a>
-                <a href="#" class="add-to-cart">
-                  <em>Add to Cart</em>
-                  <svg x="0px" y="0px" width="32px" height="32px" viewBox="0 0 32 32">
-                    <path stroke-dasharray="19.79 19.79" stroke-dashoffset="19.79" fill="none" stroke="#FFFFFF" stroke-width="2" stroke-linecap="square" stroke-miterlimit="10" d="M9,17l3.9,3.9c0.1,0.1,0.2,0.1,0.3,0L23,11"/>
-                  </svg>
-                </a>
-              </div>
-            </div>
-            <div class="shop-item-details">
-              <h3 class="shop-item-title"><a href="/minicookiesncreme">First</a></h3>
-              <span class="shop-item-price">
-                $27.00
               </span>
             </div>
           </div><!-- .shop-item -->

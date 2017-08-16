@@ -1,35 +1,150 @@
 'use strict';
 
-alamode.controller('mainCtrl',function(Auth,$timeout,$location,$rootScope,$window,$interval,User,AuthToken,$scope){
+alamode.controller('mainCtrl',function(Auth,$timeout,$location,$rootScope,$window,$interval,User,AuthToken,$scope,Cart,Product){
     var app = this;
     if ($window.location.pathname === '/') app.home = true; // Check if user is on home page to show home page div
     app.username = "";
     app.message = "Welcome" + app.username;
     app.user = {};
     app.justRegistered = false;
-    app.numberofcartitems =0;
+    app.numberofcartitems = 0;
     app.scopemessage = "hopppppe";
     app.loggedIn = false;
+    app.userEmail = "";
+    app.userData = {};
 
-    //Bempah code for cart manager could be switched with really chepa modal
-    // $('a.remove').click(function(){
-    // event.preventDefault();
-    // $( this ).parent().parent().parent().hide( 400 );
+    var getEmail =function(userEmail){
+        app.userEmail = userEmail;
+        console.log("user email: " + app.userEmail);
+    };
 
-    // });
+    var getEmailClosure =function(data,callback){
+        return function(){
+            return callback(data);
+        }
+    };
 
-    // // Just for testing, show all items
-    // $('a.btn.continue').click(function(){
-    //     $('li.items').show(400);
-    // });
-    
+    app.seedProductList = function(){
+        
+    };
+
+
+
+    app.tryAddCart = function(){
+        console.log('try');
+        app.userData = {};
+        app.userData.userEmail = app.userEmail;
+        console.log(app.userEmail);
+
+        Cart.addCartToUser(app.userData).then(function(data){
+            if(data.data.success){
+                console.log("tryAddCart success");
+                console.log(data);
+            }
+            else{
+                console.log('not tryaddcart');
+                console.log(data.data.message);
+            }
+        });
+    };
+
+    // app.tryAddCart();
+
+    app.addProductToDB = function(productData){
+        Product.seedProduct(productData).then(function(data){
+            if(data.data.success){
+                console.log('seed data');
+                console.log(data);
+                console.log(data.data.message);
+            }
+            else{
+                console.log("error when seeding product");
+                console.log(data.data.message);
+            }
+        })
+    };
+    var productData = {};
+    productData.imagePath = "../imgs/Media/localfav.jpg";
+    productData.price = 5.99;
+    productData.description = "Delicious birthday cake style cookie dough treat";
+    productData.title = "Birthday Surprise";
+    productData.catalogProduct = true;
+    // app.addProductToDB(productData);
+
+    app.seedCart = function(){
+        var seedData = {};
+        seedData.productId = "599252070f0b62b5cc1fd1f3";
+        seedData.quantity = 1;
+        Cart.seedCart(seedData).then(function(data){
+            console.log(seedData);
+            if(data.data.success){
+                console.log('seed cart successful');
+                console.log(data);
+
+            }
+            else{
+                console.log('seed cart not successful');
+                console.log(data);
+            }
+        });
+    };
+
+    // app.seedCart();
+
+    app.addItemToCart = function(productId,cartId){
+        Auth.getUser().then(function(data){
+            app.userEmail = data.data.email;
+            var userData = {};
+            userData.userEmail = data.data.email;
+            console.log('important email');
+            console.log(data.data.email);
+            User.getUserCart(userData).then(function(innerData){
+                console.log('user data');
+                console.log(userData);
+                console.log(innerData);
+                var cartData={};
+                cartData.cartId=cartId;
+                cartData.productId = productId;
+                console.log('cartId');
+                console.log(cartData);
+
+                    Cart.addItemToCart(cartData).then(function(incart){
+                        console.log(incart);
+                        if(incart.data.success){
+                            console.log('item added to cart successuflly');
+                            console.log(incart);
+                        }
+                        else{
+                            console.log('Cart not updated');
+                            console.log(incart);
+                        }
+                    });
+            });
+            // cartData.cartId = data.data.cart;
+         
+        });
+    };
+
+    app.addToCart = function(){
+
+    };
+
+    // app.addItemToCart("599278c4351a9be0902e738a","5993887661572d44c9bddaf2");
+
     // Check if user's session has expired upon opening page for the first time
     if (Auth.isLoggedIn()) {
         console.log('User is logged in');
         app.loggedIn= true;
+        Auth.getUser().then(function(data){
+            app.userEmail = data.data.email;
+            app.userEmail = angular.copy(data.data.email);
 
-        // Check if a the token expired
-        Auth.getUser().then(function(data) {
+
+            // getEmail(data.data.email);
+            // app.tryAddCart();
+
+            console.log('user email');
+            console.log(app.userEmail);
             // Check if the returned user is undefined (expired)
             if (data.data.username === undefined) {
                 Auth.logout(); // Log the user out
@@ -38,7 +153,7 @@ alamode.controller('mainCtrl',function(Auth,$timeout,$location,$rootScope,$windo
                 app.loadme = true; // Allow loading of page
             }
         });
-    }
+    }   
 
     // Function to run an interval that checks if the user's token has expired
     app.checkSession = function() {

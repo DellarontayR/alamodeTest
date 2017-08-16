@@ -5,13 +5,11 @@ mongoose.Promise = global.Promise;
 var Schema = mongoose.Schema;
 
 var CartSchema = new Schema({
+    products:[{
+        type:Schema.ObjectId,ref:'Product'
+    }]
+    // cartItems:[{type:Schema.ObjectId, ref:'Product',required:false} {type:Number, required:false}]
     
-    usernameRef : {type:String,required:true,unique:true,lowercase:true},
-    items:[{type:Schema.ObjectId, required:false}]
 });
 
 module.exports = mongoose.model('Cart',CartSchema);
-
-//   type: mongoose.Schema.Types.ObjectId,
-//     ref: 'User',
-//     required: true
