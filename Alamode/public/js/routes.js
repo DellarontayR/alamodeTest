@@ -4,9 +4,7 @@ var app = angular.module('appRoutes',['ngRoute'])
 
 .config(function ($routeProvider, $locationProvider){
     $routeProvider.when('/',{
-        templateUrl: '../mookiedoughfrontend/home.html',
-        authenticated: false
-
+        redirectTo: '/home'
     }).
     when('/about',{
         templateUrl: '../mookiedoughfrontend/about.html',

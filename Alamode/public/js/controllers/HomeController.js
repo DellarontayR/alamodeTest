@@ -1,6 +1,7 @@
 'use strict';
+console.log('home');
 
-alamode.controller('HomeController', function($scope, $location, Auth, User, Cart,Product) {
+alamode.controller('HomeController', function($scope,$rootScope, $location, Auth, User, Cart,Product) {
     var home = this;
     home.username = "";
     home.isLoggedIn = false;
@@ -9,14 +10,14 @@ alamode.controller('HomeController', function($scope, $location, Auth, User, Car
     home.bestsellers = false;
 
 
-    var getProductsFromServer = function(callback){
+    home.getProductsFromServer = function(callback){
             (function (){
                 Product.getCatalogProducts().then(function(data){
                     console.log('data from catalog');
                     console.log(data);
                     if(data.data.success){
                         console.log("get catalog list success");
-                        home.catalogProducts = data.data.catalogProducts;
+                        // home.catalogProducts = data.data.catalogProducts;
                         return callback(data.data.catalogProducts);
                     }
                     else{
@@ -27,7 +28,7 @@ alamode.controller('HomeController', function($scope, $location, Auth, User, Car
             })();
     };
 
-    var getBestsellers = function(callback){
+    home.getBestsellers = function(callback){
         var best = {};
         best.category = 'Bestseller';
 
@@ -38,7 +39,7 @@ alamode.controller('HomeController', function($scope, $location, Auth, User, Car
                 if(data.data.success){
                     console.log('get bestsellers success');
                     console.log(data);
-                    home.bestsellers = data.data.bestsellers;
+                    // home.bestsellers = data.data.bestsellers;
                     return callback(data.data.bestsellers);
                 }
                 else{
@@ -48,12 +49,19 @@ alamode.controller('HomeController', function($scope, $location, Auth, User, Car
         }(best));
 
     };
-    getProductsFromServer(function(catalogProducts){
-        home.catalogProducts = catalogProducts;
-    });
-    getBestsellers(function(bestsellers){
-        home.bestsellers = bestsellers;
-    });
+    home.getProducts = function(){
+
+        home.getProductsFromServer(function(catalogProducts){
+            home.catalogProducts = catalogProducts;
+        });
+        
+        home.getBestsellers(function(bestsellers){
+            home.bestsellers = bestsellers;
+        });
+    };
+
+    home.getProducts();
+    
 
     console.log('hellllo from home');
     // Get Catalog products for display
