@@ -86,7 +86,7 @@ alamode.controller('mainCtrl',function(Auth,$timeout,$location,$rootScope,$windo
                 if(data.data.noProducts){
                     (function(){
                         var productData = {};
-                        productData.imagePath = "../imgs/Media/peanutButter.jpg";
+                        productData.imagePath = "../imgs/Media/peanutbutter.jpg";
                         productData.price = 5.99;
                         productData.description = "Peanut Butter Quivering Goodness";
                         productData.title = "Peanut Butter Quivering Goodness";
