@@ -142,7 +142,7 @@ module.exports = function(router) {
                         console.log('made it somewhere');
                         cart.save(function(err,newCart){
                             if(err){
-                                res.json({success:false,message:error});
+                                res.json({success:false,message:err});
                             }
                             else{
                                 user.cart = newCart._id;
