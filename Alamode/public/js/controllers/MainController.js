@@ -12,7 +12,7 @@ alamode.controller('mainCtrl',function(Auth,$timeout,$location,$rootScope,$windo
     app.loggedIn = false;
     app.userEmail = "";
     app.userData = {};
-    app.loadme = true;
+    app.loadme = false;
     
     app.tryAddCart = function(){
         console.log('try');
@@ -80,6 +80,7 @@ alamode.controller('mainCtrl',function(Auth,$timeout,$location,$rootScope,$windo
         Product.getCatalogProducts().then(function(data){
             if(data.data.success){
                 console.log('catalog products found in mongodb server');
+                    app.loadme = true;
             }
             else{
                 if(data.data.noProducts){

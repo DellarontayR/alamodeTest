@@ -241,7 +241,7 @@ module.exports = function(router) {
                 res.json({success:false,message:'There was an error while finding product'});
             }
             else{
-                if(!catalogProducts || catalogProducts === undefined || catalogProducts.length ==0){
+                if(!catalogProducts || catalogProducts === undefined || catalogProducts.length == 0){
                     res.json({success:false,message:'Could not find products',noProducts:true});
                 }
                 else{

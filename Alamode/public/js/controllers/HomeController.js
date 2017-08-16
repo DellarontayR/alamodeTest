@@ -9,40 +9,55 @@ alamode.controller('HomeController', function($scope, $location, Auth, User, Car
     home.bestsellers = false;
 
 
+    var getProductsFromServer = function(callback){
+            (function (){
+                Product.getCatalogProducts().then(function(data){
+                    console.log('data from catalog');
+                    console.log(data);
+                    if(data.data.success){
+                        console.log("get catalog list success");
+                        home.catalogProducts = data.data.catalogProducts;
+                        return callback(data.data.catalogProducts);
+                    }
+                    else{
+                        console.log("get catalog list failure");
+                    }
+                })
+
+            })();
+    };
+
+    var getBestsellers = function(callback){
+        var best = {};
+        best.category = 'Bestseller';
+
+        // Get Bestseller products for display in model
+        (function(best){
+            Product.getProductCategory(best).then(function(data){
+                console.log(data);
+                if(data.data.success){
+                    console.log('get bestsellers success');
+                    console.log(data);
+                    home.bestsellers = data.data.bestsellers;
+                    return callback(data.data.bestsellers);
+                }
+                else{
+                    console.log('could not get bestsellers');
+                }
+            });
+        }(best));
+
+    };
+    getProductsFromServer(function(catalogProducts){
+        home.catalogProducts = catalogProducts;
+    });
+    getBestsellers(function(bestsellers){
+        home.bestsellers = bestsellers;
+    });
+
     console.log('hellllo from home');
     // Get Catalog products for display
-    (function (){
-        Product.getCatalogProducts().then(function(data){
-            console.log('data from catalog');
-            console.log(data);
-            if(data.data.success){
-                console.log("get catalog list success");
-                home.catalogProducts = data.data.catalogProducts;
-            }
-            else{
-                console.log("get catalog list failure");
-            }
-        })
-
-    })();
-
-    var best = {};
-    best.category = 'Bestseller';
-
-    // Get Bestseller products for display in model
-    (function(best){
-        Product.getProductCategory(best).then(function(data){
-            console.log(data);
-            if(data.data.success){
-                console.log('get bestsellers success');
-                console.log(data);
-                home.bestsellers = data.data.bestsellers;
-            }
-            else{
-                console.log('could not get bestsellers');
-            }
-        });
-    }(best));
+  
 
     home.addToCart = function(product){
         Auth.getUser().then(function(data){
