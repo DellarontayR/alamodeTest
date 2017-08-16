@@ -56,7 +56,7 @@ module.exports = function(router) {
     router.post('/getCartFromUser',function(req,res){
         console.log('important email');
         console.log(req.body);
-        User.findOne({email:req.body.userEmail}).select().exec(function(err,user){
+        User.findOne({email:req.body.userEmail}).populate('cart').exec(function(err,user){
             if(err || !user){
                 console.log(err);
                 res.json({success:false,message:err});

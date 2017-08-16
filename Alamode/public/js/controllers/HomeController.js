@@ -54,7 +54,7 @@ alamode.controller('HomeController', function($scope,$rootScope, $location, Auth
         home.getProductsFromServer(function(catalogProducts){
             home.catalogProducts = catalogProducts;
         });
-        
+
         home.getBestsellers(function(bestsellers){
             home.bestsellers = bestsellers;
         });
@@ -66,7 +66,6 @@ alamode.controller('HomeController', function($scope,$rootScope, $location, Auth
     console.log('hellllo from home');
     // Get Catalog products for display
   
-
     home.addToCart = function(product){
         Auth.getUser().then(function(data){
             home.userEmail = data.data.email;

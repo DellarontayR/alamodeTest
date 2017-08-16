@@ -13,26 +13,6 @@ alamode.controller('mainCtrl',function(Auth,$timeout,$location,$rootScope,$windo
     app.userEmail = "";
     app.userData = {};
     app.loadme = false;
-    
-    app.tryAddCart = function(){
-        console.log('try');
-        app.userData = {};
-        app.userData.userEmail = app.userEmail;
-        console.log(app.userEmail);
-
-        Cart.addCartToUser(app.userData).then(function(data){
-            if(data.data.success){
-                console.log("tryAddCart success");
-                console.log(data);
-            }
-            else{
-                console.log('not tryaddcart');
-                console.log(data.data.message);
-            }
-        });
-    };
-
-    // app.tryAddCart();
 
     app.addProductToDB = function(productData){
         Product.seedProduct(productData).then(function(data){
@@ -46,34 +26,8 @@ alamode.controller('mainCtrl',function(Auth,$timeout,$location,$rootScope,$windo
             }
         })
     };
-    // app.addItemToCart("599278c4351a9be0902e738a","5993887661572d44c9bddaf2");
 
-    // Check if user's session has expired upon opening page for the first time
 
-    app.checkUserState = function(callback){
-        if (Auth.isLoggedIn()) {
-        console.log('User is logged in');
-        app.loggedIn= true;
-        Auth.getUser().then(function(data){
-            app.userEmail = data.data.email;
-            app.userEmail = angular.copy(data.data.email);
-            var userData = {};
-            userData.userEmail = data.data.email;
-            userData.username = data.data.username;
-            // Check if the returned user is undefined (expired)
-            if (data.data.username === undefined) {
-                Auth.logout(); // Log the user out
-                app.isLoggedIn = false; // Set session to false
-                $location.path('/'); // Redirect to home page
-                app.loadme = true; // Allow loading of page
-            }
-            else{
-                return callback(userData);
-            }
-        });
-        }   
-
-    };
 
     app.checkForProducts = function(){
         app.loadme=false;
@@ -146,37 +100,75 @@ alamode.controller('mainCtrl',function(Auth,$timeout,$location,$rootScope,$windo
 
     app.checkForProducts();
 
-    app.checkUserState(function(userData){
-        app.username = userData.username;
-        app.email = userData.userEmail;
-        app.loadme = true;
-    });
+ 
 
-    var getCurrentCart = function(callback){
+    app.getCurrentCart = function(callback){
         var userData = {};
         userData.userEmail = app.email;
         User.getUserCart(userData).then(function(data){
             if(data.data.success){
-                if(data.data.user.cart){
-
-
+                if(data.data.user.cart !=null && data.data.user.cart != ""){
+                    console.log('started from the bottom');
+                    console.log(data);
+                    app.numberofcartitems = data.data.user.cart.products.length;
+                    return callback(data.data.user.cart.products.length);
                 }
                 {
-
+                    console.log('started from the bottom');
+                    console.log(data);
                 }
 
             }
             else{
                 console.log('no success');
+                console.log(data);
             }
-
-
         });
+    };
+        // Check if user's session has expired upon opening page for the first time
+    app.checkUserState = function(callback){
+        if (Auth.isLoggedIn()) {
+        console.log('User is logged in');
+        app.loggedIn= true;
+        Auth.getUser().then(function(data){
+            app.userEmail = data.data.email;
+            app.userEmail = angular.copy(data.data.email);
+            var userData = {};
+            userData.userEmail = data.data.email;
+            userData.username = data.data.username;
+            // Check if the returned user is undefined (expired)
+            if (data.data.username === undefined) {
+                Auth.logout(); // Log the user out
+                app.isLoggedIn = false; // Set session to false
+                $location.path('/'); // Redirect to home page
+                app.loadme = true; // Allow loading of page
+            }
+            else{
+                return callback(userData);
+            }
+        });
+        }
     };
     
 
 
-    
+    app.mookieCheckSession = function(){
+        var interval = $interval(function(){
+            app.checkUserState(function(userData){
+                    app.username = userData.username;
+                    app.email = userData.userEmail;
+                    app.getCurrentCart(function(numOfCartItems){
+                        // console.log('cart length////////////////');
+                        // console.log(numOfCartItems);
+                        app.numberofcartitems = numOfCartItems;
+
+                    });
+                    app.loadme = true;
+                });
+        },1000);
+    };
+
+    app.mookieCheckSession();
     // Function to run an interval that checks if the user's token has expired
     app.checkSession = function() {
         // Only run check if user is logged in
