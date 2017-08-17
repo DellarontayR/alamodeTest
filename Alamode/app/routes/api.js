@@ -39,7 +39,7 @@ module.exports = function(router) {
 
     // Cart apis
     router.post('/getCart',function(req,res){
-        Cart.findById(req.body.cartId).select().exec(function(err,cart){
+        Cart.findById(req.body.cartId).populate('products').exec(function(err,cart){
             if(err || !cart){
                 res.json({success:false, message:'Cart could not be found'});
             }
