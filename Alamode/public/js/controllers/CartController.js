@@ -83,4 +83,14 @@ alamode.controller('CartController', function ($scope, $location, User, Cart, Au
         });
     });
 
+    // Add/remove from cart with update
+    // Or just update from the page
+
+    app.updateCart = function(){
+        //Get Cart id
+        //get cart using id
+        //Or not
+        //Just use the ng-models from the 
+    };
+
 });
