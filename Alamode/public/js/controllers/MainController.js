@@ -211,6 +211,14 @@ alamode.controller('mainCtrl', function (Auth, $timeout, $location, $rootScope, 
             });
         }
     };
+     app.checkUserState(function (userData) {
+                app.username = userData.username;
+                app.email = userData.userEmail;
+                app.getCurrentCart(function (numOfCartItems) {
+                    app.numberofcartitems = numOfCartItems;
+                });
+                app.loadme = true;
+    });
 
     app.mookieCheckSession = function () {
         var interval = $interval(function () {
