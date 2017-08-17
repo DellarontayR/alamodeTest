@@ -25,10 +25,10 @@
                 <div class="count-input">
                   <a class="incr-btn" data-action="decrease" href="#">-</a>
                   <input class="quantity" type="text" ng-value="{{cartItem.qty}}">
-                  <a class="incr-btn" data-action="increase" href="#">+</a>
+                  <a class="incr-btn" data-action="increase" href="#" ng-click="cartCtrl.addItem(cartItem)">+</a>
                 </div>
               </div>
-              <a href="#" class="item-remove" data-toggle="tooltip" data-placement="top" title="Remove">
+              <a href="#" class="item-remove" data-toggle="tooltip" data-placement="top" title="Remove" ng-click="cartCtrl.removeItem(cartItem)">
                 <i class="material-icons remove_shopping_cart"></i>
               </a>
             </div>

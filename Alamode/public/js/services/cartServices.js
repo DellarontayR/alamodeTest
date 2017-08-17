@@ -5,6 +5,9 @@ angular.module('cartServices',[])
 .factory('Cart',function($http){
     var cartFactory = {};
 
+    cartFactory.deleteCartProduct = function(productData){
+        return $http.post('/api/deleteCartProduct',productData);
+    };
 
     cartFactory.getCart = function(cartId){
         return $http.post('/api/getCart',cartId);

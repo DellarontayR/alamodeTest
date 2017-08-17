@@ -10,6 +10,10 @@ angular.module('productServices',[])
         return $http.post('/api/seedProduct',productData);
     };
 
+    productFactory.updateProductQty = function(productData){
+        return $http.post('/api/updateProductQty',productData);
+    };
+    
     productFactory.deleteProduct = function(productData){
         return $http.post('/api/deleteProduct',productData);
     };

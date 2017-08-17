@@ -2,7 +2,8 @@
 
 alamode.controller('CartController', function ($scope, $location, User, Cart, Auth, Product) {
     var app = this;
-
+    app.cartProducts = false;
+    app.cartId = false;
     // app.testCharge = function(){         
     //     stripe.charges.create({
     //     amount: 2000,
@@ -45,8 +46,7 @@ alamode.controller('CartController', function ($scope, $location, User, Cart, Au
                     cartData.cartId = data.data.user.cart;
                     Cart.getCart(cartData).then(function (data) {
                         if (data.data.success) {
-                            console.log('fuck a usercart');
-                            return callback(data.data.cart.products);
+                            return callback(data.data.cart);
 
                         } else {
                             if (!data.data.cart) {
@@ -73,24 +73,75 @@ alamode.controller('CartController', function ($scope, $location, User, Cart, Au
         });
     };
 
-    app.checkUserState(function(userData){
+    app.checkUserState(function (userData) {
         app.username = userData.username;
         app.email = userData.userEmail;
-        app.getCurrentCart(function(products){
-            app.cartProducts = products;
-            console.log(products);
-            console.log('products');
+        app.getCurrentCart(function (cart) {
+            app.cartProducts = cart.products;
+            app.cartId = cart._id;
         });
     });
 
     // Add/remove from cart with update
     // Or just update from the page
 
-    app.updateCart = function(){
-        //Get Cart id
-        //get cart using id
-        //Or not
-        //Just use the ng-models from the 
+    // Used for ng-clicks
+
+    app.addItem = function (cartProduct) {
+        var productData = {};
+        productData.qty = cartProduct.qty + 1;
+        productData.productId = cartProduct._id;
+        Product.updateProductQty(productData).then(function (data) {
+            if (data.data.success) {
+                console.log('addItemsuccess');
+                console.log(data);
+                app.cartProducts[app.cartProducts.indexOf(cartProduct)] = data.data.product;
+                console.log(app.cartProducts[app.cartProducts.indexOf(cartProduct)]);
+
+                // cartProduct.qty = data.data.product.qty;
+                
+                // app.checkUserState(function (userData) {
+                //     console.log('user state');
+                //     app.username = userData.username;
+                //     app.email = userData.userEmail;
+                //     app.getCurrentCart(function (products) {
+                //         app.cartProducts = products;
+                //     });
+                // });
+
+
+            }
+            else {
+                if (data.data.err) {
+                    console.log(data.data.err);
+                }
+                else {
+                    console.log(data);
+                }
+            }
+        });
+
+    };
+
+    app.removeItem = function (cartProduct) {
+        var productData = {};
+        productData.productId = cartProduct._id;
+        productData.cartId = app.cartId;
+
+
+        app.cartProducts.splice(app.cartProducts.indexOf(cartProduct), 1);
+        console.log('after splice');
+
+        Cart.deleteCartProduct(productData).then(function (data) {
+            if (data.data.success) {
+                console.log('product deleted successfully');
+                console.log(data);
+            }
+            else {
+                console.log('product was not delelted');
+                console.log(data);
+            }
+        });
     };
 
 });

@@ -194,9 +194,83 @@ module.exports = function(router) {
         }
     });
 
+    router.post('/updateProductQty',function(req,res){
+        if(req.body.productId == '' || req.body.productId == null || req.body.qty == null){
+            res.json({success:false,messsage:'PorductId or qty was not found in post request'});
+        }
+        else{
+            Product.findById(req.body.productId).select().exec(function(err,product){
+                if(err){
+                    res.json({success:false,message:'There was an error tyring to get the product by id',err:err});
+                }
+                else{
+                    if(!product){
+                        res.json({success:false,message:'Could not find product with request Id'});
+                    }
+                    else{
+                        product.qty = req.body.qty;
+                        product.save(function(err,product){
+                            if(err){
+                                res.json({success:false,message:'Product could not be updated'});
+                            }
+                            else{
+                                res.json({success:true,message:'Product was successful updated',product:product});
+                            }
+                        });
+                    }
+                }
+            });
+
+        }
+    });
+
+    router.post('/deleteCartProduct',function(req,res){
+        //Get cart Id
+        //Trying to delete a specific product Id
+        //With cart id get 
+        if(req.body.cartId == '' || req.body.cartId ==null || req.body.productId == '' || req.body.productId ==null){
+            res.json({success:false,message:'Cart Id and product Id was not found in post body'});
+        }
+        else{
+            Cart.findById(req.body.cartId).select().exec(function(err,cart){
+                if(err){
+                    res.json({success:false,message:'There was an error trying to find the cart',err:err});
+                }
+                else{
+                    cart.products.forEach(function(product){
+
+                        if(product == req.body.productId){
+                                                            console.log('Before product splice///////////////////////////////////');
+
+                            cart.products.splice(cart.products.indexOf(product), 1);
+                            cart.save(function(err,cart){
+
+                                if(err){
+                                    res.json({success:false,message:'There was an error trying to save cart',err:err});
+                                }
+                                else{
+                                    res.json({success:true,message:'Cart updated successfully',cart:cart});
+                                }
+                            });
+                        }
+                    });
+                    // cart.products.findByIdAndRemove(req.body.productId,function(err,oldProduct){
+                    //     if(err){
+                    //         res.json({success:false,message:'Was not able to remove item from cart'});
+                    //     }
+                    //     else{
+                    //         res.json({success:true,message:'Was able to remove product',product:oldProduct});
+
+                    //     }
+                    // })
+                }
+            }); 
+        }
+    });
+
     router.post('/deleteProduct',function(req,res){
         if(req.body.productId == ''|| req.body.productId == null){
-            res.json({success:false,message:'Product Id not found in post body',err:err});
+            res.json({success:false,message:'Product Id not found in post body'});
         }
         else{
             Product.findByIdAndRemove(req.body.productId),function(err,oldProduct){
@@ -246,16 +320,12 @@ module.exports = function(router) {
                 }
                 else{
                     res.json({success:true,message:'Product list successfully returned',catalogProducts:catalogProducts});
-                    console.log('ya bitch');
-                    console.log(catalogProducts);
                 }
             }
         });
     });
 
     router.post('/getProductCategory',function(req,res){
-        console.log('get product');
-        console.log(req.body);
         Product.find({category:req.body.category}).select().exec(function(err,bestsellers){
             if(err || !bestsellers){
                 res.json({success:false,message:'Product list could not be found on server'});
