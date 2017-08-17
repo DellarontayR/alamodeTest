@@ -96,10 +96,7 @@ alamode.controller('CartController', function ($scope, $location, User, Cart, Au
                 console.log('addItemsuccess');
                 console.log(data);
                 app.cartProducts[app.cartProducts.indexOf(cartProduct)] = data.data.product;
-                console.log(app.cartProducts[app.cartProducts.indexOf(cartProduct)]);
-
-                // cartProduct.qty = data.data.product.qty;
-                
+                console.log(app.cartProducts[app.cartProducts.indexOf(data.data.product)]);
                 // app.checkUserState(function (userData) {
                 //     console.log('user state');
                 //     app.username = userData.username;
@@ -124,6 +121,25 @@ alamode.controller('CartController', function ($scope, $location, User, Cart, Au
     };
 
     app.removeItem = function (cartProduct) {
+        var productData = {};
+        productData.qty = cartProduct.qty - 1;
+        productData.productId = cartProduct._id;
+        Product.updateProductQty(productData).then(function (data) {
+            if (data.data.success) {
+                app.cartProducts[app.cartProducts.indexOf(cartProduct)] = data.data.product;
+            }
+            else {
+                if (data.data.err) {
+                    console.log(data.data.err);
+                }
+                else {
+                    console.log(data);
+                }
+            }
+        });
+    };
+
+    app.deleteItem = function (cartProduct) {
         var productData = {};
         productData.productId = cartProduct._id;
         productData.cartId = app.cartId;
