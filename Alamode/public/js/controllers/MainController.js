@@ -7,7 +7,7 @@ alamode.controller('mainCtrl', function (Auth, $timeout, $location, $rootScope, 
     app.message = "Welcome" + app.username;
     app.user = {};
     app.justRegistered = false;
-    $scope.numberofcartitems = "";
+    app.numberofcartitems = "";
     app.scopemessage = "hopppppe";
     app.loggedIn = false;
     app.userEmail = "";
@@ -98,7 +98,7 @@ alamode.controller('mainCtrl', function (Auth, $timeout, $location, $rootScope, 
 
     app.checkForProducts();
 
-    $scope.getProductsFromServer = function (callback) {
+    app.getProductsFromServer = function (callback) {
         (function () {
             Product.getCatalogProducts().then(function (data) {
                 console.log('data from catalog');
@@ -116,7 +116,7 @@ alamode.controller('mainCtrl', function (Auth, $timeout, $location, $rootScope, 
         })();
     };
 
-    $scope.getBestsellers = function (callback) {
+    app.getBestsellers = function (callback) {
         var best = {};
         best.category = 'Bestseller';
 
@@ -137,41 +137,43 @@ alamode.controller('mainCtrl', function (Auth, $timeout, $location, $rootScope, 
         }(best));
 
     };
-    $scope.getProducts = function (callback) {
+    app.getProducts = function (callback) {
 
-        $scope.getProductsFromServer(function (catalogProducts) {
+        app.getProductsFromServer(function (catalogProducts) {
             app.catalogProducts = catalogProducts;
             return callback(catalogProducts);
         });
 
-        $scope.getBestsellers(function (bestsellers) {
+        app.getBestsellers(function (bestsellers) {
             app.bestsellers = bestsellers;
         });
     };
 
 
-    $scope.getCurrentCart = function (callback) {
+    app.getCurrentCart = function (callback) {
         var userData = {};
         userData.userEmail = app.email;
 
         User.getUserCart(userData).then(function (data) {
             if (data.data.success) {
                 if (data.data.user.cart != null && data.data.user.cart != "") {
-                    // Cart.getCart({ userId: data.data.user.cart }).then(function (data) {
-                    //     if (data.data.success) {
-                    //         console.log('fuck a usercart');
-                    //         return callback(data.data.cart.products.length);
+                    var cartData = {};
+                    cartData.cartId = data.data.user.cart;
+                    Cart.getCart(cartData).then(function (data) {
+                        if (data.data.success) {
+                            console.log('fuck a usercart');
+                            return callback(data.data.cart.products.length);
 
-                    //     } else {
-                    //         if (!data.data.cart) {
-                    //             console.log('There is no cart attached to the user.');
-                    //         }
-                    //         else {
-                    //             console.log(data);
-                    //         }
-                    //     }
+                        } else {
+                            if (!data.data.cart) {
+                                console.log('There is no cart attached to the user.');
+                            }
+                            else {
+                                console.log(data);
+                            }
+                        }
 
-                    // });
+                    });
                 }
                 else
                 {
@@ -189,7 +191,7 @@ alamode.controller('mainCtrl', function (Auth, $timeout, $location, $rootScope, 
     };
 
     // Check if user's session has expired upon opening page for the first time
-    $scope.checkUserState = function (callback) {
+    app.checkUserState = function (callback) {
         if (Auth.isLoggedIn()) {
             app.loggedIn = true;
             Auth.getUser().then(function (data) {
@@ -210,12 +212,12 @@ alamode.controller('mainCtrl', function (Auth, $timeout, $location, $rootScope, 
         }
     };
 
-    $scope.mookieCheckSession = function () {
+    app.mookieCheckSession = function () {
         var interval = $interval(function () {
-            $scope.checkUserState(function (userData) {
+            app.checkUserState(function (userData) {
                 app.username = userData.username;
                 app.email = userData.userEmail;
-                $scope.getCurrentCart(function (numOfCartItems) {
+                app.getCurrentCart(function (numOfCartItems) {
                     app.numberofcartitems = numOfCartItems;
                 });
                 app.loadme = true;
@@ -223,7 +225,7 @@ alamode.controller('mainCtrl', function (Auth, $timeout, $location, $rootScope, 
         }, 10000);
     };
 
-    $scope.mookieCheckSession();
+    app.mookieCheckSession();
     // Function to run an interval that checks if the user's token has expired
     app.checkSession = function () {
         // Only run check if user is logged in

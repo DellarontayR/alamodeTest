@@ -4,7 +4,6 @@ alamode.controller('MainShopController', function ($scope, $location, User, Cart
     var mainShop = this;
     mainShop.products = false;
     $scope.getProducts(function(catalogProducts){
-
         mainShop.products = catalogProducts;
     });
 

@@ -38,10 +38,8 @@ module.exports = function(router) {
 
 
     // Cart apis
-    router.get('/getCart',function(req,res){
-        console.log('cart message/////////////////////////////////////');
-        console.log(req.body);
-        Cart.findById(req.body.cartId).populate('products').exec(function(err,cart){
+    router.post('/getCart',function(req,res){
+        Cart.findById(req.body.cartId).select().exec(function(err,cart){
             if(err || !cart){
                 res.json({success:false, message:'Cart could not be found'});
             }

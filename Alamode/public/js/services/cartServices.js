@@ -7,7 +7,7 @@ angular.module('cartServices',[])
 
 
     cartFactory.getCart = function(cartId){
-        return $http.get('/api/getCart',cartId);
+        return $http.post('/api/getCart',cartId);
     };
 
     cartFactory.seedCart = function(cartData){

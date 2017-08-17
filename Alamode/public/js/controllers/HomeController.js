@@ -73,23 +73,18 @@ alamode.controller('HomeController', function($scope,$rootScope, $location, Auth
             userData.userEmail = data.data.email;
             User.getUserCart(userData).then(function(data){
                 var cartData ={};
-                console.log('user data');
-                console.log(data);
                 cartData.price = product.price;
                 cartData.description = product.description;
                 cartData.title = product.title;
                 cartData.imagePath = product.imagePath;
                 cartData.qty = 1;
                 cartData.userId = data.data.user._id;
-
+                console.log('before adding item');
                 Cart.addItemToCart(cartData).then(function(data){
                     console.log('in cart service');
                     console.log(data);
                     if(data.data.success){
                         console.log(data);
-                        home.message="cart updated";
-                        app.loadme = true;
-
                         // $scope.checkUserState(function(userData){
                         //     home.username = userData.username;
                         //     home.email = userData.userEmail;
@@ -104,6 +99,7 @@ alamode.controller('HomeController', function($scope,$rootScope, $location, Auth
                         // });
                     }
                     else{
+                        console.log('adding item to cart was not successful');
                         home.message="home not updated";
                     }
                 });
