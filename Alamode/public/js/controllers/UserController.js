@@ -74,7 +74,7 @@ console.log('regCtrl active');
                 app.regMessage = true;
                 if(data.data.message){
                     app.regMsg=data.data.message;
-
+                    
                 }
                 else{
                     app.regMsg = "User could not be Registered";

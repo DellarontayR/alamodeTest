@@ -35,14 +35,13 @@ module.exports = function(router) {
     // var client = nodemailer.createTransport(sgTransport(options)); // Use if using sendgrid configuration
     // End Sendgrid Configuration Settings  
 
+
+
     // Cart apis
-
-    router.post('/cartCheckout',function(req,res){
-        
-    });
-
     router.get('/getCart',function(req,res){
-        Cart.findById(req.body.cartId).select().exec(function(err,cart){
+        console.log('cart message/////////////////////////////////////');
+        console.log(req.body);
+        Cart.findById(req.body.cartId).populate('products').exec(function(err,cart){
             if(err || !cart){
                 res.json({success:false, message:'Cart could not be found'});
             }
@@ -54,9 +53,7 @@ module.exports = function(router) {
 
     
     router.post('/getCartFromUser',function(req,res){
-        console.log('important email');
-        console.log(req.body);
-        User.findOne({email:req.body.userEmail}).populate('cart').exec(function(err,user){
+        User.findOne({email:req.body.userEmail}).select().exec(function(err,user){
             if(err || !user){
                 console.log(err);
                 res.json({success:false,message:err});
@@ -125,49 +122,93 @@ module.exports = function(router) {
 
     router.post('/addItemToCart',function(req,res){
         console.log('we;re good');
+        console.log(req.body);
         var product = new Product(req.body);
+        console.log(product);
         if(req.body.title == null || req.body.title =='' || req.body.description==null ||
          req.body.description ==''|| req.body.price ==null || req.body.price=='' ||req.body.imagePath ==null || req.body.imagePath == ''){
             res.json({success:false,message:"The uploaded item wasn't set correctly please try again. "});
         }
         else{
             product.save(function(err,newProduct){
+                // try populate
                 User.findById(req.body.userId).select().exec(function(err,user){
-                    if(user.cart == null || user.cart == ""){
+                    var userData = {};
+                    userData.user = user;
+                    if(err || !user){
+                        res.json({success:false,message:'user was not found', err:err});
+                    }
+                    else if(user.cart == null || user.cart == ""){
                         var cart = new Cart();
-                        console.log('made it somewhere');
-                        cart.save(function(err,newCart){
+                        cart.save(function(err,cart){
                             if(err){
                                 res.json({success:false,message:err});
                             }
                             else{
-                                user.cart = newCart._id;
-                                user.save(function(err,newUser){
-                                    newCart.products.push(newProduct);
-                                    newCart.save(function(err,lastCart){
-                                        console.log('how the fuck');
-                                        console.log(lastCart);
-                                        console.log(newUser);
-                                    });
+                                user.cart = cart._id;
+                                user.save(function(err,user){
+                                    if(err){
+                                        console.log(err);
+                                        res.json({success:false,message:'user could not be updated to contain cart',err:err});
+                                    }
+                                    else{
+                                        cart.products.push(newProduct);
+                                        cart.save(function(err,cart){
+                                            console.log('how the fck');
+                                            console.log(cart);
+                                            console.log(user);
+                                        });
+                                    }
+                                    
                                 });
                             }
                         });
                     }else{
-                        Cart.findById(user.cart).select().exec(function(err,newCart){
+                        console.log('user cart ////////////');
+                        console.log(userData.user);
+                        Cart.findById(user.cart).select().exec(function(err,cart){
                             if(err){
                                 res.json({success:false,message:'cart could not be found from user in this amazing mess'});
                             }
                             else{
-                                newCart.products.push(newProduct);
-                                newCart.save(function(err,lastCart){
-                                        console.log('how the fuck');
-                                        console.log(lastCart);
+                                if(!cart){
+                                    res.json({success:false, message:'Could not find the cart',user:user});
+                                }
+                                else{
+                                cart.products.push(newProduct);
+                                cart.save(function(err,cart){
+                                    if(err){
+                                        res.json({success:false,message:'There was an error trying to save new cart'});
+                                    }
+                                    else{
+                                        console.log('Mother Cluckers');
+                                        console.log(cart);
+
+                                    }
+                                        
                                 });
+                                }
                             }
                         });
                     }
-                })
+                });
             });
+        }
+    });
+
+    router.post('/deleteProduct',function(req,res){
+        if(req.body.productId == ''|| req.body.productId == null){
+            res.json({success:false,message:'Product Id not found in post body',err:err});
+        }
+        else{
+            Product.findByIdAndRemove(req.body.productId),function(err,oldProduct){
+                if(err){
+                    res.json({success:false,message:'There was an error trying to delete the product',err:err})
+                }
+                else{
+                    res.json({success:true,message:'Product was successfully deleted',product:oldProduct});
+                }
+            };
         }
     });
 
@@ -227,6 +268,22 @@ module.exports = function(router) {
         });
     });
 
+    router.post('/deleteCart',function(req,res){
+        if(req.body.cartId =='' || req.body.cartId ==null){
+            res.json({success:false, message:'CartId was not provided for cart deletion'});
+        }
+        else{
+            Cart.findByIdAndRemove(req.body.cartId,function(err,oldCart){
+                oldCart.products.forEach(function(product){
+                    Product.findByIdAndRemove(product,function(err,oldProduct){
+                       console.log('product deleted in cart'); 
+                    });
+                });
+            }); 
+            //products from the cart and remove them as well
+        }
+    });
+
     router.post('/addCartToUser',function(req,res){
         var cart = new Cart();
         console.log('tried to add cart');
@@ -248,18 +305,6 @@ module.exports = function(router) {
                         console.log('user hope');
                         console.log(user);
                 });
-                // User.find({email:req.body.email}).select('username email cart').exec(function(err,user){
-                // // User.findById(req.body.userId).select('username email cart').exec(function(err,user){
-                //     user.cart = userCart.id;
-                //     user.save(function(err){
-                //         if(err){
-                //             res.json({success:false, message:"Cart could not be updated"});
-                //         }
-                //         else{
-                //             res.json({success:true, message:"User Cart is ready to be used"});
-                //         }
-                //     });
-                // });
             }
         });
         

@@ -4,6 +4,7 @@ console.log('home');
 alamode.controller('HomeController', function($scope,$rootScope, $location, Auth, User, Cart,Product) {
     var home = this;
     home.username = "";
+    home.email = "";
     home.isLoggedIn = false;
     home.userId = "";
     home.catalogProducts = false;
@@ -62,8 +63,6 @@ alamode.controller('HomeController', function($scope,$rootScope, $location, Auth
 
     home.getProducts();
     
-
-    console.log('hellllo from home');
     // Get Catalog products for display
   
     home.addToCart = function(product){
@@ -74,20 +73,35 @@ alamode.controller('HomeController', function($scope,$rootScope, $location, Auth
             userData.userEmail = data.data.email;
             User.getUserCart(userData).then(function(data){
                 var cartData ={};
+                console.log('user data');
                 console.log(data);
                 cartData.price = product.price;
                 cartData.description = product.description;
                 cartData.title = product.title;
                 cartData.imagePath = product.imagePath;
-                //Complexity
-                //user scenarios
-                //A user is adding to no cart, create cart then add product
-                // A user is addin to cart with item already in it. findoneandupdate the quantity value when a product is available
                 cartData.qty = 1;
                 cartData.userId = data.data.user._id;
+
                 Cart.addItemToCart(cartData).then(function(data){
+                    console.log('in cart service');
+                    console.log(data);
                     if(data.data.success){
+                        console.log(data);
                         home.message="cart updated";
+                        app.loadme = true;
+
+                        // $scope.checkUserState(function(userData){
+                        //     home.username = userData.username;
+                        //     home.email = userData.userEmail;
+                        //     console.log('big dig/////////////');
+                        //     console.log(userData);
+
+                        //     $scope.getCurrentCart(function(numOfCartItems){
+                        //         // console.log('cart length////////////////');
+                        //         // console.log(numOfCartItems);
+                        //         $scope.numberofcartitems = numOfCartItems;
+                        //     });
+                        // });
                     }
                     else{
                         home.message="home not updated";

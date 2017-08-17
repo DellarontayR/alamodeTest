@@ -4,7 +4,7 @@ var Schema = mongoose.Schema;
 
 
 var ProductSchema = new Schema({
-    title: {type:String, lowercase:true, required:true, unique:true},
+    title: {type:String, lowercase:true, required:true, unique:false},
     description:{type: String, required:true,unique:false},
     price:{ type: Number, required:true,unique:false},
     imagePath:{type:String, required:true,unique:false},

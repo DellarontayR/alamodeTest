@@ -1,174 +1,67 @@
-  <!-- Page Wrapper -->
-  <div class="page-wrapper">
-    <!-- Page Title -->
-    <section class="container-fluid padding-top-3x">
-      <h1 class="space-top-half tablet-center">Local Favorites</h1>
-    </section><!-- .container-fluid -->
+<!-- Page Wrapper -->
+<div class="page-wrapper">
+  <!-- Page Title -->
+  <section class="container-fluid padding-top-3x">
+    <h1 class="space-top-half tablet-center">Local Favorites</h1>
+  </section>
+  <!-- .container-fluid -->
 
-    <!-- Filters Bar -->
-    <section class="container padding-top">
-      <div class="filters-bar space-top-half">
-        <div class="column">
-          <!-- Nav Filters -->
-          <ul class="nav-filters">
-            <li><a href="/cookiedoughmainshop">Signature Cookie Dough</a> <sup>3</sup></li>
-            <li><a href="/minicookiedoughmainshop">Mini Cookie Dough</a> <sup>3</sup></li>
-            <li><a href="/milkmainshop">Ice Cold Milk</a> <sup>3</sup></li>
-            <li class="active"><a href="/localfavmainshop">Local Favorite</a> <sup>2</sup></li>
-            <li><a href="#">Mookie's Choice</a> <sup>12</sup></li>
-          </ul><!-- .nav-filters -->
-        </div><!-- .column -->
-        <div class="column">
+  <!-- Filters Bar -->
+  <section class="container padding-top">
+    <div class="filters-bar space-top-half">
+      <div class="column">
+        <!-- Nav Filters -->
+        <ul class="nav-filters">
+          <li><a href="/cookiedoughmainshop">Signature Cookie Dough</a> <sup>3</sup></li>
+          <li><a href="/minicookiedoughmainshop">Mini Cookie Dough</a> <sup>3</sup></li>
+          <li><a href="/milkmainshop">Ice Cold Milk</a> <sup>3</sup></li>
+          <li class="active"><a href="/localfavmainshop">Local Favorite</a> <sup>2</sup></li>
+          <li><a href="#">Mookie's Choice</a> <sup>12</sup></li>
+        </ul>
+        <!-- .nav-filters -->
+      </div>
+      <!-- .column -->
+      <div class="column">
 
+      </div>
+    </div>
+    <!-- .filters-bar -->
+  </section>
+  <!-- .container -->
+
+  <!-- Shop Catalog -->
+  <section class="container-fluid padding-bottom-3x">
+    <div class="row">
+      <!-- Item -->
+      <div class="col-lg-3 col-md-4 col-sm-6" ng-repeat="product in mainShop.products">
+        <div class="shop-item">
+          <div class="shop-thumbnail">
+            <img ng-src="{{product.imagePath}}" alt="Shop item">
+            <div class="shop-item-tools">
+              <a href="#" class="add-to-cart">
+                    <em>Add to Cart</em>
+                    <svg x="0px" y="0px" width="32px" height="32px" viewBox="0 0 32 32">
+                      <path stroke-dasharray="19.79 19.79" stroke-dashoffset="19.79" fill="none" stroke="#FFFFFF" stroke-width="2" stroke-linecap="square" stroke-miterlimit="10" d="M9,17l3.9,3.9c0.1,0.1,0.2,0.1,0.3,0L23,11"/>
+                    </svg>
+                  </a>
+            </div>
+          </div>
+          <div class="shop-item-details">
+            <h3 class="shop-item-title">{{product.title}}</h3>
+            <span class="shop-item-price">
+                  {{product.price | currency}}
+                </span>
+          </div>
         </div>
-      </div><!-- .filters-bar -->
-    </section><!-- .container -->
+      </div>
+      <!-- .col-md-4.col-sm-6 -->
+      <!-- Item -->
 
-    <!-- Shop Catalog -->
-    <section class="container-fluid padding-bottom-3x">
-      <div class="row">
-
-        <!-- Item -->
-        <div class="col-lg-3 col-md-4 col-sm-6">
-          <div class="shop-item">
-            <div class="shop-thumbnail">
-              <span class="shop-label text-danger">Sale</span>
-              <a href="shop-single.html" class="item-link"></a>
-              <img src="http://via.placeholder.com/500x455" alt="Shop item">
-              <div class="shop-item-tools">
-                <a href="#" class="add-to-whishlist" data-toggle="tooltip" data-placement="top" title="Wishlist">
-                  <i class="material-icons favorite_border"></i>
-                </a>
-                <a href="#" class="add-to-cart">
-                  <em>Add to Cart</em>
-                  <svg x="0px" y="0px" width="32px" height="32px" viewBox="0 0 32 32">
-                    <path stroke-dasharray="19.79 19.79" stroke-dashoffset="19.79" fill="none" stroke="#FFFFFF" stroke-width="2" stroke-linecap="square" stroke-miterlimit="10" d="M9,17l3.9,3.9c0.1,0.1,0.2,0.1,0.3,0L23,11"/>
-                  </svg>
-                </a>
-              </div>
-            </div>
-            <div class="shop-item-details">
-              <h3 class="shop-item-title"><a href="shop-single.html">Storage Box</a></h3>
-              <span class="shop-item-price">
-                <span class="old-price">$49.00</span>
-                $38.00
-              </span>
-            </div>
-          </div><!-- .shop-item -->
-        </div><!-- .col-md-4.col-sm-6 -->
-
-        <!-- Item -->
-        <div class="col-lg-3 col-md-4 col-sm-6">
-          <div class="shop-item">
-            <div class="shop-thumbnail">
-              <a href="shop-single.html" class="item-link"></a>
-              <img src="http://via.placeholder.com/500x455" alt="Shop item">
-              <div class="shop-item-tools">
-                <a href="#" class="add-to-whishlist" data-toggle="tooltip" data-placement="top" title="Wishlist">
-                  <i class="material-icons favorite_border"></i>
-                </a>
-                <a href="#" class="add-to-cart">
-                  <em>Add to Cart</em>
-                  <svg x="0px" y="0px" width="32px" height="32px" viewBox="0 0 32 32">
-                    <path stroke-dasharray="19.79 19.79" stroke-dashoffset="19.79" fill="none" stroke="#FFFFFF" stroke-width="2" stroke-linecap="square" stroke-miterlimit="10" d="M9,17l3.9,3.9c0.1,0.1,0.2,0.1,0.3,0L23,11"/>
-                  </svg>
-                </a>
-              </div>
-            </div>
-            <div class="shop-item-details">
-              <h3 class="shop-item-title"><a href="shop-single.html">Shoulder Bag</a></h3>
-              <span class="shop-item-price">
-                $125.00
-              </span>
-            </div>
-          </div><!-- .shop-item -->
-        </div><!-- .col-md-4.col-sm-6 -->
-
-        <!-- Item -->
-        <div class="col-lg-3 col-md-4 col-sm-6">
-          <div class="shop-item">
-            <div class="shop-thumbnail">
-              <a href="shop-single.html" class="item-link"></a>
-              <img src="http://via.placeholder.com/500x455" alt="Shop item">
-              <div class="shop-item-tools">
-                <a href="#" class="add-to-whishlist" data-toggle="tooltip" data-placement="top" title="Wishlist">
-                  <i class="material-icons favorite_border"></i>
-                </a>
-                <a href="#" class="add-to-cart">
-                  <em>Add to Cart</em>
-                  <svg x="0px" y="0px" width="32px" height="32px" viewBox="0 0 32 32">
-                    <path stroke-dasharray="19.79 19.79" stroke-dashoffset="19.79" fill="none" stroke="#FFFFFF" stroke-width="2" stroke-linecap="square" stroke-miterlimit="10" d="M9,17l3.9,3.9c0.1,0.1,0.2,0.1,0.3,0L23,11"/>
-                  </svg>
-                </a>
-              </div>
-            </div>
-            <div class="shop-item-details">
-              <h3 class="shop-item-title"><a href="shop-single.html">Glass Vase</a></h3>
-              <span class="shop-item-price">
-                $62.50
-              </span>
-            </div>
-          </div><!-- .shop-item -->
-        </div><!-- .col-md-4.col-sm-6 -->
-
-        <!-- Item -->
-        <div class="col-lg-3 col-md-4 col-sm-6">
-          <div class="shop-item">
-            <div class="shop-thumbnail">
-              <span class="item-rating text-warning">
-                <i class="material-icons star"></i>
-                <i class="material-icons star"></i>
-                <i class="material-icons star"></i>
-                <i class="material-icons star_half"></i>
-                <i class="material-icons star_border"></i>
-              </span>
-              <a href="shop-single.html" class="item-link"></a>
-              <img src="http://via.placeholder.com/500x455" alt="Shop item">
-              <div class="shop-item-tools">
-                <a href="#" class="add-to-whishlist" data-toggle="tooltip" data-placement="top" title="Wishlist">
-                  <i class="material-icons favorite_border"></i>
-                </a>
-                <a href="#" class="add-to-cart">
-                  <em>Add to Cart</em>
-                  <svg x="0px" y="0px" width="32px" height="32px" viewBox="0 0 32 32">
-                    <path stroke-dasharray="19.79 19.79" stroke-dashoffset="19.79" fill="none" stroke="#FFFFFF" stroke-width="2" stroke-linecap="square" stroke-miterlimit="10" d="M9,17l3.9,3.9c0.1,0.1,0.2,0.1,0.3,0L23,11"/>
-                  </svg>
-                </a>
-              </div>
-            </div>
-            <div class="shop-item-details">
-              <h3 class="shop-item-title"><a href="shop-single.html">Alarm Clock</a></h3>
-              <span class="shop-item-price">
-                $178.00
-              </span>
-            </div>
-          </div><!-- .shop-item -->
-        </div><!-- .col-md-4.col-sm-6 -->
-
-        <!-- Item -->
-
-
-
-
-
-        <!-- Item -->
-
-      </div><!-- .row -->
-      <hr>
-
-       <!-- Pagination -->
-      <div class="pagination padding-bottom">
-        <div class="page-numbers">
-          <a class="active" href="/cookiedoughmainshop">1</a>
-          <a href="/minicookiedoughmainshop">2</a>
-          <a href="/milkmainshop">3</a>
-          <a href="/localfavmainshop">4</a>
-        </div>
-        <div class="pager">
-          <a href="#">Prev</a>
-          <span>|</span>
-          <a href="#">Next</a>
-        </div>
-      </div><!-- .pagination -->
-    </section><!-- .container -->
-  </div><!-- .page-wrapper -->
+    </div>
+    <!-- .row -->
+    <hr>
+    
+  </section>
+  <!-- .container -->
+</div>
+<!-- .page-wrapper -->

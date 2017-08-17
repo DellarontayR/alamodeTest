@@ -2,12 +2,16 @@
 
 angular.module('productServices',[])
 
-.factory('Product',function($http){
+.factory('Product',function($http,Cart){
     var productFactory = {};
     
 
     productFactory.seedProduct = function(productData){
         return $http.post('/api/seedProduct',productData);
+    };
+
+    productFactory.deleteProduct = function(productData){
+        return $http.post('/api/deleteProduct',productData);
     };
  
     productFactory.getProduct = function(productId){

@@ -14,6 +14,10 @@ angular.module('cartServices',[])
         return $http.post('/api/seedCart',cartData);
     };
     
+    cartFactory.deleteCart = function(cartData){
+        return $http.post('/api/deleteCart',cartData);
+    };
+    
     cartFactory.getAProduct = function(){
         return $http.get('/api/getAProduct');
     };

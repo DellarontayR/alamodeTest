@@ -44,7 +44,9 @@ var app = angular.module('appRoutes',['ngRoute'])
     }).
     when('/cookiedoughmainshop',{
         templateUrl: '../mookiedoughfrontend/cookiedough/cookiedoughmainshop.html',
-        authenticated: false
+        authenticated: false,
+        controller:'MainShopController',
+        controllerAs:'mainShop'
     }).
     when('/testusers',{
         templateUrl: '../views/testusers.html',
@@ -54,16 +56,22 @@ var app = angular.module('appRoutes',['ngRoute'])
     }).
     when('/localfavmainshop',{
         templateUrl: '../mookiedoughfrontend/localfav/localfavmainshop.html',
-        authenticated: false
+        authenticated: false,
+        controller:'MainShopController',
+        controllerAs:'mainShop'
     }).
 
     when('/minicookiedoughmainshop',{
         templateUrl: '../mookiedoughfrontend/minicookiedough/minicookiedoughmainshop.html',
-        authenticated: false
+        authenticated: false,
+        controller:'MainShopController',
+        controllerAs:'mainShop'
     }).
     when('/milkmainshop',{
         templateUrl: '../mookiedoughfrontend/organicvalley/milkmainshop.html',
-        authenticated: false
+        authenticated: false,
+        controller:'MainShopController',
+        controllerAs:'mainShop'
     }).
     when('/home',{
         templateUrl: '../mookiedoughfrontend/home.html',
