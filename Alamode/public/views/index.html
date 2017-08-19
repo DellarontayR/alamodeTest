@@ -138,27 +138,29 @@
             </a>
             <!-- Cart Dropdown -->
             <div class="cart-dropdown">
-              <div class="cart-item">
-                <a href="/shoppping-cart" class="item-thumb">
-                  <img src="../mookiedoughfrontend/img/cart/item02.jpg" alt="Item">
+
+              <div class="cart-item" ng-repeat="cartProduct in main.products |limitTo:4">
+
+                <a href="/shopping-cart" class="item-thumb">
+                  <img ng-src="{{cartProduct.imagePath}}" class="item-thumb" alt="Item">
                 </a>
                 <div class="item-details">
-                  <h3 class="item-title"><a href="/shoppping-cart">Chocolate Chip Cookie Dough</a></h3>
-                  <h4 class="item-price">2 x $8.00</h4>
+                  <h3 class="item-title"><a href="/shopping-cart"> {{cartProduct.title}}</a></h3>
+                  <h4 class="item-price">{{cartProduct.qty}} x {{cartProduct.price | currency}} </h4>
                 </div>
                 <a href="#" class="close-btn">
-                  <i class="material-icons close"></i>
+                  <i class="material-icon close"></i>
                 </a>
-              </div><!-- .cart-item -->
-              <div class="cart-subtotal">
-                <div class="column">
-                  <span>Subtotal:</span>
-                </div>
-                <div class="column">
-                  <span class="amount">$16.00</span>
-                </div>
               </div>
-            </div><!-- .cart-dropdown -->
+            <div class="cart-subtotal">
+              <div class="column">
+                <span>Subtotal:</span>
+              </div>
+              <div class="column">
+                <span class="amount">${{main.cart.total}}<span>
+                </div>
+            </div>
+          </div>
 
           </div><!-- .cart-btn -->
         </div><!-- .inner -->

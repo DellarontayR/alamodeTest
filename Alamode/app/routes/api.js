@@ -152,9 +152,7 @@ module.exports = function(router) {
                                     else{
                                         cart.products.push(newProduct);
                                         cart.save(function(err,cart){
-                                            console.log('how the fck');
-                                            console.log(cart);
-                                            console.log(user);
+                                            res.json({success:true,message:'User Cart has been created and updated',cart:cart});
                                         });
                                     }
                                     
@@ -162,8 +160,6 @@ module.exports = function(router) {
                             }
                         });
                     }else{
-                        console.log('user cart ////////////');
-                        console.log(userData.user);
                         Cart.findById(user.cart).select().exec(function(err,cart){
                             if(err){
                                 res.json({success:false,message:'cart could not be found from user in this amazing mess'});
@@ -179,9 +175,7 @@ module.exports = function(router) {
                                         res.json({success:false,message:'There was an error trying to save new cart'});
                                     }
                                     else{
-                                        console.log('Mother Cluckers');
-                                        console.log(cart);
-
+                                        res.json({success:true,message:'Cart has been updated',cart:cart});
                                     }
                                         
                                 });

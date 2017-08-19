@@ -93,14 +93,12 @@ alamode.controller('CartController', function ($scope, $location, User, Cart, Au
                     });
                 }
                 else {
-                    console.log('started from the bottom');
                     console.log(data);
                     //Make messaging service for different errors users can git
                 }
 
             }
             else {
-                console.log('no success');
                 console.log(data);
             }
         });
@@ -121,10 +119,7 @@ alamode.controller('CartController', function ($scope, $location, User, Cart, Au
         productData.productId = cartProduct._id;
         Product.updateProductQty(productData).then(function (data) {
             if (data.data.success) {
-                console.log('addItemsuccess');
-                console.log(data);
                 app.cartProducts[app.cartProducts.indexOf(cartProduct)] = data.data.product;
-                console.log(app.cartProducts[app.cartProducts.indexOf(data.data.product)]);
                 // app.checkUserState(function (userData) {
                 //     console.log('user state');
                 //     app.username = userData.username;

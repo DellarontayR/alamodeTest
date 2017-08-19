@@ -13,6 +13,7 @@ alamode.controller('mainCtrl', function (Auth, $timeout, $location, $rootScope, 
     app.userEmail = "";
     app.userData = {};
     app.loadme = true;
+    app.cart = {};
 
     app.addProductToDB = function (productData) {
         Product.seedProduct(productData).then(function (data) {
@@ -160,8 +161,7 @@ alamode.controller('mainCtrl', function (Auth, $timeout, $location, $rootScope, 
                     cartData.cartId = data.data.user.cart;
                     Cart.getCart(cartData).then(function (data) {
                         if (data.data.success) {
-                            console.log('fuck a usercart');
-                            return callback(data.data.cart.products.length);
+                            return callback(data.data.cart.products);
 
                         } else {
                             if (!data.data.cart) {
@@ -212,8 +212,18 @@ alamode.controller('mainCtrl', function (Auth, $timeout, $location, $rootScope, 
      app.checkUserState(function (userData) {
                 app.username = userData.username;
                 app.email = userData.userEmail;
-                app.getCurrentCart(function (numOfCartItems) {
-                    app.numberofcartitems = numOfCartItems;
+                app.getCurrentCart(function (products) {
+                    app.numberofcartitems = products.length;
+                    app.products = products;
+                    var total = 0;
+                    var counter = app.numberofcartitems;
+                    products.forEach(function(product){
+                        total += product.qty * product.price;
+                        counter-=1;
+                        if(counter===0){
+                            app.cart.total = Math.round(total);                            
+                        }
+                    })
                 });
                 app.loadme = true;
     });
@@ -223,12 +233,18 @@ alamode.controller('mainCtrl', function (Auth, $timeout, $location, $rootScope, 
             app.checkUserState(function (userData) {
                 app.username = userData.username;
                 app.email = userData.userEmail;
-                app.getCurrentCart(function (numOfCartItems) {
-                    app.numberofcartitems = numOfCartItems;
+                app.getCurrentCart(function (products) {
+                    app.numberofcartitems = products.length;
+                    app.products = products;
+                    var total = 0;
+                    products.forEach(function(product){
+                        total += product.qty * product.price;
+                    })
+                    app.cart.total = total;
                 });
                 app.loadme = true;
             });
-        }, 10000);
+        }, 2000);
     };
 
     app.mookieCheckSession();

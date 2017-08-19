@@ -62,9 +62,7 @@ alamode.controller('HomeController', function($scope,$rootScope, $location, Auth
     };
 
     home.getProducts();
-    
-    // Get Catalog products for display
-  
+
     home.addToCart = function(product){
         Auth.getUser().then(function(data){
             home.userEmail = data.data.email;
@@ -79,9 +77,7 @@ alamode.controller('HomeController', function($scope,$rootScope, $location, Auth
                 cartData.imagePath = product.imagePath;
                 cartData.qty = 1;
                 cartData.userId = data.data.user._id;
-                console.log('before adding item');
                 Cart.addItemToCart(cartData).then(function(data){
-                    console.log('in cart service');
                     console.log(data);
                     if(data.data.success){
                         console.log(data);
@@ -106,6 +102,7 @@ alamode.controller('HomeController', function($scope,$rootScope, $location, Auth
             });
         });
     };
+    
     home.checkUserState = function(callback){
         if(Auth.isLoggedIn()){
                 home.loggedIn = true;
@@ -120,6 +117,37 @@ alamode.controller('HomeController', function($scope,$rootScope, $location, Auth
     home.checkUserState(function(userDate){
         home.username = userDate.username;
     });
+
+
+    // home.checkUserState = function (callback) {
+    //     if (Auth.isLoggedIn()) {
+    //         home.loggedIn = true;
+    //         Auth.getUser().then(function (data) {
+    //             var userData = {};
+    //             userData.userEmail = data.data.email;
+    //             userData.username = data.data.username;
+    //             // Check if the returned user is undefined (expired)
+    //             if (data.data.username === undefined) {
+    //                 Auth.logout(); // Log the user out
+    //                 app.isLoggedIn = false; // Set session to false
+    //                 $location.path('/'); // Redirect to home page
+    //                 app.loadme = true; // Allow loading of page
+    //             }
+    //             else {
+    //                 return callback(userData);
+    //             }
+    //         });
+    //     }
+    // };
+    //  home.checkUserState(function (userData) {
+    //             app.username = userData.username;
+    //             app.email = userData.userEmail;
+    //             app.getCurrentCart(function (numOfCartItems) {
+    //                 app.numberofcartitems = numOfCartItems;
+    //             });
+    //             app.loadme = true;
+    // });
+
 
     home.modalShown = false;
     home.toggleModal = function(){
