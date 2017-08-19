@@ -48,28 +48,36 @@ alamode.controller('mainCtrl', function (Auth, $timeout, $location, $rootScope, 
             var userData = {};
             userData.userEmail = data.data.email;
             User.getUserCart(userData).then(function (data) {
-                var cartData = {};
-                cartData.price = product.price;
-                cartData.description = product.description;
-                cartData.title = product.title;
-                cartData.imagePath = product.imagePath;
-                cartData.qty = 1;
-                cartData.userId = data.data.user._id;
-                Cart.addItemToCart(cartData).then(function (data) {
-                    if (data.data.success) {
-                        var getCartData = {};
-                        getCartData.cartId = data.data.cart._id;
-                        console.log(data);
+                if (data.data.success) {
+                    var cartData = {};
+                    cartData.price = product.price;
+                    cartData.description = product.description;
+                    cartData.title = product.title;
+                    cartData.imagePath = product.imagePath;
+                    cartData.qty = 1;
+                    cartData.userId = data.data.user._id;
+                    Cart.addItemToCart(cartData).then(function (data) {
+                        if (data.data.success) {
+                            var getCartData = {};
+                            getCartData.cartId = data.data.cart._id;
+                            console.log(data);
 
-                        $scope.mookie.updateAfterAdd(getCartData, function (moreData) {
-                            $scope.mookie.cartItemCount = moreData.itemCount;
-                            console.log($scope.mookie.cartItemCount);
-                        });
-                    }
-                    else {
+                            $scope.mookie.updateAfterAdd(getCartData, function (moreData) {
+                                $scope.mookie.cartItemCount = moreData.itemCount;
+                                console.log($scope.mookie.cartItemCount);
+                            });
+                        }
+                        else {
 
-                    }
-                });
+                        }
+                    });
+                }
+                else{
+                    $scope.mookie.modalTitle = "User not found error";
+                    $scope.mookie.modalBody = "Item could not be added to unknown user cart. Please register new user";
+                    $scope.mookie.showModal();
+                }
+
 
             });
         })
@@ -132,10 +140,10 @@ alamode.controller('mainCtrl', function (Auth, $timeout, $location, $rootScope, 
         $scope.mookie.cartItemCount = cartData.itemCount;
     });
 
-    $scope.mookie.hideModal =function(){
+    $scope.mookie.hideModal = function () {
         $("#myModal").modal('hide');
     };
-    $scope.mookie.showModal = function(title,body){
+    $scope.mookie.showModal = function (title, body) {
         $scope.mookie.modalTitle = title;
         $scope.mookie.modalBody = body;
         $("#myModal").modal({ backdrop: "static" }); // Open modal        

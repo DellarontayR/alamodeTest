@@ -3,7 +3,7 @@ var stripe = Stripe('pk_test_EPjnzpxnrgvUiGWsYrJjqN5t');
 
 var elements = stripe.elements();
 
-alamode.controller('CartController', function ($scope, $location, User, Cart, Auth, Product,$window) {
+alamode.controller('CartController', function ($scope, $location, User, Cart, Auth, Product, $window) {
     var app = this;
     app.cartProducts = false;
     app.cartId = false;
@@ -20,6 +20,7 @@ alamode.controller('CartController', function ($scope, $location, User, Cart, Au
 
     if ($window.location.pathname === '/checkout') app.checkout = true; // Check if user is on home page to show home page div
 
+    // app.doCheckout = function(){
     if (app.checkout) {
         // Custom styling can be passed to options when creating an Element.
         // (Note that this demo uses a wider set of styles than the guide below.)
@@ -45,6 +46,56 @@ alamode.controller('CartController', function ($scope, $location, User, Cart, Au
 
         // Add an instance of the card Element into the `card-element` <div>
         card.mount('#card-element');
+
+
+
+        var inputs = document.querySelectorAll('input.field');
+        Array.prototype.forEach.call(inputs, function (input) {
+            input.addEventListener('focus', function () {
+                input.classList.add('is-focused');
+            });
+            input.addEventListener('blur', function () {
+                input.classList.remove('is-focused');
+            });
+            input.addEventListener('keyup', function () {
+                if (input.value.length === 0) {
+                    input.classList.add('is-empty');
+                } else {
+                    input.classList.remove('is-empty');
+                }
+            });
+        });
+
+        function setOutcome(result) {
+            var successElement = document.querySelector('.success');
+            var errorElement = document.querySelector('.error');
+            successElement.classList.remove('visible');
+            errorElement.classList.remove('visible');
+            console.log(result);
+
+            if (result.token) {
+                // Use the token to create a charge or a customer
+                // https://stripe.com/docs/charges
+                successElement.querySelector('.token').textContent = result.token.id;
+                successElement.classList.add('visible');
+            } else if (result.error) {
+                errorElement.textContent = result.error.message;
+                errorElement.classList.add('visible');
+            }
+        }
+
+        card.on('change', function (event) {
+            setOutcome(event);
+        });
+
+        document.querySelector('form').addEventListener('submit', function (e) {
+            e.preventDefault();
+            var form = document.querySelector('form');
+            var extraDetails = {
+                name: form.querySelector('input[name=cardholder-name]').value,
+            };
+            stripe.createToken(card, extraDetails).then(setOutcome);
+        });
     }
 
     app.checkUserState = function (callback) {
