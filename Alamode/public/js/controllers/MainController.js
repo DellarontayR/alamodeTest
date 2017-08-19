@@ -16,62 +16,127 @@ alamode.controller('mainCtrl', function (Auth, $timeout, $location, $rootScope, 
     $scope.some = {};
 
     $scope.mookie = {};
+    $scope.mookie.cartItemCount = false;
 
-    $scope.mookie.addToCart = function(){
-        console.log("hey what's going on in the world of ours");
-        $scope.mookie.believe = "malcolm";
-        Auth.getUser().then(function(data){
-            app.mookie.userEmail = data.data.email;
-            app.mookie.username = data.data.username;
+    $scope.mookie.updateAfterAdd = function (getCartData, callback) {
+        Cart.getCart(getCartData).then(function (data) {
+            if (data.data.success) {
+                var itemCount = 0;
+                data.data.cart.products.forEach(function (cartProduct) {
+                    itemCount += cartProduct.qty;
+                });
+                var cartData = {};
+                cartData.cart = data.data.cart;
+                cartData.itemCount = itemCount;
+                $scope.mookie.cartItemCount = itemCount;
+                console.log('success');
+                return callback(cartData);
+            }
+            else {
+                console.log(data);
+            }
+        });
+    };
+
+
+    $scope.mookie.addToCart = function (product) {
+        Auth.getUser().then(function (data) {
+            console.log($scope.mookie.cartItemCount);
+            $scope.mookie.userEmail = data.data.email;
+            $scope.mookie.username = data.data.username;
             var userData = {};
             userData.userEmail = data.data.email;
-            User.getUserCart(userData).then(function(data){
-                var cartData ={};
+            User.getUserCart(userData).then(function (data) {
+                var cartData = {};
                 cartData.price = product.price;
                 cartData.description = product.description;
                 cartData.title = product.title;
                 cartData.imagePath = product.imagePath;
                 cartData.qty = 1;
                 cartData.userId = data.data.user._id;
+                Cart.addItemToCart(cartData).then(function (data) {
+                    if (data.data.success) {
+                        var getCartData = {};
+                        getCartData.cartId = data.data.cart._id;
+                        console.log(data);
 
-                Cart.addItemToCart(cartData).then(function(data){
-                    if(data.data.success){
+                        $scope.mookie.updateAfterAdd(getCartData, function (moreData) {
+                            $scope.mookie.cartItemCount = moreData.itemCount;
+                            console.log($scope.mookie.cartItemCount);
+                        });
 
+                        // $scope.mookie.cartItemCount = 0;
+                        // $scope.mookie.getCurrentCart(function(currentCart){
+
+                        // });
+
+
+                        // var cart = data.data.cart;
+                        // console.log(cart);
+                        // cart.products.forEach(function(cartProduct){
+                        //     console.log(cartProduct);
+                        //     $scope.mookie.cartItemCount += cartProduct.qty;
+                        // });
                     }
-                    else{
+                    else {
 
                     }
                 });
-                
+
             });
         })
-    }
+    };
 
-    $scope.some.addToCart = function(product){
-        Auth.getUser().then(function(data){
-            $scope.some.userEmail = data.data.email;
-            $scope.some.username = data.data.username;
-            var userData = {};
-            userData.userEmail = data.data.email;
-            User.getUserCart(userData).then(function(data){
-                var cartData ={};
-                cartData.price = product.price;
-                cartData.description = product.description;
-                cartData.title = product.title;
-                cartData.imagePath = product.imagePath;
-                cartData.qty = 1;
-                cartData.userId = data.data.user._id;
-                Cart.addItemToCart(cartData).then(function(data){
-                    if(data.data.success){
-                        $scope.some.message = "Item added to cart";
-                    }
-                    else{
-                        console.log('adding item to cart was not successful');
-                        $scope.some.message="home not updated";
-                    }
-                });
+
+
+    $scope.mookie.getCurrentCart = function (callback) {
+        var userData = {};
+        userData.userEmail = $scope.mookie.userEmail;
+        User.getUserCart(userData).then(function (data) {
+            if (data.data.success) {
+                if (data.data.user.cart != null && data.data.user.cart) {
+                    var cartData = {};
+                    cartData.cartId = data.data.user.cart;
+                    Carg.getCart(cartData).then(function (data) {
+                        if (data.data.success) {
+                            var itemCount = 0;
+                            var cart = data.data.cart;
+                            cart.products.forEach(function (cartProduct) {
+                                itemCount += cartProduct.qty;
+                            });
+                            var cartData = {};
+                            cartData.cart = cart;
+                            cartData.itemCount = itemCount;
+                            return callback(cartData);
+                        }
+                        else {
+
+                        }
+                    });
+                }
+            }
+            else {
+                //no success whatsoever getting user 
+                console.log('no success whatsoever');
+            }
+        })
+    };
+
+
+    $scope.mookie.getEmailAndUsername = function (callback) {
+        if (Auth.isLoggin()) {
+            Auth.getUser().then(function (data) {
+                var userData = {};
+                userData.userEmail = data.data.email;
+                userData.username = data.data.username;
+                if (data.data.username === undefined) {
+                    Auth.logout();//Check against database to make sure this is a real user and not a deleted one
+                }
+                else {
+                    return callback(userData);
+                }
             });
-        });
+        }
     };
 
     app.addProductToDB = function (productData) {
@@ -208,7 +273,7 @@ alamode.controller('mainCtrl', function (Auth, $timeout, $location, $rootScope, 
             app.bestsellers = bestsellers;
         });
     };
-    
+
     app.getCurrentCart = function (callback) {
         var userData = {};
         userData.userEmail = app.email;
@@ -233,8 +298,7 @@ alamode.controller('mainCtrl', function (Auth, $timeout, $location, $rootScope, 
 
                     });
                 }
-                else
-                {
+                else {
                     console.log('started from the bottom');
                     console.log(data);
                     //Make messaging service for different errors users can git
@@ -247,6 +311,8 @@ alamode.controller('mainCtrl', function (Auth, $timeout, $location, $rootScope, 
         });
     };
 
+
+    //updateUserModel
     // Check if user's session has expired upon opening page for the first time
     app.checkUserState = function (callback) {
         if (Auth.isLoggedIn()) {
@@ -268,23 +334,23 @@ alamode.controller('mainCtrl', function (Auth, $timeout, $location, $rootScope, 
             });
         }
     };
-     app.checkUserState(function (userData) {
-                app.username = userData.username;
-                app.email = userData.userEmail;
-                app.getCurrentCart(function (products) {
-                    app.numberofcartitems = products.length;
-                    app.products = products;
-                    var total = 0;
-                    var counter = app.numberofcartitems;
-                    products.forEach(function(product){
-                        total += product.qty * product.price;
-                        counter-=1;
-                        if(counter===0){
-                            app.cart.total = Math.round(total);                            
-                        }
-                    });
-                });
-                app.loadme = true;
+    app.checkUserState(function (userData) {
+        app.username = userData.username;
+        app.email = userData.userEmail;
+        app.getCurrentCart(function (products) {
+            app.numberofcartitems = products.length;
+            app.products = products;
+            var total = 0;
+            var counter = app.numberofcartitems;
+            products.forEach(function (product) {
+                total += product.qty * product.price;
+                counter -= 1;
+                if (counter === 0) {
+                    app.cart.total = Math.round(total);
+                }
+            });
+        });
+        app.loadme = true;
     });
 
     app.mookieCheckSession = function () {
@@ -294,16 +360,20 @@ alamode.controller('mainCtrl', function (Auth, $timeout, $location, $rootScope, 
                 app.email = userData.userEmail;
                 app.getCurrentCart(function (products) {
                     app.numberofcartitems = products.length;
+
                     app.products = products;
                     var total = 0;
-                    products.forEach(function(product){
+                    var count = 0;
+                    products.forEach(function (product) {
                         total += product.qty * product.price;
+                        count += product.qty;
                     })
+                    $scope.mookie.cartItemCount = count;
                     app.cart.total = total;
                 });
                 app.loadme = true;
             });
-        }, 5000);
+        }, 15000);
     };
 
     app.mookieCheckSession();

@@ -109,8 +109,6 @@ module.exports = function(router) {
         cart.save(function(err,cart){
             if(err || !cart){
                 res.json({success:false,message:err});
-                console.log("errror");
-                console.log(err);
             }
             else{
                 res.json({success:true, message:'Cart was saved',cart:cart});
@@ -119,17 +117,15 @@ module.exports = function(router) {
     });
 
     router.post('/addItemToCart',function(req,res){
-        console.log('we;re good');
-        console.log(req.body);
         var product = new Product(req.body);
-        console.log(product);
+
         if(req.body.title == null || req.body.title =='' || req.body.description==null ||
          req.body.description ==''|| req.body.price ==null || req.body.price=='' ||req.body.imagePath ==null || req.body.imagePath == ''){
             res.json({success:false,message:"The uploaded item wasn't set correctly please try again. "});
         }
         else{
             product.save(function(err,newProduct){
-                // try populate
+            
                 User.findById(req.body.userId).select().exec(function(err,user){
                     var userData = {};
                     userData.user = user;

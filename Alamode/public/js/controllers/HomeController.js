@@ -62,46 +62,6 @@ alamode.controller('HomeController', function($scope,$rootScope, $location, Auth
     };
 
     home.getProducts();
-
-    home.addToCart = function(product){
-        Auth.getUser().then(function(data){
-            home.userEmail = data.data.email;
-            home.username = data.data.username;
-            var userData = {};
-            userData.userEmail = data.data.email;
-            User.getUserCart(userData).then(function(data){
-                var cartData ={};
-                cartData.price = product.price;
-                cartData.description = product.description;
-                cartData.title = product.title;
-                cartData.imagePath = product.imagePath;
-                cartData.qty = 1;
-                cartData.userId = data.data.user._id;
-                Cart.addItemToCart(cartData).then(function(data){
-                    console.log(data);
-                    if(data.data.success){
-                        console.log(data);
-                        // $scope.checkUserState(function(userData){
-                        //     home.username = userData.username;
-                        //     home.email = userData.userEmail;
-                        //     console.log('big dig/////////////');
-                        //     console.log(userData);
-
-                        //     $scope.getCurrentCart(function(numOfCartItems){
-                        //         // console.log('cart length////////////////');
-                        //         // console.log(numOfCartItems);
-                        //         $scope.numberofcartitems = numOfCartItems;
-                        //     });
-                        // });
-                    }
-                    else{
-                        console.log('adding item to cart was not successful');
-                        home.message="home not updated";
-                    }
-                });
-            });
-        });
-    };
     
     home.checkUserState = function(callback){
         if(Auth.isLoggedIn()){
