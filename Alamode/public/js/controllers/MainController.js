@@ -223,7 +223,7 @@ alamode.controller('mainCtrl', function (Auth, $timeout, $location, $rootScope, 
                         if(counter===0){
                             app.cart.total = Math.round(total);                            
                         }
-                    })
+                    });
                 });
                 app.loadme = true;
     });
@@ -244,7 +244,7 @@ alamode.controller('mainCtrl', function (Auth, $timeout, $location, $rootScope, 
                 });
                 app.loadme = true;
             });
-        }, 2000);
+        }, 5000);
     };
 
     app.mookieCheckSession();
