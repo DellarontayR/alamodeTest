@@ -148,8 +148,7 @@ alamode.controller('mainCtrl', function (Auth, $timeout, $location, $rootScope, 
             app.bestsellers = bestsellers;
         });
     };
-
-
+    
     app.getCurrentCart = function (callback) {
         var userData = {};
         userData.userEmail = app.email;
@@ -184,7 +183,6 @@ alamode.controller('mainCtrl', function (Auth, $timeout, $location, $rootScope, 
 
             }
             else {
-                console.log('no success');
                 console.log(data);
             }
         });

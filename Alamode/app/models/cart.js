@@ -7,7 +7,9 @@ var Schema = mongoose.Schema;
 var CartSchema = new Schema({
     products:[{
         type:Schema.ObjectId,ref:'Product'
-    }]
+    }],
+    created: { type: Date, required: true, default: Date.now }
+
     // cartItems:[{type:Schema.ObjectId, ref:'Product',required:false} {type:Number, required:false}]
     
 });

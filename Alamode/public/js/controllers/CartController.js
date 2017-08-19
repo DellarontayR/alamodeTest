@@ -1,9 +1,13 @@
 'use strict';
+var stripe = Stripe('pk_test_EPjnzpxnrgvUiGWsYrJjqN5t');
 
-alamode.controller('CartController', function ($scope, $location, User, Cart, Auth, Product) {
+var elements = stripe.elements();
+
+alamode.controller('CartController', function ($scope, $location, User, Cart, Auth, Product,$window) {
     var app = this;
     app.cartProducts = false;
     app.cartId = false;
+    app.checkout = false;
     // app.testCharge = function(){         
     //     stripe.charges.create({
     //     amount: 2000,
@@ -13,6 +17,35 @@ alamode.controller('CartController', function ($scope, $location, User, Cart, Au
     //     });
 
     // };
+
+    if ($window.location.pathname === '/checkout') app.checkout = true; // Check if user is on home page to show home page div
+
+    if (app.checkout) {
+        // // Custom styling can be passed to options when creating an Element.
+        // // (Note that this demo uses a wider set of styles than the guide below.)
+        // var style = {
+        //     base: {
+        //         color: '#32325d',
+        //         lineHeight: '24px',
+        //         fontFamily: '"Helvetica Neue", Helvetica, sans-serif',
+        //         fontSmoothing: 'antialiased',
+        //         fontSize: '16px',
+        //         '::placeholder': {
+        //             color: '#aab7c4'
+        //         }
+        //     },
+        //     invalid: {
+        //         color: '#fa755a',
+        //         iconColor: '#fa755a'
+        //     }
+        // };
+
+        // // Create an instance of the card Element
+        // var card = elements.create('card', { style: style });
+
+        // // Add an instance of the card Element into the `card-element` <div>
+        // card.mount('#card-element');
+    }
 
     app.checkUserState = function (callback) {
         if (Auth.isLoggedIn()) {
@@ -81,11 +114,6 @@ alamode.controller('CartController', function ($scope, $location, User, Cart, Au
             app.cartId = cart._id;
         });
     });
-
-    // Add/remove from cart with update
-    // Or just update from the page
-
-    // Used for ng-clicks
 
     app.addItem = function (cartProduct) {
         var productData = {};
@@ -159,5 +187,10 @@ alamode.controller('CartController', function ($scope, $location, User, Cart, Au
             }
         });
     };
+
+    app.checkout = function (cart) {
+
+    };
+
 
 });
