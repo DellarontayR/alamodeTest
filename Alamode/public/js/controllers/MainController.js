@@ -357,6 +357,7 @@ alamode.controller('mainCtrl', function (Auth, $timeout, $location, $rootScope, 
                 counter -= 1;
                 if (counter === 0) {
                     app.cart.total = Math.round(total);
+                    $scope.mookie.total = Math.round(total);
                 }
             });
         });
