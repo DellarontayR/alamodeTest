@@ -8,12 +8,41 @@ alamode.controller('mainCtrl', function (Auth, $timeout, $location, $rootScope, 
     app.user = {};
     app.justRegistered = false;
     app.numberofcartitems = "";
-    app.scopemessage = "hopppppe";
     app.loggedIn = false;
     app.userEmail = "";
     app.userData = {};
     app.loadme = true;
     app.cart = {};
+    $scope.some = {};
+
+
+
+    $scope.some.addToCart = function(product){
+        Auth.getUser().then(function(data){
+            $scope.some.userEmail = data.data.email;
+            $scope.some.username = data.data.username;
+            var userData = {};
+            userData.userEmail = data.data.email;
+            User.getUserCart(userData).then(function(data){
+                var cartData ={};
+                cartData.price = product.price;
+                cartData.description = product.description;
+                cartData.title = product.title;
+                cartData.imagePath = product.imagePath;
+                cartData.qty = 1;
+                cartData.userId = data.data.user._id;
+                Cart.addItemToCart(cartData).then(function(data){
+                    if(data.data.success){
+                        $scope.some.message = "Item added to cart";
+                    }
+                    else{
+                        console.log('adding item to cart was not successful');
+                        $scope.some.message="home not updated";
+                    }
+                });
+            });
+        });
+    };
 
     app.addProductToDB = function (productData) {
         Product.seedProduct(productData).then(function (data) {
