@@ -3,6 +3,8 @@
 var mongoose = require('mongoose');
 mongoose.Promise = global.Promise;
 var Schema = mongoose.Schema;
+var validate = require('mongoose-validator'); // Import Mongoose Validator Plugin
+
 
 var emailValidator = [
     validate({
@@ -18,9 +20,9 @@ var emailValidator = [
 ];
 
 var SubscriptionSchema = new Schema({
-    products:{type:String,required:true, validator:emailValidator},
+    email:{type:String,required:true, validator:emailValidator, unique:true},
     created: { type: Date, required: true, default: Date.now }
     
 });
 
-module.exports = mongoose.model('Cart',SubscriptionSchema);
+module.exports = mongoose.model('Subscription',SubscriptionSchema);

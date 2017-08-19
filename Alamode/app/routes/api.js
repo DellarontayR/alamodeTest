@@ -2,6 +2,7 @@
 var User = require('../models/user'); // Import User Model
 var Product = require('../models/product');
 var Cart = require('../models/cart');
+var Subscription = require('../models/subscription');
 var jwt = require('jsonwebtoken'); // Import JWT Package
 var secret = 'zm!_0@0hu_7&ii-@j&0wpm3t%ojnvmjx6j0!1*&j@x51&mdzk@'; // Create custom secret for use in JWT
 var nodemailer = require('nodemailer'); // Import Nodemailer Package
@@ -36,6 +37,30 @@ module.exports = function (router) {
     // End Sendgrid Configuration Settings  
 
 
+    // Subscription api
+
+    router.post('/addSubscription',function(req,res){
+        var sub = new Subscription();
+        if(req.body.subEmail == '' || req.body.subEmail == null){
+            res.json({success:false, message:'Email was not provided for subscription'});
+        }
+        else{
+            sub.email = req.body.subEmail;
+            sub.save(function(err,sub){
+                if(err){
+                    res.json({success:false,message:'Subscription could not be saved. Ensure email is configured correctly'});
+                }
+                else{
+                    if(!sub){
+                        res.json({success:false,message:"Subscription may already be in database"});
+                    }
+                    else{
+                        res.json({success:true,message:'Email was added to subscription list.'});                        
+                    }
+                }
+            });
+        }
+    });
 
     // Cart apis
     router.post('/getCart', function (req, res) {

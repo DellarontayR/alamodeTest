@@ -2,70 +2,71 @@
 <html lang="en" ng-app="alamode">
 
 <head>
-    <meta charset="utf-8">
-    <title>Mookie Dough</title>
+  <meta charset="utf-8">
+  <title>Mookie Dough</title>
 
-    <!--SEO Meta Tags-->
-    <meta name="description" content="Mookie Dough Company LLC" />
-    <meta name="keywords" content="One stop shop for the best edible cookie dough. Did we mention that we are available 24/7?!" />
-    <meta name="author" content="Mookie Dough LLC" />
+  <!--SEO Meta Tags-->
+  <meta name="description" content="Mookie Dough Company LLC" />
+  <meta name="keywords" content="One stop shop for the best edible cookie dough. Did we mention that we are available 24/7?!"
+  />
+  <meta name="author" content="Mookie Dough LLC" />
 
-    <!--Mobile Specific Meta Tag-->
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+  <!--Mobile Specific Meta Tag-->
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
 
-    <!--Favicon-->
-    <link rel="shortcut icon" href="../mookiedoughfrontend/favicon.ico" type="image/x-icon">
-    <link rel="icon" href="../mookiedoughfrontend/favicon.ico" type="image/x-icon">
+  <!--Favicon-->
+  <link rel="shortcut icon" href="../mookiedoughfrontend/favicon.ico" type="image/x-icon">
+  <link rel="icon" href="../mookiedoughfrontend/favicon.ico" type="image/x-icon">
 
-    <!-- Google Material Icons -->
-    <link href="../mookiedoughfrontend/css/vendor/material-icons.min.css" rel="stylesheet" media="screen">
+  <!-- Google Material Icons -->
+  <link href="../mookiedoughfrontend/css/vendor/material-icons.min.css" rel="stylesheet" media="screen">
 
-    <!-- Brand Icons -->
-    <link href="../mookiedoughfrontend/css/vendor/socicon.min.css" rel="stylesheet" media="screen">
+  <!-- Brand Icons -->
+  <link href="../mookiedoughfrontend/css/vendor/socicon.min.css" rel="stylesheet" media="screen">
 
-    <!-- Bootstrap -->
-    <link href="../mookiedoughfrontend/css/vendor/bootstrap.min.css" rel="stylesheet" media="screen">
+  <!-- Bootstrap -->
+  <link href="../mookiedoughfrontend/css/vendor/bootstrap.min.css" rel="stylesheet" media="screen">
 
-    <!-- Theme Styles -->
-    <link href="../mookiedoughfrontend/css/theme.css" rel="stylesheet" media="screen">
+  <!-- Theme Styles -->
+  <link href="../mookiedoughfrontend/css/theme.css" rel="stylesheet" media="screen">
 
-        <!-- Theme Styles -->
-    <!-- <link href="../mookiedoughfrontend/css/theme.css" rel="stylesheet" media="screen"> -->
+  <!-- Theme Styles -->
+  <!-- <link href="../mookiedoughfrontend/css/theme.css" rel="stylesheet" media="screen"> -->
 
-    <!-- Page Preloading -->
-    <script src="../mookiedoughfrontend/js/vendor/page-preloading.js"></script>
+  <!-- Page Preloading -->
+  <script src="../mookiedoughfrontend/js/vendor/page-preloading.js"></script>
 
-    <!-- Modernizr -->
-    <script src="../mookiedoughfrontend/js/vendor/modernizr.custom.js"></script>
-      <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.5.6/angular.js"></script>
-      <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.5.6/angular-route.js"></script>
-      <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.5.6/angular-mocks.js"></script>
+  <!-- Modernizr -->
+  <script src="../mookiedoughfrontend/js/vendor/modernizr.custom.js"></script>
+  <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.5.6/angular.js"></script>
+  <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.5.6/angular-route.js"></script>
+  <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.5.6/angular-mocks.js"></script>
 
-      <script type="text/javascript" src="https://js.stripe.com/v2/"></script>
-
-
-      
-    <!-- Stripe elements  -->
-    <script src="https://js.stripe.com/v3/"></script>
-
-    <script src= "../js/app.js"></script>
-    <script src="../js/routes.js"></script>
-
-    <!-- Alamode Services -->
-    <script src="../js/services/authServices.js"></script>
-    <script src="../js/services/cartServices.js"></script>
-    <script src="../js/services/userServices.js"></script>
-    <script src="../js/services/productServices.js"></script>
+  <script type="text/javascript" src="https://js.stripe.com/v2/"></script>
 
 
-     <script src="../js/directives/product.js"></script> 
-    <!-- Alamode Controllers -->
-    <script src="../js/controllers/MainController.js"></script>
-    <script src="../js/controllers/UserController.js"></script>
-    <script src="../js/controllers/HomeController.js"></script>   
-      <script src="../js/controllers/TestController.js"></script>
-      <script src="../js/controllers/CartController.js"></script>
-    <script src="../js/controllers/MainShopController.js"></script>
+
+  <!-- Stripe elements  -->
+  <script src="https://js.stripe.com/v3/"></script>
+
+  <script src="../js/app.js"></script>
+  <script src="../js/routes.js"></script>
+
+  <!-- Alamode Services -->
+  <script src="../js/services/authServices.js"></script>
+  <script src="../js/services/cartServices.js"></script>
+  <script src="../js/services/userServices.js"></script>
+  <script src="../js/services/productServices.js"></script>
+
+
+  <script src="../js/directives/product.js"></script>
+  <!-- Alamode Controllers -->
+  <script src="../js/controllers/MainController.js"></script>
+  <script src="../js/controllers/UserController.js"></script>
+  <script src="../js/controllers/HomeController.js"></script>
+  <script src="../js/controllers/TestController.js"></script>
+  <script src="../js/controllers/CartController.js"></script>
+  <script src="../js/controllers/MainShopController.js"></script>
 
 
 
@@ -74,26 +75,29 @@
 
 <body class="page-preloading" ng-controller="mainCtrl as main">
 
-        <!-- Page Pre-Loader -->
-    <div class="page-preloader">
-        <div class="preloader">
-        <img src="../mookiedoughfrontend/img/preloader.gif" alt="Preloader">
-        </div>
-    </div><!-- .page-preloader -->
+  <!-- Page Pre-Loader -->
+  <div class="page-preloader">
+    <div class="preloader">
+      <img src="../mookiedoughfrontend/img/preloader.gif" alt="Preloader">
+    </div>
+  </div>
+  <!-- .page-preloader -->
 
-    <div class="page-wrapper">
+  <div class="page-wrapper">
 
-         <!-- Navbar -->
+    <!-- Navbar -->
     <!-- Remove ".navbar-sticky" class to make navigation bar scrollable with the page. -->
     <header class="navbar navbar-sticky">
 
       <!-- Site Logo -->
       <a href="/home" class="site-logo visible-desktop">
-    <img src="../imgs/Media/largelogo.png">
-      </a><!-- site-logo.visible-desktop -->
+    <img src="../imgs/Media/bordered_logo.png">
+      </a>
+      <!-- site-logo.visible-desktop -->
       <a href="/home" class="site-logo visible-mobile">
-        <img src="../imgs/Media/largelogo.png">
-      </a><!-- site-logo.visible-mobile -->
+        <img src="../imgs/Media/bordered_logo.png">
+      </a>
+      <!-- site-logo.visible-mobile -->
 
       <!-- Main Navigation -->
       <!-- Control the position of navigation via modifier classes: "text-left, text-center, text-right" -->
@@ -113,13 +117,15 @@
           <li><a href="/contacts">Contacts</a></li>
           <li><a href="/faq">FAQ</a></li>
           <li><a href="/fuegophotos">Fuego Photos</a></li>
-          <li ng-show="main.loggedIn" ><a href="/register" ng-click="main.logout()">Logout</a></li>
-          <li ng-show="!main.loggedIn" ><a href="/register">Login</a></li>
-          <li ng-show="mookie.admin"><a href="/testusers" >Management</a></li>
-          
+          <li ng-show="main.loggedIn"><a href="/register" ng-click="main.logout()">Logout</a></li>
+          <li ng-show="!main.loggedIn"><a href="/register">Login</a></li>
+          <li ng-show="mookie.admin"><a href="/testusers">Management</a></li>
 
-        </ul><!-- .menu -->
-      </nav><!-- .main-navigation -->
+
+        </ul>
+        <!-- .menu -->
+      </nav>
+      <!-- .main-navigation -->
 
       <!-- Toolbar -->
       <div class="toolbar">
@@ -130,7 +136,7 @@
           <a href="/account" ng-if="main.loggedIn"><i class="material-icons person"></i></a>
 
           <div class="cart-btn">
-             <!-- <a href="/testusers">  -->
+            <!-- <a href="/testusers">  -->
             <a href="/shopping-cart">  
               <i>
                 <span class="material-icons shopping_basket"></span>
@@ -153,12 +159,12 @@
                   <i class="material-icon close"></i>
                 </a>
               </div>
-            <div class="cart-subtotal">
-              <div class="column">
-                <span>Subtotal:</span>
-              </div>
-              <div class="column">
-                <span class="amount">${{main.cart.total}}<span>
+              <div class="cart-subtotal">
+                <div class="column">
+                  <span>Subtotal:</span>
+                </div>
+                <div class="column">
+                  <span class="amount">${{main.cart.total}}<span>
                 </div>
             </div>
           </div>
@@ -192,9 +198,24 @@
 
      <!-- Footer -->
     <footer class="footer">
+        <div class="column">
+            <h3 class="widget-title">
+              Subscription
+              <small>To receive latest offers and discounts from Mookie Dough</small>
+            </h3>
+            <form class="subscribe-form" novalidate>
+              <input type="email" class="form-control" name="EMAIL" placeholder="Your e-mail" ng-model="subEmail">
+              <div style="position: absolute; left: -5000px;" aria-hidden="true"><input type="text" name="" tabindex="-1" value=""></div>
+              <button type="submit" ng-click="main.addSubscription(subEmail)"><i class="material-icons send"></i></button>
+              <p ng-show="main.subMessage"> {{main.subMessage}}</p>
+            </form>
+        </div><!-- .column -->
+
+
       <div class="column">
         <p class="text-sm">Need support? Call <span class="text-primary">1 (650) 555-9999</span></p>
-        <div class="social-bar text-center space-bottom">
+          <div class="social-bar text-center space-bottom">
+
           <a href="#" class="sb-skype" data-toggle="tooltip" data-placement="top" title="Skype">
             <i class="socicon-skype"></i>
           </a>
@@ -210,45 +231,49 @@
           <a href="#" class="sb-instagram" data-toggle="tooltip" data-placement="top" title="" data-original-title="Instagram">
             <i class="socicon-instagram"></i>
           </a>
-        </div><!-- .social-bar -->
-        <p class="copyright">&copy; 2017. Mookie Dough LLC</p>
-      </div><!-- .column -->
-    </footer><!-- .footer -->
+
+          </div>
+          <!-- .social-bar -->
+          <p class="copyright">&copy; 2017. Mookie Dough LLC</p>
+        </div>
+        <!-- .column -->
+        </footer>
+        <!-- .footer -->
 
 
-</div>
-  <!-- JavaScript (jQuery) libraries, plugins and custom scripts -->
-  <script src="../mookiedoughfrontend/js/vendor/jquery-2.1.4.min.js"></script>
-  <script src="../mookiedoughfrontend/js/vendor/bootstrap.min.js"></script>
-    <script src="../mookiedoughfrontend/js/vendor/isotope.pkgd.min.js"></script>
+              </div>
+              <!-- JavaScript (jQuery) libraries, plugins and custom scripts -->
+              <script src="../mookiedoughfrontend/js/vendor/jquery-2.1.4.min.js"></script>
+              <script src="../mookiedoughfrontend/js/vendor/bootstrap.min.js"></script>
+              <script src="../mookiedoughfrontend/js/vendor/isotope.pkgd.min.js"></script>
 
-  <script src="../mookiedoughfrontend/js/vendor/smoothscroll.js"></script>
-  <script src="../mookiedoughfrontend/js/vendor/velocity.min.js"></script>
-  <script src="../mookiedoughfrontend/js/vendor/waves.min.js"></script>
-  <script src="../mookiedoughfrontend/js/vendor/icheck.min.js"></script>
-  <script src="../mookiedoughfrontend/js/vendor/jquery.downCount.js"></script>
-  <script src="../mookiedoughfrontend/js/vendor/magnific-popup.min.js"></script>
-    <script src="../mookiedoughfrontend/js/vendor/gmap3.min.js"></script>
-  <script src="../mookiedoughfrontend/mailer/mailer.js"></script>
+              <script src="../mookiedoughfrontend/js/vendor/smoothscroll.js"></script>
+              <script src="../mookiedoughfrontend/js/vendor/velocity.min.js"></script>
+              <script src="../mookiedoughfrontend/js/vendor/waves.min.js"></script>
+              <script src="../mookiedoughfrontend/js/vendor/icheck.min.js"></script>
+              <script src="../mookiedoughfrontend/js/vendor/jquery.downCount.js"></script>
+              <script src="../mookiedoughfrontend/js/vendor/magnific-popup.min.js"></script>
+              <script src="../mookiedoughfrontend/js/vendor/gmap3.min.js"></script>
+              <script src="../mookiedoughfrontend/mailer/mailer.js"></script>
 
-      <script src="../mookiedoughfrontend/js/vendor/nouislider.min.js"></script>
-  <script src="../mookiedoughfrontend/js/scripts.js"></script>
-    
+              <script src="../mookiedoughfrontend/js/vendor/nouislider.min.js"></script>
+              <script src="../mookiedoughfrontend/js/scripts.js"></script>
+
 
 
 
 </body>
-    <!-- Bootstrap 4 Dependencies -->
-    <!-- <script src="https://code.jquery.com/jquery-3.1.1.slim.min.js" integrity="sha384-A7FZj7v+d/sdmMqp/nOQwliLvUsJfDHW+k9Omg/a/EheAdgtzNs3hpfag6Ed950n" crossorigin="anonymous"></script>
+<!-- Bootstrap 4 Dependencies -->
+<!-- <script src="https://code.jquery.com/jquery-3.1.1.slim.min.js" integrity="sha384-A7FZj7v+d/sdmMqp/nOQwliLvUsJfDHW+k9Omg/a/EheAdgtzNs3hpfag6Ed950n" crossorigin="anonymous"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/tether/1.4.0/js/tether.min.js" integrity="sha384-DztdAPBWPRXSA/3eYEEUWrWCy7G5KFbe8fFjk5JAIxUYHKkDx6Qin1DkWx51bBrb" crossorigin="anonymous"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.6/js/bootstrap.min.js" integrity="sha384-vBWWzlZJ8ea9aCX4pEW3rVHjgjt7zpkNpZk+02D9phzyeVkE+jo0ieGizqPLForn" crossorigin="anonymous"></script>
      -->
-    <!-- AngularJS Material Dependencies -->
-    <!-- <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.3.15/angular-animate.js"></script>
+<!-- AngularJS Material Dependencies -->
+<!-- <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.3.15/angular-animate.js"></script>
     <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.3.15/angular-aria.js"></script> -->
 
-    <!-- AngularJS Material Javascript using GitCDN to load directly from `bower-material/master` -->
-    <!-- <script src="https://gitcdn.link/repo/angular/bower-material/master/angular-material.js"></script>
+<!-- AngularJS Material Javascript using GitCDN to load directly from `bower-material/master` -->
+<!-- <script src="https://gitcdn.link/repo/angular/bower-material/master/angular-material.js"></script>
 
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script> -->
 

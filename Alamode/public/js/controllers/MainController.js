@@ -83,6 +83,19 @@ alamode.controller('mainCtrl', function (Auth, $timeout, $location, $rootScope, 
         })
     };
 
+    app.addSubscription = function(subEmail){
+        var subData = {};
+        subData.subEmail = subEmail;
+        Auth.addSubscription(subData).then(function(data){
+            app.subMessage = data.data.message;
+            subEmail = "";
+            $timeout(function () {
+                app.subMessage = false;
+            },2000);
+                        
+        })
+    }
+
     $scope.mookie.getEmailAndUsername = function (callback) {
         if (Auth.isLoggedIn()) {
             Auth.getUser().then(function (data) {

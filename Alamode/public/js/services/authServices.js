@@ -21,6 +21,10 @@ angular.module('authServices', [])
         });
     };
 
+    authFactory.addSubscription = function(subData){
+        return $http.post('/api/addSubscription',subData);
+    };
+
     // Function to check if user is currently logged in
     authFactory.isLoggedIn = function() {
         // CHeck if token is in local storage
