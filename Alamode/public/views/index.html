@@ -89,10 +89,10 @@
 
       <!-- Site Logo -->
       <a href="/home" class="site-logo visible-desktop">
-    <img src="../imgs/Media/altlogo.png">
+    <img src="../imgs/Media/largelogo.png">
       </a><!-- site-logo.visible-desktop -->
       <a href="/home" class="site-logo visible-mobile">
-        <img src="../imgs/Media/altlogo.png">
+        <img src="../imgs/Media/largelogo.png">
       </a><!-- site-logo.visible-mobile -->
 
       <!-- Main Navigation -->
@@ -115,6 +115,8 @@
           <li><a href="/fuegophotos">Fuego Photos</a></li>
           <li ng-show="main.loggedIn" ><a href="/register" ng-click="main.logout()">Logout</a></li>
           <li ng-show="!main.loggedIn" ><a href="/register">Login</a></li>
+          <li ng-show="mookie.admin"><a href="/testusers" >Management</a></li>
+          
 
         </ul><!-- .menu -->
       </nav><!-- .main-navigation -->
@@ -123,7 +125,6 @@
       <div class="toolbar">
         <div class="inner">
           <a href="#" class="mobile-menu-toggle"><i class="material-icons menu"></i></a>
-          <!-- <a href="/testusers" sytle="position:relative;">{{main.message}}</a> -->
 
           <a href="/register" ng-if="!main.loggedIn"><i class="material-icons person"></i></a>
           <a href="/account" ng-if="main.loggedIn"><i class="material-icons person"></i></a>
@@ -172,11 +173,12 @@
         <div class="modal-content">
           <div class="modal-header">
             <button type="button" class="close" data-dismiss="modal">&times;</button>
-            <h4 class="modal-title">Mookie dough sign in verifcation</h4>
+            <!-- mookie.modalTitle -->
+            {{mookie.modalTitle}}
           </div>
           <div class="modal-body">
-            <p ng-show="main.justRegistered">Thank you for registering.</p>
-            <p ng-show="main.signedIn">Thank you for signing in.</p>
+            <!-- mookie.modalBody -->
+            {{mookie.modalBody}}
           </div>
         </div>
       </div>

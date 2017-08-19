@@ -132,6 +132,15 @@ alamode.controller('mainCtrl', function (Auth, $timeout, $location, $rootScope, 
         $scope.mookie.cartItemCount = cartData.itemCount;
     });
 
+    $scope.mookie.hideModal =function(){
+        $("#myModal").modal('hide');
+    };
+    $scope.mookie.showModal = function(title,body){
+        $scope.mookie.modalTitle = title;
+        $scope.mookie.modalBody = body;
+        $("#myModal").modal({ backdrop: "static" }); // Open modal        
+    };
+
     app.addProductToDB = function (productData) {
         Product.seedProduct(productData).then(function (data) {
             if (data.data.success) {
@@ -156,30 +165,37 @@ alamode.controller('mainCtrl', function (Auth, $timeout, $location, $rootScope, 
                 if (data.data.noProducts) {
                     (function () {
                         var productData = {};
-                        productData.imagePath = "../imgs/Media/peanutbutter.png";
+                        productData.imagePath = "../imgs/Media/peanutbutter-min.png";
                         productData.price = 5.99;
                         productData.description = "Peanut Butter Quivering Goodness";
                         productData.title = "Peanut Butter Quivering Goodness";
                         productData.catalogProduct = true;
                         app.addProductToDB(productData);
                         var productData2 = {}
-                        productData2.imagePath = "../imgs/Media/almondmilk.png";
+                        productData2.imagePath = "../imgs/Media/almondmilk-min.png";
                         productData2.price = 3.99;
                         productData2.description = "Refreshing almond milk";
                         productData2.title = "Refreshing almond milk";
                         productData2.catalogProduct = true;
                         app.addProductToDB(productData2);
-                        var productData3 = {};
-                        productData3.imagePath = "../imgs/Media/highbrewcoffee.png";
+                        var productData3 = {}
+                        productData3.imagePath = "../imgs/Media/petesbaridi-min.png";
                         productData3.price = 3.99;
-                        productData3.description = "High Brew Coffee";
-                        productData3.title = "High Brew Coffee";
+                        productData3.description = "Ice Cold Brew";
+                        productData3.title = "Ice Cold Brew";
                         productData3.catalogProduct = true;
                         app.addProductToDB(productData3);
+                        var productData4 = {};
+                        productData4.imagePath = "../imgs/Media/highbrewcoffee-min.png";
+                        productData4.price = 3.99;
+                        productData4.description = "High Brew Coffee";
+                        productData4.title = "High Brew Coffee";
+                        productData4.catalogProduct = true;
+                        app.addProductToDB(productData4);
                     })();
                     (function () {
                         var productData = {};
-                        productData.imagePath = "../imgs/Media/localfav.png";
+                        productData.imagePath = "../imgs/Media/localfav-min.png";
                         productData.price = 5.99;
                         productData.description = "Delicious birthday cake style cookie dough treat";
                         productData.title = "Birthday Surprise";
@@ -188,7 +204,7 @@ alamode.controller('mainCtrl', function (Auth, $timeout, $location, $rootScope, 
                         app.addProductToDB(productData);
 
                         var productData2 = {};
-                        productData2.imagePath = "../imgs/Media/cookiesnmilk.png";
+                        productData2.imagePath = "../imgs/Media/cookiesnmilk-min.png";
                         productData2.price = 5.99;
                         productData2.description = "Oreo Cookie Dough Half Pint";
                         productData2.title = "Oreo Cookie Dough Half Pint";
@@ -197,7 +213,7 @@ alamode.controller('mainCtrl', function (Auth, $timeout, $location, $rootScope, 
                         app.addProductToDB(productData2);
 
                         var productData3 = {};
-                        productData3.imagePath = "../imgs/Media/ChocolateChip.png";
+                        productData3.imagePath = "../imgs/Media/ChocolateChip-min.png";
                         productData3.price = 5.99;
                         productData3.description = "Chocolate Chip Quarter Pint";
                         productData3.title = "Chocolate Chip Quarter Pint";
@@ -531,15 +547,5 @@ alamode.controller('mainCtrl', function (Auth, $timeout, $location, $rootScope, 
         // showModal(2); // Activate modal that logs out user
     };
 
-    var hideModal = function () {
-        $("#myModal").modal('hide'); // Hide modal once criteria met
-    };
 
-
-    // Function to open bootstrap modal     
-    var showModal = function () {
-        app.modalHeader = 'Sign in notifaction'; // Set header
-        app.modalBody = 'Thank you for signing in'; // Set body
-        $("#myModal").modal({ backdrop: "static" }); // Open modal
-    };
 });

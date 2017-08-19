@@ -13,7 +13,7 @@ var Schema = mongoose.Schema;
 
 // var sgTransport = require('nodemailer-sendgrid-transport'); // Import Nodemailer Sengrid Transport Package
 
-module.exports = function(router) {
+module.exports = function (router) {
 
     // Start Sendgrid Configuration Settings (Use only if using sendgrid)
     // var options = {
@@ -38,143 +38,166 @@ module.exports = function(router) {
 
 
     // Cart apis
-    router.post('/getCart',function(req,res){
-        Cart.findById(req.body.cartId).populate('products').exec(function(err,cart){
-            if(err || !cart){
-                res.json({success:false, message:'Cart could not be found'});
+    router.post('/getCart', function (req, res) {
+        Cart.findById(req.body.cartId).populate('products').exec(function (err, cart) {
+            if (err || !cart) {
+                res.json({ success: false, message: 'Cart could not be found' });
             }
-            else{
-                res.json({success:true, cart:cart});
+            else {
+                res.json({ success: true, cart: cart });
             }
         });
     });
 
-    
-    router.post('/getCartFromUser',function(req,res){
-        User.findOne({email:req.body.userEmail}).select().exec(function(err,user){
-            if(err || !user){
+
+    router.post('/getCartFromUser', function (req, res) {
+        User.findOne({ email: req.body.userEmail }).select().exec(function (err, user) {
+            if (err || !user) {
                 console.log(err);
-                res.json({success:false,message:err});
+                res.json({ success: false, message: err });
             }
-            else{
-                res.json({success:true,user:user});
+            else {
+                res.json({ success: true, user: user });
             }
         });
     });
 
 
-    router.get('/checkUserCart',function(req,res){
-        User.findById(req.body.userId).select().exec(function(err,user){
+    router.get('/checkUserCart', function (req, res) {
+        User.findById(req.body.userId).select().exec(function (err, user) {
             console.log(user.cart);
-            if(!user.cart || user.cart ==null){
-                res.json({success:false,message:'User does not have cart'});
+            if (!user.cart || user.cart == null) {
+                res.json({ success: false, message: 'User does not have cart' });
             }
-            else{
-                res.json({success:true,message:'User cart found. Ok for interaction'});
+            else {
+                res.json({ success: true, message: 'User cart found. Ok for interaction' });
             }
         });
     });
-    router.post('/removeItemFromCart',function(req,res){
-        Cart.findById(req.body.cartId).select().exec(function(err,cart){
-            if(err){
-                res.json({success:false,message:'Cart could not be found.'});
+    router.post('/removeItemFromCart', function (req, res) {
+        Cart.findById(req.body.cartId).select().exec(function (err, cart) {
+            if (err) {
+                res.json({ success: false, message: 'Cart could not be found.' });
             }
-            else{
+            else {
                 var products = cart.get('products');
-                products.forEach(function(product) {
-                    if(product.product.id === req.body.productId){
-                        if(product.product.quantity >1){
+                products.forEach(function (product) {
+                    if (product.product.id === req.body.productId) {
+                        if (product.product.quantity > 1) {
                             product.product.quantity--;
                             // Cart.update({_id:cart.id},{'$pull':{'products':{ 'quantity':}}})
                         }
-                        else if(product.product.quantity==1){
+                        else if (product.product.quantity == 1) {
                             product.product.quantity--;
                             // cart.products.remove(product);
                         }
                     }
                 });
-                res.json({success:true,message:'At least I got the cart',cart:cart});
+                res.json({ success: true, message: 'At least I got the cart', cart: cart });
             }
         });
 
-//         Dive.update({ _id: diveId }, { "$pull": { "divers": { "user": userIdToRemove } }}, { safe: true, multi:true }, function(err, obj) {
-//     //do something smart
-// });
+        //         Dive.update({ _id: diveId }, { "$pull": { "divers": { "user": userIdToRemove } }}, { safe: true, multi:true }, function(err, obj) {
+        //     //do something smart
+        // });
 
     });
 
-    router.post('/seedCart',function(req,res){
+    router.post('/seedCart', function (req, res) {
         var cart = new Cart();
-        cart.products.push({productId:req.body.productId,qty:req.body.quantity});
-        cart.save(function(err,cart){
-            if(err || !cart){
-                res.json({success:false,message:err});
+        cart.products.push({ productId: req.body.productId, qty: req.body.quantity });
+        cart.save(function (err, cart) {
+            if (err || !cart) {
+                res.json({ success: false, message: err });
             }
-            else{
-                res.json({success:true, message:'Cart was saved',cart:cart});
+            else {
+                res.json({ success: true, message: 'Cart was saved', cart: cart });
             }
         })
     });
 
-    router.post('/addItemToCart',function(req,res){
+    router.post('/addItemToCart', function (req, res) {
         var product = new Product(req.body);
 
-        if(req.body.title == null || req.body.title =='' || req.body.description==null ||
-         req.body.description ==''|| req.body.price ==null || req.body.price=='' ||req.body.imagePath ==null || req.body.imagePath == ''){
-            res.json({success:false,message:"The uploaded item wasn't set correctly please try again. "});
+        if (req.body.title == null || req.body.title == '' || req.body.description == null ||
+            req.body.description == '' || req.body.price == null || req.body.price == '' || req.body.imagePath == null || req.body.imagePath == '') {
+            res.json({ success: false, message: "The uploaded item wasn't set correctly please try again. " });
         }
-        else{
-            product.save(function(err,newProduct){
-            
-                User.findById(req.body.userId).select().exec(function(err,user){
+        else {
+            product.save(function (err, newProduct) {
+
+                User.findById(req.body.userId).select().exec(function (err, user) {
                     var userData = {};
                     userData.user = user;
-                    if(err || !user){
-                        res.json({success:false,message:'user was not found', err:err});
+                    if (err || !user) {
+                        res.json({ success: false, message: 'user was not found', err: err });
                     }
-                    else if(user.cart == null || user.cart == ""){
+                    else if (user.cart == null || user.cart == "") {
                         var cart = new Cart();
-                        cart.save(function(err,cart){
-                            if(err){
-                                res.json({success:false,message:err});
+                        cart.save(function (err, cart) {
+                            if (err) {
+                                res.json({ success: false, message: err });
                             }
-                            else{
+                            else {
                                 user.cart = cart._id;
-                                user.save(function(err,user){
-                                    if(err){
+                                user.save(function (err, user) {
+                                    if (err) {
                                         console.log(err);
-                                        res.json({success:false,message:'user could not be updated to contain cart',err:err});
+                                        res.json({ success: false, message: 'user could not be updated to contain cart', err: err });
                                     }
-                                    else{
+                                    else {
                                         cart.products.push(newProduct);
-                                        cart.save(function(err,cart){
-                                            res.json({success:true,message:'User Cart has been created and updated',cart:cart});
+                                        cart.save(function (err, cart) {
+                                            res.json({ success: true, message: 'User Cart has been created and updated', cart: cart });
                                         });
                                     }
-                                    
+
                                 });
                             }
                         });
-                    }else{
-                        Cart.findById(user.cart).select().exec(function(err,cart){
-                            if(err){
-                                res.json({success:false,message:'cart could not be found from user in this amazing mess'});
+                    } else {
+                        Cart.findById(user.cart).select().exec(function (err, cart) {
+                            if (err) {
+                                res.json({ success: false, message: 'cart could not be found from user in this amazing mess' });
                             }
-                            else{
-                                if(!cart){
-                                    res.json({success:false, message:'Could not find the cart',user:user});
+                            else {
+                                if (!cart) {
+                                    // res.json({ success: false, message: 'Could not find the cart', user: user });
+                                    var cart = new Cart();
+                                    cart.save(function (err, cart) {
+                                        if (err) {
+                                            res.json({ success: false, message: err });
+                                        }
+                                        else {
+                                            user.cart = cart._id;
+                                            user.save(function (err, user) {
+                                                if (err) {
+                                                    console.log(err);
+                                                    res.json({ success: false, message: 'user could not be updated to contain cart', err: err });
+                                                }
+                                                else {
+                                                    cart.products.push(newProduct);
+                                                    cart.save(function (err, cart) {
+                                                        res.json({ success: true, message: 'User Cart has been created and updated', cart: cart });
+                                                    });
+                                                }
+
+                                            });
+                                        }
+                                    });
+
                                 }
-                                else{
-                                cart.products.push(newProduct);
-                                cart.save(function(err,cart){
-                                    if(err){
-                                        res.json({success:false,message:'There was an error trying to save new cart'});
-                                    }
-                                    else{
-                                        res.json({success:true,message:'Cart has been updated',cart:cart});
-                                    }
-                                        
-                                });
+                                else {
+                                    cart.products.push(newProduct);
+                                    cart.save(function (err, cart) {
+                                        if (err) {
+                                            res.json({ success: false, message: 'There was an error trying to save new cart' });
+                                        }
+                                        else {
+                                            res.json({ success: true, message: 'Cart has been updated', cart: cart });
+                                        }
+
+                                    });
                                 }
                             }
                         });
@@ -184,27 +207,27 @@ module.exports = function(router) {
         }
     });
 
-    router.post('/updateProductQty',function(req,res){
-        if(req.body.productId == '' || req.body.productId == null || req.body.qty == null){
-            res.json({success:false,messsage:'PorductId or qty was not found in post request'});
+    router.post('/updateProductQty', function (req, res) {
+        if (req.body.productId == '' || req.body.productId == null || req.body.qty == null) {
+            res.json({ success: false, messsage: 'PorductId or qty was not found in post request' });
         }
-        else{
-            Product.findById(req.body.productId).select().exec(function(err,product){
-                if(err){
-                    res.json({success:false,message:'There was an error tyring to get the product by id',err:err});
+        else {
+            Product.findById(req.body.productId).select().exec(function (err, product) {
+                if (err) {
+                    res.json({ success: false, message: 'There was an error tyring to get the product by id', err: err });
                 }
-                else{
-                    if(!product){
-                        res.json({success:false,message:'Could not find product with request Id'});
+                else {
+                    if (!product) {
+                        res.json({ success: false, message: 'Could not find product with request Id' });
                     }
-                    else{
+                    else {
                         product.qty = req.body.qty;
-                        product.save(function(err,product){
-                            if(err){
-                                res.json({success:false,message:'Product could not be updated'});
+                        product.save(function (err, product) {
+                            if (err) {
+                                res.json({ success: false, message: 'Product could not be updated' });
                             }
-                            else{
-                                res.json({success:true,message:'Product was successful updated',product:product});
+                            else {
+                                res.json({ success: true, message: 'Product was successful updated', product: product });
                             }
                         });
                     }
@@ -214,32 +237,32 @@ module.exports = function(router) {
         }
     });
 
-    router.post('/deleteCartProduct',function(req,res){
+    router.post('/deleteCartProduct', function (req, res) {
         //Get cart Id
         //Trying to delete a specific product Id
         //With cart id get 
-        if(req.body.cartId == '' || req.body.cartId ==null || req.body.productId == '' || req.body.productId ==null){
-            res.json({success:false,message:'Cart Id and product Id was not found in post body'});
+        if (req.body.cartId == '' || req.body.cartId == null || req.body.productId == '' || req.body.productId == null) {
+            res.json({ success: false, message: 'Cart Id and product Id was not found in post body' });
         }
-        else{
-            Cart.findById(req.body.cartId).select().exec(function(err,cart){
-                if(err){
-                    res.json({success:false,message:'There was an error trying to find the cart',err:err});
+        else {
+            Cart.findById(req.body.cartId).select().exec(function (err, cart) {
+                if (err) {
+                    res.json({ success: false, message: 'There was an error trying to find the cart', err: err });
                 }
-                else{
-                    cart.products.forEach(function(product){
+                else {
+                    cart.products.forEach(function (product) {
 
-                        if(product == req.body.productId){
-                                                            console.log('Before product splice///////////////////////////////////');
+                        if (product == req.body.productId) {
+                            console.log('Before product splice///////////////////////////////////');
 
                             cart.products.splice(cart.products.indexOf(product), 1);
-                            cart.save(function(err,cart){
+                            cart.save(function (err, cart) {
 
-                                if(err){
-                                    res.json({success:false,message:'There was an error trying to save cart',err:err});
+                                if (err) {
+                                    res.json({ success: false, message: 'There was an error trying to save cart', err: err });
                                 }
-                                else{
-                                    res.json({success:true,message:'Cart updated successfully',cart:cart});
+                                else {
+                                    res.json({ success: true, message: 'Cart updated successfully', cart: cart });
                                 }
                             });
                         }
@@ -254,216 +277,216 @@ module.exports = function(router) {
                     //     }
                     // })
                 }
-            }); 
+            });
         }
     });
 
-    router.post('/deleteProduct',function(req,res){
-        if(req.body.productId == ''|| req.body.productId == null){
-            res.json({success:false,message:'Product Id not found in post body'});
+    router.post('/deleteProduct', function (req, res) {
+        if (req.body.productId == '' || req.body.productId == null) {
+            res.json({ success: false, message: 'Product Id not found in post body' });
         }
-        else{
-            Product.findByIdAndRemove(req.body.productId),function(err,oldProduct){
-                if(err){
-                    res.json({success:false,message:'There was an error trying to delete the product',err:err})
+        else {
+            Product.findByIdAndRemove(req.body.productId), function (err, oldProduct) {
+                if (err) {
+                    res.json({ success: false, message: 'There was an error trying to delete the product', err: err })
                 }
-                else{
-                    res.json({success:true,message:'Product was successfully deleted',product:oldProduct});
+                else {
+                    res.json({ success: true, message: 'Product was successfully deleted', product: oldProduct });
                 }
             };
         }
     });
 
 
-    router.post('/seedProduct',function(req,res){
+    router.post('/seedProduct', function (req, res) {
         var product = new Product(req.body);
 
-        if(req.body.title == null || req.body.title =='' || req.body.description==null ||
-         req.body.description ==''|| req.body.price ==null || req.body.price=='' ||req.body.imagePath ==null || req.body.imagePath == ''){
-            res.json({success:false,message:"The uploaded item wasn't set correctly please try again. "});
+        if (req.body.title == null || req.body.title == '' || req.body.description == null ||
+            req.body.description == '' || req.body.price == null || req.body.price == '' || req.body.imagePath == null || req.body.imagePath == '') {
+            res.json({ success: false, message: "The uploaded item wasn't set correctly please try again. " });
         }
-        else{
-                product.save(function(err,newProduct){
-                    if(err){
-                        res.json({success:false,message:err});
+        else {
+            product.save(function (err, newProduct) {
+                if (err) {
+                    res.json({ success: false, message: err });
+                }
+                else {
+                    if (!product) {
+                        res.json({ success: false, message: "Error product could not be added to product catalog" });
                     }
-                    else{
-                        if(!product){
-                            res.json({success:false,message:"Error product could not be added to product catalog"});
-                        }
-                        else{
-                            res.json({success:true,message:'Product added to catalog',newProduct});
-                        }
+                    else {
+                        res.json({ success: true, message: 'Product added to catalog', newProduct });
                     }
+                }
             });
         }
     });
 
 
-    router.get('/startStripePayment',function(req,res){
+    router.get('/startStripePayment', function (req, res) {
         //token
         //chargeamount
-        if(req.body.stripeToken == null || req.body.chargAamount == null){
-            res.json({success:false,message:'stripeToken or chargeAmount were not included in http post request'});
+        if (req.body.stripeToken == null || req.body.chargAamount == null) {
+            res.json({ success: false, message: 'stripeToken or chargeAmount were not included in http post request' });
         }
-        else{
+        else {
             var token = req.body.stripeToken;
             var chargeAmount = req.body.chargeAmount;
             var charge = stripe.charges.create({
                 amount: chargeAmount,
                 currency: "usd",
                 source: token
-            },function(err,charge){
-                if(err && err.type === "StripeCardError"){
+            }, function (err, charge) {
+                if (err && err.type === "StripeCardError") {
                     console.log("your card declined");
                 }
-                else{
+                else {
                     console.log(charge);
                 }
             })
         }
     });
-    router.get('/getCatalogProducts',function(req,res){
-        Product.find({catalogProduct:true}).select().exec(function(err,catalogProducts){
-            if(err){
-                res.json({success:false,message:'There was an error while finding product'});
+    router.get('/getCatalogProducts', function (req, res) {
+        Product.find({ catalogProduct: true }).select().exec(function (err, catalogProducts) {
+            if (err) {
+                res.json({ success: false, message: 'There was an error while finding product' });
             }
-            else{
-                if(!catalogProducts || catalogProducts === undefined || catalogProducts.length == 0){
-                    res.json({success:false,message:'Could not find products',noProducts:true});
+            else {
+                if (!catalogProducts || catalogProducts === undefined || catalogProducts.length == 0) {
+                    res.json({ success: false, message: 'Could not find products', noProducts: true });
                 }
-                else{
-                    res.json({success:true,message:'Product list successfully returned',catalogProducts:catalogProducts});
+                else {
+                    res.json({ success: true, message: 'Product list successfully returned', catalogProducts: catalogProducts });
                 }
             }
         });
     });
 
-    router.post('/getProductCategory',function(req,res){
-        Product.find({category:req.body.category}).select().exec(function(err,bestsellers){
-            if(err || !bestsellers){
-                res.json({success:false,message:'Product list could not be found on server'});
+    router.post('/getProductCategory', function (req, res) {
+        Product.find({ category: req.body.category }).select().exec(function (err, bestsellers) {
+            if (err || !bestsellers) {
+                res.json({ success: false, message: 'Product list could not be found on server' });
             }
-            else{
-                res.json({success:true,message:'bestsellers incoming',bestsellers:bestsellers});
+            else {
+                res.json({ success: true, message: 'bestsellers incoming', bestsellers: bestsellers });
             }
         });
     });
 
-    router.post('/deleteCart',function(req,res){
-        if(req.body.cartId =='' || req.body.cartId ==null){
-            res.json({success:false, message:'CartId was not provided for cart deletion'});
+    router.post('/deleteCart', function (req, res) {
+        if (req.body.cartId == '' || req.body.cartId == null) {
+            res.json({ success: false, message: 'CartId was not provided for cart deletion' });
         }
-        else{
-            Cart.findByIdAndRemove(req.body.cartId,function(err,oldCart){
-                oldCart.products.forEach(function(product){
-                    Product.findByIdAndRemove(product,function(err,oldProduct){
-                       console.log('product deleted in cart'); 
+        else {
+            Cart.findByIdAndRemove(req.body.cartId, function (err, oldCart) {
+                oldCart.products.forEach(function (product) {
+                    Product.findByIdAndRemove(product, function (err, oldProduct) {
+                        console.log('product deleted in cart');
                     });
                 });
-            }); 
+            });
             //products from the cart and remove them as well
         }
     });
 
-    router.post('/addCartToUser',function(req,res){
+    router.post('/addCartToUser', function (req, res) {
         var cart = new Cart();
         console.log('tried to add cart');
         console.log(req.body);
-        cart.save(function(err,userCart){
-            if(err){
-                res.json({success:false, message:"err"});
+        cart.save(function (err, userCart) {
+            if (err) {
+                res.json({ success: false, message: "err" });
             }
-            else{
-                User.findOneAndUpdate({email:req.body.userEmail},{cart:userCart.id},{new:true}, function(err,user){
-                    if(err){
-                        res.json({success:false,message:'this is not it'});
+            else {
+                User.findOneAndUpdate({ email: req.body.userEmail }, { cart: userCart.id }, { new: true }, function (err, user) {
+                    if (err) {
+                        res.json({ success: false, message: 'this is not it' });
 
                     }
-                    else{
-                        res.json({success:true,message:'this is it',user:user});
+                    else {
+                        res.json({ success: true, message: 'this is it', user: user });
 
                     }
-                        console.log('user hope');
-                        console.log(user);
+                    console.log('user hope');
+                    console.log(user);
                 });
             }
         });
-        
+
     });
 
     //Product apis
 
-    router.get('/getProducts',function(req,res){
+    router.get('/getProducts', function (req, res) {
         var product = new Product();
-        Product.find({}).select('title description pricing imagePath').exec(function(err,products){
-            if(err){
-                res.json({success:false, message:"Error"});
-            }else{
-                if(!products){
-                    res.json({success:false});
+        Product.find({}).select('title description pricing imagePath').exec(function (err, products) {
+            if (err) {
+                res.json({ success: false, message: "Error" });
+            } else {
+                if (!products) {
+                    res.json({ success: false });
 
-                }else{
-                    res.json({success: true, products: products});
+                } else {
+                    res.json({ success: true, products: products });
                 }
             }
         });
     });
 
-    router.get('/getProduct',function(req,res){
+    router.get('/getProduct', function (req, res) {
         var product = new Product();
-        Product.findById(req.body.productId).select('title description pricing imagePath').exec(function(err,product){
-            if(err){
-                res.json({success:false, message:"Error, product could not be found on the server"});
+        Product.findById(req.body.productId).select('title description pricing imagePath').exec(function (err, product) {
+            if (err) {
+                res.json({ success: false, message: "Error, product could not be found on the server" });
             }
-            else{
-                if(!product){
-                    res.json({success:false, message:"Error, product could not be found on the server"});
+            else {
+                if (!product) {
+                    res.json({ success: false, message: "Error, product could not be found on the server" });
                 }
-                else{
-                    res.json({success:true,product:product});
+                else {
+                    res.json({ success: true, product: product });
                 }
             }
         });
     });
- 
+
 
     // User apis
-    router.post('/removeFromCartFromUser',function(req,res){
-        User.findById(req.body.userId).select().exec(function(err,user){
-            if(err || !user){
-                res.json({success:false,message:'Could not get cart from user'});
+    router.post('/removeFromCartFromUser', function (req, res) {
+        User.findById(req.body.userId).select().exec(function (err, user) {
+            if (err || !user) {
+                res.json({ success: false, message: 'Could not get cart from user' });
             }
-            else{
-                res.json({success:true,user:user});
+            else {
+                res.json({ success: true, user: user });
             }
         });
     });
-    router.post('/registerMookie',function(req,res){
+    router.post('/registerMookie', function (req, res) {
         var user = new User();
         //json body needs username, passowrd, email, name
         user.email = req.body.email;
         user.password = req.body.password;
         user.username = req.body.username;
-        user.temporarytoken = jwt.sign({username: user.username, email: user.email},secret,{expiresIn: '7d'});
-        
-        if (req.body.username === null || req.body.username === '' || req.body.password === null || req.body.password === '' || 
+        user.temporarytoken = jwt.sign({ username: user.username, email: user.email }, secret, { expiresIn: '7d' });
+
+        if (req.body.username === null || req.body.username === '' || req.body.password === null || req.body.password === '' ||
             req.body.email === null || req.body.email === '') {
             res.json({ success: false, message: 'Ensure username, email, and password were provided' });
         } else {
-            user.save(function(err){
-                 if(err){
-                    if(err.errors!=null){
-                          if (err.errors.email) {
+            user.save(function (err) {
+                if (err) {
+                    if (err.errors != null) {
+                        if (err.errors.email) {
                             res.json({ success: false, message: err.errors.email.message }); // Display error in validation (email)
-                            } else if (err.errors.username) {
-                                res.json({ success: false, message: err.errors.username.message }); // Display error in validation (username)
-                            } else if (err.errors.password) {
-                                res.json({ success: false, message: err.errors.password.message }); // Display error in validation (password)
-                         }
+                        } else if (err.errors.username) {
+                            res.json({ success: false, message: err.errors.username.message }); // Display error in validation (username)
+                        } else if (err.errors.password) {
+                            res.json({ success: false, message: err.errors.password.message }); // Display error in validation (password)
+                        }
                     }
-                    else if(err){
-                           // Check if duplication error exists
+                    else if (err) {
+                        // Check if duplication error exists
                         if (err.code == 11000) {
                             if (err.errmsg[61] == "u") {
                                 res.json({ success: false, message: 'That username is already taken' }); // Display error if username already taken
@@ -475,7 +498,7 @@ module.exports = function(router) {
                         }
                     }
                 }
-                else{
+                else {
                     console.log("register successful");
                     res.json({ success: true, message: 'Account registered! Please check your e-mail for activation link.' }); // Send success message back to controller/request
                 }
@@ -484,54 +507,54 @@ module.exports = function(router) {
     });
 
 
-    router.post('/mookie-login',function(req,res){
+    router.post('/mookie-login', function (req, res) {
         var login = (req.body.email).toLowerCase();
 
-        User.findOne({email:req.body.email}).select('email username password active').exec(function(err,user){
-                if(err){
-                    if(err.errors!=null){
-                          if (err.errors.email) {
-                            res.json({ success: false, message: err.errors.email.message }); // Display error in validation (email)
-                            } else if (err.errors.password) {
-                                res.json({ success: false, message: err.errors.password.message }); // Display error in validation (password)
-                            }
-                    }
-                    else if(err){
-                           // Check if duplication error exists
-                           res.json({ success: false, message: err});
+        User.findOne({ email: req.body.email }).select('email username password active').exec(function (err, user) {
+            if (err) {
+                if (err.errors != null) {
+                    if (err.errors.email) {
+                        res.json({ success: false, message: err.errors.email.message }); // Display error in validation (email)
+                    } else if (err.errors.password) {
+                        res.json({ success: false, message: err.errors.password.message }); // Display error in validation (password)
                     }
                 }
-               else{
-                    if(!user){
-                        res.json({success:false,message:"Something went wrong, user login failed"});
+                else if (err) {
+                    // Check if duplication error exists
+                    res.json({ success: false, message: err });
+                }
+            }
+            else {
+                if (!user) {
+                    res.json({ success: false, message: "Something went wrong, user login failed" });
+                }
+                else if (user) {
+                    if (!req.body.password) {
+                        res.json({ success: false, message: 'No password provided' });
                     }
-                    else if(user){
-                        if(!req.body.password){
-                            res.json({success:false, message:'No password provided'});
-                        }
-                        else{
-                            var validPassword = user.comparePassword(req.body.password);
-                            if(!validPassword){
-                                res.json({success:false, message:'Incorrect password or username provided'});
+                    else {
+                        var validPassword = user.comparePassword(req.body.password);
+                        if (!validPassword) {
+                            res.json({ success: false, message: 'Incorrect password or username provided' });
 
-                            }
-                            else if(!user.active){
-                                res.json({success:false,message: 'Account is not yet activated. Please activate.'});
-                            }
-                            else {
-                                var token = jwt.sign({username: user.username,email:user.email},secret,{expiresIn:'7d'});
-                                res.json({success:true, message: 'User authenticated!',token:token, user: user});
-                            }
+                        }
+                        else if (!user.active) {
+                            res.json({ success: false, message: 'Account is not yet activated. Please activate.' });
+                        }
+                        else {
+                            var token = jwt.sign({ username: user.username, email: user.email }, secret, { expiresIn: '7d' });
+                            res.json({ success: true, message: 'User authenticated!', token: token, user: user });
                         }
                     }
                 }
+            }
         });
 
 
 
     });
     // Route to register new users  
-    router.post('/users', function(req, res) {
+    router.post('/users', function (req, res) {
         var user = new User(); // Create new User object
         user.username = req.body.username; // Save username from request to User object
         user.password = req.body.password; // Save password from request to User object
@@ -543,9 +566,9 @@ module.exports = function(router) {
             res.json({ success: false, message: 'Ensure username, email, and password were provided' });
         } else {
             // Save new user to database
-            user.save(function(err) {
+            user.save(function (err) {
                 if (err) {
-                    res.json({success:false,message: err});
+                    res.json({ success: false, message: err });
                 } else {
                     // Create e-mail object to send to user
                     var email = {
@@ -556,7 +579,7 @@ module.exports = function(router) {
                         html: 'Hello<strong> ' + user.name + '</strong>,<br><br>Thank you for registering at localhost.com. Please click on the link below to complete your activation:<br><br><a href="http://localhost:8080/activate/' + user.temporarytoken + '">http://localhost:8080/activate/</a>'
                     };
                     // Function to send e-mail to the user
-                    client.sendMail(email, function(err, info) {
+                    client.sendMail(email, function (err, info) {
                         if (err) {
                             console.log(err); // If error with sending e-mail, log to console/terminal
                         } else {
@@ -571,8 +594,8 @@ module.exports = function(router) {
     });
 
     // Route to check if username chosen on registration page is taken
-    router.post('/checkusername', function(req, res) {
-        User.findOne({ username: req.body.username }).select('username').exec(function(err, user) {
+    router.post('/checkusername', function (req, res) {
+        User.findOne({ username: req.body.username }).select('username').exec(function (err, user) {
             if (err) {
                 res.json({ success: false, message: 'Something went wrong. This error has been logged and will be addressed by our staff. We apologize for this inconvenience!' });
             } else {
@@ -586,8 +609,8 @@ module.exports = function(router) {
     });
 
     // Route to check if e-mail chosen on registration page is taken    
-    router.post('/checkemail', function(req, res) {
-        User.findOne({ email: req.body.email }).select('email').exec(function(err, user) {
+    router.post('/checkemail', function (req, res) {
+        User.findOne({ email: req.body.email }).select('email').exec(function (err, user) {
             if (err) {
                 res.json({ success: false, message: 'Something went wrong. This error has been logged and will be addressed by our staff. We apologize for this inconvenience!' });
             } else {
@@ -601,9 +624,9 @@ module.exports = function(router) {
     });
 
     // Route for user logins
-    router.post('/authenticate', function(req, res) {
+    router.post('/authenticate', function (req, res) {
         var loginUser = (req.body.email).toLowerCase(); // Ensure username is checked in lowercase against database
-        User.findOne({ email: loginUser }).select('email username password active').exec(function(err, user) {
+        User.findOne({ email: loginUser }).select('email username password active').exec(function (err, user) {
             if (err) {
                 res.json({ success: false, message: 'Something went wrong. This error has been logged and will be addressed by our staff. We apologize for this inconvenience!' });
             } else {
@@ -631,14 +654,14 @@ module.exports = function(router) {
     });
 
     // Route to activate the user's account 
-    router.put('/activate/:token', function(req, res) {
-        User.findOne({ temporarytoken: req.params.token }, function(err, user) {
+    router.put('/activate/:token', function (req, res) {
+        User.findOne({ temporarytoken: req.params.token }, function (err, user) {
             if (err) {
                 res.json({ success: false, message: 'Something went wrong. This error has been logged and will be addressed by our staff. We apologize for this inconvenience!' });
             } else {
                 var token = req.params.token; // Save the token from URL for verification 
                 // Function to verify the user's token
-                jwt.verify(token, secret, function(err, decoded) {
+                jwt.verify(token, secret, function (err, decoded) {
                     if (err) {
                         res.json({ success: false, message: 'Activation link has expired.' }); // Token is expired
                     } else if (!user) {
@@ -647,7 +670,7 @@ module.exports = function(router) {
                         user.temporarytoken = false; // Remove temporary token
                         user.active = true; // Change account status to Activated
                         // Mongoose Method to save user into the database
-                        user.save(function(err) {
+                        user.save(function (err) {
                             if (err) {
                                 console.log(err); // If unable to save user, log error info to console/terminal
                             } else {
@@ -660,7 +683,7 @@ module.exports = function(router) {
                                     html: 'Hello<strong> ' + user.name + '</strong>,<br><br>Your account has been successfully activated!'
                                 };
                                 // Send e-mail object to user
-                                client.sendMail(email, function(err, info) {
+                                client.sendMail(email, function (err, info) {
                                     if (err) console.log(err); // If unable to send e-mail, log error info to console/terminal
                                 });
                                 res.json({ success: true, message: 'Account activated!' }); // Return success message to controller
@@ -673,8 +696,8 @@ module.exports = function(router) {
     });
 
     // Route to verify user credentials before re-sending a new activation link 
-    router.post('/resend', function(req, res) {
-        User.findOne({ username: req.body.username }).select('username password active').exec(function(err, user) {
+    router.post('/resend', function (req, res) {
+        User.findOne({ username: req.body.username }).select('username password active').exec(function (err, user) {
             if (err) {
                 // Create an e-mail object that contains the error. Set to automatically send it to myself for troubleshooting.
                 var email = {
@@ -685,7 +708,7 @@ module.exports = function(router) {
                     html: 'The following error has been reported in the MEAN Stack Application:<br><br>' + err
                 };
                 // Function to send e-mail to myself
-                client.sendMail(email, function(err, info) {
+                client.sendMail(email, function (err, info) {
                     if (err) {
                         console.log(err); // If error with sending e-mail, log to console/terminal
                     } else {
@@ -718,8 +741,8 @@ module.exports = function(router) {
     });
 
     // Route to send user a new activation link once credentials have been verified
-    router.put('/resend', function(req, res) {
-        User.findOne({ username: req.body.username }).select('username name email temporarytoken').exec(function(err, user) {
+    router.put('/resend', function (req, res) {
+        User.findOne({ username: req.body.username }).select('username name email temporarytoken').exec(function (err, user) {
             if (err) {
                 // Create an e-mail object that contains the error. Set to automatically send it to myself for troubleshooting.
                 var email = {
@@ -730,7 +753,7 @@ module.exports = function(router) {
                     html: 'The following error has been reported in the MEAN Stack Application:<br><br>' + err
                 };
                 // Function to send e-mail to myself
-                client.sendMail(email, function(err, info) {
+                client.sendMail(email, function (err, info) {
                     if (err) {
                         console.log(err); // If error with sending e-mail, log to console/terminal
                     } else {
@@ -742,7 +765,7 @@ module.exports = function(router) {
             } else {
                 user.temporarytoken = jwt.sign({ username: user.username, email: user.email }, secret, { expiresIn: '24h' }); // Give the user a new token to reset password
                 // Save user's new token to the database
-                user.save(function(err) {
+                user.save(function (err) {
                     if (err) {
                         console.log(err); // If error saving user, log it to console/terminal
                     } else {
@@ -755,7 +778,7 @@ module.exports = function(router) {
                             html: 'Hello<strong> ' + user.name + '</strong>,<br><br>You recently requested a new account activation link. Please click on the link below to complete your activation:<br><br><a href="http://www.herokutestapp3z24.com/activate/' + user.temporarytoken + '">http://www.herokutestapp3z24.com/activate/</a>'
                         };
                         // Function to send e-mail to user
-                        client.sendMail(email, function(err, info) {
+                        client.sendMail(email, function (err, info) {
                             if (err) console.log(err); // If error in sending e-mail, log to console/terminal
                         });
                         res.json({ success: true, message: 'Activation link has been sent to ' + user.email + '!' }); // Return success message to controller
@@ -765,20 +788,20 @@ module.exports = function(router) {
         });
     });
 
-    router.get('/getUsers',function(req,res){
-        User.find({}).select('email username permission cart').exec(function(err,users){
-            if(err){
-                res.json({success:false, message:"User List retrieval failed"});
+    router.get('/getUsers', function (req, res) {
+        User.find({}).select('email username permission cart').exec(function (err, users) {
+            if (err) {
+                res.json({ success: false, message: "User List retrieval failed" });
             }
-            else{
-                res.json({success:true, users:users});
+            else {
+                res.json({ success: true, users: users });
             }
         });
     });
 
     // Route to send user's username to e-mail
-    router.get('/resetusername/:email', function(req, res) {
-        User.findOne({ email: req.params.email }).select('email name username').exec(function(err, user) {
+    router.get('/resetusername/:email', function (req, res) {
+        User.findOne({ email: req.params.email }).select('email name username').exec(function (err, user) {
             if (err) {
                 res.json({ success: false, message: err }); // Error if cannot connect
             } else {
@@ -795,7 +818,7 @@ module.exports = function(router) {
                     };
 
                     // Function to send e-mail to user
-                    client.sendMail(email, function(err, info) {
+                    client.sendMail(email, function (err, info) {
                         if (err) {
                             console.log(err); // If error in sending e-mail, log to console/terminal
                         } else {
@@ -809,8 +832,8 @@ module.exports = function(router) {
     });
 
     // Route to send reset link to the user
-    router.put('/resetpassword', function(req, res) {
-        User.findOne({ username: req.body.username }).select('username active email resettoken name').exec(function(err, user) {
+    router.put('/resetpassword', function (req, res) {
+        User.findOne({ username: req.body.username }).select('username active email resettoken name').exec(function (err, user) {
             if (err) {
                 // Create an e-mail object that contains the error. Set to automatically send it to myself for troubleshooting.
                 var email = {
@@ -821,7 +844,7 @@ module.exports = function(router) {
                     html: 'The following error has been reported in the MEAN Stack Application:<br><br>' + err
                 };
                 // Function to send e-mail to myself
-                client.sendMail(email, function(err, info) {
+                client.sendMail(email, function (err, info) {
                     if (err) {
                         console.log(err); // If error with sending e-mail, log to console/terminal
                     } else {
@@ -838,7 +861,7 @@ module.exports = function(router) {
                 } else {
                     user.resettoken = jwt.sign({ username: user.username, email: user.email }, secret, { expiresIn: '24h' }); // Create a token for activating account through e-mail
                     // Save token to user in database
-                    user.save(function(err) {
+                    user.save(function (err) {
                         if (err) {
                             res.json({ success: false, message: err }); // Return error if cannot connect
                         } else {
@@ -851,7 +874,7 @@ module.exports = function(router) {
                                 html: 'Hello<strong> ' + user.name + '</strong>,<br><br>You recently request a password reset link. Please click on the link below to reset your password:<br><br><a href="http://www.herokutestapp3z24.com/reset/' + user.resettoken + '">http://www.herokutestapp3z24.com/reset/</a>'
                             };
                             // Function to send e-mail to the user
-                            client.sendMail(email, function(err, info) {
+                            client.sendMail(email, function (err, info) {
                                 if (err) {
                                     console.log(err); // If error with sending e-mail, log to console/terminal
                                 } else {
@@ -868,8 +891,8 @@ module.exports = function(router) {
     });
 
     // Route to verify user's e-mail activation link
-    router.get('/resetpassword/:token', function(req, res) {
-        User.findOne({ resettoken: req.params.token }).select().exec(function(err, user) {
+    router.get('/resetpassword/:token', function (req, res) {
+        User.findOne({ resettoken: req.params.token }).select().exec(function (err, user) {
             if (err) {
                 // Create an e-mail object that contains the error. Set to automatically send it to myself for troubleshooting.
                 var email = {
@@ -880,7 +903,7 @@ module.exports = function(router) {
                     html: 'The following error has been reported in the MEAN Stack Application:<br><br>' + err
                 };
                 // Function to send e-mail to myself
-                client.sendMail(email, function(err, info) {
+                client.sendMail(email, function (err, info) {
                     if (err) {
                         console.log(err); // If error with sending e-mail, log to console/terminal
                     } else {
@@ -892,7 +915,7 @@ module.exports = function(router) {
             } else {
                 var token = req.params.token; // Save user's token from parameters to variable
                 // Function to verify token
-                jwt.verify(token, secret, function(err, decoded) {
+                jwt.verify(token, secret, function (err, decoded) {
                     if (err) {
                         res.json({ success: false, message: 'Password link has expired' }); // Token has expired or is invalid
                     } else {
@@ -908,8 +931,8 @@ module.exports = function(router) {
     });
 
     // Save user's new password to database
-    router.put('/savepassword', function(req, res) {
-        User.findOne({ username: req.body.username }).select('username email name password resettoken').exec(function(err, user) {
+    router.put('/savepassword', function (req, res) {
+        User.findOne({ username: req.body.username }).select('username email name password resettoken').exec(function (err, user) {
             if (err) {
                 // Create an e-mail object that contains the error. Set to automatically send it to myself for troubleshooting.
                 var email = {
@@ -920,7 +943,7 @@ module.exports = function(router) {
                     html: 'The following error has been reported in the MEAN Stack Application:<br><br>' + err
                 };
                 // Function to send e-mail to myself
-                client.sendMail(email, function(err, info) {
+                client.sendMail(email, function (err, info) {
                     if (err) {
                         console.log(err); // If error with sending e-mail, log to console/terminal
                     } else {
@@ -936,7 +959,7 @@ module.exports = function(router) {
                     user.password = req.body.password; // Save user's new password to the user object
                     user.resettoken = false; // Clear user's resettoken 
                     // Save user's new data
-                    user.save(function(err) {
+                    user.save(function (err) {
                         if (err) {
                             res.json({ success: false, message: err });
                         } else {
@@ -949,7 +972,7 @@ module.exports = function(router) {
                                 html: 'Hello<strong> ' + user.name + '</strong>,<br><br>This e-mail is to notify you that your password was recently reset at localhost.com'
                             };
                             // Function to send e-mail to the user
-                            client.sendMail(email, function(err, info) {
+                            client.sendMail(email, function (err, info) {
                                 if (err) console.log(err); // If error with sending e-mail, log to console/terminal
                             });
                             res.json({ success: true, message: 'Password has been reset!' }); // Return success message
@@ -961,13 +984,13 @@ module.exports = function(router) {
     });
 
     // Middleware for Routes that checks for token - Place all routes after this route that require the user to already be logged in
-    router.use(function(req, res, next) {
+    router.use(function (req, res, next) {
         var token = req.body.token || req.body.query || req.headers['x-access-token']; // Check for token in body, URL, or headers
 
         // Check if token is valid and not expired  
         if (token) {
             // Function to verify token
-            jwt.verify(token, secret, function(err, decoded) {
+            jwt.verify(token, secret, function (err, decoded) {
                 if (err) {
                     res.json({ success: false, message: 'Token invalid' }); // Token has expired or is invalid
                 } else {
@@ -981,14 +1004,14 @@ module.exports = function(router) {
     });
 
     // Route to get the currently logged in user    
-    router.post('/me', function(req, res) {
+    router.post('/me', function (req, res) {
         console.log(req.decoded);
         res.send(req.decoded); // Return the token acquired from middleware
     });
 
     // Route to provide the user with a new token to renew session
-    router.get('/renewToken/:username', function(req, res) {
-        User.findOne({ username: req.params.username }).select('username email').exec(function(err, user) {
+    router.get('/renewToken/:username', function (req, res) {
+        User.findOne({ username: req.params.username }).select('username email').exec(function (err, user) {
             if (err) {
                 // Create an e-mail object that contains the error. Set to automatically send it to myself for troubleshooting.
                 var email = {
@@ -999,7 +1022,7 @@ module.exports = function(router) {
                     html: 'The following error has been reported in the MEAN Stack Application:<br><br>' + err
                 };
                 // Function to send e-mail to myself
-                client.sendMail(email, function(err, info) {
+                client.sendMail(email, function (err, info) {
                     if (err) {
                         console.log(err); // If error with sending e-mail, log to console/terminal
                     } else {
@@ -1021,8 +1044,8 @@ module.exports = function(router) {
     });
 
     // Route to get the current user's permission level
-    router.get('/permission', function(req, res) {
-        User.findOne({ username: req.decoded.username }, function(err, user) {
+    router.get('/permission', function (req, res) {
+        User.findOne({ username: req.decoded.username }, function (err, user) {
             if (err) {
                 // Create an e-mail object that contains the error. Set to automatically send it to myself for troubleshooting.
                 var email = {
@@ -1033,7 +1056,7 @@ module.exports = function(router) {
                     html: 'The following error has been reported in the MEAN Stack Application:<br><br>' + err
                 };
                 // Function to send e-mail to myself
-                client.sendMail(email, function(err, info) {
+                client.sendMail(email, function (err, info) {
                     if (err) {
                         console.log(err); // If error with sending e-mail, log to console/terminal
                     } else {
@@ -1048,7 +1071,7 @@ module.exports = function(router) {
                 if (!user) {
                     res.json({ success: false, message: 'No user was found' }); // Return an error
                 } else {
-                                    console.log("user true");
+                    console.log("user true");
 
                     res.json({ success: true, permission: user.permission }); // Return the user's permission
                 }
@@ -1057,8 +1080,8 @@ module.exports = function(router) {
     });
 
     // Route to get all users for management page
-    router.get('/management', function(req, res) {
-        User.find({}, function(err, users) {
+    router.get('/management', function (req, res) {
+        User.find({}, function (err, users) {
             if (err) {
                 // Create an e-mail object that contains the error. Set to automatically send it to myself for troubleshooting.
                 var email = {
@@ -1069,7 +1092,7 @@ module.exports = function(router) {
                     html: 'The following error has been reported in the MEAN Stack Application:<br><br>' + err
                 };
                 // Function to send e-mail to myself
-                client.sendMail(email, function(err, info) {
+                client.sendMail(email, function (err, info) {
                     if (err) {
                         console.log(err); // If error with sending e-mail, log to console/terminal
                     } else {
@@ -1079,7 +1102,7 @@ module.exports = function(router) {
                 });
                 res.json({ success: false, message: 'Something went wrong. This error has been logged and will be addressed by our staff. We apologize for this inconvenience!' });
             } else {
-                User.findOne({ username: req.decoded.username }, function(err, mainUser) {
+                User.findOne({ username: req.decoded.username }, function (err, mainUser) {
                     if (err) {
                         // Create an e-mail object that contains the error. Set to automatically send it to myself for troubleshooting.
                         var email = {
@@ -1090,7 +1113,7 @@ module.exports = function(router) {
                             html: 'The following error has been reported in the MEAN Stack Application:<br><br>' + err
                         };
                         // Function to send e-mail to myself
-                        client.sendMail(email, function(err, info) {
+                        client.sendMail(email, function (err, info) {
                             if (err) {
                                 console.log(err); // If error with sending e-mail, log to console/terminal
                             } else {
@@ -1123,9 +1146,9 @@ module.exports = function(router) {
     });
 
     // Route to delete a user
-    router.delete('/management/:username', function(req, res) {
+    router.delete('/management/:username', function (req, res) {
         var deletedUser = req.params.username; // Assign the username from request parameters to a variable
-        User.findOne({ username: req.decoded.username }, function(err, mainUser) {
+        User.findOne({ username: req.decoded.username }, function (err, mainUser) {
             if (err) {
                 // Create an e-mail object that contains the error. Set to automatically send it to myself for troubleshooting.
                 var email = {
@@ -1136,7 +1159,7 @@ module.exports = function(router) {
                     html: 'The following error has been reported in the MEAN Stack Application:<br><br>' + err
                 };
                 // Function to send e-mail to myself
-                client.sendMail(email, function(err, info) {
+                client.sendMail(email, function (err, info) {
                     if (err) {
                         console.log(err); // If error with sending e-mail, log to console/terminal
                     } else {
@@ -1155,7 +1178,7 @@ module.exports = function(router) {
                         res.json({ success: false, message: 'Insufficient Permissions' }); // Return error
                     } else {
                         // Fine the user that needs to be deleted
-                        User.findOneAndRemove({ username: deletedUser }, function(err, user) {
+                        User.findOneAndRemove({ username: deletedUser }, function (err, user) {
                             if (err) {
                                 // Create an e-mail object that contains the error. Set to automatically send it to myself for troubleshooting.
                                 var email = {
@@ -1166,7 +1189,7 @@ module.exports = function(router) {
                                     html: 'The following error has been reported in the MEAN Stack Application:<br><br>' + err
                                 };
                                 // Function to send e-mail to myself
-                                client.sendMail(email, function(err, info) {
+                                client.sendMail(email, function (err, info) {
                                     if (err) {
                                         console.log(err); // If error with sending e-mail, log to console/terminal
                                     } else {
@@ -1186,9 +1209,9 @@ module.exports = function(router) {
     });
 
     // Route to get the user that needs to be edited
-    router.get('/edit/:id', function(req, res) {
+    router.get('/edit/:id', function (req, res) {
         var editUser = req.params.id; // Assign the _id from parameters to variable
-        User.findOne({ username: req.decoded.username }, function(err, mainUser) {
+        User.findOne({ username: req.decoded.username }, function (err, mainUser) {
             if (err) {
                 // Create an e-mail object that contains the error. Set to automatically send it to myself for troubleshooting.
                 var email = {
@@ -1199,7 +1222,7 @@ module.exports = function(router) {
                     html: 'The following error has been reported in the MEAN Stack Application:<br><br>' + err
                 };
                 // Function to send e-mail to myself
-                client.sendMail(email, function(err, info) {
+                client.sendMail(email, function (err, info) {
                     if (err) {
                         console.log(err); // If error with sending e-mail, log to console/terminal
                     } else {
@@ -1216,7 +1239,7 @@ module.exports = function(router) {
                     // Check if logged in user has editing privileges
                     if (mainUser.permission === 'admin' || mainUser.permission === 'moderator') {
                         // Find the user to be editted
-                        User.findOne({ _id: editUser }, function(err, user) {
+                        User.findOne({ _id: editUser }, function (err, user) {
                             if (err) {
                                 // Create an e-mail object that contains the error. Set to automatically send it to myself for troubleshooting.
                                 var email = {
@@ -1227,7 +1250,7 @@ module.exports = function(router) {
                                     html: 'The following error has been reported in the MEAN Stack Application:<br><br>' + err
                                 };
                                 // Function to send e-mail to myself
-                                client.sendMail(email, function(err, info) {
+                                client.sendMail(email, function (err, info) {
                                     if (err) {
                                         console.log(err); // If error with sending e-mail, log to console/terminal
                                     } else {
@@ -1254,14 +1277,14 @@ module.exports = function(router) {
     });
 
     // Route to update/edit a user
-    router.put('/edit', function(req, res) {
+    router.put('/edit', function (req, res) {
         var editUser = req.body._id; // Assign _id from user to be editted to a variable
         if (req.body.name) var newName = req.body.name; // Check if a change to name was requested
         if (req.body.username) var newUsername = req.body.username; // Check if a change to username was requested
         if (req.body.email) var newEmail = req.body.email; // Check if a change to e-mail was requested
         if (req.body.permission) var newPermission = req.body.permission; // Check if a change to permission was requested
         // Look for logged in user in database to check if have appropriate access
-        User.findOne({ username: req.decoded.username }, function(err, mainUser) {
+        User.findOne({ username: req.decoded.username }, function (err, mainUser) {
             if (err) {
                 // Create an e-mail object that contains the error. Set to automatically send it to myself for troubleshooting.
                 var email = {
@@ -1272,7 +1295,7 @@ module.exports = function(router) {
                     html: 'The following error has been reported in the MEAN Stack Application:<br><br>' + err
                 };
                 // Function to send e-mail to myself
-                client.sendMail(email, function(err, info) {
+                client.sendMail(email, function (err, info) {
                     if (err) {
                         console.log(err); // If error with sending e-mail, log to console/terminal
                     } else {
@@ -1291,7 +1314,7 @@ module.exports = function(router) {
                         // Check if person making changes has appropriate access
                         if (mainUser.permission === 'admin' || mainUser.permission === 'moderator') {
                             // Look for user in database
-                            User.findOne({ _id: editUser }, function(err, user) {
+                            User.findOne({ _id: editUser }, function (err, user) {
                                 if (err) {
                                     // Create an e-mail object that contains the error. Set to automatically send it to myself for troubleshooting.
                                     var email = {
@@ -1302,7 +1325,7 @@ module.exports = function(router) {
                                         html: 'The following error has been reported in the MEAN Stack Application:<br><br>' + err
                                     };
                                     // Function to send e-mail to myself
-                                    client.sendMail(email, function(err, info) {
+                                    client.sendMail(email, function (err, info) {
                                         if (err) {
                                             console.log(err); // If error with sending e-mail, log to console/terminal
                                         } else {
@@ -1318,7 +1341,7 @@ module.exports = function(router) {
                                     } else {
                                         user.name = newName; // Assign new name to user in database
                                         // Save changes
-                                        user.save(function(err) {
+                                        user.save(function (err) {
                                             if (err) {
                                                 console.log(err); // Log any errors to the console
                                             } else {
@@ -1338,7 +1361,7 @@ module.exports = function(router) {
                         // Check if person making changes has appropriate access
                         if (mainUser.permission === 'admin' || mainUser.permission === 'moderator') {
                             // Look for user in database
-                            User.findOne({ _id: editUser }, function(err, user) {
+                            User.findOne({ _id: editUser }, function (err, user) {
                                 if (err) {
                                     // Create an e-mail object that contains the error. Set to automatically send it to myself for troubleshooting.
                                     var email = {
@@ -1349,7 +1372,7 @@ module.exports = function(router) {
                                         html: 'The following error has been reported in the MEAN Stack Application:<br><br>' + err
                                     };
                                     // Function to send e-mail to myself
-                                    client.sendMail(email, function(err, info) {
+                                    client.sendMail(email, function (err, info) {
                                         if (err) {
                                             console.log(err); // If error with sending e-mail, log to console/terminal
                                         } else {
@@ -1365,7 +1388,7 @@ module.exports = function(router) {
                                     } else {
                                         user.username = newUsername; // Save new username to user in database
                                         // Save changes
-                                        user.save(function(err) {
+                                        user.save(function (err) {
                                             if (err) {
                                                 console.log(err); // Log error to console
                                             } else {
@@ -1385,7 +1408,7 @@ module.exports = function(router) {
                         // Check if person making changes has appropriate access
                         if (mainUser.permission === 'admin' || mainUser.permission === 'moderator') {
                             // Look for user that needs to be editted
-                            User.findOne({ _id: editUser }, function(err, user) {
+                            User.findOne({ _id: editUser }, function (err, user) {
                                 if (err) {
                                     // Create an e-mail object that contains the error. Set to automatically send it to myself for troubleshooting.
                                     var email = {
@@ -1396,7 +1419,7 @@ module.exports = function(router) {
                                         html: 'The following error has been reported in the MEAN Stack Application:<br><br>' + err
                                     };
                                     // Function to send e-mail to myself
-                                    client.sendMail(email, function(err, info) {
+                                    client.sendMail(email, function (err, info) {
                                         if (err) {
                                             console.log(err); // If error with sending e-mail, log to console/terminal
                                         } else {
@@ -1412,7 +1435,7 @@ module.exports = function(router) {
                                     } else {
                                         user.email = newEmail; // Assign new e-mail to user in databse
                                         // Save changes
-                                        user.save(function(err) {
+                                        user.save(function (err) {
                                             if (err) {
                                                 console.log(err); // Log error to console
                                             } else {
@@ -1432,7 +1455,7 @@ module.exports = function(router) {
                         // Check if user making changes has appropriate access
                         if (mainUser.permission === 'admin' || mainUser.permission === 'moderator') {
                             // Look for user to edit in database
-                            User.findOne({ _id: editUser }, function(err, user) {
+                            User.findOne({ _id: editUser }, function (err, user) {
                                 if (err) {
                                     // Create an e-mail object that contains the error. Set to automatically send it to myself for troubleshooting.
                                     var email = {
@@ -1443,7 +1466,7 @@ module.exports = function(router) {
                                         html: 'The following error has been reported in the MEAN Stack Application:<br><br>' + err
                                     };
                                     // Function to send e-mail to myself
-                                    client.sendMail(email, function(err, info) {
+                                    client.sendMail(email, function (err, info) {
                                         if (err) {
                                             console.log(err); // If error with sending e-mail, log to console/terminal
                                         } else {
@@ -1467,7 +1490,7 @@ module.exports = function(router) {
                                                 } else {
                                                     user.permission = newPermission; // Assign new permission to user
                                                     // Save changes
-                                                    user.save(function(err) {
+                                                    user.save(function (err) {
                                                         if (err) {
                                                             console.log(err); // Long error to console
                                                         } else {
@@ -1478,7 +1501,7 @@ module.exports = function(router) {
                                             } else {
                                                 user.permission = newPermission; // Assign new permission to user
                                                 // Save changes
-                                                user.save(function(err) {
+                                                user.save(function (err) {
                                                     if (err) {
                                                         console.log(err); // Log error to console
                                                     } else {
@@ -1497,7 +1520,7 @@ module.exports = function(router) {
                                                 } else {
                                                     user.permission = newPermission; // Assign new permission
                                                     // Save changes
-                                                    user.save(function(err) {
+                                                    user.save(function (err) {
                                                         if (err) {
                                                             console.log(err); // Log error to console
                                                         } else {
@@ -1508,7 +1531,7 @@ module.exports = function(router) {
                                             } else {
                                                 user.permission = newPermission; // Assign new permssion
                                                 // Save changes
-                                                user.save(function(err) {
+                                                user.save(function (err) {
                                                     if (err) {
                                                         console.log(err); // Log error to console
                                                     } else {
@@ -1524,7 +1547,7 @@ module.exports = function(router) {
                                             if (mainUser.permission === 'admin') {
                                                 user.permission = newPermission; // Assign new permission
                                                 // Save changes
-                                                user.save(function(err) {
+                                                user.save(function (err) {
                                                     if (err) {
                                                         console.log(err); // Log error to console
                                                     } else {
