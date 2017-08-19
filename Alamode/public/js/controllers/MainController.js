@@ -14,6 +14,7 @@ alamode.controller('mainCtrl', function (Auth, $timeout, $location, $rootScope, 
     app.loadme = true;
     app.cart = {};
     $scope.some = {};
+    app.products = false;
 
     $scope.mookie = {};
     $scope.mookie.cartItemCount = false;
@@ -64,19 +65,6 @@ alamode.controller('mainCtrl', function (Auth, $timeout, $location, $rootScope, 
                             $scope.mookie.cartItemCount = moreData.itemCount;
                             console.log($scope.mookie.cartItemCount);
                         });
-
-                        // $scope.mookie.cartItemCount = 0;
-                        // $scope.mookie.getCurrentCart(function(currentCart){
-
-                        // });
-
-
-                        // var cart = data.data.cart;
-                        // console.log(cart);
-                        // cart.products.forEach(function(cartProduct){
-                        //     console.log(cartProduct);
-                        //     $scope.mookie.cartItemCount += cartProduct.qty;
-                        // });
                     }
                     else {
 
@@ -87,44 +75,8 @@ alamode.controller('mainCtrl', function (Auth, $timeout, $location, $rootScope, 
         })
     };
 
-
-
-    $scope.mookie.getCurrentCart = function (callback) {
-        var userData = {};
-        userData.userEmail = $scope.mookie.userEmail;
-        User.getUserCart(userData).then(function (data) {
-            if (data.data.success) {
-                if (data.data.user.cart != null && data.data.user.cart) {
-                    var cartData = {};
-                    cartData.cartId = data.data.user.cart;
-                    Carg.getCart(cartData).then(function (data) {
-                        if (data.data.success) {
-                            var itemCount = 0;
-                            var cart = data.data.cart;
-                            cart.products.forEach(function (cartProduct) {
-                                itemCount += cartProduct.qty;
-                            });
-                            var cartData = {};
-                            cartData.cart = cart;
-                            cartData.itemCount = itemCount;
-                            return callback(cartData);
-                        }
-                        else {
-
-                        }
-                    });
-                }
-            }
-            else {
-                //no success whatsoever getting user 
-                console.log('no success whatsoever');
-            }
-        })
-    };
-
-
     $scope.mookie.getEmailAndUsername = function (callback) {
-        if (Auth.isLoggin()) {
+        if (Auth.isLoggedIn()) {
             Auth.getUser().then(function (data) {
                 var userData = {};
                 userData.userEmail = data.data.email;
@@ -138,6 +90,47 @@ alamode.controller('mainCtrl', function (Auth, $timeout, $location, $rootScope, 
             });
         }
     };
+
+
+    $scope.mookie.getCurrentCart = function (callback) {
+        var userData = {};
+        userData.userEmail = $scope.mookie.userEmail;
+        $scope.mookie.getEmailAndUsername(function (userData) {
+            User.getUserCart(userData).then(function (data) {
+                if (data.data.success) {
+                    if (data.data.user.cart != null && data.data.user.cart) {
+                        var cartData = {};
+                        cartData.cartId = data.data.user.cart;
+                        Cart.getCart(cartData).then(function (data) {
+                            if (data.data.success) {
+                                var itemCount = 0;
+                                var cart = data.data.cart;
+                                cart.products.forEach(function (cartProduct) {
+                                    itemCount += cartProduct.qty;
+                                });
+                                var cartData = {};
+                                cartData.cart = cart;
+                                cartData.itemCount = itemCount;
+                                return callback(cartData);
+                            }
+                            else {
+
+                            }
+                        });
+                    }
+                }
+                else {
+                    //no success whatsoever getting user 
+                    console.log('no success whatsoever');
+                }
+            });
+
+        });
+    };
+
+    $scope.mookie.getCurrentCart(function (cartData) {//Call when maincontroller is loaded to get current cart information//Also possible to get user information here
+        $scope.mookie.cartItemCount = cartData.itemCount;
+    });
 
     app.addProductToDB = function (productData) {
         Product.seedProduct(productData).then(function (data) {
@@ -340,6 +333,7 @@ alamode.controller('mainCtrl', function (Auth, $timeout, $location, $rootScope, 
         app.getCurrentCart(function (products) {
             app.numberofcartitems = products.length;
             app.products = products;
+            console.log(app.products);
             var total = 0;
             var counter = app.numberofcartitems;
             products.forEach(function (product) {
