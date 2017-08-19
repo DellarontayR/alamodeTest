@@ -42,57 +42,71 @@ alamode.controller('mainCtrl', function (Auth, $timeout, $location, $rootScope, 
 
     $scope.mookie.addToCart = function (product) {
         Auth.getUser().then(function (data) {
-            console.log($scope.mookie.cartItemCount);
-            $scope.mookie.userEmail = data.data.email;
-            $scope.mookie.username = data.data.username;
-            var userData = {};
-            userData.userEmail = data.data.email;
-            User.getUserCart(userData).then(function (data) {
-                if (data.data.success) {
-                    var cartData = {};
-                    cartData.price = product.price;
-                    cartData.description = product.description;
-                    cartData.title = product.title;
-                    cartData.imagePath = product.imagePath;
-                    cartData.qty = 1;
-                    cartData.userId = data.data.user._id;
-                    Cart.addItemToCart(cartData).then(function (data) {
-                        if (data.data.success) {
-                            var getCartData = {};
-                            getCartData.cartId = data.data.cart._id;
-                            console.log(data);
+            console.log(data);
+            if (data.data.email) {
+                console.log($scope.mookie.cartItemCount);
+                $scope.mookie.userEmail = data.data.email;
+                $scope.mookie.username = data.data.username;
+                var userData = {};
+                userData.userEmail = data.data.email;
+                User.getUserCart(userData).then(function (data) {
+                    if (data.data.success) {
+                        var cartData = {};
+                        cartData.price = product.price;
+                        cartData.description = product.description;
+                        cartData.title = product.title;
+                        cartData.imagePath = product.imagePath;
+                        cartData.qty = 1;
+                        cartData.userId = data.data.user._id;
+                        Cart.addItemToCart(cartData).then(function (data) {
+                            if (data.data.success) {
+                                var getCartData = {};
+                                getCartData.cartId = data.data.cart._id;
+                                console.log(data);
 
-                            $scope.mookie.updateAfterAdd(getCartData, function (moreData) {
-                                $scope.mookie.cartItemCount = moreData.itemCount;
-                                console.log($scope.mookie.cartItemCount);
-                            });
-                        }
-                        else {
+                                $scope.mookie.updateAfterAdd(getCartData, function (moreData) {
+                                    $scope.mookie.cartItemCount = moreData.itemCount;
+                                    console.log($scope.mookie.cartItemCount);
+                                });
+                            }
+                            else {
+                                var title = "Item could not be added cart";
+                                var body = "Item could not be added to cart.";
+                                $scope.mookie.showModal(title, body);
+                            }
+                        });
+                    }
+                    else {
+                        var title = "User could not be found on server";
+                        var body = "Item could not be added to unknown user cart. Please register new user";
+                        $scope.mookie.showModal(title, body);
+                    }
+                });
 
-                        }
-                    });
-                }
-                else{
-                    $scope.mookie.modalTitle = "User not found error";
-                    $scope.mookie.modalBody = "Item could not be added to unknown user cart. Please register new user";
-                    $scope.mookie.showModal();
-                }
+            }
+            else {
+                console.log(data);
+                var title = "Local user token not found";
+                var body = "Item could not be added to unknown user cart. Please register or sign in user";
+                $scope.mookie.showModal(title, body);
+            }
 
-
-            });
-        })
+        },function(err){
+            var title = "Local user token not found";
+            var body = "Item could not be added to unknown user cart. Please register or sign in user";
+            $scope.mookie.showModal(title, body);        });
     };
 
-    app.addSubscription = function(subEmail){
+    app.addSubscription = function (subEmail) {
         var subData = {};
         subData.subEmail = subEmail;
-        Auth.addSubscription(subData).then(function(data){
+        Auth.addSubscription(subData).then(function (data) {
             app.subMessage = data.data.message;
             subEmail = "";
             $timeout(function () {
                 app.subMessage = false;
-            },2000);
-                        
+            }, 2000);
+
         })
     }
 

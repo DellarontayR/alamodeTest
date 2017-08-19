@@ -3,7 +3,7 @@
 angular.module('authServices', [])
 
 // Factor: Auth handles all login/logout functions	
-.factory('Auth', function($http, AuthToken) {
+.factory('Auth', function($http, AuthToken,$q) {
     var authFactory = {}; // Create the factory object
     // Function to log the user in
      
@@ -46,7 +46,12 @@ angular.module('authServices', [])
         if (AuthToken.getToken()) {
             return $http.post('/api/me'); // Return user's data
         } else {
-            $q.reject({ message: 'User has no token' }); // Reject if no token exists
+            var data = {};
+            data.data = {};
+            data.data.success=false;
+            data.data.message ="User token not found locally";
+            // return (data);
+            return $q.reject({message:'UserToken not found'}); // Reject if no token exists
         }
     };
 
