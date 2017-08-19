@@ -183,9 +183,6 @@ alamode.controller('CartController', function ($scope, $location, User, Cart, Au
         });
     };
 
-    app.checkout = function (cart) {
-
-    };
 
 
 });

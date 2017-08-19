@@ -15,7 +15,37 @@ alamode.controller('mainCtrl', function (Auth, $timeout, $location, $rootScope, 
     app.cart = {};
     $scope.some = {};
 
+    $scope.mookie = {};
 
+    $scope.mookie.addToCart = function(){
+        console.log("hey what's going on in the world of ours");
+        $scope.mookie.believe = "malcolm";
+        Auth.getUser().then(function(data){
+            app.mookie.userEmail = data.data.email;
+            app.mookie.username = data.data.username;
+            var userData = {};
+            userData.userEmail = data.data.email;
+            User.getUserCart(userData).then(function(data){
+                var cartData ={};
+                cartData.price = product.price;
+                cartData.description = product.description;
+                cartData.title = product.title;
+                cartData.imagePath = product.imagePath;
+                cartData.qty = 1;
+                cartData.userId = data.data.user._id;
+
+                Cart.addItemToCart(cartData).then(function(data){
+                    if(data.data.success){
+
+                    }
+                    else{
+
+                    }
+                });
+                
+            });
+        })
+    }
 
     $scope.some.addToCart = function(product){
         Auth.getUser().then(function(data){
