@@ -487,6 +487,7 @@ module.exports = function (router) {
             }
         });
     });
+
     router.post('/registerMookie', function (req, res) {
         var user = new User();
         //json body needs username, passowrd, email, name
@@ -551,6 +552,8 @@ module.exports = function (router) {
                 }
             }
             else {
+                console.log(err);
+                console.log(user);
                 if (!user) {
                     res.json({ success: false, message: "Something went wrong, user login failed" });
                 }

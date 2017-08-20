@@ -83,6 +83,7 @@ console.log('regCtrl active');
                 }
             }
         },function(err){
+            console.log(err);
             app.regMsg = err.data.message;
         });
     };

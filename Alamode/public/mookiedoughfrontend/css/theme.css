@@ -3955,6 +3955,10 @@ input[type="button"].btn-block {
 }
 
 .shop-item .shop-thumbnail > img {
+  height: 155px;
+  
+/* Dellarontay */
+
   display: block;
   width: auto;
   margin: auto;
