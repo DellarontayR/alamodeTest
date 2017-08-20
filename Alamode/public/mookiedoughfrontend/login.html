@@ -6,8 +6,8 @@
 
     <!-- Content -->
     <section class="container padding-top-3x padding-bottom-2x">
-      <h1 ng-show="!user.regMessage && !user.mookieMessage">User Account</h1>
-      <h1 ng-show="user.regMessage || user.mookieMessage">Hello {{user.username}}</h1>
+      <h1 ng-show="!user.loggedIn">User Account</h1>
+      <h1 ng-show="user.loggedIn">Hello {{user.username}}</h1>
 
       <div class="row padding-top">
         <div class="col-md-4 padding-bottom">

@@ -513,9 +513,10 @@ module.exports = function (router) {
                     else if (err) {
                         // Check if duplication error exists
                         if (err.code == 11000) {
-                            if (err.errmsg[61] == "u") {
+                            console.log(err.errmsg);
+                            if (err.errmsg[65] == "u") {
                                 res.json({ success: false, message: 'That username is already taken' }); // Display error if username already taken
-                            } else if (err.errmsg[61] == "e") {
+                            } else if (err.errmsg[65] == "e") {
                                 res.json({ success: false, message: 'That e-mail is already taken' }); // Display error if e-mail already taken
                             }
                         } else {

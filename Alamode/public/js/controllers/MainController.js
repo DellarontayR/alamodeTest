@@ -92,6 +92,9 @@ alamode.controller('mainCtrl', function (Auth, $timeout, $location, $rootScope, 
             }
 
         },function(err){
+            if(Auth.isLoggedIn()){
+                Auth.logout();
+            }
             var title = "Local user token not found";
             var body = "Item could not be added to unknown user cart. Please register or sign in user";
             $scope.mookie.showModal(title, body);        });
@@ -227,6 +230,13 @@ alamode.controller('mainCtrl', function (Auth, $timeout, $location, $rootScope, 
                         productData4.title = "High Brew Coffee";
                         productData4.catalogProduct = true;
                         app.addProductToDB(productData4);
+                        var productData5 = {};
+                        productData5.imagePath = "../imgs/Media/minicookiedough-min.png";
+                        productData5.price = 3.99;
+                        productData5.description = "Mini Cookie Dough";
+                        productData5.title = "Mini Cookie Dough";
+                        productData5.catalogProduct = true;
+                        app.addProductToDB(productData5);
                     })();
                     (function () {
                         var productData = {};

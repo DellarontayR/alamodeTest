@@ -12,6 +12,7 @@ console.log('regCtrl active');
     app.regMsg = "";
     app.loginMsg = "";
     app.username = "";
+    app.loggedIn = false;
 
     if(Auth.isLoggedIn()){
         app.loggedIn = true;
@@ -28,6 +29,7 @@ console.log('regCtrl active');
                 app.loginMessage = true;
                 app.loginMsg = "User authentication successful";
                 app.username = data.token;
+                app.loggedIn = true;
                 $timeout(function(){
                     app.loginMessage = false;
                     app.loginMsg = "";
@@ -58,10 +60,10 @@ console.log('regCtrl active');
             console.log(data);
             if(data.data.success){
                 app.username = regData.username;
-                app.message = "Login Successful";
                 Auth.login(app.regData);
-                console.log('Register successful');
+                app.loggedIn = true;
                 app.regMessage = true;
+
                 app.regMsg = "Sign up was successful";
 
                 $timeout(function(){
@@ -80,6 +82,8 @@ console.log('regCtrl active');
                     app.regMsg = "User could not be Registered";
                 }
             }
+        },function(err){
+            app.regMsg = err.data.message;
         });
     };
 
