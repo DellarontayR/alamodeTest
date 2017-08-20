@@ -3,6 +3,7 @@ var User = require('../models/user'); // Import User Model
 var Product = require('../models/product');
 var Cart = require('../models/cart');
 var Subscription = require('../models/subscription');
+var ContactMessage = require('../models/contactmessage');
 var jwt = require('jsonwebtoken'); // Import JWT Package
 var secret = 'zm!_0@0hu_7&ii-@j&0wpm3t%ojnvmjx6j0!1*&j@x51&mdzk@'; // Create custom secret for use in JWT
 var nodemailer = require('nodemailer'); // Import Nodemailer Package
@@ -35,6 +36,36 @@ module.exports = function (router) {
     });
     // var client = nodemailer.createTransport(sgTransport(options)); // Use if using sendgrid configuration
     // End Sendgrid Configuration Settings  
+
+
+
+    // contact message api
+
+    router.post('/addContactMessage',function(req,res){
+        if(req.body.name == '' || req.body.name == null || req.body.email == null || req.body.email == ''||
+            req.body.message == null || req.body.message ==''){
+            res.json({success:false,message:'Please fill in all your details before sending us a message!'});
+        }
+        else{
+            var contactMes = ContactMessage();
+            contactMes.name = req.body.name;
+            contactMes.email = req.body.email;
+            contactMes.message = req.body.message;
+            contactMes.save(function(err,contactMes){
+                if(err){
+                    res.json({success:false,message:'There was an error while trying to save your message'});
+                }
+                else{
+                    if(!contactMes){
+                        res.json({success:false,message:'There was an error while trying to save your message'});
+                    }
+                    else{
+                        res.json({success:true,message:'Message sent successfully',contactMes:contactMes});
+                    }
+                }
+            })
+        }
+    });
 
 
     // Subscription api
@@ -533,7 +564,7 @@ module.exports = function (router) {
         }
     });
 
-
+ 
     router.post('/mookie-login', function (req, res) {
         var login = (req.body.email).toLowerCase();
 

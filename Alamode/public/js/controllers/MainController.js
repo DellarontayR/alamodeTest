@@ -111,7 +111,23 @@ alamode.controller('mainCtrl', function (Auth, $timeout, $location, $rootScope, 
             }, 2000);
 
         })
-    }
+    };
+    $scope.mookie.contactMes = {};
+
+    $scope.mookie.addContactMessage = function(contactData){
+        Auth.addContactMessage(contactData).then(function(data){
+            $scope.mookie.contactNotification = data.data.message;
+            if(data.data.success){
+                $scope.mookie.contactMes.email = '';
+                $scope.mookie.contactMes.message ='';
+                $scope.mookie.contactMes.name = '';
+            }
+            else{
+
+
+            }
+        });
+    };
 
     $scope.mookie.getEmailAndUsername = function (callback) {
         if (Auth.isLoggedIn()) {

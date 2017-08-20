@@ -25,6 +25,10 @@ angular.module('authServices', [])
         return $http.post('/api/addSubscription',subData);
     };
 
+    authFactory.addContactMessage = function(contactData){
+        return $http.post('/api/addContactMessage',contactData);
+    };
+
     // Function to check if user is currently logged in
     authFactory.isLoggedIn = function() {
         // CHeck if token is in local storage

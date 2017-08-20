@@ -42,11 +42,7 @@
             </li>
             <li>
               <i class="material-icons email"></i>
-              <a href="mailto:#">info@mookiedough.com</a>
-            </li>
-            <li>
-              <i class="socicon-skype"></i>
-              <a href="#">skype_id</a>
+              <a href="mailto:#">readus@mookiedough.co</a>
             </li>
           </ul><!-- .list-icon -->
           <p>Working hours: <span class="text-gray">24/7</span></p>
@@ -69,19 +65,20 @@
               <div class="row">
                 <div class="col-sm-6">
                   <div class="form-element">
-                    <input type="text" class="form-control" name="name" placeholder="Name">
+                    <input type="text" class="form-control" name="name" placeholder="Name" ng-model="mookie.contactMes.name">
                   </div>
                 </div>
                 <div class="col-sm-6">
                   <div class="form-element">
-                    <input type="email" class="form-control" name="email" placeholder="E-mail">
+                    <input type="email" class="form-control" name="email" placeholder="E-mail" ng-model="mookie.contactMes.email">
                   </div>
                 </div>
               </div><!-- .row -->
               <div class="form-element">
-                <textarea rows="6" class="form-control" name="message" placeholder="Message"></textarea>
+                <textarea rows="6" class="form-control" name="message" placeholder="Message" ng-model="mookie.contactMes.message"></textarea>
               </div>
-              <button type="submit" class="btn btn-primary btn-block waves-effect waves-light space-top-none">Send Message</button>
+              <button type="submit" class="btn btn-primary btn-block waves-effect waves-light space-top-none" ng-click="mookie.addContactMessage(mookie.contactMes)">Send Message</button>
+              <p ng-show="mookie.contactNotification">{{mookie.contactNotification}}</p>
             </div>
             <div class="status-message"></div>
           </form>
