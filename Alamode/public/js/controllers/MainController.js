@@ -189,6 +189,9 @@ alamode.controller('mainCtrl', function (Auth, $timeout, $location, $rootScope, 
         
     };
 
+    $scope.mookie.showStripeModal = function(){
+        $("#stripeModal").modal({backdrop: "static"});
+    };
     app.addProductToDB = function (productData) {
         Product.seedProduct(productData).then(function (data) {
             if (data.data.success) {

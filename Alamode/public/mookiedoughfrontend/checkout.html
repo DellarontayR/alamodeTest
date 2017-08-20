@@ -10,8 +10,15 @@
       <div class="col-sm-8 padding-bottom">
         <!-- .row -->
         <div class="row">
+          <a href="#" class="add-to-cart" ng-click="mookie.showStripeModal()">
+                <em>Checkout Now</em>
+                <svg x="0px" y="0px" width="32px" height="32px" viewBox="0 0 32 32">
+                  <path stroke-dasharray="19.79 19.79" stroke-dashoffset="19.79" fill="none" stroke="#FFFFFF" stroke-width="2" stroke-linecap="square" stroke-miterlimit="10" d="M9,17l3.9,3.9c0.1,0.1,0.2,0.1,0.3,0L23,11"/>
+                </svg>
+            </a>
 
-          <form>
+
+          <!-- <form>
             <label>
                   <input name="cardholder-name" class="field is-empty" placeholder="Jane Doe" />
                   <span><span>Name</span></span>
@@ -31,7 +38,8 @@
                 Success! Your Stripe token is <span class="token"></span>
               </div>
             </div>
-          </form>
+          </form> -->
+
           <div class="col-sm-6">
 
 
@@ -52,7 +60,7 @@
               <i class="material-icons arrow_back"></i>
               Back To Cart
             </a>
-          <button type="submit" class="btn btn-primary btn-block waves-effect waves-light space-top-none">Checkout</button>
+          <button type="submit" class="btn btn-primary btn-block waves-effect waves-light space-top-none" ng-click="mookie.showStripeModal()">Checkout</button>
         </aside>
       </div>
       <!-- .col-md-3.col-sm-4 -->

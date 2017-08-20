@@ -14,6 +14,10 @@ console.log('regCtrl active');
     app.username = "";
     app.loggedIn = false;
 
+    app.checkout = function(){
+        $scope.showMOd
+    }
+
     if(Auth.isLoggedIn()){
         app.loggedIn = true;
         Auth.getUser().then(function(data){
