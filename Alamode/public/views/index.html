@@ -190,6 +190,38 @@
       </div>
     </div>
 
+    <div class="modal fade" id="productModal" role="dialog">
+        <div class="modal-dialog">
+          <div class="modal-content">
+            <div class="modal-header">
+              <button type="button" class="close" data-dismiss="modal">&times;</button>
+              <!-- {{mookie.modalTitle}} -->
+              {{mookie.modal.title}}
+            </div>
+            <div class="modal-body">
+
+              <div class="row">
+                <div class="col-sm-6 col-md-6 col-lg-6">
+                <!-- {{mookie.modalBody}} -->
+                <img ng-src="{{mookie.modal.imagePath}}">
+                <p> {{mookie.modal.description}}</p>
+              </div>
+              <div class="col-sm-6 col-md-6 col-lg-6">
+                  <p> {{mookie.modal.price | currency}}</p>     
+                  <a href="#" class="add-to-cart" ng-click="mookie.addToCart(mookie.modal); $event.stopPropagation();">
+                      <em>Add to Cart</em>
+                      <svg x="0px" y="0px" width="32px" height="32px" viewBox="0 0 32 32">
+                        <path stroke-dasharray="19.79 19.79" stroke-dashoffset="19.79" fill="none" stroke="#FFFFFF" stroke-width="2" stroke-linecap="square" stroke-miterlimit="10" d="M9,17l3.9,3.9c0.1,0.1,0.2,0.1,0.3,0L23,11"/>
+                      </svg>
+                  </a>  
+                </div>
+              </div>
+              
+            </div>
+          </div>
+        </div>
+      </div>
+
 
     <div style="padding-top: 80px;">
         <!-- Main Angular view where routes will be rendered-->
@@ -214,31 +246,31 @@
 
       <div class="column">
         <p class="text-sm">Need support? Call <span class="text-primary">1 (650) 555-9999</span></p>
-          <div class="social-bar text-center space-bottom">
+                  <div class="social-bar text-center space-bottom">
 
-          <a href="#" class="sb-skype" data-toggle="tooltip" data-placement="top" title="Skype">
+                    <a href="#" class="sb-skype" data-toggle="tooltip" data-placement="top" title="Skype">
             <i class="socicon-skype"></i>
           </a>
-          <a href="https://www.facebook.com/mookiedough/" class="sb-facebook" data-toggle="tooltip" data-placement="top" title="Facebook">
+                    <a href="https://www.facebook.com/mookiedough/" class="sb-facebook" data-toggle="tooltip" data-placement="top" title="Facebook">
             <i class="socicon-facebook"></i>
           </a>
-          <a href="#" class="sb-google-plus" data-toggle="tooltip" data-placement="top" title="" data-original-title="Google+">
+                    <a href="#" class="sb-google-plus" data-toggle="tooltip" data-placement="top" title="" data-original-title="Google+">
             <i class="socicon-googleplus"></i>
           </a>
-          <a href="#" class="sb-twitter" data-toggle="tooltip" data-placement="top" title="Twitter">
+                    <a href="#" class="sb-twitter" data-toggle="tooltip" data-placement="top" title="Twitter">
             <i class="socicon-twitter"></i>
           </a>
-          <a href="#" class="sb-instagram" data-toggle="tooltip" data-placement="top" title="" data-original-title="Instagram">
+                    <a href="#" class="sb-instagram" data-toggle="tooltip" data-placement="top" title="" data-original-title="Instagram">
             <i class="socicon-instagram"></i>
           </a>
 
-          </div>
-          <!-- .social-bar -->
-          <p class="copyright">&copy; 2017. Mookie Dough LLC</p>
-        </div>
-        <!-- .column -->
-        </footer>
-        <!-- .footer -->
+                  </div>
+                  <!-- .social-bar -->
+                  <p class="copyright">&copy; 2017. Mookie Dough LLC</p>
+                </div>
+                <!-- .column -->
+                </footer>
+                <!-- .footer -->
 
 
               </div>

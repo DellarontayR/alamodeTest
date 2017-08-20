@@ -74,7 +74,7 @@
       <div class=" padding-top">
         <!-- Item -->
         <div class="col-sm-6 col-md-4 col-lg-4" ng-repeat="catalogProduct in home.bestsellers">
-          <div class="shop-item">
+          <div class="shop-item" ng-click="mookie.showProductModal(catalogProduct)">
             <div class="shop-thumbnail">
               <span class="item-rating text-warning">
                 <i class="material-icons star"></i>
@@ -92,7 +92,7 @@
                 </a>
                 <a href="#" class="add-to-cart">
                   <!-- <em ng-click="home.addToCart(catalogProduct)"> Add to Cart</em> -->
-                  <em ng-click="mookie.addToCart(catalogProduct)"> Add to Cart</em>                  
+                  <em ng-click="mookie.addToCart(catalogProduct); $event.stopPropagation();"> Add to Cart</em>                  
                   <svg x="0px" y="0px" width="32px" height="32px" viewBox="0 0 32 32">
                     <path stroke-dasharray="19.79 19.79" stroke-dashoffset="19.79" fill="none" stroke="#FFFFFF" stroke-width="2" stroke-linecap="square" stroke-miterlimit="10" d="M9,17l3.9,3.9c0.1,0.1,0.2,0.1,0.3,0L23,11"></path>
                   </svg></a></div></div>
@@ -115,7 +115,7 @@
       <div class="row padding-top">
 
         <div class="col-lg-3 col-md-4 col-sm-6 col-xl-4" ng-repeat="catalogProduct in home.catalogProducts">
-          <div class="shop-item">
+          <div class="shop-item" ng-click="mookie.showProductModal(catalogProduct)">
             <div class="shop-thumbnail">
               <span class="shop-label text-danger"> Sale</span>
               <a href="#" class="item-link"></a>
@@ -125,7 +125,7 @@
                   <i class="material-icons favorite_border"></i>
                 </a>
                 <a href="#" class="add-to-cart">
-                  <em ng-click="mookie.addToCart(catalogProduct)"> Add to Cart</em>
+                  <em ng-click="mookie.addToCart(catalogProduct); $event.stopPropagation();"> Add to Cart</em>
                   <svg x="0px" y="0px" width="32px" height="32px" viewBox="0 0 32 32">
                     <path stroke-dasharray="19.79 19.79" stroke-dashoffset="19.79" fill="none" stroke="#FFFFFF" stroke-width="2" stroke-linecap="square" stroke-miterlimit="10" d="M9,17l3.9,3.9c0.1,0.1,0.2,0.1,0.3,0L23,11"></path>
                   </svg></a></div></div>

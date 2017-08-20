@@ -179,6 +179,16 @@ alamode.controller('mainCtrl', function (Auth, $timeout, $location, $rootScope, 
         $("#myModal").modal({ backdrop: "static" }); // Open modal        
     };
 
+    $scope.mookie.showProductModal = function(product){
+        $scope.mookie.modal = {};
+        $scope.mookie.modal.imagePath = product.imagePath;
+        $scope.mookie.modal.title = product.title;
+        $scope.mookie.modal.description = product.description;
+        $scope.mookie.modal.price = product.price;
+        $("#productModal").modal({ backdrop: "static" }); // Open modal        
+        
+    };
+
     app.addProductToDB = function (productData) {
         Product.seedProduct(productData).then(function (data) {
             if (data.data.success) {
