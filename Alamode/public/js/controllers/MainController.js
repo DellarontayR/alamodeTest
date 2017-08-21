@@ -573,7 +573,7 @@ alamode.controller('mainCtrl', function (Auth, $timeout, $location, $rootScope, 
                             app.loadme = true; // Show main HTML now that data is obtained in AngularJS
                         } else {
                             app.authorized = false;
-                            $scope.mookie.admin = true;                            
+                            $scope.mookie.admin = false;                            
                             app.loadme = true; // Show main HTML now that data is obtained in AngularJS
                         }
                     });
