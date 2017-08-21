@@ -48,12 +48,6 @@ var app = angular.module('appRoutes',['ngRoute'])
         controller:'MainShopController',
         controllerAs:'mainShop'
     }).
-    when('/testusers',{
-        templateUrl: '../views/testusers.html',
-        authenticated: false,
-        controller: 'TestController',
-        controllerAs: 'database'
-    }).
     when('/localfavmainshop',{
         templateUrl: '../mookiedoughfrontend/localfav/localfavmainshop.html',
         authenticated: false,
@@ -268,7 +262,7 @@ var app = angular.module('appRoutes',['ngRoute'])
 
     // Route: Manage User Accounts
     .when('/management', {
-        templateUrl: '../../views/management/management.html',
+        templateUrl: '../../views/management.html',
         controller: 'managementCtrl',
         controllerAs: 'management',
         authenticated: true,
@@ -300,7 +294,6 @@ var app = angular.module('appRoutes',['ngRoute'])
 
 // Run a check on each route to see if user is logged in or not (depending on if it is specified in the individual route)
 app.run(['$rootScope', 'Auth', '$location', 'User', function($rootScope, Auth, $location, User) {
-
     // Check each time route changes    
     $rootScope.$on('$routeChangeStart', function(event, next, current) {
 
@@ -328,7 +321,7 @@ app.run(['$rootScope', 'Auth', '$location', 'User', function($rootScope, Auth, $
                 // If authentication is not required, make sure is not logged in
                 // if (Auth.isLoggedIn()) {
                 //     event.preventDefault(); // If user is logged in, prevent accessing route
-                //     $location.path('/profile'); // Redirect to profile instead
+                //     $location.path('/home'); // Redirect to profile instead
                 // }
             }
         }

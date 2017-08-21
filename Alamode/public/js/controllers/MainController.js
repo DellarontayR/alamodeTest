@@ -1,6 +1,6 @@
 'use strict';
 
-alamode.controller('mainCtrl', function (Auth, $timeout, $location, $rootScope, $window, $interval, User, AuthToken, $scope, Cart, Product) {
+alamode.controller('mainCtrl', function (Auth, $timeout, $location, $rootScope, $window, $interval, User, AuthToken, $scope, Cart, Product,MookieSubscription,ContactMessage) {
     var app = this;
     if ($window.location.pathname === '/') app.home = true; // Check if user is on home page to show home page div
     app.username = "";
@@ -19,6 +19,7 @@ alamode.controller('mainCtrl', function (Auth, $timeout, $location, $rootScope, 
     $scope.mookie = {};
     $scope.mookie.cartItemCount = false;
 
+    $scope.mookie.admin = false;
     $scope.mookie.updateAfterAdd = function (getCartData, callback) {
         Cart.getCart(getCartData).then(function (data) {
             if (data.data.success) {
@@ -306,6 +307,45 @@ alamode.controller('mainCtrl', function (Auth, $timeout, $location, $rootScope, 
 
     app.checkForProducts();
 
+    $scope.mookie.getProductsFromServer = function(callback){
+        (function(){
+            Product.getCatalogProducts().then(function(data){
+                console.log(data);
+                if(data.data.success){
+                    return callback(data.data.catalogProducts);
+                }
+            })
+        })();
+    };
+
+    $scope.mookie.getSubscribers = function(callback){
+        MookieSubscription.getSubscribers().then(function(data){
+            console.log(data);
+            if(data.data.success){
+                return callback(data.data.subscribers);
+            }
+        });
+    };
+    
+    $scope.mookie.getContactMessages = function(callback){
+        ContactMessage.getContactMessages().then(function(data){
+            console.log(data);            
+            if(data.data.success){
+                return callback(data.data.contactMessages);
+            }
+        });
+    };
+
+    $scope.mookie.getUsers = function(callback){
+        User.getUsers().then(function(data){
+            console.log(data);
+            if(data.data.success){
+                return callback(data.data.users);
+            }
+        });
+    };
+
+
     app.getProductsFromServer = function (callback) {
         (function () {
             Product.getCatalogProducts().then(function (data) {
@@ -514,7 +554,6 @@ alamode.controller('mainCtrl', function (Auth, $timeout, $location, $rootScope, 
         // Check if user is logged in
         if (Auth.isLoggedIn()) {
             // Custom function to retrieve user data
-            console.log("realling logged in though");
             Auth.getUser().then(function (data) {
                 if (data.data.username === undefined) {
                     app.isLoggedIn = false; // Variable to deactivate ng-show on index
@@ -529,9 +568,12 @@ alamode.controller('mainCtrl', function (Auth, $timeout, $location, $rootScope, 
                     User.getPermission().then(function (data) {
                         if (data.data.permission === 'admin' || data.data.permission === 'moderator') {
                             app.authorized = true; // Set user's current permission to allow management
+                            app.permission = 'admin';
+                            $scope.mookie.admin = true;
                             app.loadme = true; // Show main HTML now that data is obtained in AngularJS
                         } else {
                             app.authorized = false;
+                            $scope.mookie.admin = true;                            
                             app.loadme = true; // Show main HTML now that data is obtained in AngularJS
                         }
                     });

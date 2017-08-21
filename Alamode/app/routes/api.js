@@ -37,9 +37,36 @@ module.exports = function (router) {
     // var client = nodemailer.createTransport(sgTransport(options)); // Use if using sendgrid configuration
     // End Sendgrid Configuration Settings  
 
+    // Android Apis
+
+    router.post('/tryAndroid',function(req,res){
+        if(req.body.message == '' || req.body.message == null){
+            res.json({success:false,message:'Did not include a message to print out'});
+        }
+        else{
+            console.log('We got your post');
+            res.json({success:true,message:'We got your try android post'});
+        }
+    });
 
 
     // contact message api
+
+    router.get('/getContactMessages',function(req,res){
+        ContactMessage.find({}).select('name email message').exec(function(err,contactMessages){
+            if(err){
+                res.json({success:false,message:'There was an error while trying to get contactMessages.',err:err});
+            }
+            else{
+                if(!contactMessages){
+                    res.json({success:false,message:'There are no contact Messages'});
+                }
+                else{
+                    res.json({success:true,message:'ContactMessages taken from server',contactMessages:contactMessages});
+                }
+            }
+        });
+    });
 
     router.post('/addContactMessage',function(req,res){
         if(req.body.name == '' || req.body.name == null || req.body.email == null || req.body.email == ''||
@@ -69,6 +96,22 @@ module.exports = function (router) {
 
 
     // Subscription api
+
+    router.get('/getSubscribers',function(req,res){
+        Subscription.find({}).select('email created').exec(function(err,subscribers){
+            if(err){
+                res.json({success:false,message:'There was an error trying to get subscription list'});
+            }
+            else{
+                if(!subscribers){
+                    res.json({success:false,message:'There are no subscribers',err:err});
+                }
+                else{
+                    res.json({success:true,message:'Subscriber list taken from server',subscribers:subscribers});
+                }
+            }
+        });
+    });
 
     router.post('/addSubscription',function(req,res){
         var sub = new Subscription();
@@ -508,6 +551,23 @@ module.exports = function (router) {
 
 
     // User apis
+    router.get('/getUsers', function (req, res) {
+        User.find({}).select('email username permission cart').exec(function (err, users) {
+            if (err) {
+                res.json({ success: false, message: "User List retrieval failed" });
+            }
+            else {
+                if(!users){
+                    res.json({success:false,message:'There are no users'});
+                }
+                else{
+                    res.json({ success: true, users: users });                    
+                }
+            }
+        });
+    });
+
+
     router.post('/removeFromCartFromUser', function (req, res) {
         User.findById(req.body.userId).select().exec(function (err, user) {
             if (err || !user) {
@@ -848,16 +908,7 @@ module.exports = function (router) {
         });
     });
 
-    router.get('/getUsers', function (req, res) {
-        User.find({}).select('email username permission cart').exec(function (err, users) {
-            if (err) {
-                res.json({ success: false, message: "User List retrieval failed" });
-            }
-            else {
-                res.json({ success: true, users: users });
-            }
-        });
-    });
+
 
     // Route to send user's username to e-mail
     router.get('/resetusername/:email', function (req, res) {
@@ -1105,34 +1156,15 @@ module.exports = function (router) {
 
     // Route to get the current user's permission level
     router.get('/permission', function (req, res) {
+        console.log(req.decoded);
         User.findOne({ username: req.decoded.username }, function (err, user) {
             if (err) {
-                // Create an e-mail object that contains the error. Set to automatically send it to myself for troubleshooting.
-                var email = {
-                    from: 'álamode Staff, alamodetechnology@gmail.com',
-                    to: 'alamodetechnology@gmail.com',
-                    subject: 'Error Logged',
-                    text: 'The following error has been reported in the MEAN Stack Application: ' + err,
-                    html: 'The following error has been reported in the MEAN Stack Application:<br><br>' + err
-                };
-                // Function to send e-mail to myself
-                client.sendMail(email, function (err, info) {
-                    if (err) {
-                        console.log(err); // If error with sending e-mail, log to console/terminal
-                    } else {
-                        console.log(info); // Log success message to console if sent
-                        console.log(user.email); // Display e-mail that it was sent to
-                    }
-                });
                 res.json({ success: false, message: 'Something went wrong. This error has been logged and will be addressed by our staff. We apologize for this inconvenience!' });
             } else {
                 // Check if username was found in database
-                console.log("user ");
                 if (!user) {
                     res.json({ success: false, message: 'No user was found' }); // Return an error
                 } else {
-                    console.log("user true");
-
                     res.json({ success: true, permission: user.permission }); // Return the user's permission
                 }
             }
@@ -1210,23 +1242,6 @@ module.exports = function (router) {
         var deletedUser = req.params.username; // Assign the username from request parameters to a variable
         User.findOne({ username: req.decoded.username }, function (err, mainUser) {
             if (err) {
-                // Create an e-mail object that contains the error. Set to automatically send it to myself for troubleshooting.
-                var email = {
-                    from: 'álamode Staff, alamodetechnology@gmail.com',
-                    to: 'alamodetechnology@gmail.com',
-                    subject: 'Error Logged',
-                    text: 'The following error has been reported in the MEAN Stack Application: ' + err,
-                    html: 'The following error has been reported in the MEAN Stack Application:<br><br>' + err
-                };
-                // Function to send e-mail to myself
-                client.sendMail(email, function (err, info) {
-                    if (err) {
-                        console.log(err); // If error with sending e-mail, log to console/terminal
-                    } else {
-                        console.log(info); // Log success message to console if sent
-                        console.log(user.email); // Display e-mail that it was sent to
-                    }
-                });
                 res.json({ success: false, message: 'Something went wrong. This error has been logged and will be addressed by our staff. We apologize for this inconvenience!' });
             } else {
                 // Check if current user was found in database
@@ -1240,23 +1255,6 @@ module.exports = function (router) {
                         // Fine the user that needs to be deleted
                         User.findOneAndRemove({ username: deletedUser }, function (err, user) {
                             if (err) {
-                                // Create an e-mail object that contains the error. Set to automatically send it to myself for troubleshooting.
-                                var email = {
-                                    from: 'álamode Staff, alamodetechnology@gmail.com',
-                                    to: 'alamodetechnology@gmail.com',
-                                    subject: 'Error Logged',
-                                    text: 'The following error has been reported in the MEAN Stack Application: ' + err,
-                                    html: 'The following error has been reported in the MEAN Stack Application:<br><br>' + err
-                                };
-                                // Function to send e-mail to myself
-                                client.sendMail(email, function (err, info) {
-                                    if (err) {
-                                        console.log(err); // If error with sending e-mail, log to console/terminal
-                                    } else {
-                                        console.log(info); // Log success message to console if sent
-                                        console.log(user.email); // Display e-mail that it was sent to
-                                    }
-                                });
                                 res.json({ success: false, message: 'Something went wrong. This error has been logged and will be addressed by our staff. We apologize for this inconvenience!' });
                             } else {
                                 res.json({ success: true }); // Return success status
