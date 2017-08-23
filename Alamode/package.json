@@ -1,6 +1,6 @@
 {
   "name": "alamodee",
-  "description": "álamode application",
+  "description": "Mookie Dough application",
   "main": "http://localhost:8080",
   "node-main": "./app.js",
   "version": "0.23.0",
@@ -31,7 +31,7 @@
   },
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "nw ."
+    "start": "node app"
   },
   "author": "",
   "license": "ISC"
