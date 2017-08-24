@@ -15,7 +15,8 @@ alamode.controller('CartController', function ($scope, $location, User, Cart, Au
     app.chargeSuccessful = false;
 
 
-    if ($scope.mookie.checkout) {
+    // if ($scope.mookie.checkout) {
+    if (false) {
 
         var style = {
             base: {
