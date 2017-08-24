@@ -19,9 +19,13 @@ alamode.controller('CartController', function ($scope, $location, User, Cart, Au
     // };
 
     if ($window.location.pathname === '/checkout') app.checkout = true; // Check if user is on home page to show home page div
-
+    console.log(app.checkout);
+    app.checkout=true;
+    console.log(app.checkout);
     // app.doCheckout = function(){
+    // var tryThis = function(){
     if (app.checkout) {
+        console.log("in checkout");
         // Custom styling can be passed to options when creating an Element.
         // (Note that this demo uses a wider set of styles than the guide below.)
         var style = {
@@ -45,8 +49,9 @@ alamode.controller('CartController', function ($scope, $location, User, Cart, Au
         var card = elements.create('card', { style: style });
 
         // Add an instance of the card Element into the `card-element` <div>
+        console.log(card);
         card.mount('#card-element');
-
+        console.log(card);
 
 
         var inputs = document.querySelectorAll('input.field');

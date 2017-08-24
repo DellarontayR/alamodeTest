@@ -18,7 +18,7 @@ alamode.controller('mainCtrl', function (Auth, $timeout, $location, $rootScope, 
 
     $scope.mookie = {};
     $scope.mookie.cartItemCount = false;
-
+    $scope.mookie.home=false;
     $scope.mookie.admin = false;
     $scope.mookie.updateAfterAdd = function (getCartData, callback) {
         Cart.getCart(getCartData).then(function (data) {
@@ -545,6 +545,15 @@ alamode.controller('mainCtrl', function (Auth, $timeout, $location, $rootScope, 
         } else {
             app.home = false; // Clear home page div
         }
+        
+        if ($window.location.pathname === '/about' || $window.location.pathname === '/' || $window.location.pathname === '/home') {
+            $scope.mookie.about = true; // Set home page div
+        } else {
+            $scope.mookie.about = false; // Clear home page div
+        }
+
+        
+
     });
 
     // Will run code every time a route changes
@@ -573,7 +582,7 @@ alamode.controller('mainCtrl', function (Auth, $timeout, $location, $rootScope, 
                             app.loadme = true; // Show main HTML now that data is obtained in AngularJS
                         } else {
                             app.authorized = false;
-                            $scope.mookie.admin = true;                            
+                            $scope.mookie.admin = false;                            
                             app.loadme = true; // Show main HTML now that data is obtained in AngularJS
                         }
                     });

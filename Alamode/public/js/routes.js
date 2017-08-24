@@ -117,7 +117,9 @@ var app = angular.module('appRoutes',['ngRoute'])
     })
     .when('/checkout',{
         templateUrl: '../mookiedoughfrontend/checkout.html',
-        authenticated: true
+        authenticated: true,
+        controller: 'CartController',
+        controllerAs: 'cartCtrl'
     })
     .when('/blog', {
         templateUrl: '../mookiedoughfrontend/blog.html',
