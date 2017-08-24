@@ -24,7 +24,7 @@ alamode.controller('CartController', function ($scope, $location, User, Cart, Au
     console.log(app.checkout);
     // app.doCheckout = function(){
     // var tryThis = function(){
-    if (app.checkout) {
+    if (false) {
         console.log("in checkout");
         // Custom styling can be passed to options when creating an Element.
         // (Note that this demo uses a wider set of styles than the guide below.)
