@@ -3,40 +3,31 @@ var stripe = Stripe('pk_test_EPjnzpxnrgvUiGWsYrJjqN5t');
 
 var elements = stripe.elements();
 
-alamode.controller('CartController', function ($scope, $location, User, Cart, Auth, Product, $window) {
+alamode.controller('CartController', function ($scope, $location, User, Cart, Auth, Product, stripeService, $window) {
     var app = this;
     app.cartProducts = false;
     app.cartId = false;
     app.checkout = false;
-    // app.testCharge = function(){         
-    //     stripe.charges.create({
-    //     amount: 2000,
-    //     currency: "usd",
-    //     source: "tok_mastercard", // obtained with Stripe.js
-    //     metadata: {'order_id': '6735'}
-    //     });
 
-    // };
+    if ($window.location.pathname === '/checkout') app.checkout = true; // Check if user is on home page to show home page div  
+    var card = false;
+    app.checkoutMessage = "Credit or debit card";
+    app.chargeSuccessful = false;
 
-    if ($window.location.pathname === '/checkout') app.checkout = true; // Check if user is on home page to show home page div
-    console.log(app.checkout);
-    app.checkout=true;
-    console.log(app.checkout);
-    // app.doCheckout = function(){
-    // var tryThis = function(){
-    if (false) {
-        console.log("in checkout");
-        // Custom styling can be passed to options when creating an Element.
-        // (Note that this demo uses a wider set of styles than the guide below.)
+
+    if ($scope.mookie.checkout) {
+
         var style = {
             base: {
-                color: '#32325d',
-                lineHeight: '24px',
+                iconColor: '#666EE8',
+                color: '#31325F',
+                lineHeight: '40px',
+                fontWeight: 300,
                 fontFamily: '"Helvetica Neue", Helvetica, sans-serif',
-                fontSmoothing: 'antialiased',
-                fontSize: '16px',
+                fontSize: '15px',
+          
                 '::placeholder': {
-                    color: '#aab7c4'
+                  color: '#CFD7E0',
                 }
             },
             invalid: {
@@ -46,62 +37,92 @@ alamode.controller('CartController', function ($scope, $location, User, Cart, Au
         };
 
         // Create an instance of the card Element
-        var card = elements.create('card', { style: style });
+        card = elements.create('card', { style: style });
 
         // Add an instance of the card Element into the `card-element` <div>
-        console.log(card);
         card.mount('#card-element');
+        
+
+        // function setOutcome(result) {
+        //     var successElement = document.querySelector('.success');
+        //     var errorElement = document.querySelector('.error');
+        //     successElement.classList.remove('visible');
+        //     errorElement.classList.remove('visible');
+        //     console.log(result);
+
+        //     if (result.token) {
+
+        //         var checkoutData = {};
+        //         checkoutData.token = result.token.id;
+        //         checkoutData.name = 'Another guy';
+        //         checkoutData.price = "600";
+        //         stripeService.checkout(checkoutData).then(function(data){
+        //             console.log(data);
+        //             if(data.data.success){
+
+        //             }
+        //             else{
+
+        //             }
+        //         });
+
+        //         successElement.querySelector('.token').textContent = result.token.id;
+        //         successElement.classList.add('visible');
+        //     } else if (result.error) {
+        //         errorElement.textContent = result.error.message;
+        //         errorElement.classList.add('visible');
+        //     }
+        // }
+
+        // document.querySelector('form').addEventListener('submit', function (e) {
+        //     e.preventDefault();
+        //     var form = document.querySelector('form');
+        //     var extraDetails = {
+        //         name: form.querySelector('input[name=cardholder-name]').value,
+        //     };
+        //     stripe.createToken(card, extraDetails).then(setOutcome);
+        // });
+    }
+
+    // app.checkoutData
+    app.checkoutData = {};
+
+    //
+
+    app.doCheckout = function(checkoutData){
+        var extraDetails={
+            name: checkoutData.name,
+        };
         console.log(card);
 
+        //Check to see if values in cart?
+        //Ate least make sure app.checkoutData.name and $scope.mookie.total != null
+        stripe.createToken(card,extraDetails).then(function(result){
+            if(result.token){
+                var stripeData ={};
+                stripeData.token = result.token.id;
+                stripeData.name = checkoutData.name;
+                stripeData.price = $scope.mookie.total * 100;
+                console.log(stripeData);
+                stripeService.checkout(stripeData).then(function(data){
+                    app.checkoutMessage = data.data.message;
+                    if(data.data.success){
+                        //display data.data.message to users
+                        app.checkoutMessage = "Charge successful";
 
-        var inputs = document.querySelectorAll('input.field');
-        Array.prototype.forEach.call(inputs, function (input) {
-            input.addEventListener('focus', function () {
-                input.classList.add('is-focused');
-            });
-            input.addEventListener('blur', function () {
-                input.classList.remove('is-focused');
-            });
-            input.addEventListener('keyup', function () {
-                if (input.value.length === 0) {
-                    input.classList.add('is-empty');
-                } else {
-                    input.classList.remove('is-empty');
-                }
-            });
-        });
+                    }
+                    else{
 
-        function setOutcome(result) {
-            var successElement = document.querySelector('.success');
-            var errorElement = document.querySelector('.error');
-            successElement.classList.remove('visible');
-            errorElement.classList.remove('visible');
-            console.log(result);
+                    }
+                });
 
-            if (result.token) {
-                // Use the token to create a charge or a customer
-                // https://stripe.com/docs/charges
-                successElement.querySelector('.token').textContent = result.token.id;
-                successElement.classList.add('visible');
-            } else if (result.error) {
-                errorElement.textContent = result.error.message;
-                errorElement.classList.add('visible');
             }
-        }
-
-        card.on('change', function (event) {
-            setOutcome(event);
+            else{
+                //print out error
+                app.checkoutMessage = "Card Incorrect";
+            }
         });
-
-        document.querySelector('form').addEventListener('submit', function (e) {
-            e.preventDefault();
-            var form = document.querySelector('form');
-            var extraDetails = {
-                name: form.querySelector('input[name=cardholder-name]').value,
-            };
-            stripe.createToken(card, extraDetails).then(setOutcome);
-        });
-    }
+    };
 
     app.checkUserState = function (callback) {
         if (Auth.isLoggedIn()) {

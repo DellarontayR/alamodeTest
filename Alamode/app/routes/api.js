@@ -7,7 +7,8 @@ var ContactMessage = require('../models/contactmessage');
 var jwt = require('jsonwebtoken'); // Import JWT Package
 var secret = 'zm!_0@0hu_7&ii-@j&0wpm3t%ojnvmjx6j0!1*&j@x51&mdzk@'; // Create custom secret for use in JWT
 var nodemailer = require('nodemailer'); // Import Nodemailer Package
-var stripe = require('stripe')('pk_test_EPjnzpxnrgvUiGWsYrJjqN5t');
+var stripe = require('stripe')('sk_test_N3kcDk7Gi6QdJewLusdBT2Tc');
+
 var mongoose = require('mongoose');
 mongoose.Promise = global.Promise;
 var Schema = mongoose.Schema;
@@ -37,57 +38,84 @@ module.exports = function (router) {
     // var client = nodemailer.createTransport(sgTransport(options)); // Use if using sendgrid configuration
     // End Sendgrid Configuration Settings  
 
-    // Android Apis
+    // Stripe Apis
 
-    router.post('/tryAndroid',function(req,res){
-        if(req.body.message == '' || req.body.message == null){
-            res.json({success:false,message:'Did not include a message to print out'});
+    router.post('/checkout', function (req, res) {
+        if (req.body.token == null || req.body.name == null || req.body.price == null) {
+            res.json({ success: false, message: "Please try checkout again" });
         }
-        else{
-            console.log('We got your post');
-            res.json({success:true,message:'We got your try android post'});
+        else {
+            //try checkout
+            console.log(req.body.token);
+            stripe.charges.create({
+                amount: req.body.price,
+                currency: "usd",
+                description:'first payment',
+                source: req.body.token // obtained with Stripe.js
+            }, function (err,charge) {
+                if(err){
+                    res.json({success:false,message:'There was an error',err:err});
+                }
+                else{
+                    res.json({success:true,message:'Charge completed successfully',charge:charge});
+                }
+            });
         }
     });
 
 
+    // Android Apis
+
+    router.post('/tryAndroid', function (req, res) {
+        if (req.body.message == '' || req.body.message == null) {
+            res.json({ success: false, message: 'Did not include a message to print out' });
+        }
+        else {
+            console.log('We got your post');
+            res.json({ success: true, message: 'We got your try android post' });
+        }
+    });
+
+
+
     // contact message api
 
-    router.get('/getContactMessages',function(req,res){
-        ContactMessage.find({}).select('name email message').exec(function(err,contactMessages){
-            if(err){
-                res.json({success:false,message:'There was an error while trying to get contactMessages.',err:err});
+    router.get('/getContactMessages', function (req, res) {
+        ContactMessage.find({}).select('name email message').exec(function (err, contactMessages) {
+            if (err) {
+                res.json({ success: false, message: 'There was an error while trying to get contactMessages.', err: err });
             }
-            else{
-                if(!contactMessages){
-                    res.json({success:false,message:'There are no contact Messages'});
+            else {
+                if (!contactMessages) {
+                    res.json({ success: false, message: 'There are no contact Messages' });
                 }
-                else{
-                    res.json({success:true,message:'ContactMessages taken from server',contactMessages:contactMessages});
+                else {
+                    res.json({ success: true, message: 'ContactMessages taken from server', contactMessages: contactMessages });
                 }
             }
         });
     });
 
-    router.post('/addContactMessage',function(req,res){
-        if(req.body.name == '' || req.body.name == null || req.body.email == null || req.body.email == ''||
-            req.body.message == null || req.body.message ==''){
-            res.json({success:false,message:'Please fill in all your details before sending us a message!'});
+    router.post('/addContactMessage', function (req, res) {
+        if (req.body.name == '' || req.body.name == null || req.body.email == null || req.body.email == '' ||
+            req.body.message == null || req.body.message == '') {
+            res.json({ success: false, message: 'Please fill in all your details before sending us a message!' });
         }
-        else{
+        else {
             var contactMes = ContactMessage();
             contactMes.name = req.body.name;
             contactMes.email = req.body.email;
             contactMes.message = req.body.message;
-            contactMes.save(function(err,contactMes){
-                if(err){
-                    res.json({success:false,message:'There was an error while trying to save your message'});
+            contactMes.save(function (err, contactMes) {
+                if (err) {
+                    res.json({ success: false, message: 'There was an error while trying to save your message' });
                 }
-                else{
-                    if(!contactMes){
-                        res.json({success:false,message:'There was an error while trying to save your message'});
+                else {
+                    if (!contactMes) {
+                        res.json({ success: false, message: 'There was an error while trying to save your message' });
                     }
-                    else{
-                        res.json({success:true,message:'Message sent successfully',contactMes:contactMes});
+                    else {
+                        res.json({ success: true, message: 'Message sent successfully', contactMes: contactMes });
                     }
                 }
             })
@@ -97,39 +125,39 @@ module.exports = function (router) {
 
     // Subscription api
 
-    router.get('/getSubscribers',function(req,res){
-        Subscription.find({}).select('email created').exec(function(err,subscribers){
-            if(err){
-                res.json({success:false,message:'There was an error trying to get subscription list'});
+    router.get('/getSubscribers', function (req, res) {
+        Subscription.find({}).select('email created').exec(function (err, subscribers) {
+            if (err) {
+                res.json({ success: false, message: 'There was an error trying to get subscription list' });
             }
-            else{
-                if(!subscribers){
-                    res.json({success:false,message:'There are no subscribers',err:err});
+            else {
+                if (!subscribers) {
+                    res.json({ success: false, message: 'There are no subscribers', err: err });
                 }
-                else{
-                    res.json({success:true,message:'Subscriber list taken from server',subscribers:subscribers});
+                else {
+                    res.json({ success: true, message: 'Subscriber list taken from server', subscribers: subscribers });
                 }
             }
         });
     });
 
-    router.post('/addSubscription',function(req,res){
+    router.post('/addSubscription', function (req, res) {
         var sub = new Subscription();
-        if(req.body.subEmail == '' || req.body.subEmail == null){
-            res.json({success:false, message:'Email was not provided for subscription'});
+        if (req.body.subEmail == '' || req.body.subEmail == null) {
+            res.json({ success: false, message: 'Email was not provided for subscription' });
         }
-        else{
+        else {
             sub.email = req.body.subEmail;
-            sub.save(function(err,sub){
-                if(err){
-                    res.json({success:false,message:'Subscription could not be saved. Ensure email is configured correctly'});
+            sub.save(function (err, sub) {
+                if (err) {
+                    res.json({ success: false, message: 'Subscription could not be saved. Ensure email is configured correctly' });
                 }
-                else{
-                    if(!sub){
-                        res.json({success:false,message:"Subscription may already be in database"});
+                else {
+                    if (!sub) {
+                        res.json({ success: false, message: "Subscription may already be in database" });
                     }
-                    else{
-                        res.json({success:true,message:'Email was added to subscription list.'});                        
+                    else {
+                        res.json({ success: true, message: 'Email was added to subscription list.' });
                     }
                 }
             });
@@ -557,11 +585,11 @@ module.exports = function (router) {
                 res.json({ success: false, message: "User List retrieval failed" });
             }
             else {
-                if(!users){
-                    res.json({success:false,message:'There are no users'});
+                if (!users) {
+                    res.json({ success: false, message: 'There are no users' });
                 }
-                else{
-                    res.json({ success: true, users: users });                    
+                else {
+                    res.json({ success: true, users: users });
                 }
             }
         });
@@ -624,7 +652,7 @@ module.exports = function (router) {
         }
     });
 
- 
+
     router.post('/mookie-login', function (req, res) {
         var login = (req.body.email).toLowerCase();
 

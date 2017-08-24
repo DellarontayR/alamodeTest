@@ -10,44 +10,44 @@
       <div class="col-sm-8 padding-bottom">
         <!-- .row -->
         <div class="row">
-          <a href="#" class="add-to-cart" ng-click="mookie.showStripeModal()">
+          <!-- <a href="#" class="add-to-cart" ng-click="mookie.showStripeModal()">
                 <em>Checkout Now</em>
                 <svg x="0px" y="0px" width="32px" height="32px" viewBox="0 0 32 32">
                   <path stroke-dasharray="19.79 19.79" stroke-dashoffset="19.79" fill="none" stroke="#FFFFFF" stroke-width="2" stroke-linecap="square" stroke-miterlimit="10" d="M9,17l3.9,3.9c0.1,0.1,0.2,0.1,0.3,0L23,11"/>
                 </svg>
-            </a>
+            </a> -->
 
+            <p> Please use 4242-4242-4242-4242 for card number and any date or zip code during test experience</p>
+              <form>
+                <div class="group">
+                  <label>
+                        <span><span>Name</span></span>                
+                        <input name="cardholder-name" class="field is-empty" placeholder="Jane Doe" ng-model="cartCtrl.checkoutData.name" />
+                  </label>
+                  <label>
+                        <span><span>Phone number</span></span>     
+                        <input class="field is-empty" type="tel" placeholder="(123) 456-7890" ng-model="cartCtrl.checkoutData.number" />
+                  </label>
+                </div>
+                <div class="group">
+                  <label>
+                      <span><span>{{cartCtrl.checkoutMessage}}</span></span>                      
+                        <div id="card-element" class="field is-empty" required></div>
+                  </label>
+                  
+                </div>
+              </form>
 
-<!--    
-
-          <form>
-            <label>
-                  <input name="cardholder-name" class="field is-empty" placeholder="Jane Doe" />
-                  <span><span>Name</span></span>
-                </label>
-            <label>
-                  <input class="field is-empty" type="tel" placeholder="(123) 456-7890" />
-                  <span><span>Phone number</span></span>
-                </label>
-            <label>
-                  <div id="card-element" class="field is-empty"></div>
-                  <span><span>Credit or debit card</span></span>
-                </label>
-            <button type="submit">Pay $25</button>
-            <div class="outcome">
-              <div class="error" role="alert"></div>
-              <div class="success">
-                Success! Your Stripe token is <span class="token"></span>
-              </div>
-            </div>
-          </form> -->
-
-
+        </div>
+        <div class="row" ng-show="cartCtrl.chargeSuccessful">
 
         </div>
 
+        
+
       </div>
 
+      
       <!-- .col-sm-8 -->
 
       <!-- Sidebar -->
@@ -59,7 +59,9 @@
               <i class="material-icons arrow_back"></i>
               Back To Cart
             </a>
-          <button type="submit" class="btn btn-primary btn-block waves-effect waves-light space-top-none" ng-click="mookie.showStripeModal()">Checkout</button>
+          <!-- <button type="submit" class="btn btn-primary btn-block waves-effect waves-light space-top-none" ng-click="mookie.showStripeModal()">Checkout</button> -->
+          <button type="submit" class="btn btn-primary btn-block waves-effect waves-light space-top-none" ng-click="cartCtrl.doCheckout(cartCtrl.checkoutData)">Checkout</button>
+          
         </aside>
       </div>
       <!-- .col-md-3.col-sm-4 -->

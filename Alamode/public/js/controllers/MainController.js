@@ -1,6 +1,6 @@
 'use strict';
 
-alamode.controller('mainCtrl', function (Auth, $timeout, $location, $rootScope, $window, $interval, User, AuthToken, $scope, Cart, Product,MookieSubscription,ContactMessage) {
+alamode.controller('mainCtrl', function (Auth, $timeout, $location, $rootScope, $window, $interval, User, AuthToken, $scope, Cart, Product, MookieSubscription, ContactMessage) {
     var app = this;
     if ($window.location.pathname === '/') app.home = true; // Check if user is on home page to show home page div
     app.username = "";
@@ -18,7 +18,7 @@ alamode.controller('mainCtrl', function (Auth, $timeout, $location, $rootScope, 
 
     $scope.mookie = {};
     $scope.mookie.cartItemCount = false;
-    $scope.mookie.home=false;
+    $scope.mookie.home = false;
     $scope.mookie.admin = false;
     $scope.mookie.updateAfterAdd = function (getCartData, callback) {
         Cart.getCart(getCartData).then(function (data) {
@@ -92,13 +92,14 @@ alamode.controller('mainCtrl', function (Auth, $timeout, $location, $rootScope, 
                 $scope.mookie.showModal(title, body);
             }
 
-        },function(err){
-            if(Auth.isLoggedIn()){
+        }, function (err) {
+            if (Auth.isLoggedIn()) {
                 Auth.logout();
             }
             var title = "Local user token not found";
             var body = "Item could not be added to unknown user cart. Please register or sign in user";
-            $scope.mookie.showModal(title, body);        });
+            $scope.mookie.showModal(title, body);
+        });
     };
 
     app.addSubscription = function (subEmail) {
@@ -115,15 +116,15 @@ alamode.controller('mainCtrl', function (Auth, $timeout, $location, $rootScope, 
     };
     $scope.mookie.contactMes = {};
 
-    $scope.mookie.addContactMessage = function(contactData){
-        Auth.addContactMessage(contactData).then(function(data){
+    $scope.mookie.addContactMessage = function (contactData) {
+        Auth.addContactMessage(contactData).then(function (data) {
             $scope.mookie.contactNotification = data.data.message;
-            if(data.data.success){
+            if (data.data.success) {
                 $scope.mookie.contactMes.email = '';
-                $scope.mookie.contactMes.message ='';
+                $scope.mookie.contactMes.message = '';
                 $scope.mookie.contactMes.name = '';
             }
-            else{
+            else {
 
 
             }
@@ -196,28 +197,25 @@ alamode.controller('mainCtrl', function (Auth, $timeout, $location, $rootScope, 
         $("#myModal").modal({ backdrop: "static" }); // Open modal        
     };
 
-    $scope.mookie.showProductModal = function(product){
+    $scope.mookie.showProductModal = function (product) {
         $scope.mookie.modal = {};
         $scope.mookie.modal.imagePath = product.imagePath;
         $scope.mookie.modal.title = product.title;
         $scope.mookie.modal.description = product.description;
         $scope.mookie.modal.price = product.price;
         $("#productModal").modal({ backdrop: "static" }); // Open modal        
-        
+
     };
 
-    $scope.mookie.showStripeModal = function(){
-        $("#stripeModal").modal({backdrop: "static"});
+    $scope.mookie.showStripeModal = function () {
+        $("#stripeModal").modal({ backdrop: "static" });
     };
     app.addProductToDB = function (productData) {
         Product.seedProduct(productData).then(function (data) {
             if (data.data.success) {
-                console.log('seed product data successful');
-                console.log(data);
+                // Some kind of telemetry maybe
             }
             else {
-                console.log("error when seeding product data");
-                console.log(data);
             }
         })
     };
@@ -226,7 +224,6 @@ alamode.controller('mainCtrl', function (Auth, $timeout, $location, $rootScope, 
         app.loadme = false;
         Product.getCatalogProducts().then(function (data) {
             if (data.data.success) {
-                console.log('catalog products found in mongodb server');
                 app.loadme = true;
             }
             else {
@@ -307,39 +304,39 @@ alamode.controller('mainCtrl', function (Auth, $timeout, $location, $rootScope, 
 
     app.checkForProducts();
 
-    $scope.mookie.getProductsFromServer = function(callback){
-        (function(){
-            Product.getCatalogProducts().then(function(data){
+    $scope.mookie.getProductsFromServer = function (callback) {
+        (function () {
+            Product.getCatalogProducts().then(function (data) {
                 console.log(data);
-                if(data.data.success){
+                if (data.data.success) {
                     return callback(data.data.catalogProducts);
                 }
             })
         })();
     };
 
-    $scope.mookie.getSubscribers = function(callback){
-        MookieSubscription.getSubscribers().then(function(data){
+    $scope.mookie.getSubscribers = function (callback) {
+        MookieSubscription.getSubscribers().then(function (data) {
             console.log(data);
-            if(data.data.success){
+            if (data.data.success) {
                 return callback(data.data.subscribers);
             }
         });
     };
-    
-    $scope.mookie.getContactMessages = function(callback){
-        ContactMessage.getContactMessages().then(function(data){
-            console.log(data);            
-            if(data.data.success){
+
+    $scope.mookie.getContactMessages = function (callback) {
+        ContactMessage.getContactMessages().then(function (data) {
+            console.log(data);
+            if (data.data.success) {
                 return callback(data.data.contactMessages);
             }
         });
     };
 
-    $scope.mookie.getUsers = function(callback){
-        User.getUsers().then(function(data){
+    $scope.mookie.getUsers = function (callback) {
+        User.getUsers().then(function (data) {
             console.log(data);
-            if(data.data.success){
+            if (data.data.success) {
                 return callback(data.data.users);
             }
         });
@@ -545,14 +542,21 @@ alamode.controller('mainCtrl', function (Auth, $timeout, $location, $rootScope, 
         } else {
             app.home = false; // Clear home page div
         }
-        
+
+        if ($window.location.pathname === '/checkout') {
+            $scope.mookie.checkout = true;
+        } else {
+            $scope.mookie.checkout = false;
+        }
+
+
         if ($window.location.pathname === '/about' || $window.location.pathname === '/' || $window.location.pathname === '/home') {
             $scope.mookie.about = true; // Set home page div
         } else {
             $scope.mookie.about = false; // Clear home page div
         }
 
-        
+
 
     });
 
@@ -582,7 +586,7 @@ alamode.controller('mainCtrl', function (Auth, $timeout, $location, $rootScope, 
                             app.loadme = true; // Show main HTML now that data is obtained in AngularJS
                         } else {
                             app.authorized = false;
-                            $scope.mookie.admin = false;                            
+                            $scope.mookie.admin = false;
                             app.loadme = true; // Show main HTML now that data is obtained in AngularJS
                         }
                     });
@@ -633,7 +637,6 @@ alamode.controller('mainCtrl', function (Auth, $timeout, $location, $rootScope, 
                 $scope.alert = 'alert alert-success'; // Set ng class
                 app.successMsg = data.data.message + '...Redirecting'; // Create Success Message then redirect
                 // Redirect to home page after two milliseconds (2 seconds)
-                console.log("success");
                 showModal();
                 $timeout(function () {
                     $location.path('/'); // Redirect to home
@@ -644,7 +647,6 @@ alamode.controller('mainCtrl', function (Auth, $timeout, $location, $rootScope, 
                 }, 2000);
             } else {
                 // Check if the user's account is expired
-                console.log("Login failed");
 
                 if (data.data.expired) {
                     app.expired = true; // If expired, set variable to enable "Resend Link" on login page
