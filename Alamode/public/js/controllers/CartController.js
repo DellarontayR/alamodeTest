@@ -11,12 +11,12 @@ alamode.controller('CartController', function ($scope, $location, User, Cart, Au
 
     if ($window.location.pathname === '/checkout') app.checkout = true; // Check if user is on home page to show home page div  
     var card = false;
-    app.checkoutMessage = "Credit or debit card";
+    app.checkoutMessage = "";
     app.chargeSuccessful = false;
 
 
-    // if ($scope.mookie.checkout) {
-    if (false) {
+    if ($scope.mookie.checkout) {
+    // if (false) {
 
         var style = {
             base: {

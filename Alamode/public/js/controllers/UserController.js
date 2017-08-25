@@ -40,11 +40,13 @@ console.log('regCtrl active');
                     $location.path('/account');
                 }, 2000);
             }
-            else{
+            else{console.log('login failure');
+
                 app.loginMessage = true;
                 if(data.data.message){
                     app.loginMsg=data.data.message;
-
+                    console.log(data.data.message);
+                    
                 }
                 else{
                     app.loginMsg = "User could not be logged in.";

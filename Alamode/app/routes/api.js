@@ -665,7 +665,7 @@ module.exports = function (router) {
                         res.json({ success: false, message: err.errors.password.message }); // Display error in validation (password)
                     }
                 }
-                else if (err) {
+                else{
                     // Check if duplication error exists
                     res.json({ success: false, message: err });
                 }
