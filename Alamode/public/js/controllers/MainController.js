@@ -15,6 +15,14 @@ alamode.controller('mainCtrl', function (Auth, $timeout, $location, $rootScope, 
     app.cart = {};
     $scope.some = {};
     app.products = false;
+    
+    $(".canvasId").show(function () {
+        // Find the iframes within our newly-visible element
+        $(this).find("script").prop("src", function () {
+          // Set their src attribute to the value of data-src
+          return $(this).data("src");
+        });
+      });
 
     $scope.mookie = {};
     $scope.mookie.cartItemCount = false;
