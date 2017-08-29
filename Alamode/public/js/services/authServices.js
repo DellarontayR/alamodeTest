@@ -29,6 +29,17 @@ angular.module('authServices', [])
         return $http.post('/api/addContactMessage',contactData);
     };
 
+    authFactory.checkVisitor = function(ipData){
+        return $http.post('/api/checkVisitor',ipData);
+    };
+
+    authFactory.getIp= function(data){
+        return $http.post('http://ipinfo.io/?format=jsonp');
+    };
+
+    authFactory.getSiteVisitors = function(){
+        return $http.post('/api/getSiteVisitors');
+    };
     // Function to check if user is currently logged in
     authFactory.isLoggedIn = function() {
         // CHeck if token is in local storage

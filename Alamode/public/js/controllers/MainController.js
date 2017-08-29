@@ -1,34 +1,69 @@
-'use strict';
+'use strict';// Enable typescript
 
 alamode.controller('mainCtrl', function (Auth, $timeout, $location, $rootScope, $window, $interval, User, AuthToken, $scope, Cart, Product, MookieSubscription, ContactMessage) {
     var app = this;
     if ($window.location.pathname === '/') app.home = true; // Check if user is on home page to show home page div
     app.username = "";
-    app.message = "Welcome" + app.username;
     app.user = {};
-    app.justRegistered = false;
-    app.numberofcartitems = "";
     app.loggedIn = false;
     app.userEmail = "";
     app.userData = {};
     app.loadme = true;
     app.cart = {};
-    $scope.some = {};
     app.products = false;
-    
+
+    // Needed to keep Canva presentation loaded correctly
     $(".canvasId").show(function () {
         // Find the iframes within our newly-visible element
         $(this).find("script").prop("src", function () {
           // Set their src attribute to the value of data-src
           return $(this).data("src");
         });
-      });
+    });
 
     $scope.mookie = {};
+    $scope.mookie.userCart = {};
+    $scope.mookie.user = {};
     $scope.mookie.cartItemCount = false;
     $scope.mookie.home = false;
     $scope.mookie.admin = false;
-    $scope.mookie.updateAfterAdd = function (getCartData, callback) {
+
+    $scope.mookie.numberOfSiteVisitors = 0;//Display visitors to site
+
+    // Checks to see if visitor has visitor's ip address has visited our site before
+    $scope.mookie.checkVisitor = function(ipAddress){
+        var ipData ={};
+        ipData.ipAddress = ipAddress;
+        Auth.checkVisitor(ipData).then(function(data){
+            if(data.data.success){
+                Auth.getSiteVisitors().then(function(data){
+                    if(data.data.success){
+                        if(data.data.numberOfSiteVisitors ===0){
+                            $scope.mookie.numberOfSiteVisitors = 0;
+                        }
+                        else{
+                            $scope.mookie.numberOfSiteVisitors = data.data.numberOfSiteVisitors;
+                        }
+                    }
+                    else{
+                        $scope.mookie.numberOfSiteVisitors = 0;
+                    }
+                });
+            }
+            else{
+                $scope.mookie.numberOfSiteVisitors = 0;                
+            }
+        })
+    };
+
+    Auth.getIp().then(function(data){
+        $scope.mookie.checkVisitor(data.data.ip);        
+    });
+
+    //
+
+    // Updates the cart after adding an item to the cart
+    $scope.mookie.updateCart = function (getCartData, callback) {
         Cart.getCart(getCartData).then(function (data) {
             if (data.data.success) {
                 var itemCount = 0;
@@ -48,17 +83,15 @@ alamode.controller('mainCtrl', function (Auth, $timeout, $location, $rootScope, 
         });
     };
 
-
+    // Adds an item to a user's cart, shuold be used as a model for errors for users
     $scope.mookie.addToCart = function (product) {
         Auth.getUser().then(function (data) {
-            console.log(data);
             if (data.data.email) {
-                console.log($scope.mookie.cartItemCount);
                 $scope.mookie.userEmail = data.data.email;
                 $scope.mookie.username = data.data.username;
                 var userData = {};
                 userData.userEmail = data.data.email;
-                User.getUserCart(userData).then(function (data) {
+                User.getUser(userData).then(function (data) {
                     if (data.data.success) {
                         var cartData = {};
                         cartData.price = product.price;
@@ -66,16 +99,14 @@ alamode.controller('mainCtrl', function (Auth, $timeout, $location, $rootScope, 
                         cartData.title = product.title;
                         cartData.imagePath = product.imagePath;
                         cartData.qty = 1;
-                        cartData.userId = data.data.user._id;
+                        cartData.userId = data.data.user._id;// replace with $scope.mookie.user._id
                         Cart.addItemToCart(cartData).then(function (data) {
                             if (data.data.success) {
                                 var getCartData = {};
                                 getCartData.cartId = data.data.cart._id;
-                                console.log(data);
 
-                                $scope.mookie.updateAfterAdd(getCartData, function (moreData) {
+                                $scope.mookie.updateCart(getCartData, function (moreData) {
                                     $scope.mookie.cartItemCount = moreData.itemCount;
-                                    console.log($scope.mookie.cartItemCount);
                                 });
                             }
                             else {
@@ -86,6 +117,9 @@ alamode.controller('mainCtrl', function (Auth, $timeout, $location, $rootScope, 
                         });
                     }
                     else {
+                        if (Auth.isLoggedIn()) {
+                            Auth.logout();
+                        }
                         var title = "User could not be found on server";
                         var body = "Item could not be added to unknown user cart. Please register new user";
                         $scope.mookie.showModal(title, body);
@@ -94,7 +128,9 @@ alamode.controller('mainCtrl', function (Auth, $timeout, $location, $rootScope, 
 
             }
             else {
-                console.log(data);
+                if (Auth.isLoggedIn()) {
+                    Auth.logout();
+                }
                 var title = "Local user token not found";
                 var body = "Item could not be added to unknown user cart. Please register or sign in user";
                 $scope.mookie.showModal(title, body);
@@ -110,6 +146,7 @@ alamode.controller('mainCtrl', function (Auth, $timeout, $location, $rootScope, 
         });
     };
 
+    // Adds a email subscription to be added for our newsletters and special announcements
     app.addSubscription = function (subEmail) {
         var subData = {};
         subData.subEmail = subEmail;
@@ -122,8 +159,11 @@ alamode.controller('mainCtrl', function (Auth, $timeout, $location, $rootScope, 
 
         })
     };
-    $scope.mookie.contactMes = {};
 
+    $scope.mookie.contactMes = {};//Used to reset contact information form after information is put in
+
+
+    // Adds a contact message with a person's email and name
     $scope.mookie.addContactMessage = function (contactData) {
         Auth.addContactMessage(contactData).then(function (data) {
             $scope.mookie.contactNotification = data.data.message;
@@ -133,12 +173,14 @@ alamode.controller('mainCtrl', function (Auth, $timeout, $location, $rootScope, 
                 $scope.mookie.contactMes.name = '';
             }
             else {
-
-
+                var title = "Contact Message not saved";
+                var body = data.data.message;
+                // $scope.mookie.showModal(title, body);
             }
         });
     };
 
+    // Get a user's email and username from authtoken
     $scope.mookie.getEmailAndUsername = function (callback) {
         if (Auth.isLoggedIn()) {
             Auth.getUser().then(function (data) {
@@ -155,12 +197,32 @@ alamode.controller('mainCtrl', function (Auth, $timeout, $location, $rootScope, 
         }
     };
 
+    $scope.mookie.getUserSession= function(){
+        $scope.mookie.getEmailAndUsername(function(userData){
+            User.getUser(userData).then(function(data){
+                if(data.data.success){
+                    if(data.data.user.cart!=null && data.data.user.cart){
+                        var cartData = {};
+                        cartData.cartId = data.data.user.cart;
+                        Cart.getCart(cartData).then(function(data){
+                            if(data.data.success){
+    
+                            }
+                        });
+                    }
+                }   
+                else{
+    
+                }
+            });          
+        });
+    };
+    
+
 
     $scope.mookie.getCurrentCart = function (callback) {
-        var userData = {};
-        userData.userEmail = $scope.mookie.userEmail;
         $scope.mookie.getEmailAndUsername(function (userData) {
-            User.getUserCart(userData).then(function (data) {
+            User.getUser(userData).then(function (data) {
                 if (data.data.success) {
                     if (data.data.user.cart != null && data.data.user.cart) {
                         var cartData = {};
@@ -169,9 +231,9 @@ alamode.controller('mainCtrl', function (Auth, $timeout, $location, $rootScope, 
                             if (data.data.success) {
                                 var itemCount = 0;
                                 var cart = data.data.cart;
-                                cart.products.forEach(function (cartProduct) {
+                                (function(){cart.products.forEach(function (cartProduct) {
                                     itemCount += cartProduct.qty;
-                                });
+                                })})();//Self invoking
                                 var cartData = {};
                                 cartData.cart = cart;
                                 cartData.itemCount = itemCount;
@@ -218,6 +280,7 @@ alamode.controller('mainCtrl', function (Auth, $timeout, $location, $rootScope, 
     $scope.mookie.showStripeModal = function () {
         $("#stripeModal").modal({ backdrop: "static" });
     };
+
     app.addProductToDB = function (productData) {
         Product.seedProduct(productData).then(function (data) {
             if (data.data.success) {
@@ -308,14 +371,13 @@ alamode.controller('mainCtrl', function (Auth, $timeout, $location, $rootScope, 
                 }
             }
         })
-    }
+    };
 
     app.checkForProducts();
 
     $scope.mookie.getProductsFromServer = function (callback) {
         (function () {
             Product.getCatalogProducts().then(function (data) {
-                console.log(data);
                 if (data.data.success) {
                     return callback(data.data.catalogProducts);
                 }
@@ -325,7 +387,6 @@ alamode.controller('mainCtrl', function (Auth, $timeout, $location, $rootScope, 
 
     $scope.mookie.getSubscribers = function (callback) {
         MookieSubscription.getSubscribers().then(function (data) {
-            console.log(data);
             if (data.data.success) {
                 return callback(data.data.subscribers);
             }
@@ -334,7 +395,6 @@ alamode.controller('mainCtrl', function (Auth, $timeout, $location, $rootScope, 
 
     $scope.mookie.getContactMessages = function (callback) {
         ContactMessage.getContactMessages().then(function (data) {
-            console.log(data);
             if (data.data.success) {
                 return callback(data.data.contactMessages);
             }
@@ -343,13 +403,35 @@ alamode.controller('mainCtrl', function (Auth, $timeout, $location, $rootScope, 
 
     $scope.mookie.getUsers = function (callback) {
         User.getUsers().then(function (data) {
-            console.log(data);
             if (data.data.success) {
                 return callback(data.data.users);
             }
         });
     };
 
+    $scope.mookie.getUserAndCart = function(callback){
+        Auth.getUser().then(function(data){
+            if(data.data.success){
+                var userData = {};
+                userData.userEmail = data.data.email;
+                User.getUser(userData).then(function(data){
+                    if(data.data.success){
+                        var retData = {};
+                        retData.user = data.data.user;
+                        retData.cartId = data.data.user.cart;
+                        return callback(retData);
+                    }
+                    else{
+                        console.log('fail');
+                    }
+                });
+            }
+            else{
+                console.log('fail');
+            }
+        });
+        
+    };
 
     app.getProductsFromServer = function (callback) {
         (function () {
@@ -376,20 +458,15 @@ alamode.controller('mainCtrl', function (Auth, $timeout, $location, $rootScope, 
         // Get Bestseller products for display in model
         (function (best) {
             Product.getProductCategory(best).then(function (data) {
-                console.log(data);
                 if (data.data.success) {
-                    console.log('get bestsellers success');
-                    console.log(data);
                     // app.bestsellers = data.data.bestsellers;
                     return callback(data.data.bestsellers);
-                }
-                else {
-                    console.log('could not get bestsellers');
                 }
             });
         }(best));
 
     };
+
     app.getProducts = function (callback) {
 
         app.getProductsFromServer(function (catalogProducts) {
@@ -406,7 +483,7 @@ alamode.controller('mainCtrl', function (Auth, $timeout, $location, $rootScope, 
         var userData = {};
         userData.userEmail = app.email;
 
-        User.getUserCart(userData).then(function (data) {
+        User.getUser(userData).then(function (data) {
             if (data.data.success) {
                 if (data.data.user.cart != null && data.data.user.cart != "") {
                     var cartData = {};
@@ -439,9 +516,8 @@ alamode.controller('mainCtrl', function (Auth, $timeout, $location, $rootScope, 
         });
     };
 
-
-    //updateUserModel
     // Check if user's session has expired upon opening page for the first time
+    //For all intents and purposes getemailAndUsername
     app.checkUserState = function (callback) {
         if (Auth.isLoggedIn()) {
             app.loggedIn = true;
@@ -462,15 +538,15 @@ alamode.controller('mainCtrl', function (Auth, $timeout, $location, $rootScope, 
             });
         }
     };
+
     app.checkUserState(function (userData) {
         app.username = userData.username;
         app.email = userData.userEmail;
         app.getCurrentCart(function (products) {
-            app.numberofcartitems = products.length;
             app.products = products;
             console.log(app.products);
             var total = 0;
-            var counter = app.numberofcartitems;
+            var counter = products.length;
             products.forEach(function (product) {
                 total += product.qty * product.price;
                 counter -= 1;
@@ -489,8 +565,6 @@ alamode.controller('mainCtrl', function (Auth, $timeout, $location, $rootScope, 
                 app.username = userData.username;
                 app.email = userData.userEmail;
                 app.getCurrentCart(function (products) {
-                    app.numberofcartitems = products.length;
-
                     app.products = products;
                     var total = 0;
                     var count = 0;
@@ -557,15 +631,11 @@ alamode.controller('mainCtrl', function (Auth, $timeout, $location, $rootScope, 
             $scope.mookie.checkout = false;
         }
 
-
         if ($window.location.pathname === '/about' || $window.location.pathname === '/' || $window.location.pathname === '/home') {
             $scope.mookie.about = true; // Set home page div
         } else {
             $scope.mookie.about = false; // Clear home page div
         }
-
-
-
     });
 
     // Will run code every time a route changes
@@ -679,8 +749,6 @@ alamode.controller('mainCtrl', function (Auth, $timeout, $location, $rootScope, 
         $location.path('/login');
         app.loggedIn = false;
         $scope.loggedIn = false;
-
-        // showModal(2); // Activate modal that logs out user
     };
 
 

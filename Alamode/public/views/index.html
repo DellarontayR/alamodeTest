@@ -254,8 +254,18 @@
         <div class="main-view" ng-show="main.loadme" ng-view></div>
     </div>
   
+    <div class="container">
 
-    <div class="container canvasId" ng-show="mookie.about" id="canvasId">
+      <div class="row" ng-show="mookie.about">
+        <video width="100%" height="100%" controls>
+          <source src="../imgs/Media/mookiedough.mp4" type="video/mp4">
+        Your browser does not support the video tag.
+        </video>
+      </div>
+
+    </div>
+
+    <!-- <div class="container canvasId" ng-show="mookie.about" id="canvasId" style="display:flex;flex-direction:column;">
       <div class="row page-wrapper">
         <div class="col-lg-12 col-md-12 col-sm-12 col-xl-12" style="align-items:center">
 
@@ -267,7 +277,7 @@
 
 
     </div>
-  </div>
+  </div> -->
   
 
      <!-- Footer -->
@@ -300,60 +310,48 @@
             <i class="socicon-instagram"></i>
           </a>
 
-                  </div>
-                  <!-- .social-bar -->
-                  <p class="copyright">&copy; 2017. Mookie Dough LLC</p>
-                </div>
-                <!-- .column -->
-                </footer>
-                <!-- .footer -->
+          </div>
+          <!-- .social-bar -->
+          <p class="copyright">&copy; 2017. Mookie Dough LLC</p>
+          <p ng-if="mookie.numberOfSiteVisitors > 0" > Site has been accessed {{mookie.numberOfSiteVisitors}} times.</p>
+          
+        </div>
+        <!-- .column -->
+        </footer>
+        <!-- .footer -->
 
+        </div>
+        <!-- JavaScript (jQuery) libraries, plugins and custom scripts -->
+        <script src="../mookiedoughfrontend/js/vendor/jquery-2.1.4.min.js"></script>
+        <script src="../mookiedoughfrontend/js/vendor/bootstrap.min.js"></script>
+        <script src="../mookiedoughfrontend/js/vendor/isotope.pkgd.min.js"></script>
 
-              </div>
-              <!-- JavaScript (jQuery) libraries, plugins and custom scripts -->
-              <script src="../mookiedoughfrontend/js/vendor/jquery-2.1.4.min.js"></script>
-              <script src="../mookiedoughfrontend/js/vendor/bootstrap.min.js"></script>
-              <script src="../mookiedoughfrontend/js/vendor/isotope.pkgd.min.js"></script>
+        <script src="../mookiedoughfrontend/js/vendor/smoothscroll.js"></script>
+        <script src="../mookiedoughfrontend/js/vendor/velocity.min.js"></script>
+        <script src="../mookiedoughfrontend/js/vendor/waves.min.js"></script>
+        <script src="../mookiedoughfrontend/js/vendor/icheck.min.js"></script>
+        <script src="../mookiedoughfrontend/js/vendor/jquery.downCount.js"></script>
+        <script src="../mookiedoughfrontend/js/vendor/magnific-popup.min.js"></script>
+        <script src="../mookiedoughfrontend/js/vendor/gmap3.min.js"></script>
+        <script src="../mookiedoughfrontend/mailer/mailer.js"></script>
 
-              <script src="../mookiedoughfrontend/js/vendor/smoothscroll.js"></script>
-              <script src="../mookiedoughfrontend/js/vendor/velocity.min.js"></script>
-              <script src="../mookiedoughfrontend/js/vendor/waves.min.js"></script>
-              <script src="../mookiedoughfrontend/js/vendor/icheck.min.js"></script>
-              <script src="../mookiedoughfrontend/js/vendor/jquery.downCount.js"></script>
-              <script src="../mookiedoughfrontend/js/vendor/magnific-popup.min.js"></script>
-              <script src="../mookiedoughfrontend/js/vendor/gmap3.min.js"></script>
-              <script src="../mookiedoughfrontend/mailer/mailer.js"></script>
+        <script src="../mookiedoughfrontend/js/vendor/nouislider.min.js"></script>
+        <script src="../mookiedoughfrontend/js/scripts.js"></script>
 
-              <script src="../mookiedoughfrontend/js/vendor/nouislider.min.js"></script>
-              <script src="../mookiedoughfrontend/js/scripts.js"></script>
-
-              
-              <script>
-                // Show our element, then call our callback
-                $(".canvasId").show(function () {
-                  // Find the iframes within our newly-visible element
-                  $(this).find("script").prop("src", function () {
-                    // Set their src attribute to the value of data-src
-                    return $(this).data("src");
-                  });
-                });
-              </script>
+        
+        <script>
+          // Show our element, then call our callback
+          $(".canvasId").show(function () {
+            // Find the iframes within our newly-visible element
+            $(this).find("script").prop("src", function () {
+              // Set their src attribute to the value of data-src
+              return $(this).data("src");
+            });
+          });
+        </script>
 
 
 
 </body>
-<!-- Bootstrap 4 Dependencies -->
-<!-- <script src="https://code.jquery.com/jquery-3.1.1.slim.min.js" integrity="sha384-A7FZj7v+d/sdmMqp/nOQwliLvUsJfDHW+k9Omg/a/EheAdgtzNs3hpfag6Ed950n" crossorigin="anonymous"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/tether/1.4.0/js/tether.min.js" integrity="sha384-DztdAPBWPRXSA/3eYEEUWrWCy7G5KFbe8fFjk5JAIxUYHKkDx6Qin1DkWx51bBrb" crossorigin="anonymous"></script>
-    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.6/js/bootstrap.min.js" integrity="sha384-vBWWzlZJ8ea9aCX4pEW3rVHjgjt7zpkNpZk+02D9phzyeVkE+jo0ieGizqPLForn" crossorigin="anonymous"></script>
-     -->
-<!-- AngularJS Material Dependencies -->
-<!-- <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.3.15/angular-animate.js"></script>
-    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.3.15/angular-aria.js"></script> -->
-
-<!-- AngularJS Material Javascript using GitCDN to load directly from `bower-material/master` -->
-<!-- <script src="https://gitcdn.link/repo/angular/bower-material/master/angular-material.js"></script>
-
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script> -->
 
 </html>

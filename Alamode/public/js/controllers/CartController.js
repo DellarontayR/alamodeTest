@@ -16,8 +16,6 @@ alamode.controller('CartController', function ($scope, $location, User, Cart, Au
 
 
     if ($scope.mookie.checkout) {
-    // if (false) {
-
         var style = {
             base: {
                 iconColor: '#666EE8',
@@ -42,47 +40,6 @@ alamode.controller('CartController', function ($scope, $location, User, Cart, Au
 
         // Add an instance of the card Element into the `card-element` <div>
         card.mount('#card-element');
-        
-
-        // function setOutcome(result) {
-        //     var successElement = document.querySelector('.success');
-        //     var errorElement = document.querySelector('.error');
-        //     successElement.classList.remove('visible');
-        //     errorElement.classList.remove('visible');
-        //     console.log(result);
-
-        //     if (result.token) {
-
-        //         var checkoutData = {};
-        //         checkoutData.token = result.token.id;
-        //         checkoutData.name = 'Another guy';
-        //         checkoutData.price = "600";
-        //         stripeService.checkout(checkoutData).then(function(data){
-        //             console.log(data);
-        //             if(data.data.success){
-
-        //             }
-        //             else{
-
-        //             }
-        //         });
-
-        //         successElement.querySelector('.token').textContent = result.token.id;
-        //         successElement.classList.add('visible');
-        //     } else if (result.error) {
-        //         errorElement.textContent = result.error.message;
-        //         errorElement.classList.add('visible');
-        //     }
-        // }
-
-        // document.querySelector('form').addEventListener('submit', function (e) {
-        //     e.preventDefault();
-        //     var form = document.querySelector('form');
-        //     var extraDetails = {
-        //         name: form.querySelector('input[name=cardholder-name]').value,
-        //     };
-        //     stripe.createToken(card, extraDetails).then(setOutcome);
-        // });
     }
 
     // app.checkoutData
@@ -94,7 +51,6 @@ alamode.controller('CartController', function ($scope, $location, User, Cart, Au
         var extraDetails={
             name: checkoutData.name,
         };
-        console.log(card);
 
         //Check to see if values in cart?
         //Ate least make sure app.checkoutData.name and $scope.mookie.total != null
@@ -110,10 +66,31 @@ alamode.controller('CartController', function ($scope, $location, User, Cart, Au
                     if(data.data.success){
                         //display data.data.message to users
                         app.checkoutMessage = "Charge successful";
+                        //Delete cart from users // set to ''
+                        //Change cart to oldCart
+                        //add userid to cart
+                        //Get carts that are oldcart and userId
+
+                        // if(app.email){
+                        //     var userData = {};
+                        //     userData.userEmail =app.email;
+
+                        //     User.removeCart(userData).then(function(data){
+                        //         if(data.data.success){
+                                    
+                        //         }
+                        //         else{
+
+                        //         }
+                        //     })
+                        // }
+                        
+                        $scope.mookie.showStripeModal();
+
 
                     }
                     else{
-
+                        
                     }
                 });
 
@@ -188,7 +165,10 @@ alamode.controller('CartController', function ($scope, $location, User, Cart, Au
         app.getCurrentCart(function (cart) {
             app.cartProducts = cart.products;
             app.cartId = cart._id;
+            console.log(app.email);
+            console.log(app.cartId);
         });
+
     });
 
     app.addItem = function (cartProduct) {

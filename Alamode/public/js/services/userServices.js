@@ -17,8 +17,12 @@ angular.module('userServices', [])
         return $http.get('/api/getUserId',);
     };
 
-    userFactory.getUserCart = function(userData){
-        return $http.post('/api/getCartFromUser',userData);
+    userFactory.getUser = function(userData){
+        return $http.post('/api/getUser',userData);
+    };
+
+    userFactory.removeCart = function(userData){
+        return $http.post('/api/removeCart',userData);
     };
     
         /////////////////////////////////////////////////////////////////////

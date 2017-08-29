@@ -8,7 +8,9 @@ var CartSchema = new Schema({
     products:[{
         type:Schema.ObjectId,ref:'Product'
     }],
-    created: { type: Date, required: true, default: Date.now }
+    created: { type: Date, required: true, default: Date.now },
+    oldCart:{type:Boolean, required:false,default:false},
+    user:{type:Schema.ObjectId,ref:'User',required:false}
 
     // cartItems:[{type:Schema.ObjectId, ref:'Product',required:false} {type:Number, required:false}]
     

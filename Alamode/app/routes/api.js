@@ -4,6 +4,7 @@ var Product = require('../models/product');
 var Cart = require('../models/cart');
 var Subscription = require('../models/subscription');
 var ContactMessage = require('../models/contactmessage');
+var SiteVisit = require('../models/sitevisit');
 var jwt = require('jsonwebtoken'); // Import JWT Package
 var secret = 'zm!_0@0hu_7&ii-@j&0wpm3t%ojnvmjx6j0!1*&j@x51&mdzk@'; // Create custom secret for use in JWT
 var nodemailer = require('nodemailer'); // Import Nodemailer Package
@@ -38,6 +39,56 @@ module.exports = function (router) {
     // var client = nodemailer.createTransport(sgTransport(options)); // Use if using sendgrid configuration
     // End Sendgrid Configuration Settings  
 
+
+    // SiteVisit apis
+
+    router.post('/getSiteVisitors',function(req,res){
+        SiteVisit.find({}).select().exec(function(err,siteVisits){
+            if(err){
+                res.json({success:false,message:'There was an error trying to look up site visitors',err:err});
+            }
+            else{
+                if(!siteVisits){
+                    res.json({success:true,message:'There are no site visitors which should be impossible if youre visiting the site.',numberOfSiteVisitors:0});
+                }
+                else{
+                    res.json({success:true,message:'Site visitors found',numberOfSiteVisitors:siteVisits.length});
+                }
+            }
+        });
+    });
+
+    router.post('/checkVisitor',function(req,res){
+        console.log(req.ip);
+        if(req.body.ipAddress == null || req.body.ipAddress==''){
+            res.json({success:false,message:'IP address not included in psot body'});
+        }
+        else{
+            SiteVisit.findOne({ipAddress:req.body.ipAddress}).select().exec(function(err,siteVisit){
+                if(err){
+                    res.json({success:false,message:'There was an error trying to look for the ipAddress',err:err});
+                }
+                else{
+                    if(!siteVisit){
+                        var newSiteVisit = new SiteVisit();
+                        newSiteVisit.ipAddress = req.body.ipAddress;
+                        newSiteVisit.save(function(err,newSite){
+                            if(err){
+                                res.json({success:false,message:'There was an error tyring to save new new site visitation',err:err});
+                            }
+                            else{
+                                res.json({success:true,message:'This was the users first time visiting the site'});                                
+                            }
+                        });
+                    }
+                    else{
+                        res.json({success:true,message:'User has visited site'});
+                    }
+                }
+            });
+        }    
+    });
+
     // Stripe Apis
 
     router.post('/checkout', function (req, res) {
@@ -46,7 +97,6 @@ module.exports = function (router) {
         }
         else {
             //try checkout
-            console.log(req.body.token);
             stripe.charges.create({
                 amount: req.body.price,
                 currency: "usd",
@@ -165,6 +215,14 @@ module.exports = function (router) {
     });
 
     // Cart apis
+
+    router.post('/storeOldCart',function(req,res){
+        // if(req.body.old)
+        //put this functionality in checkout
+
+        //
+    });
+
     router.post('/getCart', function (req, res) {
         Cart.findById(req.body.cartId).populate('products').exec(function (err, cart) {
             if (err || !cart) {
@@ -177,14 +235,37 @@ module.exports = function (router) {
     });
 
 
-    router.post('/getCartFromUser', function (req, res) {
+    router.post('/getUser', function (req, res) {
         User.findOne({ email: req.body.userEmail }).select().exec(function (err, user) {
             if (err || !user) {
-                console.log(err);
                 res.json({ success: false, message: err });
             }
             else {
                 res.json({ success: true, user: user });
+            }
+        });
+    });
+
+    router.post('/removeCart',function(req,res){
+        User.findOne({email:req.body.userEmail}).select().exec(function(err,user){
+            if(err){
+                res.json({success:false,err:err});
+            }
+            else{
+                if(!user){
+                    res.json({success:false,message:'There was no user associated with that email address'});
+                }
+                else{
+                    user.cart = '';
+                    user.save(function(err,user){
+                        if(err){
+                            res.json({success:false,err:err});
+                        }
+                        else{
+                            res.json({success:true,message:'Cart removed'});
+                        }
+                    });
+                }
             }
         });
     });
@@ -634,6 +715,7 @@ module.exports = function (router) {
                         // Check if duplication error exists
                         if (err.code == 11000) {
                             console.log(err.errmsg);
+                            console.log(err);
                             if (err.errmsg[65] == "u") {
                                 res.json({ success: false, message: 'That username is already taken' }); // Display error if username already taken
                             } else if (err.errmsg[65] == "e") {
