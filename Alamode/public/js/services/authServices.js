@@ -10,14 +10,14 @@ angular.module('authServices', [])
     authFactory.login = function(loginData) {
         return $http.post('/api/mookie-login', loginData).then(function(data) {
             if(data.data.success){
-
-            AuthToken.setToken(data.data.token); // Endpoint will return a token to set
-            console.log(data.data.token);
-            console.log(data);
-            return data;
+                AuthToken.setToken(data.data.token); // Endpoint will return a token to set
+                console.log(data.data.token);
+                console.log(data);
+                return data;
             }
-
-            return data;
+            else{
+                return data;    ` `                
+            }
         });
     };
 

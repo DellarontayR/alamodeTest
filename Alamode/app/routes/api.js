@@ -1228,6 +1228,7 @@ module.exports = function (router) {
     router.post('/me', function (req, res) {
         console.log(req.decoded);
         res.send(req.decoded); // Return the token acquired from middleware
+        res.json({success:true,decoded:req.decoded});
     });
 
     // Route to provide the user with a new token to renew session
