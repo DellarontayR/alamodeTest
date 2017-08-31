@@ -99,9 +99,9 @@ angular.module('userServices', [])
     // };
 
     // Get user to then edit
-    userFactory.getUser = function(id) {
-        return $http.get('/api/edit/' + id);
-    };
+    // userFactory.getUser = function(id) {
+    //     return $http.get('/api/edit/' + id);
+    // };
 
     // Delete a user
     userFactory.deleteUser = function(username) {

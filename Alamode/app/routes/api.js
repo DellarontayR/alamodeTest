@@ -238,6 +238,8 @@ module.exports = function (router) {
     router.post('/getUser', function (req, res) {
         User.findOne({ email: req.body.userEmail }).select().exec(function (err, user) {
             if (err || !user) {
+                console.log(err);
+                console.log('real');
                 res.json({ success: false, message: err });
             }
             else {
@@ -1228,7 +1230,6 @@ module.exports = function (router) {
     router.post('/me', function (req, res) {
         console.log(req.decoded);
         res.send(req.decoded); // Return the token acquired from middleware
-        res.json({success:true,decoded:req.decoded});
     });
 
     // Route to provide the user with a new token to renew session

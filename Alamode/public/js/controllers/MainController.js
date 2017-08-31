@@ -434,6 +434,11 @@ alamode.controller('mainCtrl', function (Auth, $timeout, $location, $rootScope, 
         
     };
 
+    $scope.mookie.getUserAndCart(function(data){
+        app.email = data.userEmail;
+        app.cartId = data.cartId;
+    });
+
     app.getProductsFromServer = function (callback) {
         (function () {
             Product.getCatalogProducts().then(function (data) {
