@@ -16,7 +16,7 @@ angular.module('authServices', [])
                 return data;
             }
             else{
-                return data;    ` `                
+                return data;                
             }
         });
     };

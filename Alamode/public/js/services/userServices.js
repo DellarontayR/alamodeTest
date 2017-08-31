@@ -14,7 +14,7 @@ angular.module('userServices', [])
     };
 
     userFactory.getUserId = function(){
-        return $http.get('/api/getUserId',);
+        return $http.get('/api/getUserId');
     };
 
     userFactory.getUser = function(userData){
