@@ -127,7 +127,7 @@ alamode.controller('CartController', function ($scope, $location, User, Cart, Au
         var userData = {};
         userData.userEmail = app.email;
 
-        User.getUserCart(userData).then(function (data) {
+        User.getUser(userData).then(function (data) {
             if (data.data.success) {
                 if (data.data.user.cart != null && data.data.user.cart != "") {
                     var cartData = {};
