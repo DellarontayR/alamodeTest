@@ -13,13 +13,13 @@ alamode.controller('mainCtrl', function (Auth, $timeout, $location, $rootScope, 
     app.products = false;
 
     // Needed to keep Canva presentation loaded correctly
-    $(".canvasId").show(function () {
-        // Find the iframes within our newly-visible element
-        $(this).find("script").prop("src", function () {
-          // Set their src attribute to the value of data-src
-          return $(this).data("src");
-        });
-    });
+    // $(".canvasId").show(function () {
+    //     // Find the iframes within our newly-visible element
+    //     $(this).find("script").prop("src", function () {
+    //       // Set their src attribute to the value of data-src
+    //       return $(this).data("src");
+    //     });
+    // });
 
     $scope.mookie = {};
     $scope.mookie.userCart = {};
@@ -219,8 +219,6 @@ alamode.controller('mainCtrl', function (Auth, $timeout, $location, $rootScope, 
         });
     };
     
-
-
     $scope.mookie.getCurrentCart = function (callback) {
         $scope.mookie.getEmailAndUsername(function (userData) {
             User.getUser(userData).then(function (data) {
@@ -241,14 +239,14 @@ alamode.controller('mainCtrl', function (Auth, $timeout, $location, $rootScope, 
                                 return callback(cartData);
                             }
                             else {
-
+                                console.log('Could not get cart from server');
                             }
                         });
                     }
                 }
                 else {
                     //no success whatsoever getting user 
-                    console.log('no success whatsoever');
+                    console.log('Could not get user information from the seerver');
                 }
             });
 
@@ -258,6 +256,9 @@ alamode.controller('mainCtrl', function (Auth, $timeout, $location, $rootScope, 
     $scope.mookie.getCurrentCart(function (cartData) {//Call when maincontroller is loaded to get current cart information//Also possible to get user information here
         $scope.mookie.cartItemCount = cartData.itemCount;
     });
+
+    //Modal fucntions
+
 
     $scope.mookie.hideModal = function () {
         $("#myModal").modal('hide');
@@ -281,11 +282,22 @@ alamode.controller('mainCtrl', function (Auth, $timeout, $location, $rootScope, 
     $scope.mookie.showStripeModal = function () {
         $("#stripeModal").modal({ backdrop: "static" });
     };
+    /**/
 
+    //Add a product to product catalog in database
     app.addProductToDB = function (productData) {
         Product.seedProduct(productData).then(function (data) {
             if (data.data.success) {
                 // Some kind of telemetry maybe
+
+                //No telemetry system setup yet
+                //Maybe setup some type of system like Microsoft where we can manipulate a system of strings
+                //These strings as telemetry can then have an array of attributes of strings
+
+                //These attributes could include information readily available during runtime
+                //This information could be time of execution, user during execution, number of such users action, users approximate area, 
+                //Telemtry could be a meeting later on in the business process
+                //I should attempt to get something up and running for proof of concept for usefullness
             }
             else {
             }
@@ -579,7 +591,8 @@ alamode.controller('mainCtrl', function (Auth, $timeout, $location, $rootScope, 
                         count += product.qty;
                     })
                     $scope.mookie.cartItemCount = count;
-                    app.cart.total = total;
+                    $scope.mookie.total = Math.round(total);
+                    app.cart.total = Math.round(total);
                 });
                 app.loadme = true;
             });

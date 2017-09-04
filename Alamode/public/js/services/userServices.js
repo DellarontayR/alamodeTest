@@ -24,6 +24,10 @@ angular.module('userServices', [])
     userFactory.removeCart = function(userData){
         return $http.post('/api/removeCart',userData);
     };
+
+    userFactory.getOldCarts = function(userData){
+        return $http.post('/api/getOldCarts',userData);
+    };
     
     /////////////////////////////////////////////////////////////////////
 

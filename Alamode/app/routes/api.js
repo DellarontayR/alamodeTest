@@ -89,14 +89,35 @@ module.exports = function (router) {
         }    
     });
 
-    // Stripe Apis
+    router.post('/getOldCarts',function(req,res){
+        if(req.body.user == null || req.body.user == ''){
+            res.json({success:false,message:'There was an error'});
+        }
+        else{
+            Cart.find({oldCart:true,user:req.body.user}).populate('products').exec(function(err,carts){
+                if(err){
+                    res.json({success:false,message:'There was an error trying to find users cart history',err:err});
+                }
+                else{
+                    if(!carts){
+                        res.json({success:false,message:'The user has no carts'});
+                    }
+                    else{
+                        res.json({success:true,message:'Users cart history detect',carts:carts});
+                    }
+                }
+            });
+        }
+    });
 
     router.post('/checkout', function (req, res) {
-        if (req.body.token == null || req.body.name == null || req.body.price == null) {
-            res.json({ success: false, message: "Please try checkout again" });
+
+        //I need to get the user's email or objectId or something when they send the information back to my server. Prefably objectId I suppose
+        if (req.body.token == null || req.body.name == null || req.body.price == null || req.body.userEmail == null
+        || req.body.userEmail == '') {
+            res.json({ success: false, message: "Please try checkout again at a later time" });
         }
         else {
-            //try checkout
             stripe.charges.create({
                 amount: req.body.price,
                 currency: "usd",
@@ -107,7 +128,56 @@ module.exports = function (router) {
                     res.json({success:false,message:'There was an error',err:err});
                 }
                 else{
-                    res.json({success:true,message:'Charge completed successfully',charge:charge});
+                    if(!charge){
+                        res.json({success:false,message:'Something went wrong'});
+                    }
+                    else{
+
+                        //Delete cart form user
+                        //aka change user.cart to ''
+                        //make users cart into an old cart
+                        //aka add a userid to the cart and change the oldcart boolean value to true
+                        User.findOne({email:req.body.userEmail}).select().exec(function(err,user){
+                            if(err){
+                                res.json({success:false,message:'There was an error trying to change user cart during checkout',err:err});
+                            }
+                            else{
+                                if(!user){
+                                    res.json({success:false,message:'There is no user with that email'});
+                                }
+                                else{
+                                    var cartData = {};
+                                    cartData.cartId = user.cart;
+                                    user.cart = null;
+                                    user.save(function(err,user){
+                                        if(err){
+                                            res.json({success:false,message:'There was an error trying to delete the userCart',err:err});
+                                        }
+                                        else{
+                                            if(!user){
+                                                res.json({success:false,message:'There was an error'});
+                                            }
+                                            else{
+                                                Cart.findOneAndUpdate({_id:cartData.cartId},{$set:{oldCart:true,user:user._id,checkoutDate:Date.now()}}).select().exec(function(err,cart){
+                                                    if(err){
+                                                        res.json({success:false,message:'There was an error trying update old user cart',err:err});
+                                                    }
+                                                    else{
+                                                        if(!cart){
+                                                            res.json({success:false,message:'There was an error trying to find old user cart'});
+                                                        }   
+                                                        else{
+                                                            res.json({success:true,message:'Charge completed successfully',charge:charge});
+                                                        }
+                                                    }
+                                                });
+                                            }
+                                        }
+                                    });
+                                }
+                            }
+                        });
+                    }
                 }
             });
         }
@@ -214,14 +284,6 @@ module.exports = function (router) {
         }
     });
 
-    // Cart apis
-
-    router.post('/storeOldCart',function(req,res){
-        // if(req.body.old)
-        //put this functionality in checkout
-
-        //
-    });
 
     router.post('/getCart', function (req, res) {
         Cart.findById(req.body.cartId).populate('products').exec(function (err, cart) {

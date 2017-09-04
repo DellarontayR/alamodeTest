@@ -9,99 +9,9 @@ alamode.controller('CartController', function ($scope, $location, User, Cart, Au
     app.cartId = false;
     app.checkout = false;
 
-    if ($window.location.pathname === '/checkout') app.checkout = true; // Check if user is on home page to show home page div  
-    var card = false;
-    app.checkoutMessage = "";
-    app.chargeSuccessful = false;
+    //Seperate cart controller into checkoutController, shoppingCartController
 
-
-    if ($scope.mookie.checkout) {
-        var style = {
-            base: {
-                iconColor: '#666EE8',
-                color: '#31325F',
-                lineHeight: '40px',
-                fontWeight: 300,
-                fontFamily: '"Helvetica Neue", Helvetica, sans-serif',
-                fontSize: '15px',
-          
-                '::placeholder': {
-                  color: '#CFD7E0',
-                }
-            },
-            invalid: {
-                color: '#fa755a',
-                iconColor: '#fa755a'
-            }
-        };
-
-        // Create an instance of the card Element
-        card = elements.create('card', { style: style });
-
-        // Add an instance of the card Element into the `card-element` <div>
-        card.mount('#card-element');
-    }
-
-    // app.checkoutData
-    app.checkoutData = {};
-
-    //
-
-    app.doCheckout = function(checkoutData){
-        var extraDetails={
-            name: checkoutData.name,
-        };
-
-        //Check to see if values in cart?
-        //Ate least make sure app.checkoutData.name and $scope.mookie.total != null
-        stripe.createToken(card,extraDetails).then(function(result){
-            if(result.token){
-                var stripeData ={};
-                stripeData.token = result.token.id;
-                stripeData.name = checkoutData.name;
-                stripeData.price = $scope.mookie.total * 100;
-                console.log(stripeData);
-                stripeService.checkout(stripeData).then(function(data){
-                    app.checkoutMessage = data.data.message;
-                    if(data.data.success){
-                        //display data.data.message to users
-                        app.checkoutMessage = "Charge successful";
-                        //Delete cart from users // set to ''
-                        //Change cart to oldCart
-                        //add userid to cart
-                        //Get carts that are oldcart and userId
-
-                        // if(app.email){
-                        //     var userData = {};
-                        //     userData.userEmail =app.email;
-
-                        //     User.removeCart(userData).then(function(data){
-                        //         if(data.data.success){
-                                    
-                        //         }
-                        //         else{
-
-                        //         }
-                        //     })
-                        // }
-                        
-                        $scope.mookie.showStripeModal();
-
-
-                    }
-                    else{
-                        
-                    }
-                });
-
-            }
-            else{
-                //print out error
-                app.checkoutMessage = "Card Incorrect";
-            }
-        });
-    };
-
+    //Move all cartController content here
     app.checkUserState = function (callback) {
         if (Auth.isLoggedIn()) {
             app.loggedIn = true;
@@ -165,8 +75,6 @@ alamode.controller('CartController', function ($scope, $location, User, Cart, Au
         app.getCurrentCart(function (cart) {
             app.cartProducts = cart.products;
             app.cartId = cart._id;
-            console.log(app.email);
-            console.log(app.cartId);
         });
 
     });
@@ -242,5 +150,82 @@ alamode.controller('CartController', function ($scope, $location, User, Cart, Au
     };
 
 
+    //Move all CheckoutController here
+
+    if ($window.location.pathname === '/checkout') app.checkout = true; // Check if user is on home page to show home page div  
+    var card = false;
+    app.checkoutMessage = "";
+    app.chargeSuccessful = false;
+
+
+    if ($scope.mookie.checkout) {
+        var style = {
+            base: {
+                iconColor: '#666EE8',
+                color: '#31325F',
+                lineHeight: '40px',
+                fontWeight: 300,
+                fontFamily: '"Helvetica Neue", Helvetica, sans-serif',
+                fontSize: '15px',
+          
+                '::placeholder': {
+                  color: '#CFD7E0',
+                }
+            },
+            invalid: {
+                color: '#fa755a',
+                iconColor: '#fa755a'
+            }
+        };
+
+        // Create an instance of the card Element
+        card = elements.create('card', { style: style });
+
+        // Add an instance of the card Element into the `card-element` <div>
+        card.mount('#card-element');
+    }
+
+    app.checkoutData = {};
+
+    app.doCheckout = function(checkoutData){
+        var extraDetails={
+            name: checkoutData.name,
+        };
+
+        //get user's email or most easily available information
+        //I should make sure #scope.mookie.email is always available for this situation so that I can always get the user. Or maybe $scope.mookie.user itself.
+
+        //Check to see if values in cart?
+        //Ate least make sure app.checkoutData.name and $scope.mookie.total != null
+        stripe.createToken(card,extraDetails).then(function(result){
+            if(result.token){
+
+
+                $scope.mookie.getEmailAndUsername(function(userData){
+                    var stripeData ={};
+                    stripeData.token = result.token.id;
+                    stripeData.name = checkoutData.name;
+                    stripeData.price = $scope.mookie.total * 100;
+                    stripeData.userEmail = userData.userEmail;
+                    stripeService.checkout(stripeData).then(function(data){
+                        app.checkoutMessage = data.data.message;
+                        if(data.data.success){
+                            app.checkoutMessage = "Charge successful";
+
+                            $scope.mookie.showStripeModal();
+                        }
+                        else{
+                            console.log('chekcout failed');
+                            app.checkoutMessage='Charge not successful';    
+                        }
+                    });
+                });
+            }
+            else{
+                //print out error
+                app.checkoutMessage = "Card Incorrect";
+            }
+        });
+    };
 
 });
