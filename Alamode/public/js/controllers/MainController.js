@@ -348,6 +348,49 @@ alamode.controller('mainCtrl', function (Auth, $timeout, $location, $rootScope, 
                         productData5.title = "Mini Cookie Dough";
                         productData5.catalogProduct = true;
                         app.addProductToDB(productData5);
+
+                        var productData6 = {};
+                        productData6.imagePath = "../imgs/Media/milk-min.jpg";
+                        productData6.price = 3.99;
+                        productData6.description = "Organic Valley Milk";
+                        productData6.title = "Organic Valley Milk";
+                        productData6.catalogProduct = true;
+                        productData6.category = 'Milk';                        
+                        app.addProductToDB(productData6);
+                        var productData7 = {};
+                        productData7.imagePath = "../imgs/Media/milk2-min.jpg";
+                        productData7.price = 3.99;
+                        productData7.description = "Horizon Organic Milk";
+                        productData7.title = "Horizon Organic Milk";
+                        productData7.catalogProduct = true;
+                        productData7.category = 'Milk';                        
+                        app.addProductToDB(productData7);
+                        var productData8 = {};
+                        productData8.imagePath = "../imgs/Media/MANY-min.jpg";
+                        productData8.price = 20.99;
+                        productData8.description = "Assorted Beverages";
+                        productData8.title = "Assorted Beverages";
+                        productData8.catalogProduct = true;
+                        productData8.category = 'Milk';                        
+                        app.addProductToDB(productData8);
+                        var productData9 = {};
+                        productData9.imagePath = "../imgs/Media/MANYMILK-min.jpg";
+                        productData9.price = 12.99;
+                        productData9.description = "Assorted Milks";
+                        productData9.title = "Assorted Milks";
+                        productData9.catalogProduct = true;
+                        productData9.category = 'Milk';                        
+                        app.addProductToDB(productData9);
+                        var productData10 = {};
+                        productData10.imagePath = "../imgs/Media/MANYCOFFEE-min.jpg";
+                        productData10.price = 3.99;
+                        productData10.description = "Assorted Coffee";
+                        productData10.title = "Assorted Coffee";
+                        productData10.catalogProduct = true;
+                        productData10.category = 'Milk';                        
+                        app.addProductToDB(productData10);
+
+
                     })();
                     (function () {
                         var productData = {};
