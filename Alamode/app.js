@@ -10,6 +10,7 @@ var router = express.Router();
 var appRoutes = require('./app/routes/api')(router);
 var path = require('path');
 var passport = require('passport');
+var social = require('./app/passport/passport.js')(app,passport);
 var child_process = require('child_process');
 //var nwgui = require('passport');
 app.use(morgan('dev'));

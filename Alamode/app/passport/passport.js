@@ -1,7 +1,7 @@
 var FacebookStrategy = require('passport-facebook').Strategy; // Import Paspport-Facebook Package
 var TwitterStrategy = require('passport-twitter').Strategy; // Import Passport Twitter Package
 var GoogleStrategy = require('passport-google-oauth').OAuth2Strategy; // Import Passport Google Package
-var User = require('./models/user');
+var User = require('../models/user');
 var session = require('express-session');
 var jwt = require('jsonwebtoken');
 var secret = 'zm!_0@0hu_7&ii-@j&0wpm3t%ojnvmjx6j0!1*&j@x51&mdzk@'; // Create custom secret for use in JWT
@@ -28,7 +28,7 @@ module.exports = function(app,passport){
         done(null,user.id); // Return user object
     });
 
-    passport.deserilizeUser(function(id,done){
+    passport.deserializeUser(function(id,done){
         User.findById(id,function(err,user){
             done(err,user);
         });
@@ -87,7 +87,9 @@ module.exports = function(app,passport){
 
     // Google Strategy
     passport.use(new GoogleStrategy({
-
+        clientID: 'clientID',
+        clientSecret: 'clientSecret',
+        callbackURL: 'http://www.mookiedough.co/auth/google/callback'
     },
     function(accessToken,refreshToken,profile,done){
         User.findOne({email:profile.emails[0].value}).select().exec(function(err,user){

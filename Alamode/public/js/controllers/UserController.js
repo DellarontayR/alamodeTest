@@ -39,8 +39,8 @@ console.log('regCtrl active');
                     app.loginMsg = "";
                     $location.path('/account');
                 }, 2000);
-            }
-            else{console.log('login failure');
+            } else{
+                console.log('login failure');
 
                 app.loginMessage = true;
                 if(data.data.message){
