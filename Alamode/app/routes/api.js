@@ -829,7 +829,7 @@ module.exports = function (router) {
                     else {
                         var validPassword = user.comparePassword(req.body.password);
                         if (!validPassword) {
-                            res.json({ success: false, message: 'Incorrect password or username provided' });
+                            res.json({ success: false, message: 'Incorrect email or password provided' });
 
                         }
                         else if (!user.active) {

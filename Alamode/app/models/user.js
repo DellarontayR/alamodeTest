@@ -70,6 +70,9 @@ var UserSchema = new Schema({
 
 UserSchema.pre('save',function(next){
     var user = this;
+
+    if (!user.isModified('password')) return next(); // If password was not changed or is new, ignore middleware
+    
     bcrypt.hash(user.password,null,null,function(err,hash){
         if(err) return next(err);
         user.password = hash;

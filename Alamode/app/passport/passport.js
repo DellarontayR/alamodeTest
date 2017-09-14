@@ -36,9 +36,9 @@ module.exports = function(app,passport){
 
     //Facebook Strategy
     passport.use(new FacebookStrategy({
-        clientID: 'clientID',
-        clientSecret:'clientSecret',
-        callbackURL:'callbackURL',
+        clientID: '702601033268168',
+        clientSecret:'90f388e6b2dfee447b1da61bff3e7129',
+        callbackURL:'http://localhost/auth/facebook/callback',
         profileFields:['id','displayName','photos','email']
         },
         function(accessToken,refreshToken,profile,done){
@@ -57,10 +57,10 @@ module.exports = function(app,passport){
 
     //Twitter Strategy
     passport.use(new TwitterStrategy({
-        consumerKey:'consumerKey',
-        consumerSecret:'consumerSecret',
-        callbackURL: 'callbackURL',
-        userProfileURL: 'userProfileURL'
+        consumerKey:'Dms4vDslhg5MhUZC6F8GBat17',
+        consumerSecret:'LSBH6XgCg55AE8PzWohBHYZL5blnHCbkI07DQKekLdF25Lgk2G',
+        callbackURL: 'http://localhost/auth/twitter/callback',
+        userProfileURL: 'https://twitter.com/DellarontayR'
     },
         function(token,tokenSecret,profile,done){
             if(profile.emails){
@@ -87,9 +87,9 @@ module.exports = function(app,passport){
 
     // Google Strategy
     passport.use(new GoogleStrategy({
-        clientID: 'clientID',
-        clientSecret: 'clientSecret',
-        callbackURL: 'http://www.mookiedough.co/auth/google/callback'
+        clientID: '196096326234-2dr9bvtp7tfmi4f6flem04ct2e3g7q93.apps.googleusercontent.com',
+        clientSecret: '9m0UzklV0K8vkJTXFHq8w23y',
+        callbackURL: 'http://localhost/auth/google/callback'
     },
     function(accessToken,refreshToken,profile,done){
         User.findOne({email:profile.emails[0].value}).select().exec(function(err,user){
