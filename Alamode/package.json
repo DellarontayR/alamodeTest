@@ -9,7 +9,6 @@
     "angular-stripe": "^5.0.0",
     "angular-ui-bootstrap": "^2.5.0",
     "node-gyp": "^3.6.2",
-    "bcrypt": "^1.0.2",
     "bcryptjs": "2.4.3",
     "bcrypt-nodejs": "0.0.3",
     "body-parser": "^1.17.1",
