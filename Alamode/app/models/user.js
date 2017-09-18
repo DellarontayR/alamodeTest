@@ -1,7 +1,8 @@
 var mongoose = require('mongoose');
 mongoose.Promise = global.Promise;
 var Schema = mongoose.Schema;
-var bcrypt = require('bcrypt-nodejs');
+// var bcrypt = require('bcrypt-nodejs');
+var bcryptjs = require('bcryptjs');
 var titlize = require('mongoose-title-case'); // Import Mongoose Title Case Plugin
 var validate = require('mongoose-validator'); // Import Mongoose Validator Plugin
 
@@ -73,15 +74,22 @@ UserSchema.pre('save',function(next){
 
     if (!user.isModified('password')) return next(); // If password was not changed or is new, ignore middleware
     
-    bcrypt.hash(user.password,null,null,function(err,hash){
-        if(err) return next(err);
+    //save the password as a has
+    var salt = bcryptjs.genSaltSync(10);
+    var hash = bcryptjs.hashSync(user.password,salt);
+    if(hash){
         user.password = hash;
-        next();
-    });
+    }
+    // bcrypt.hash(user.password,null,null,function(err,hash){
+    //     if(err) return next(err);
+    //     user.password = hash;
+    //     next();
+    // });
 });
 
 UserSchema.methods.comparePassword = function(password) {
-    return bcrypt.compareSync(password, this.password); // Returns true if password matches, false if doesn't
+    // return bcrypt.compareSync(password, this.password); // Returns true if password matches, false if doesn't
+    return bcryptjs.compareSync(password,this.password);
 };
 
 module.exports = mongoose.model('User',UserSchema);
