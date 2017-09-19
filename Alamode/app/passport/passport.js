@@ -10,7 +10,7 @@ module.exports = function(app,passport){
     // Start Passport Configuration Settings
     app.use(passport.initialize());
     app.use(passport.session());
-    app.use(session({secret: 'mighty',resave:false,saveUninitialize:true,cookie:{secure:false}}));
+    app.use(session({secret: 'mighty',resave:false,saveUninitialized:true,cookie:{secure:false}}));
     //End Passport Configuration Settings
 
     //Serilize users once logged in
