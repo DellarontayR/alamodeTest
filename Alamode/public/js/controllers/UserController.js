@@ -93,6 +93,9 @@ console.log('regCtrl active');
             if(err.data){
                 app.regMsg = err.data.message;
             }
+            else{
+                app.regMsg = "Something went wrong";
+            }
         });
     };
 
