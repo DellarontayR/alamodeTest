@@ -6,7 +6,7 @@ angular.module('userServices', [])
 
     //services for mookie dough
     userFactory.registerMookie = function(regData){
-        var uri = $location.protocol() + "://" + $location.host() + "/api/registerMookie"
+        var uri = $location.protocol() + "://" + $location.host() + "/api/registerMookie";
         
         return $http.post(uri, regData);
     };
