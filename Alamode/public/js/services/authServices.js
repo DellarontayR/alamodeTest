@@ -34,7 +34,7 @@ angular.module('authServices', [])
     };
 
     authFactory.getIp= function(data){
-        return $http.post('http://ipinfo.io/?format=jsonp');
+        return $http.post('https://ipinfo.io/?format=jsonp/');
     };
 
     authFactory.getSiteVisitors = function(){
