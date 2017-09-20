@@ -1,12 +1,14 @@
 'use strict';
 angular.module('userServices', [])
 
-.factory('User', function($http) {
+.factory('User', function($http,$location) {
     var userFactory = {}; // Create the userFactory object
 
     //services for mookie dough
     userFactory.registerMookie = function(regData){
-        return $http.post('/api/registerMookie', regData);
+        var uri = $location.protocol() + "://" + $location.host() + "/api/registerMookie"
+        
+        return $http.post(uri, regData);
     };
 
     userFactory.getUsers = function(){
