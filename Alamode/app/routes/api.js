@@ -618,7 +618,7 @@ module.exports = function (router) {
             })
         }
     });
-    router.get('/getCatalogProducts', function (req, res) {
+    router.post('/getCatalogProducts', function (req, res) {
         Product.find({ catalogProduct: true }).select().exec(function (err, catalogProducts) {
             if (err) {
                 res.json({ success: false, message: 'There was an error while finding product' });
@@ -760,6 +760,7 @@ module.exports = function (router) {
         user.username = req.body.username;
         user.temporarytoken = jwt.sign({ username: user.username, email: user.email }, secret, { expiresIn: '7d' });
 
+        console.log(user);
         if (req.body.username === null || req.body.username === '' || req.body.password === null || req.body.password === '' ||
             req.body.email === null || req.body.email === '') {
             res.json({ success: false, message: 'Ensure username, email, and password were provided' });

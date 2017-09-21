@@ -23,7 +23,7 @@ angular.module('productServices',[])
     };
 
     productFactory.getCatalogProducts = function(){
-        return $http.get('/api/getCatalogProducts');
+        return $http.post('/api/getCatalogProducts');
     };
 
     productFactory.getProductCategory = function(categoryData){
