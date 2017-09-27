@@ -61,8 +61,11 @@ console.log('regCtrl active');
 
     this.registerMookie = function(regData){
         app.regMessage = false;
+        console.log('Try register');
 
         User.registerMookie(regData).then(function(data){
+            console.log('register');
+            
             console.log(data);
             if(data.data.success){
                 app.username = regData.username;

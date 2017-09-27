@@ -759,13 +759,12 @@ module.exports = function (router) {
         user.password = req.body.password;
         user.username = req.body.username;
         user.temporarytoken = jwt.sign({ username: user.username, email: user.email }, secret, { expiresIn: '7d' });
-
-        console.log(user);
+        
         if (req.body.username === null || req.body.username === '' || req.body.password === null || req.body.password === '' ||
             req.body.email === null || req.body.email === '') {
             res.json({ success: false, message: 'Ensure username, email, and password were provided' });
         } else {
-            user.save(function (err) {
+            user.save(function (err,user) {
                 if (err) {
                     if (err.errors != null) {
                         if (err.errors.email) {
@@ -775,16 +774,22 @@ module.exports = function (router) {
                         } else if (err.errors.password) {
                             res.json({ success: false, message: err.errors.password.message }); // Display error in validation (password)
                         }
+                        else{
+                            res.json({success:false,message:'An Error has ocurred'});
+                        }
                     }
                     else if (err) {
                         // Check if duplication error exists
                         if (err.code == 11000) {
-                            console.log(err.errmsg);
+                            console.log('line 794');
                             console.log(err);
                             if (err.errmsg[65] == "u") {
                                 res.json({ success: false, message: 'That username is already taken' }); // Display error if username already taken
                             } else if (err.errmsg[65] == "e") {
                                 res.json({ success: false, message: 'That e-mail is already taken' }); // Display error if e-mail already taken
+                            }
+                            else{
+                                res.json({success:false,message:'An error occurred'});
                             }
                         } else {
                             res.json({ success: false, message: err }); // Display any other error
@@ -795,7 +800,11 @@ module.exports = function (router) {
                     console.log("register successful");
                     res.json({ success: true, message: 'Account registered! Please check your e-mail for activation link.' }); // Send success message back to controller/request
                 }
-            })
+            },function(err){
+                console.log('There was an error');
+                res.json({success:false,message:'An Error has occurred',err:err});
+            });
+            console.log('after user');
         }
     });
 

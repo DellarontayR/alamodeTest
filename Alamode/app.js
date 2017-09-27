@@ -1,7 +1,7 @@
 var express = require("express");
 var app = express();
 var port = process.env.PORT || 8080;
-port = 8080;
+port = 80;
 var morgan = require('morgan');
 var mongoose = require('mongoose');
 
@@ -25,7 +25,6 @@ mongoose.Promise = global.Promise;
  */
 // mongoose.connect('mongodb://localhost:27017/test', function(err){
 mongoose.connect('mongodb://13.56.151.113:27017/production', function(err){
-
     if(err){
         console.log("database not connected " + err);
     }else{

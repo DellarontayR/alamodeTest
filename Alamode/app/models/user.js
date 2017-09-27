@@ -71,15 +71,26 @@ var UserSchema = new Schema({
 
 UserSchema.pre('save',function(next){
     var user = this;
-
+    console.log('before');
     if (!user.isModified('password')) return next(); // If password was not changed or is new, ignore middleware
-    
-    //save the password as a has
-    var salt = bcryptjs.genSaltSync(10);
-    var hash = bcryptjs.hashSync(user.password,salt);
-    if(hash){
-        user.password = hash;
-    }
+    // bcrypt.genSalt(10, function(err, salt) {
+    //     bcrypt.hash("B4c0/\/", salt, function(err, hash) {
+    //         // Store hash in your password DB. 
+    //     });
+    // });
+
+    bcryptjs.genSalt(10,function(err,salt){
+        bcryptjs.hash(user.password,salt,function(err,hash){
+            if(err) return next(err);            
+            user.password = hash;
+            next();
+        });
+    });
+    // var salt = bcryptjs.genSaltSync(10);
+    // var hash = bcryptjs.hashSync(user.password,salt);
+    // if(hash){
+    //     user.password = hash;
+    // }
     // bcrypt.hash(user.password,null,null,function(err,hash){
     //     if(err) return next(err);
     //     user.password = hash;
@@ -89,7 +100,10 @@ UserSchema.pre('save',function(next){
 
 UserSchema.methods.comparePassword = function(password) {
     // return bcrypt.compareSync(password, this.password); // Returns true if password matches, false if doesn't
-    return bcryptjs.compareSync(password,this.password);
+    return bcryptjs.compare(password,this.password);
+    // bcryptjs.compareSync(password,this.password,function(err,res){
+    //     return res;
+    // });
 };
 
 module.exports = mongoose.model('User',UserSchema);

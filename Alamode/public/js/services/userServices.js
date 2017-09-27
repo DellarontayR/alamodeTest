@@ -6,9 +6,10 @@ angular.module('userServices', [])
 
     //services for mookie dough
     userFactory.registerMookie = function(regData){
-        var uri = $location.protocol() + "://" + $location.host() + "/api/registerMookie";
-        
-        return $http.post(uri, regData);
+        // var uri = $location.protocol() + "://" + $location.host() + ":8080/api/registerMookie";
+        // //TODO: Find some way of enabling this to work on https or not on
+        // return $http.post(uri, regData);
+        return $http.post('/api/registerMookie',regData);
     };
 
     userFactory.getUsers = function(){
@@ -31,10 +32,6 @@ angular.module('userServices', [])
         return $http.post('/api/getOldCarts',userData);
     };
     
-    /////////////////////////////////////////////////////////////////////
-
-
-
     // Register users in database
     userFactory.create = function(regData) {
         return $http.post('/api/users', regData);
