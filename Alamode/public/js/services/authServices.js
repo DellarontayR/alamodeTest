@@ -84,6 +84,8 @@ angular.module('authServices', [])
 
     // Function to set and remove the token to/from local storage
     authTokenFactory.setToken = function(token) {
+        console.log('Social media Token');
+        console.log(token);
         // Check if token was provided in function parameters
         if (token) {
             $window.localStorage.setItem('token', token); // If so, set the token in local storage
