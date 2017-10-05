@@ -14,6 +14,8 @@ var mongoose = require('mongoose');
 mongoose.Promise = global.Promise;
 var Schema = mongoose.Schema;
 
+//Get emails to work
+//It was very simple with SimpleMail and the C# implementation previously
 
 // var sgTransport = require('nodemailer-sendgrid-transport'); // Import Nodemailer Sengrid Transport Package
 
