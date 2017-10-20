@@ -1,8 +1,11 @@
 'use strict';// Enable typescript
 
-alamode.controller('mainCtrl', function (Auth, $timeout, $location, $rootScope, $window, $interval, User, AuthToken, $scope, Cart, Product, MookieSubscription, ContactMessage) {
+alamode.controller('mainCtrl', function (Auth, $timeout, $location, $rootScope,
+     $window, $interval, User, AuthToken, $scope, Cart, Product, MookieSubscription, ContactMessage) {
     var app = this;
     if ($window.location.pathname === '/') app.home = true; // Check if user is on home page to show home page div
+    // if($window.location.pathname === '/contacts')   GPS.init();
+    
     app.username = "";
     app.user = {};
     app.loggedIn = false;
@@ -11,6 +14,15 @@ alamode.controller('mainCtrl', function (Auth, $timeout, $location, $rootScope, 
     app.loadme = true;
     app.cart = {};
     app.products = false;
+    if(navigator.geolocation){
+        console.log('Geolocation enabled');
+        console.log(navigator);
+        console.log(navigator.geolocation);
+        navigator.geolocation.getCurrentPosition(function(position){
+            console.log('my position');
+            console.log(position);
+        });
+    }
 
     // Needed to keep Canva presentation loaded correctly
     // $(".canvasId").show(function () {

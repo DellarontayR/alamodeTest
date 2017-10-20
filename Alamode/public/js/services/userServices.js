@@ -4,7 +4,6 @@ angular.module('userServices', [])
 .factory('User', function($http,$location) {
     var userFactory = {}; // Create the userFactory object
 
-    //services for mookie dough
     userFactory.registerMookie = function(regData){
         // var uri = $location.protocol() + "://" + $location.host() + ":8080/api/registerMookie";
         // //TODO: Find some way of enabling this to work on https or not on

@@ -5,14 +5,12 @@ angular.module('authServices', [])
 // Factor: Auth handles all login/logout functions	
 .factory('Auth', function($http, AuthToken,$q) {
     var authFactory = {}; // Create the factory object
+
     // Function to log the user in
-     
     authFactory.login = function(loginData) {
         return $http.post('/api/mookie-login', loginData).then(function(data) {
             if(data.data.success){
                 AuthToken.setToken(data.data.token); // Endpoint will return a token to set
-                console.log(data.data.token);
-                console.log(data);
                 return data;
             }
             else{
@@ -53,6 +51,7 @@ angular.module('authServices', [])
     // Function to set token for social media logins
     authFactory.socialMedia = function(token) {
         AuthToken.setToken(token); // Set token retrieved from passportJS
+        //After getting the token from passportJS There is still no user created. This is more like signin for the facebook, google, and twitter handles than sign up.
     };
 
     // Function to get current user's data

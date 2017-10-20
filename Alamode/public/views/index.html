@@ -2,7 +2,7 @@
 <html lang="en" ng-app="alamode">
 
 <head>
-  <meta charset="utf-8">
+  <meta charset="UTF-8">
   <title>Mookie Dough</title>
 
   <!--SEO Meta Tags-->
@@ -13,7 +13,7 @@
 
   <!--Mobile Specific Meta Tag-->
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
-
+  <meta http-equiv="X-UA-Compatibile" content="ie-edge">
   <!--Favicon-->
   <link rel="shortcut icon" href="../mookiedoughfrontend/favicon.ico" type="image/x-icon">
   <link rel="icon" href="../mookiedoughfrontend/favicon.ico" type="image/x-icon">
@@ -60,10 +60,14 @@
   <script src="../js/services/contactMessageServices.js"></script>
   <script src="../js/services/subscriptionServices.js"></script>
   <script src="../js/services/stripeServices.js"></script>
-  
+  <script src="../js/services/gpsServices.js"></script>
+
+
 
   <!-- Directives -->
   <script src="../js/directives/product.js"></script>
+  <script src="../js/directives/mookie-maps.js"></script>
+  
 
   <!-- Alamode Controllers -->
   <script src="../js/controllers/MainController.js"></script>
@@ -74,6 +78,10 @@
   <script src="../js/controllers/ManagementController.js"></script>
   <script src="../js/controllers/MainShopController.js"></script>
   <script src="../js/controllers/ProfileController.js"></script>
+
+  <script type="text/javascript" src="https://maps.googleapis.com/maps/api/js?v=3.exp&key=AIzaSyBPVL49OMjEcc82nQlsobcNmr9j9ZBDTHE&libraries=geometry"
+  ></script>
+  <!-- <script type="text/javascript" src="http://maps.googleapis.com/maps/api/js?libraries=geometry"></script> -->
   
 
 
@@ -95,11 +103,11 @@
 
     <!-- Navbar -->
     <!-- Remove ".navbar-sticky" class to make navigation bar scrollable with the page. -->
-    <header class="navbar navbar-sticky">
+    <header class="navbar navbar-sticky" style="position:relative;">
 
       <!-- Site Logo -->
       <a href="/home" class="site-logo visible-desktop">
-    <img src="../imgs/Media/bordered_logo.png">
+        <img src="../imgs/Media/bordered_logo.png">
       </a>
       <!-- site-logo.visible-desktop -->
       <a href="/home" class="site-logo visible-mobile">
@@ -116,18 +124,38 @@
           <li class="menu-item-has-children">
             <a href="#">Shop</a>
             <ul class="sub-menu">
-              <li><a href='/cookiedoughmainshop'>Cookie Dough</a></li>
-              <li><a href="/minicookiedoughmainshop">Mini Cookie Dough</a></li>
-              <li><a href="/milkmainshop">Ice Cold Milk</a></li>
+              <li>
+                <a href='/cookiedoughmainshop'>Cookie Dough</a>
+              </li>
+              <li>
+                <a href="/minicookiedoughmainshop">Mini Cookie Dough</a>
+              </li>
+              <li>
+                <a href="/milkmainshop">Ice Cold Milk</a>
+              </li>
             </ul>
           </li>
-          <li><a href="/about">About</a></li>
-          <li><a href="/contacts">Contact Us</a></li>
-          <li><a href="/faq">FAQ</a></li>
-          <li><a href="/fuegophotos">Sneak Preview</a></li>
-          <li ng-show="main.loggedIn"><a href="/register" ng-click="main.logout()">Logout</a></li>
-          <li ng-show="!main.loggedIn"><a href="/register">Login</a></li>
-          <li ng-show="mookie.admin"><a href="/management">Management</a></li>
+          <li>
+            <a href="/about">About</a>
+          </li>
+          <li>
+            <a href="/contacts">Contact Us</a>
+          </li>
+          <li>
+            <a href="/faq">FAQ</a>
+          </li>
+          <li>
+            <a href="/fuegophotos">Sneak Preview</a>
+          </li>
+          <li ng-show="main.loggedIn">
+            <a href="/register" ng-click="main.logout()">Logout</a>
+          </li>
+          <li ng-show="!main.loggedIn">
+            <a href="/register">Login</a>
+          </li>
+          <li ng-show="mookie.admin">
+            <a href="/management">Management</a>
+          </li>
 
 
         </ul>
@@ -138,14 +166,20 @@
       <!-- Toolbar -->
       <div class="toolbar">
         <div class="inner">
-          <a href="#" class="mobile-menu-toggle"><i class="material-icons menu"></i></a>
+          <a href="#" class="mobile-menu-toggle">
+            <i class="material-icons menu"></i>
+          </a>
 
-          <a href="/register" ng-if="!main.loggedIn"><i class="material-icons person"></i></a>
-          <a href="/account" ng-if="main.loggedIn"><i class="material-icons person"></i></a>
+          <a href="/register" ng-if="!main.loggedIn">
+            <i class="material-icons person"></i>
+          </a>
+          <a href="/account" ng-if="main.loggedIn">
+            <i class="material-icons person"></i>
+          </a>
 
           <div class="cart-btn">
             <!-- <a href="/testusers">  -->
-            <a href="/shopping-cart">  
+            <a href="/shopping-cart">
               <i>
                 <span class="material-icons shopping_basket"></span>
                 <span class="count">{{mookie.cartItemCount || 0}} </span>
@@ -160,7 +194,9 @@
                   <img ng-src="{{cartProduct.imagePath}}" class="item-thumb" alt="Item">
                 </a>
                 <div class="item-details">
-                  <h3 class="item-title"><a href="/shopping-cart"> {{cartProduct.title}}</a></h3>
+                  <h3 class="item-title">
+                    <a href="/shopping-cart"> {{cartProduct.title}}</a>
+                  </h3>
                   <h4 class="item-price">{{cartProduct.qty}} x {{cartProduct.price | currency}} </h4>
                 </div>
                 <a href="#" class="close-btn">
@@ -173,16 +209,21 @@
                 </div>
                 <div class="column">
                   <!-- <span class="amount">${{main.cart.total}}<span> -->
-                  <span class="amount">${{mookie.total}}<span>
-                          
-                </div>
-            </div>
-          </div>
+                  <span class="amount">${{mookie.total}}
+                    <span>
 
-          </div><!-- .cart-btn -->
-        </div><!-- .inner -->
-      </div><!-- .toolbar -->
-    </header><!-- .navbar.navbar-sticky -->
+                </div>
+              </div>
+            </div>
+
+          </div>
+          <!-- .cart-btn -->
+        </div>
+        <!-- .inner -->
+      </div>
+      <!-- .toolbar -->
+    </header>
+    <!-- .navbar.navbar-sticky -->
 
     <div class="modal fade" id="myModal" role="dialog">
       <div class="modal-dialog">
@@ -201,68 +242,66 @@
     </div>
 
     <div class="modal fade" id="productModal" role="dialog">
-        <div class="modal-dialog">
-          <div class="modal-content">
-            <div class="modal-header">
-              <button type="button" class="close" data-dismiss="modal">&times;</button>
-              <!-- {{mookie.modalTitle}} -->
-              {{mookie.modal.title}}
-            </div>
-            <div class="modal-body">
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal">&times;</button>
+            <!-- {{mookie.modalTitle}} -->
+            {{mookie.modal.title}}
+          </div>
+          <div class="modal-body">
 
-              <div class="row">
-                <div class="col-sm-6 col-md-6 col-lg-6">
+            <div class="row">
+              <div class="col-sm-6 col-md-6 col-lg-6">
                 <!-- {{mookie.modalBody}} -->
                 <img ng-src="{{mookie.modal.imagePath}}">
                 <p> {{mookie.modal.description}}</p>
               </div>
               <div class="col-sm-6 col-md-6 col-lg-6">
-                  <p> {{mookie.modal.price | currency}}</p>     
-                  <a href="#" class="add-to-cart" ng-click="mookie.addToCart(mookie.modal); $event.stopPropagation();">
-                      <em>Add to Cart</em>
-                      <svg x="0px" y="0px" width="32px" height="32px" viewBox="0 0 32 32">
-                        <path stroke-dasharray="19.79 19.79" stroke-dashoffset="19.79" fill="none" stroke="#FFFFFF" stroke-width="2" stroke-linecap="square" stroke-miterlimit="10" d="M9,17l3.9,3.9c0.1,0.1,0.2,0.1,0.3,0L23,11"/>
-                      </svg>
-                  </a>  
-                </div>
+                <p> {{mookie.modal.price | currency}}</p>
+                <a href="#" class="add-to-cart" ng-click="mookie.addToCart(mookie.modal); $event.stopPropagation();">
+                  <em>Add to Cart</em>
+                  <svg x="0px" y="0px" width="32px" height="32px" viewBox="0 0 32 32">
+                    <path stroke-dasharray="19.79 19.79" stroke-dashoffset="19.79" fill="none" stroke="#FFFFFF" stroke-width="2" stroke-linecap="square"
+                      stroke-miterlimit="10" d="M9,17l3.9,3.9c0.1,0.1,0.2,0.1,0.3,0L23,11" />
+                  </svg>
+                </a>
               </div>
-              
             </div>
+
           </div>
         </div>
       </div>
+    </div>
 
-      <div class="modal fade" id="stripeModal" role="dialog">
-          <div class="modal-dialog">
-            <div class="modal-content">
-              <div class="modal-header">
-                <button type="button" class="close" data-dismiss="modal">&times;</button>
-                <!-- mookie.modalTitle -->
-                {{mookie.modalTitle}}
-                <h2> Mookie Dough Customer Experience</h2>
-              </div>
-              <div class="modal-body">
-                <!-- mookie.modalBody -->
-                <h4> Thank you for shopping with us</h4>
-                <img src="../imgs/Media/header2.png">
+    <div class="modal fade" id="stripeModal" role="dialog">
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal">&times;</button>
+            <!-- mookie.modalTitle -->
+            {{mookie.modalTitle}}
+            <h2> Mookie Dough Customer Experience</h2>
+          </div>
+          <div class="modal-body">
+            <!-- mookie.modalBody -->
+            <h4> Thank you for shopping with us</h4>
+            <img src="../imgs/Media/header2.png">
 
-              </div>
-            </div>
           </div>
         </div>
-
-
-    <div style="padding-top: 80px;">
-        <!-- Main Angular view where routes will be rendered-->
-        <div class="main-view" ng-show="main.loadme" ng-view></div>
+      </div>
     </div>
-  
-    <div class="container">
+    
+    <div>
+      <!-- Main Angular view where routes will be rendered-->
+      <div class="main-view" ng-show="main.loadme" ng-view></div>
+    </div>
 
+    <div class="container">
       <div class="row" ng-show="mookie.about">
         <video width="100%" height="100%" controls>
-          <source src="../imgs/Media/mookiedough.mp4" type="video/mp4">
-        Your browser does not support the video tag.
+          <source src="../imgs/Media/mookiedough.mp4" type="video/mp4"> Your browser does not support the video tag.
         </video>
       </div>
 
@@ -281,80 +320,83 @@
 
     </div>
   </div> -->
-  
 
-     <!-- Footer -->
+
+    <!-- Footer -->
     <footer class="footer">
-        <div class="column">
-            <h3 class="widget-title">
-              Subscription
-              <small>To receive latest offers and discounts from Mookie Dough</small>
-            </h3>
-            <form class="subscribe-form" novalidate>
-              <input type="email" class="form-control" name="EMAIL" placeholder="Your e-mail" ng-model="subEmail">
-              <div style="position: absolute; left: -5000px;" aria-hidden="true"><input type="text" name="" tabindex="-1" value=""></div>
-              <button type="submit" ng-click="main.addSubscription(subEmail)"><i class="material-icons send"></i></button>
-              <p ng-show="main.subMessage"> {{main.subMessage}}</p>
-            </form>
-        </div><!-- .column -->
+      <div class="column">
+        <h3 class="widget-title">
+          Subscription
+          <small>To receive latest offers and discounts from Mookie Dough</small>
+        </h3>
+        <form class="subscribe-form" novalidate>
+          <input type="email" class="form-control" name="EMAIL" placeholder="Your e-mail" ng-model="subEmail">
+          <div style="position: absolute; left: -5000px;" aria-hidden="true">
+            <input type="text" name="" tabindex="-1" value="">
+          </div>
+          <button type="submit" ng-click="main.addSubscription(subEmail)">
+            <i class="material-icons send"></i>
+          </button>
+          <p ng-show="main.subMessage"> {{main.subMessage}}</p>
+        </form>
+      </div>
+      <!-- .column -->
 
 
       <div class="column">
-        <p class="text-sm">Need support? Call <span class="text-primary">1 (650) 555-9999</span></p>
-                  <div class="social-bar text-center space-bottom">
-                    <a href="https://www.facebook.com/mookiedough/" class="sb-facebook" data-toggle="tooltip" data-placement="top" title="Facebook">
+        <p class="text-sm">Need support? Call
+          <span class="text-primary">1 (650) 555-9999</span>
+        </p>
+        <div class="social-bar text-center space-bottom">
+          <a href="https://www.facebook.com/mookiedough/" class="sb-facebook" data-toggle="tooltip" data-placement="top" title="Facebook">
             <i class="socicon-facebook"></i>
           </a>
-                    <a href="https://twitter.com/mookiecollectiv" class="sb-twitter" data-toggle="tooltip" data-placement="top" title="Twitter">
+          <a href="https://twitter.com/mookiecollectiv" class="sb-twitter" data-toggle="tooltip" data-placement="top" title="Twitter">
             <i class="socicon-twitter"></i>
           </a>
-                    <a href="https://instagram.com/mookiedoughgang" class="sb-instagram" data-toggle="tooltip" data-placement="top" title=""
-                      data-original-title="Instagram">
+          <a href="https://instagram.com/mookiedoughgang" class="sb-instagram" data-toggle="tooltip" data-placement="top" title=""
+            data-original-title="Instagram">
             <i class="socicon-instagram"></i>
           </a>
 
-          </div>
-          <!-- .social-bar -->
-          <p class="copyright">&copy; 2017. Mookie Dough LLC</p>
-          <p ng-if="mookie.numberOfSiteVisitors > 0" > Site has been accessed {{mookie.numberOfSiteVisitors}} times.</p>
-          
         </div>
-        <!-- .column -->
-        </footer>
-        <!-- .footer -->
+        <!-- .social-bar -->
+        <p class="copyright">&copy; 2017. Mookie Dough LLC</p>
+        <p ng-if="mookie.numberOfSiteVisitors > 0"> Site has been accessed {{mookie.numberOfSiteVisitors}} times.</p>
 
-        </div>
-        <!-- JavaScript (jQuery) libraries, plugins and custom scripts -->
-        <script src="../mookiedoughfrontend/js/vendor/jquery-2.1.4.min.js"></script>
-        <script src="../mookiedoughfrontend/js/vendor/bootstrap.min.js"></script>
-        <script src="../mookiedoughfrontend/js/vendor/isotope.pkgd.min.js"></script>
+      </div>
+      <!-- .column -->
+    </footer>
+    <!-- .footer -->
 
-        <script src="../mookiedoughfrontend/js/vendor/smoothscroll.js"></script>
-        <script src="../mookiedoughfrontend/js/vendor/velocity.min.js"></script>
-        <script src="../mookiedoughfrontend/js/vendor/waves.min.js"></script>
-        <script src="../mookiedoughfrontend/js/vendor/icheck.min.js"></script>
-        <script src="../mookiedoughfrontend/js/vendor/jquery.downCount.js"></script>
-        <script src="../mookiedoughfrontend/js/vendor/magnific-popup.min.js"></script>
-        <script src="../mookiedoughfrontend/js/vendor/gmap3.min.js"></script>
-        <script src="../mookiedoughfrontend/mailer/mailer.js"></script>
+  </div>
+  <!-- JavaScript (jQuery) libraries, plugins and custom scripts -->
+  <script src="../mookiedoughfrontend/js/vendor/jquery-2.1.4.min.js"></script>
+  <script src="../mookiedoughfrontend/js/vendor/bootstrap.min.js"></script>
+  <script src="../mookiedoughfrontend/js/vendor/isotope.pkgd.min.js"></script>
 
-        <script src="../mookiedoughfrontend/js/vendor/nouislider.min.js"></script>
-        <script src="../mookiedoughfrontend/js/scripts.js"></script>
+  <script src="../mookiedoughfrontend/js/vendor/smoothscroll.js"></script>
+  <script src="../mookiedoughfrontend/js/vendor/velocity.min.js"></script>
+  <script src="../mookiedoughfrontend/js/vendor/waves.min.js"></script>
+  <script src="../mookiedoughfrontend/js/vendor/icheck.min.js"></script>
+  <script src="../mookiedoughfrontend/js/vendor/jquery.downCount.js"></script>
+  <script src="../mookiedoughfrontend/js/vendor/magnific-popup.min.js"></script>
+  <script src="../mookiedoughfrontend/js/vendor/gmap3.min.js"></script>
+  <script src="../mookiedoughfrontend/mailer/mailer.js"></script>
 
-        
-        <script>
-          // Show our element, then call our callback
-          $(".canvasId").show(function () {
-            // Find the iframes within our newly-visible element
-            $(this).find("script").prop("src", function () {
-              // Set their src attribute to the value of data-src
-              return $(this).data("src");
-            });
-          });
-        </script>
+  <script src="../mookiedoughfrontend/js/vendor/nouislider.min.js"></script>
+  <script src="../mookiedoughfrontend/js/scripts.js"></script>
 
-
-
+  <script>
+    // Show our element, then call our callback
+    $(".canvasId").show(function () {
+      // Find the iframes within our newly-visible element
+      $(this).find("script").prop("src", function () {
+        // Set their src attribute to the value of data-src
+        return $(this).data("src");
+      });
+    });
+  </script>
 </body>
 
 </html>

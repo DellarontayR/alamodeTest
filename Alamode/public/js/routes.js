@@ -79,6 +79,10 @@ var app = angular.module('appRoutes',['ngRoute'])
         controllerAs: 'user',
         authenticated: false
     })
+    .when('/login',{
+        templateUrl: '../mookiedoughfrontend/register.html',
+        authenticated: false
+    })
     // Route: User Profile
     .when('/account', {
         templateUrl: '../mookiedoughfrontend/account.html',

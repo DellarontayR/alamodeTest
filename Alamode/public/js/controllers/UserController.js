@@ -216,6 +216,8 @@ console.log('regCtrl active');
     };
 })
 
+//Need to use these social media controllers to enable registration and login using the token from 
+
 // Controller: facebookCtrl is used finalize facebook login
 .controller('facebookCtrl', function($routeParams, Auth, $location, $window, $scope) {
 

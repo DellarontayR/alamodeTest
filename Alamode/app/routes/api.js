@@ -9,6 +9,8 @@ var jwt = require('jsonwebtoken'); // Import JWT Package
 var secret = 'zm!_0@0hu_7&ii-@j&0wpm3t%ojnvmjx6j0!1*&j@x51&mdzk@'; // Create custom secret for use in JWT
 var nodemailer = require('nodemailer'); // Import Nodemailer Package
 var stripe = require('stripe')('sk_test_N3kcDk7Gi6QdJewLusdBT2Tc');
+//google maps api key AIzaSyDaah9NRImsLSSwF3KhofpShgf9tt26lDA
+//The actual google maps api key AIzaSyBPVL49OMjEcc82nQlsobcNmr9j9ZBDTHE
 
 var mongoose = require('mongoose');
 mongoose.Promise = global.Promise;
@@ -61,7 +63,6 @@ module.exports = function (router) {
     });
 
     router.post('/checkVisitor',function(req,res){
-        console.log(req.ip);
         if(req.body.ipAddress == null || req.body.ipAddress==''){
             res.json({success:false,message:'IP address not included in psot body'});
         }
@@ -113,10 +114,8 @@ module.exports = function (router) {
     });
 
     router.post('/checkout', function (req, res) {
-
-        //I need to get the user's email or objectId or something when they send the information back to my server. Prefably objectId I suppose
         if (req.body.token == null || req.body.name == null || req.body.price == null || req.body.userEmail == null
-        || req.body.userEmail == '') {
+            || req.body.userEmail == '') {
             res.json({ success: false, message: "Please try checkout again at a later time" });
         }
         else {
@@ -134,11 +133,6 @@ module.exports = function (router) {
                         res.json({success:false,message:'Something went wrong'});
                     }
                     else{
-
-                        //Delete cart form user
-                        //aka change user.cart to ''
-                        //make users cart into an old cart
-                        //aka add a userid to the cart and change the oldcart boolean value to true
                         User.findOne({email:req.body.userEmail}).select().exec(function(err,user){
                             if(err){
                                 res.json({success:false,message:'There was an error trying to change user cart during checkout',err:err});
