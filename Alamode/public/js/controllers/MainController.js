@@ -820,7 +820,7 @@ alamode.controller('mainCtrl', function (Auth, $timeout, $location, $rootScope,
         Auth.logout(); // Logout user
         app.loggedIn = false;
 
-        $location.path('/login');
+        $location.path('/register');
         app.loggedIn = false;
         $scope.loggedIn = false;
     };
