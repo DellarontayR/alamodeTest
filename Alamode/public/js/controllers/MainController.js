@@ -18,10 +18,10 @@ alamode.controller('mainCtrl', function (Auth, $timeout, $location, $rootScope,
         console.log('Geolocation enabled');
         console.log(navigator);
         console.log(navigator.geolocation);
-        navigator.geolocation.getCurrentPosition(function(position){
-            console.log('my position');
-            console.log(position);
-        });
+        // navigator.geolocation.getCurrentPosition(function(position){
+        //     console.log('my position');
+        //     console.log(position);
+        // });
     }
 
     // Needed to keep Canva presentation loaded correctly
