@@ -30,6 +30,12 @@ alamode.controller('CheckoutController', function ($scope, $location, User, Cart
             }
         };
 
+        style = {
+            base: {
+                fontSize: '16px',
+                lineHeight:'24x'
+            }
+        }
         // Create an instance of the card Element
         card = elements.create('card', { style: style });
 
