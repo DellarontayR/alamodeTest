@@ -51,9 +51,10 @@ var passwordValidator = [
 
 // User Mongoose Schema
 var UserSchema = new Schema({
-    username: { type: String, lowercase: true, required: true, unique: true, validate: usernameValidator },
-    password: { type: String, required: true, validate: passwordValidator, select: false },
+    username: { type: String, lowercase: true, required: true},
     email: { type: String, required: true, lowercase: true, unique: true, validate:emailValidator},
+    socialToken: {type:String,required:false},    
+    password: { type: String, required: false, select: false },
     cart: {type:Schema.ObjectId, ref:'Cart',required:false},
     // phonenumber: {type: String, required: true},
     // address: {type:String, required: true},
@@ -71,7 +72,7 @@ var UserSchema = new Schema({
 
 UserSchema.pre('save',function(next){
     var user = this;
-    console.log('before');
+    if(user.password == null) return next();
     if (!user.isModified('password')) return next(); // If password was not changed or is new, ignore middleware
     // bcrypt.genSalt(10, function(err, salt) {
     //     bcrypt.hash("B4c0/\/", salt, function(err, hash) {

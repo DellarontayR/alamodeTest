@@ -2,18 +2,19 @@
 <html lang="en" ng-app="alamode">
 
 <head>
-  <meta charset="UTF-8">
   <title>Mookie Dough</title>
 
+  <meta charset="UTF-8">
   <!--SEO Meta Tags-->
   <meta name="description" content="Mookie Dough Company LLC" />
-  <meta name="keywords" content="One stop shop for the best edible cookie dough. Did we mention that we are available 24/7?!"
+  <meta name="keywords" content="One stop shop for the best edible cookie dough. Did we mention that we are available 24/7?! Cookies milk edible cookie dough mookie dough cupcake crumble"
   />
   <meta name="author" content="Mookie Dough LLC" />
 
   <!--Mobile Specific Meta Tag-->
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
   <meta http-equiv="X-UA-Compatibile" content="ie-edge">
+
   <!--Favicon-->
   <link rel="shortcut icon" href="../mookiedoughfrontend/favicon.ico" type="image/x-icon">
   <link rel="icon" href="../mookiedoughfrontend/favicon.ico" type="image/x-icon">
@@ -24,34 +25,36 @@
   <!-- Brand Icons -->
   <link href="../mookiedoughfrontend/css/vendor/socicon.min.css" rel="stylesheet" media="screen">
 
-  <!-- Bootstrap -->
+  <!-- Older Bootstrap -->
   <link href="../mookiedoughfrontend/css/vendor/bootstrap.min.css" rel="stylesheet" media="screen">
+
+
+  <!-- This newer bootstrap causes some lists to not be positioned relatively which somehow causes links to stop working -->
+  <!-- Newer Bootstrap -->
+  <!-- <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.6/css/bootstrap.min.css" integrity="sha384-rwoIResjU2yc3z8GV/NPeZWAv56rSmLldC3R/AZzGRnGxQQKnKkoFVhFQhNUwEyJ" crossorigin="anonymous"> -->
 
   <!-- Theme Styles -->
   <link href="../mookiedoughfrontend/css/theme.css" rel="stylesheet" media="screen">
 
+  <!-- Mookie Styles -->
   <link href="../css/mookieStyle.css" rel="stylesheet" media="screen">
-
-  <!-- Theme Styles -->
-  <!-- <link href="../mookiedoughfrontend/css/theme.css" rel="stylesheet" media="screen"> -->
 
   <!-- Page Preloading -->
   <script src="../mookiedoughfrontend/js/vendor/page-preloading.js"></script>
 
   <!-- Modernizr -->
   <script src="../mookiedoughfrontend/js/vendor/modernizr.custom.js"></script>
-  <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.5.6/angular.js"></script>
-  <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.5.6/angular-route.js"></script>
-  <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.5.6/angular-mocks.js"></script>
-  <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.5.6/angular-animate.js"></script>
-  
 
-
-  <!-- <script type="text/javascript" src="https://js.stripe.com/v2/"></script> -->
+  <!-- Angular Apis -->
+  <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.6/angular.js"></script>
+  <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.6/angular-route.js"></script>
+  <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.6/angular-mocks.js"></script>
+  <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.6/angular-animate.js"></script>
 
   <!-- Stripe elements  -->
   <script src="https://js.stripe.com/v3/"></script>
 
+  <!-- Alamode Application -->
   <script src="../js/app.js"></script>
   <script src="../js/routes.js"></script>
 
@@ -65,12 +68,9 @@
   <script src="../js/services/stripeServices.js"></script>
   <script src="../js/services/gpsServices.js"></script>
 
-
-
-  <!-- Directives -->
+  <!-- Alamode Directives -->
   <script src="../js/directives/product.js"></script>
   <script src="../js/directives/mookie-maps.js"></script>
-  
 
   <!-- Alamode Controllers -->
   <script src="../js/controllers/MainController.js"></script>
@@ -82,13 +82,8 @@
   <script src="../js/controllers/MainShopController.js"></script>
   <script src="../js/controllers/ProfileController.js"></script>
 
-  <script type="text/javascript" src="https://maps.googleapis.com/maps/api/js?v=3.exp&key=AIzaSyBPVL49OMjEcc82nQlsobcNmr9j9ZBDTHE&libraries=geometry"
-  ></script>
-  <!-- <script type="text/javascript" src="http://maps.googleapis.com/maps/api/js?libraries=geometry"></script> -->
-  
-
-
-
+  <!-- Google maps api -->
+  <script type="text/javascript" src="https://maps.googleapis.com/maps/api/js?v=3.exp&key=AIzaSyC5COdjfvATFrP2GIA9_5fabKmrse1CXdo&libraries=geometry"></script>
 </head>
 
 
@@ -144,14 +139,14 @@
           <li>
             <a href="/contacts">Contact Us</a>
           </li>
-          <li>
+          <!-- <li>
             <a href="/faq">FAQ</a>
           </li>
           <li>
             <a href="/fuegophotos">Sneak Preview</a>
-          </li>
+          </li> -->
           <li ng-show="main.loggedIn">
-            <a href="/register" ng-click="main.logout()">Logout</a>
+            <a href="/register" ng-click="main.logout();">Logout</a>
           </li>
           <li ng-show="!main.loggedIn">
             <a href="/register">Login</a>
@@ -262,13 +257,15 @@
               </div>
               <div class="col-sm-6 col-md-6 col-lg-6">
                 <p> {{mookie.modal.price | currency}}</p>
-                <a href="#" class="add-to-cart" ng-click="mookie.addToCart(mookie.modal); $event.stopPropagation();">
-                  <em>Add to Cart</em>
+                <a href="#" class="add-to-cart" ng-click="mookie.addToCart(mookie.modal); $event.stopPropagation();startAnim = !startAnim;">
+                  <!-- <em>Add to Cart</em> -->
+                  <a class='button glyphicon glyphicon-plus' href='#'></a>
                   <svg x="0px" y="0px" width="32px" height="32px" viewBox="0 0 32 32">
                     <path stroke-dasharray="19.79 19.79" stroke-dashoffset="19.79" fill="none" stroke="#FFFFFF" stroke-width="2" stroke-linecap="square"
                       stroke-miterlimit="10" d="M9,17l3.9,3.9c0.1,0.1,0.2,0.1,0.3,0L23,11" />
                   </svg>
                 </a>
+                <div class="add-cart-note" ng-class="{'show-me':startAnim}">+</div>
               </div>
             </div>
 
@@ -295,7 +292,7 @@
         </div>
       </div>
     </div>
-    
+
     <div>
       <!-- Main Angular view where routes will be rendered-->
       <div class="main-view" ng-show="main.loadme" ng-view></div>
@@ -309,21 +306,6 @@
       </div>
 
     </div>
-
-    <!-- <div class="container canvasId" ng-show="mookie.about" id="canvasId" style="display:flex;flex-direction:column;">
-      <div class="row page-wrapper">
-        <div class="col-lg-12 col-md-12 col-sm-12 col-xl-12" style="align-items:center">
-
-          <div class="canva-embed" data-height-ratio=".75" data-width-ratio=".75" data-design-id="DACaZVwE6tw" style="padding:75% 5px 5px 5px;background:rgba(0,0,0,0.03);border-radius:8px;"></div>
-          <script async data-src="https://sdk.canva.com/v1/embed.js"></script><a href="https://www.canva.com/design/DACaZVwE6tw/view?utm_content=DACaZVwE6tw&utm_campaign=designshare&utm_medium=embeds&utm_source=link"
-          target="_blank">Mookie Dough pitch deck</a> by <a href="https://www.canva.com/abempah?utm_campaign=designshare&utm_medium=embeds&utm_source=link"
-          target="_blank">Mookie Dough LLC</a>
-        </div>
-
-
-    </div>
-  </div> -->
-
 
     <!-- Footer -->
     <footer class="footer">
@@ -373,11 +355,18 @@
     <!-- .footer -->
 
   </div>
-  <!-- JavaScript (jQuery) libraries, plugins and custom scripts -->
-  <script src="../mookiedoughfrontend/js/vendor/jquery-2.1.4.min.js"></script>
-  <script src="../mookiedoughfrontend/js/vendor/bootstrap.min.js"></script>
-  <script src="../mookiedoughfrontend/js/vendor/isotope.pkgd.min.js"></script>
+    <!-- Older bootstrap and jquery script CDNs-->
+    <!-- JavaScript (jQuery) libraries, plugins and custom scripts -->
+    <script src="../mookiedoughfrontend/js/vendor/jquery-2.1.4.min.js"></script>
+    <!-- <script src="../mookiedoughfrontend/js/vendor/bootstrap.min.js"></script> -->
+    <!-- <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u"
+      crossorigin="anonymous"> -->
+    <!-- <script src="https://code.jquery.com/jquery-3.1.1.slim.min.js" integrity="sha384-A7FZj7v+d/sdmMqp/nOQwliLvUsJfDHW+k9Omg/a/EheAdgtzNs3hpfag6Ed950n" crossorigin="anonymous"></script> -->
+    <!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/tether/1.4.0/js/tether.min.js" integrity="sha384-DztdAPBWPRXSA/3eYEEUWrWCy7G5KFbe8fFjk5JAIxUYHKkDx6Qin1DkWx51bBrb" crossorigin="anonymous"></script> -->
+    <!-- <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.6/js/bootstrap.min.js" integrity="sha384-vBWWzlZJ8ea9aCX4pEW3rVHjgjt7zpkNpZk+02D9phzyeVkE+jo0ieGizqPLForn" crossorigin="anonymous"></script> -->
 
+
+  <script src="../mookiedoughfrontend/js/vendor/isotope.pkgd.min.js"></script>
   <script src="../mookiedoughfrontend/js/vendor/smoothscroll.js"></script>
   <script src="../mookiedoughfrontend/js/vendor/velocity.min.js"></script>
   <script src="../mookiedoughfrontend/js/vendor/waves.min.js"></script>
@@ -386,20 +375,9 @@
   <script src="../mookiedoughfrontend/js/vendor/magnific-popup.min.js"></script>
   <script src="../mookiedoughfrontend/js/vendor/gmap3.min.js"></script>
   <script src="../mookiedoughfrontend/mailer/mailer.js"></script>
-
   <script src="../mookiedoughfrontend/js/vendor/nouislider.min.js"></script>
   <script src="../mookiedoughfrontend/js/scripts.js"></script>
 
-  <script>
-    // Show our element, then call our callback
-    $(".canvasId").show(function () {
-      // Find the iframes within our newly-visible element
-      $(this).find("script").prop("src", function () {
-        // Set their src attribute to the value of data-src
-        return $(this).data("src");
-      });
-    });
-  </script>
 </body>
 
 </html>

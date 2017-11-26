@@ -6,7 +6,7 @@ alamode.controller('managementCtrl', function(User, $scope) {
     var app = this;
 
     app.loading = true; // Start loading icon on page load
-    app.accessDenied = true; // Hide table while loading
+    app.accessDenied = true; // Hide table wh1  qAile loading
     app.errorMsg = false; // Clear any error messages
     app.editAccess = false; // Clear access on load
     app.deleteAccess = false; // CLear access on load

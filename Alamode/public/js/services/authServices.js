@@ -65,7 +65,7 @@ angular.module('authServices', [])
             data.data.success=false;
             data.data.message ="User token not found locally";
             // return (data);
-            return $q.reject({message:'UserToken not found'}); // Reject if no token exists
+            return $q.reject({message:'User not logged in.',data:data}); // Reject if no token exists
         }
     };
 
@@ -83,8 +83,6 @@ angular.module('authServices', [])
 
     // Function to set and remove the token to/from local storage
     authTokenFactory.setToken = function(token) {
-        console.log('Social media Token');
-        console.log(token);
         // Check if token was provided in function parameters
         if (token) {
             $window.localStorage.setItem('token', token); // If so, set the token in local storage

@@ -10,3 +10,22 @@
 .mookie-slider.closed {
 	max-height: 0;
 }
+/* Go on codepen and figure out how to add some fancy css classes that can provide animations through angularjs */
+
+.add-cart-note {
+	display: none;
+	height: 200px;
+	width:100%;
+}
+
+.add-cart-note.ng-hide {
+	display:none;
+}
+.mookie-carousel{
+	overflow-x:auto;
+	/* overflow-x:auto;
+	white-space: nowrap;
+	display:flex; 
+	-webkit-overflow-scrolling: touch;
+	-ms-overflow-style: -ms-autohiding-scrollbar; */
+  }

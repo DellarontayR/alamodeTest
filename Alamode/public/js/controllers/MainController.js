@@ -4,10 +4,7 @@ alamode.controller('mainCtrl', function (Auth, $timeout, $location, $rootScope,
      $window, $interval, User, AuthToken, $scope, Cart, Product, MookieSubscription, ContactMessage) {
     var app = this;
     if ($window.location.pathname === '/') app.home = true; // Check if user is on home page to show home page div
-    // if($window.location.pathname === '/contacts')   GPS.init();
     
-    app.username = "";
-    app.user = {};
     app.loggedIn = false;
     app.userEmail = "";
     app.userData = {};
@@ -15,13 +12,9 @@ alamode.controller('mainCtrl', function (Auth, $timeout, $location, $rootScope,
     app.cart = {};
     app.products = false;
     if(navigator.geolocation){
-        console.log('Geolocation enabled');
-        console.log(navigator);
-        console.log(navigator.geolocation);
-        // navigator.geolocation.getCurrentPosition(function(position){
-        //     console.log('my position');
-        //     console.log(position);
-        // });
+        // console.log('Geolocation enabled');
+        // console.log(navigator);
+        // console.log(navigator.geolocation);
     }
 
     // Needed to keep Canva presentation loaded correctly
@@ -206,6 +199,13 @@ alamode.controller('mainCtrl', function (Auth, $timeout, $location, $rootScope,
                 else {
                     return callback(userData);
                 }
+            },function(err){
+                if(err){
+
+                }
+                else{
+                    
+                }
             });
         }
     };
@@ -294,7 +294,6 @@ alamode.controller('mainCtrl', function (Auth, $timeout, $location, $rootScope,
     $scope.mookie.showStripeModal = function () {
         $("#stripeModal").modal({ backdrop: "static" });
     };
-    /**/
 
     //Add a product to product catalog in database
     app.addProductToDB = function (productData) {
@@ -509,11 +508,7 @@ alamode.controller('mainCtrl', function (Auth, $timeout, $location, $rootScope,
     app.getProductsFromServer = function (callback) {
         (function () {
             Product.getCatalogProducts().then(function (data) {
-                console.log('data from catalog');
-                console.log(data);
                 if (data.data.success) {
-                    console.log("get catalog list success");
-                    // app.catalogProducts = data.data.catalogProducts;
                     return callback(data.data.catalogProducts);
                 }
                 else {
@@ -541,7 +536,6 @@ alamode.controller('mainCtrl', function (Auth, $timeout, $location, $rootScope,
     };
 
     app.getProducts = function (callback) {
-
         app.getProductsFromServer(function (catalogProducts) {
             app.catalogProducts = catalogProducts;
             return callback(catalogProducts);
@@ -577,7 +571,6 @@ alamode.controller('mainCtrl', function (Auth, $timeout, $location, $rootScope,
                     });
                 }
                 else {
-                    console.log('started from the bottom');
                     console.log(data);
                     //Make messaging service for different errors users can git
                 }
@@ -591,17 +584,22 @@ alamode.controller('mainCtrl', function (Auth, $timeout, $location, $rootScope,
 
     // Check if user's session has expired upon opening page for the first time
     //For all intents and purposes getemailAndUsername
+    //Check to see if user
     app.checkUserState = function (callback) {
         if (Auth.isLoggedIn()) {
             app.loggedIn = true;
             Auth.getUser().then(function (data) {
+                console.log('here');
+                console.log(data);
                 var userData = {};
                 userData.userEmail = data.data.email;
                 userData.username = data.data.username;
                 // Check if the returned user is undefined (expired)
                 if (data.data.username === undefined) {
+                    console.log(data.data.username);
                     Auth.logout(); // Log the user out
                     app.isLoggedIn = false; // Set session to false
+                    app.loggedIn = false;
                     $location.path('/'); // Redirect to home page
                     app.loadme = true; // Allow loading of page
                 }
@@ -718,9 +716,12 @@ alamode.controller('mainCtrl', function (Auth, $timeout, $location, $rootScope,
 
         // Check if user is logged in
         if (Auth.isLoggedIn()) {
+            console.log('logged in through Auth');
+
             // Custom function to retrieve user data
             Auth.getUser().then(function (data) {
                 if (data.data.username === undefined) {
+                    console.log('username invalid');
                     app.isLoggedIn = false; // Variable to deactivate ng-show on index
                     Auth.logout();
                     app.isLoggedIn = false;
@@ -745,14 +746,10 @@ alamode.controller('mainCtrl', function (Auth, $timeout, $location, $rootScope,
                 }
             });
         } else {
-            app.isLoggedIn = false; // User is not logged in, set variable to falses
             app.username = ''; // Clear username
             app.loadme = true; // Show main HTML now that data is obtained in AngularJS
         }
         if ($location.hash() == '_=_') $location.hash(null); // Check if facebook hash is added to URL
-        app.disabled = false; // Re-enable any forms
-        app.errorMsg = false; // Clear any error messages
-
     });
 
     // Function to redirect users to facebook authentication page
@@ -817,13 +814,14 @@ alamode.controller('mainCtrl', function (Auth, $timeout, $location, $rootScope,
 
     // Function to logout the user
     app.logout = function () {
-        Auth.logout(); // Logout user
+        console.log('logout');
+        Auth.logout(); // Logout user by removing jwt token
         app.loggedIn = false;
-
-        $location.path('/register');
-        app.loggedIn = false;
-        $scope.loggedIn = false;
+        // $timeout(function(){
+        //     $location.path('/register');
+        // },2000);
+        // app.loggedIn = false;
+        // $scope.loggedIn = false;
     };
-
 
 });

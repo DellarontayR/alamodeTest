@@ -33,8 +33,6 @@ alamode.directive('mookieMaps',function($q){
                 strokeOpacity:0.8,
                 strokeWeight:2
             });
-            console.log('path');
-            console.log(path);
             path.setMap(map);
 
 

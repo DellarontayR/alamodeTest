@@ -6,7 +6,6 @@
 
 jQuery(document).ready(function($) {
 	'use strict';
-
 	// Check if Page Scrollbar is visible
 	//------------------------------------------------------------------------------
 	var hasScrollbar = function() {
@@ -384,7 +383,7 @@ jQuery(document).ready(function($) {
 	//------------------------------------------------------------------------------
 	var $tooltip = $('[data-toggle="tooltip"]');
 	if ( $tooltip.length > 0 ) {
-		$tooltip.tooltip();
+		// $tooltip.tooltip();
 	}
 
 

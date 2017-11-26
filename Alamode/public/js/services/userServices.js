@@ -11,6 +11,10 @@ angular.module('userServices', [])
         return $http.post('/api/registerMookie',regData);
     };
 
+    userFactory.facebookRegister = function(regData){
+        return $http.post('/api/facebookRegister',regData);
+    };
+
     userFactory.getUsers = function(){
         return $http.get('/api/getUsers');
     };

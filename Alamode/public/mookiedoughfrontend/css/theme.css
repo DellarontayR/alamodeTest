@@ -39,7 +39,7 @@ body {
   font-weight: normal;
   line-height: 1.5;
   color: #606060;
-  background-color: #fff;
+  background-color: white;
   background-position: center;
   background-repeat: no-repeat;
   background-size: cover;
@@ -3955,7 +3955,8 @@ input[type="button"].btn-block {
 
 .shop-item {
   width: 100%;
-  margin-bottom: 36px;
+  /* margin-bottom: 36px; */
+  min-height:241px;
 }
 
 .shop-item .shop-thumbnail {
@@ -3990,7 +3991,9 @@ input[type="button"].btn-block {
   -o-transition: opacity 0.35s;
   transition: opacity 0.35s;
 }
-
+.shop-item-details{
+  background-color: white;
+}
 .shop-item .shop-item-details {
   display: table;
   width: 100%;

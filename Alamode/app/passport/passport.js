@@ -36,9 +36,9 @@ module.exports = function(app,passport){
 
     //Facebook Strategy
     passport.use(new FacebookStrategy({
-        clientID: '702601033268168',
-        clientSecret:'90f388e6b2dfee447b1da61bff3e7129',
-        callbackURL:'http://www.mookiedough.co/auth/facebook/callback',
+        clientID: '1755938197781526',
+        clientSecret:'540366e787f708849a05cdc15040f50e',
+        callbackURL:'http://localhost:8081/auth/facebook/callback',
         profileFields:['id','displayName','photos','email']
         },
         function(accessToken,refreshToken,profile,done){
@@ -49,7 +49,23 @@ module.exports = function(app,passport){
                     done(null,user);
                 }
                 else{
-                    done(err);
+                    var newUser = new User();
+                    
+                    newUser.email = profile._json.email;
+                    newUser.socialToken = accessToken;
+                    newUser.username = profile._json.name;
+                    newUser.temporarytoken = jwt.sign({username:newUser.username,email:newUser.email},secret,{expiresIn:'7d'});
+                    newUser.save(function(err,newUser){
+                        if(err) {
+                            return done(err);
+                        }
+
+                        if(newUser && newUser!= null){
+                            done(null,newUser);
+                        }else{
+                            return done(err);
+                        }
+                    });
                 }
             });
         }
@@ -57,48 +73,93 @@ module.exports = function(app,passport){
 
     //Twitter Strategy
     passport.use(new TwitterStrategy({
-        consumerKey:'Dms4vDslhg5MhUZC6F8GBat17',
-        consumerSecret:'LSBH6XgCg55AE8PzWohBHYZL5blnHCbkI07DQKekLdF25Lgk2G',
-        callbackURL: 'http://www.mookiedough.co/auth/twitter/callback',
-        userProfileURL: 'https://twitter.com/DellarontayR'
-    },
+        consumerKey:'bP8DUmlZfFk8WRsm3k2mbfMT0',
+        consumerSecret:'nnWVw1LuUGA1oJjZMvKj5i4RPNw2zUxwBbmq6fSytmt9pO1lAn',
+        callbackURL: 'http://localhost:8081/auth/twitter/callback',
+        userProfileURL: 'https://api.twitter.com/1.1/account/verify_credentials.json?include_email=true'
+        },
         function(token,tokenSecret,profile,done){
+            console.log('in function');
+            console.log(profile);    
             if(profile.emails){
-                User.fineOne({email:profile.emails[0].value}).select().exec(function(err,user){
+                console.log('true');
+            }   
+            else{
+                console.log('false');
+            }     
+            if(profile.emails){
+                User.findOne({email:profile.emails[0].value}).select().exec(function(err,user){
                     if(err){
-                        done(err);
-                    }else{
+                        return done(err);
+                    }
+                    else{
                         if(user&&user!==null){
                             done(null,user);
-                        }else{
-                            done(err);
+                        }
+                        else{
+                            console.log(profile)
+                            var newUser = new User();
+                            newUser.email = profile.emails[0].value;
+                            newUser.socialToken = token;
+                            newUser.username = profile._json.name;
+                            newUser.temporarytoken = jwt.sign({username:newUser.username,email:newUser.email},secret,{expiresIn:'7d'});
+                            newUser.save(function(err,newUser){
+                                if(err) {
+                                    return done(err);
+                                }
+        
+                                if(newUser && newUser!= null){
+                                    done(null,newUser);
+                                }
+                                else{
+                                    return done(err);
+                                }
+                            });
                         }
                     }
                 });
-            }else{
-                user={};
-                user.id = 'null';
-                user.active=true;
-                user.error = true;
-                done(null,user);
             }
+                else{
+                    user={};
+                    user.id = 'null';
+                    user.active=true;
+                    user.error = true;
+                    done(null,user);
+                }
         }
     ));
 
     // Google Strategy
     passport.use(new GoogleStrategy({
-        clientID: '196096326234-2dr9bvtp7tfmi4f6flem04ct2e3g7q93.apps.googleusercontent.com',
-        clientSecret: '9m0UzklV0K8vkJTXFHq8w23y',
-        callbackURL: 'http://www.mookiedough.co/auth/google/callback'
+        clientID: '208222066221-lbk84p46tnevf8cpnt7j1vugsrb7uq9j.apps.googleusercontent.com',
+        clientSecret: 'UuS0YC0AjxlniRm9qPR5sCWE',
+        callbackURL: 'http://localhost:8081/auth/google/callback'
     },
     function(accessToken,refreshToken,profile,done){
-        User.findOne({email:profile.emails[0].value}).select().exec(function(err,user){
-            if(err) done(err);
+        User.findOne({email:profile.emails[0].value}).select().exec(function(err,user){            
+            if(err) return done(err);
 
             if(user && user!==null){
-                done(null,user);
+                 done(null,user);
             } else{
-                done(err);
+                console.log(profile)
+                var newUser = new User();
+                newUser.email = profile.emails[0].value;
+                newUser.socialToken = accessToken;
+                newUser.username = profile._json.displayName;
+                newUser.temporarytoken = jwt.sign({username:newUser.username,email:newUser.email},secret,{expiresIn:'7d'});
+                newUser.save(function(err,newUser){
+                    if(err) {
+                        return done(err);
+                    }
+
+                    if(newUser && newUser!= null){
+                        done(null,newUser);
+                    }
+                    else{
+                        return done(err);
+                    }
+                });
             }
         });
     }
@@ -111,16 +172,16 @@ module.exports = function(app,passport){
     });
 
     // Twitter Routes
-    app.get('/auth/twitter',passport.authenticate('twitter'));
+    app.get('/auth/twitter',passport.authenticate('twitter',{scope:'email'}));
     app.get('/auth/twitter/callback',passport.authenticate('twitter',{failureRedirect:'/home'}),function(req,res){
         res.redirect('/twitter/'+token);
     });
 
     //Facebbok Routes
+    app.get('/auth/facebook',passport.authenticate('facebook',{scope:'email'}));
     app.get('/auth/facebook/callback',passport.authenticate('facebook',{failureRedirect:'/home'}),function(req,res){
         res.redirect('/facebook/'+token);
     });
-    app.get('/auth/facebook',passport.authenticate('facebook',{scope:'email'}));
 
     return passport;
 };

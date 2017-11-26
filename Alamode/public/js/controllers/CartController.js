@@ -32,6 +32,7 @@ alamode.controller('CartController', function ($scope, $location, User, Cart, Au
         }
     };
 
+    // Is this really in use??? Omg 
     app.getCurrentCart = function (callback) {
         var userData = {};
         userData.userEmail = app.email;
@@ -58,7 +59,7 @@ alamode.controller('CartController', function ($scope, $location, User, Cart, Au
                 }
                 else {
                     console.log(data);
-                    //Make messaging service for different errors users can git
+                    //Make messaging service for different errors users can get
                 }
 
             }
@@ -93,8 +94,6 @@ alamode.controller('CartController', function ($scope, $location, User, Cart, Au
                 //         app.cartProducts = products;
                 //     });
                 // });
-
-
             }
             else {
                 if (data.data.err) {
@@ -131,7 +130,6 @@ alamode.controller('CartController', function ($scope, $location, User, Cart, Au
         var productData = {};
         productData.productId = cartProduct._id;
         productData.cartId = app.cartId;
-
 
         app.cartProducts.splice(app.cartProducts.indexOf(cartProduct), 1);
         console.log('after splice');

@@ -1,23 +1,36 @@
 'use strict';
-console.log("here is stripe");
-// angular.module('alamode.controllers', ['userServices'])
-alamode.
-// Controller: regCtrl is used for users to register an account
-controller('regCtrl', function($http, $location, $timeout, User, $scope, Auth) {
-console.log('regCtrl active');
+
+alamode.controller('regCtrl', function($http, $location, $timeout, User, $scope, Auth) {
+    //Design decision:
+    //  Make all controllers use their scope for controller processes and limit the use of $scope.[container] variables
+    //  Or Stay inconcistent
     var app = this;
-    app.data ={};
     app.loginMessage = false;
     app.regMessage = false;
     app.regMsg = "";
     app.loginMsg = "";
     app.username = "";
     app.loggedIn = false;
+    app.chooseLogin = true;
+    app.chooseReg = false;
 
-    app.checkout = function(){
-        $scope.showMOd
-    }
+    //Switches UI to Reg
+    app.switchToReg = function(){
+        app.chooseLogin= false;        
+        app.chooseReg = true;
+    };
 
+    //Switches UI to Login
+    app.switchToLogin = function(){
+        app.chooseReg = false;
+        app.chooseLogin = true;
+    };
+
+    app.facebook = function(){
+        $window.location = $window.location.protocol + '//' + $window.location.host + '/auth/facebook';        
+    };
+    
+    // Checks to see if user is logged in and stores the user's username
     if(Auth.isLoggedIn()){
         app.loggedIn = true;
         Auth.getUser().then(function(data){
@@ -25,9 +38,9 @@ console.log('regCtrl active');
         });
     }
 
+    // Logs user ing by lookignat loginData and redirecting to account page
     this.mookieLogin = function(loginData){
         app.loginMessage = false;
-
         Auth.login(loginData).then(function(data){
             if(data.data.success){
                 app.loginMessage = true;
@@ -40,13 +53,9 @@ console.log('regCtrl active');
                     $location.path('/account');
                 }, 2000);
             } else{
-                console.log('login failure');
-
                 app.loginMessage = true;
                 if(data.data.message){
-                    app.loginMsg=data.data.message;
-                    console.log(data.data.message);
-                    
+                    app.loginMsg=data.data.message;                    
                 }
                 else{
                     app.loginMsg = "User could not be logged in.";
@@ -59,21 +68,18 @@ console.log('regCtrl active');
         Auth.logout();
     };
 
+
     this.registerMookie = function(regData){
         app.regMessage = false;
-        console.log('Try register');
 
         User.registerMookie(regData).then(function(data){
-            console.log('register');
-            
-            console.log(data);
             if(data.data.success){
                 app.username = regData.username;
                 Auth.login(app.regData);
                 app.loggedIn = true;
                 app.regMessage = true;
 
-                app.regMsg = "Sign up was successful";
+               app.regMsg = "Sign up was successful";
 
                 $timeout(function(){
                     app.regMessage = false;
@@ -217,7 +223,7 @@ console.log('regCtrl active');
 })
 
 //Need to use these social media controllers to enable registration and login using the token from 
-
+//Gets the temporary token from jwt
 // Controller: facebookCtrl is used finalize facebook login
 .controller('facebookCtrl', function($routeParams, Auth, $location, $window, $scope) {
 
@@ -225,7 +231,6 @@ console.log('regCtrl active');
     app.errorMsg = false; // Clear errorMsg on page load
     app.expired = false; // Clear expired on page load
     app.disabled = true; // On page load, remove disable lock from form
-
     // Check if callback was successful 
     if ($window.location.pathname == '/facebookerror') {
         $scope.alert = 'alert alert-danger'; // Set class for message
@@ -234,7 +239,8 @@ console.log('regCtrl active');
         app.expired = true; // Variable to activate "Resend Link Button"
         $scope.alert = 'alert alert-danger'; // Set class for message
         app.errorMsg = 'Account is not yet activated. Please check your e-mail for activation link.'; // If error, display custom message
-    } else {
+    }
+     else {
         Auth.socialMedia($routeParams.token); // If no error, set the token
         $location.path('/'); // Redirect to home page
     }
@@ -247,7 +253,6 @@ console.log('regCtrl active');
     app.errorMsg = false; // Clear errorMsg on page load
     app.expired = false; // Clear expired on page load
     app.disabled = true; // On page load, remove disable lock from form
-
     // Check if callback was successful         
     if ($window.location.pathname == '/twittererror') {
         $scope.alert = 'alert alert-danger'; // Set class for message
@@ -281,7 +286,9 @@ console.log('regCtrl active');
         app.expired = true; // Variable to activate "Resend Link Button"
         $scope.alert = 'alert alert-danger'; // Set class for message
         app.errorMsg = 'Account is not yet activated. Please check your e-mail for activation link.'; // If error, display custom message
-    } else {
+    }   else if($window.location.pathname == '/google/register'){
+        //Register user using 
+    } else if ($window.location.pathname == '/google/login') {
         Auth.socialMedia($routeParams.token); // If no error, set the token
         $location.path('/'); // Redirect to home page
     }

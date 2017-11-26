@@ -72,8 +72,14 @@ var app = angular.module('appRoutes',['ngRoute'])
         authenticated: false,
         controller: 'HomeController',
         controllerAs: 'home'
-    })//No menu for mookiedoughfrontend just use home page
+    })
     .when('/register',{
+        templateUrl: '../mookiedoughfrontend/new-reg.html',
+        controller: 'regCtrl',
+        controllerAs: 'user',
+        authenticated: false
+    })
+    .when('/new-reg',{
         templateUrl: '../mookiedoughfrontend/login.html',
         controller: 'regCtrl',
         controllerAs: 'user',
@@ -92,7 +98,7 @@ var app = angular.module('appRoutes',['ngRoute'])
     })
     // Route: Facebook Callback Result            
     .when('/facebook/:token', {
-        templateUrl: '../../views/user/social/social.html',
+        templateUrl: '../views/social.html',
         controller: 'facebookCtrl',
         controllerAs: 'facebook',
         authenticated: false
@@ -157,14 +163,14 @@ var app = angular.module('appRoutes',['ngRoute'])
 
     // Route: Twitter Callback Result
     .when('/twitter/:token', {
-        templateUrl: '../../views/user/social/social.html',
+        templateUrl: '../views/social.html',
         controller: 'twitterCtrl',
         controllerAs: 'twitter',
         authenticated: false
     })
     // Route: Google Callback Result
     .when('/google/:token', {
-        templateUrl: '../../views/user/social/social.html',
+        templateUrl: '../views/social.html',
         controller: 'twitterCtrl',
         controllerAs: 'twitter',
         authenticated: false
@@ -220,7 +226,7 @@ var app = angular.module('appRoutes',['ngRoute'])
 
     // Route: Twitter Not Yet Activated Error
     .when('/twitter/unconfirmed/error', {
-        templateUrl: '../../views/user/login.html',
+        templateUrl: '../views/social.html',
         controller: 'twitterCtrl',
         controllerAs: 'twitter',
         authenticated: false
@@ -295,7 +301,7 @@ var app = angular.module('appRoutes',['ngRoute'])
 
     .otherwise({ redirectTo: '/' }); // If user tries to access any other route, redirect to home page
 
-    $locationProvider.html5Mode({ enabled: true, requireBase: false }); // Required to remove AngularJS hash from URL (no base is required in index file)
+    $locationProvider.html5Mode({ enabled: true, requireBase: false,rewriteLinks: false }); // Required to remove AngularJS hash from URL (no base is required in index file)
 });
 
 // Run a check on each route to see if user is logged in or not (depending on if it is specified in the individual route)
@@ -329,6 +335,7 @@ app.run(['$rootScope', 'Auth', '$location', 'User', function($rootScope, Auth, $
                 //     event.preventDefault(); // If user is logged in, prevent accessing route
                 //     $location.path('/home'); // Redirect to profile instead
                 // }
+                
             }
         }
     });

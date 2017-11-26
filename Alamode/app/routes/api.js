@@ -17,7 +17,6 @@ mongoose.Promise = global.Promise;
 var Schema = mongoose.Schema;
 
 //Get emails to work
-//It was very simple with SimpleMail and the C# implementation previously
 
 // var sgTransport = require('nodemailer-sendgrid-transport'); // Import Nodemailer Sengrid Transport Package
 
@@ -36,16 +35,14 @@ module.exports = function (router) {
         service: 'Gmail',
         auth: {
             user: 'dellreadus@gmail.com', // Your email address
-            pass: '41508046' // Your password
+            pass: '######' // Your password
         },
         tls: { rejectUnauthorized: false }
     });
     // var client = nodemailer.createTransport(sgTransport(options)); // Use if using sendgrid configuration
     // End Sendgrid Configuration Settings  
 
-
     // SiteVisit apis
-
     router.post('/getSiteVisitors',function(req,res){
         SiteVisit.find({}).select().exec(function(err,siteVisits){
             if(err){
@@ -92,6 +89,7 @@ module.exports = function (router) {
         }    
     });
 
+    //Get all old carts of a user
     router.post('/getOldCarts',function(req,res){
         if(req.body.user == null || req.body.user == ''){
             res.json({success:false,message:'There was an error'});
@@ -113,6 +111,11 @@ module.exports = function (router) {
         }
     });
 
+    // Checks out a user's cart based on the cart's generated stripe token and user's information
+    //TODO: There needs to be a way to start an active delivery order that can be tracked that
+    // stores information like the location of the driver and customer and details on the order
+    // Use stripes charge and token system to store information about specific orders, copy the hash/token in stripe as the id for the order 
+    // Or! google how to order product ids for e commerce products
     router.post('/checkout', function (req, res) {
         if (req.body.token == null || req.body.name == null || req.body.price == null || req.body.userEmail == null
             || req.body.userEmail == '') {
@@ -181,18 +184,14 @@ module.exports = function (router) {
 
 
     // Android Apis
-
     router.post('/tryAndroid', function (req, res) {
         if (req.body.message == '' || req.body.message == null) {
             res.json({ success: false, message: 'Did not include a message to print out' });
         }
         else {
-            console.log('We got your post');
             res.json({ success: true, message: 'We got your try android post' });
         }
     });
-
-
 
     // contact message api
 
@@ -240,7 +239,6 @@ module.exports = function (router) {
 
 
     // Subscription api
-
     router.get('/getSubscribers', function (req, res) {
         Subscription.find({}).select('email created').exec(function (err, subscribers) {
             if (err) {
@@ -279,8 +277,11 @@ module.exports = function (router) {
             });
         }
     });
+    //I need to define how my apis will be entitled. 
+    //A cart is a cart but you can also get a cart through the user
+    // My method of getting the cart is not conssitent. Sometimes I ge the cart by 
 
-
+    // Cart apis
     router.post('/getCart', function (req, res) {
         Cart.findById(req.body.cartId).populate('products').exec(function (err, cart) {
             if (err || !cart) {
@@ -291,21 +292,7 @@ module.exports = function (router) {
             }
         });
     });
-
-
-    router.post('/getUser', function (req, res) {
-        User.findOne({ email: req.body.userEmail }).select().exec(function (err, user) {
-            if (err || !user) {
-                console.log(err);
-                console.log('real');
-                res.json({ success: false, message: err });
-            }
-            else {
-                res.json({ success: true, user: user });
-            }
-        });
-    });
-
+    
     router.post('/removeCart',function(req,res){
         User.findOne({email:req.body.userEmail}).select().exec(function(err,user){
             if(err){
@@ -330,6 +317,21 @@ module.exports = function (router) {
         });
     });
 
+    router.post('/getUser', function (req, res) {
+        User.findOne({ email: req.body.userEmail }).select().exec(function (err, user) {
+            if (err || !user) {
+                res.json({ success: false, message: err });
+            }
+            else {
+                if(!user){
+                    res.json({success:false,message:'Incorrect user infomation'});
+                }
+                else{
+                    res.json({ success: true, user: user });                    
+                }
+            }
+        });
+    });
 
     router.get('/checkUserCart', function (req, res) {
         User.findById(req.body.userId).select().exec(function (err, user) {
@@ -342,6 +344,7 @@ module.exports = function (router) {
             }
         });
     });
+
     router.post('/removeItemFromCart', function (req, res) {
         Cart.findById(req.body.cartId).select().exec(function (err, cart) {
             if (err) {
@@ -364,11 +367,6 @@ module.exports = function (router) {
                 res.json({ success: true, message: 'At least I got the cart', cart: cart });
             }
         });
-
-        //         Dive.update({ _id: diveId }, { "$pull": { "divers": { "user": userIdToRemove } }}, { safe: true, multi:true }, function(err, obj) {
-        //     //do something smart
-        // });
-
     });
 
     router.post('/seedCart', function (req, res) {
@@ -393,7 +391,6 @@ module.exports = function (router) {
         }
         else {
             product.save(function (err, newProduct) {
-
                 User.findById(req.body.userId).select().exec(function (err, user) {
                     var userData = {};
                     userData.user = user;
@@ -565,7 +562,6 @@ module.exports = function (router) {
         }
     });
 
-
     router.post('/seedProduct', function (req, res) {
         var product = new Product(req.body);
 
@@ -591,29 +587,30 @@ module.exports = function (router) {
     });
 
 
-    router.get('/startStripePayment', function (req, res) {
-        //token
-        //chargeamount
-        if (req.body.stripeToken == null || req.body.chargAamount == null) {
-            res.json({ success: false, message: 'stripeToken or chargeAmount were not included in http post request' });
-        }
-        else {
-            var token = req.body.stripeToken;
-            var chargeAmount = req.body.chargeAmount;
-            var charge = stripe.charges.create({
-                amount: chargeAmount,
-                currency: "usd",
-                source: token
-            }, function (err, charge) {
-                if (err && err.type === "StripeCardError") {
-                    console.log("your card declined");
-                }
-                else {
-                    console.log(charge);
-                }
-            })
-        }
-    });
+    // router.get('/startStripePayment', function (req, res) {
+    //     //token
+    //     //chargeamount
+    //     if (req.body.stripeToken == null || req.body.chargAamount == null) {
+    //         res.json({ success: false, message: 'stripeToken or chargeAmount were not included in http post request' });
+    //     }
+    //     else {
+    //         var token = req.body.stripeToken;
+    //         var chargeAmount = req.body.chargeAmount;
+    //         var charge = stripe.charges.create({
+    //             amount: chargeAmount,
+    //             currency: "usd",
+    //             source: token
+    //         }, function (err, charge) {
+    //             if (err && err.type === "StripeCardError") {
+    //                 console.log("your card declined");
+    //             }
+    //             else {
+    //                 console.log(charge);
+    //             }
+    //         })
+    //     }
+    // });
+
     router.post('/getCatalogProducts', function (req, res) {
         Product.find({ catalogProduct: true }).select().exec(function (err, catalogProducts) {
             if (err) {
@@ -659,8 +656,6 @@ module.exports = function (router) {
 
     router.post('/addCartToUser', function (req, res) {
         var cart = new Cart();
-        console.log('tried to add cart');
-        console.log(req.body);
         cart.save(function (err, userCart) {
             if (err) {
                 res.json({ success: false, message: "err" });
@@ -675,8 +670,6 @@ module.exports = function (router) {
                         res.json({ success: true, message: 'this is it', user: user });
 
                     }
-                    console.log('user hope');
-                    console.log(user);
                 });
             }
         });
@@ -748,6 +741,51 @@ module.exports = function (router) {
         });
     });
 
+    router.post('/facebookRegister',function(req,res){
+        var user = new User();
+        user.email = req.body.email;
+        user.socialToken = req.body.socialToken;
+        user.username = req.body.username;
+        user.temporaryToken = jwt.sign({username: user.username,email:user.email},secret,{expiresIn:'7d'});
+
+        if(req.body.username === null || req.body.username === '' || req.body.socialToken === null || req.body.email === null 
+            || req.body.email ===''){
+                res.json({success:false,message:'Ensure social login occured successfully'});
+        } else{
+            user.save(function(err,user){
+                if(err){
+                    if(err.errors!=null){
+                        if(err.errors.email){
+                            res.json({success:false,message: err.errors.email.message});
+                        } else if(err.errors.username){
+                            res.json({success:false,message:err.errors.username.message});
+                        }
+                    }
+                    else if(err){
+                        if (err.code == 11000) {
+                            if (err.errmsg[65] == "u") {
+                                res.json({ success: false, message: 'That username is already taken' }); // Display error if username already taken
+                            } else if (err.errmsg[65] == "e") {
+                                res.json({ success: false, message: 'That e-mail is already taken' }); // Display error if e-mail already taken
+                            }
+                            else{
+                                res.json({success:false,message:'An error occurred'});
+                            }
+                        } else {
+                            res.json({ success: false, message: err }); // Display any other error
+                        }
+                    }
+                }
+                else{
+                    res.json({ success: true, message: 'Account registered! Please check your e-mail for activation link.' }); // Send success message back to controller/request                    
+                }
+
+            },function(err){
+                res.json({success:false, message: 'There was an unknown error'});
+            });
+        }
+    });
+
     router.post('/registerMookie', function (req, res) {
         var user = new User();
         //json body needs username, passowrd, email, name
@@ -777,7 +815,6 @@ module.exports = function (router) {
                     else if (err) {
                         // Check if duplication error exists
                         if (err.code == 11000) {
-                            console.log('line 794');
                             console.log(err);
                             if (err.errmsg[65] == "u") {
                                 res.json({ success: false, message: 'That username is already taken' }); // Display error if username already taken
@@ -793,14 +830,12 @@ module.exports = function (router) {
                     }
                 }
                 else {
-                    console.log("register successful");
                     res.json({ success: true, message: 'Account registered! Please check your e-mail for activation link.' }); // Send success message back to controller/request
                 }
             },function(err){
                 console.log('There was an error');
                 res.json({success:false,message:'An Error has occurred',err:err});
             });
-            console.log('after user');
         }
     });
 
@@ -1296,7 +1331,6 @@ module.exports = function (router) {
 
     // Route to get the currently logged in user    
     router.post('/me', function (req, res) {
-        console.log(req.decoded);
         res.send(req.decoded); // Return the token acquired from middleware
     });
 
