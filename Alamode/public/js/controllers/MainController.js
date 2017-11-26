@@ -817,10 +817,10 @@ alamode.controller('mainCtrl', function (Auth, $timeout, $location, $rootScope,
         console.log('logout');
         Auth.logout(); // Logout user by removing jwt token
         app.loggedIn = false;
-        // $timeout(function(){
-        //     $location.path('/register');
-        // },2000);
-        // app.loggedIn = false;
+        $timeout(function(){
+            app.loggedIn = false;            
+            $location.path('/register');
+        },2000);
         // $scope.loggedIn = false;
     };
 
