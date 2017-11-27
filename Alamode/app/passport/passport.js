@@ -38,7 +38,7 @@ module.exports = function(app,passport){
     passport.use(new FacebookStrategy({
         clientID: '1755938197781526',
         clientSecret:'540366e787f708849a05cdc15040f50e',
-        callbackURL:'http://localhost:8081/auth/facebook/callback',
+        callbackURL:'https://wwww.mookiedough.co/auth/facebook/callback',
         profileFields:['id','displayName','photos','email']
         },
         function(accessToken,refreshToken,profile,done){
@@ -75,7 +75,7 @@ module.exports = function(app,passport){
     passport.use(new TwitterStrategy({
         consumerKey:'bP8DUmlZfFk8WRsm3k2mbfMT0',
         consumerSecret:'nnWVw1LuUGA1oJjZMvKj5i4RPNw2zUxwBbmq6fSytmt9pO1lAn',
-        callbackURL: 'http://localhost:8081/auth/twitter/callback',
+        callbackURL: 'https://www.mookiedough.co/auth/twitter/callback',
         userProfileURL: 'https://api.twitter.com/1.1/account/verify_credentials.json?include_email=true'
         },
         function(token,tokenSecret,profile,done){
@@ -133,7 +133,7 @@ module.exports = function(app,passport){
     passport.use(new GoogleStrategy({
         clientID: '208222066221-lbk84p46tnevf8cpnt7j1vugsrb7uq9j.apps.googleusercontent.com',
         clientSecret: 'UuS0YC0AjxlniRm9qPR5sCWE',
-        callbackURL: 'http://localhost:8081/auth/google/callback'
+        callbackURL: 'https://www.mookiedough.co/auth/google/callback'
     },
     function(accessToken,refreshToken,profile,done){
         User.findOne({email:profile.emails[0].value}).select().exec(function(err,user){            
