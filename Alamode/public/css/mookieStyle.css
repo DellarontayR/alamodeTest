@@ -29,3 +29,5 @@
 	-webkit-overflow-scrolling: touch;
 	-ms-overflow-style: -ms-autohiding-scrollbar; */
   }
+  .nav, .pagination, .carousel, .panel-title a { cursor: pointer; }
+  

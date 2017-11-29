@@ -305,7 +305,24 @@ var app = angular.module('appRoutes',['ngRoute'])
 });
 
 // Run a check on each route to see if user is logged in or not (depending on if it is specified in the individual route)
-app.run(['$rootScope', 'Auth', '$location', 'User', function($rootScope, Auth, $location, User) {
+app.run(['$rootScope', 'Auth', '$location', 'User', 'Carousel', function($rootScope, Auth, $location, User,Carousel) {
+
+    Carousel.setOptions({
+        arrows: true,
+        autoplay: false,
+        autoplaySpeed: 3000,
+        cssEase: 'ease',
+        dots: false,
+     
+        easing: 'linear',
+        fade: false,
+        infinite: true,
+        initialSlide: 0,
+     
+        slidesToShow: 1,
+        slidesToScroll: 1,
+        speed: 500,
+      });
     // Check each time route changes    
     $rootScope.$on('$routeChangeStart', function(event, next, current) {
 

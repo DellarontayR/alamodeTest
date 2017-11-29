@@ -3,11 +3,11 @@
   <!-- Container -->
   <form method="post" class="container padding-top-3x padding-bottom-2x">
 
-    <h1 class="space-top-half">Checkout</h1>
+    <h1 class="space-top-half text-center">Checkout</h1>
     <div class="row padding-top">
 
       <!-- Checkout Form -->
-      <div class="col-sm-8 padding-bottom">
+      <div class="col-sm-8 col-md-4 col-md-offset-3 padding-bottom">
         <!-- .row -->
         <div class="row">
           <!-- <a href="#" class="add-to-cart" ng-click="mookie.showStripeModal()">
@@ -21,10 +21,10 @@
               <form>
                 <div class="group">
                   <label>
-                        <input name="cardholder-name" class="field is-empty" placeholder="Name Jane Doe" ng-model="cartCtrl.checkoutData.name" />
+                        <input name="cardholder-name" class="field is-empty" placeholder="Name Jane Doe" ng-model="cartCtrl.checkoutData.name" style="color:black"/>
                   </label>
                   <label>
-                        <input class="field is-empty" type="tel" placeholder="Phone number (123) 456-7890" ng-model="cartCtrl.checkoutData.number" />
+                        <input class="field is-empty" type="tel" placeholder="Phone number (123) 456-7890" ng-model="cartCtrl.checkoutData.number" style="color:black"/>
                   </label>
                 </div>
                 <div class="group">
@@ -32,21 +32,30 @@
                         <div id="card-element" class="field is-empty" required></div>
                   </label>
                  
-                  <label for="card-element">
-                      <span><span><p style="position:absolute">{{cartCtrl.checkoutMessage}}</p></span></span>                      
-                  </label>
-                
-                  
+                 
                 </div>
+                <label for="card-element" style="height:auto">
+                  <span><span><p style="position:absolute">{{cartCtrl.checkoutMessage}}</p></span></span>                      
+                </label>
               </form>
 
         </div>
         <div class="row" ng-show="cartCtrl.chargeSuccessful">
 
         </div>
-
-        
-
+        <div class="row">
+          <form action="/your-server-side-code" method="POST">
+            <script
+              src="https://checkout.stripe.com/checkout.js" class="stripe-button"
+              data-key="pk_test_EPjnzpxnrgvUiGWsYrJjqN5t"
+              data-amount="2000"
+              data-name="Mookie Dough LLC"
+              data-description="2 widgets"
+              data-image="https://stripe.com/img/documentation/checkout/marketplace.png"
+              data-locale="auto">
+            </script>
+            </form>
+        </div>
       </div>
 
       

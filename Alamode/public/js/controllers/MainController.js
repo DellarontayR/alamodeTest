@@ -17,15 +17,6 @@ alamode.controller('mainCtrl', function (Auth, $timeout, $location, $rootScope,
         // console.log(navigator.geolocation);
     }
 
-    // Needed to keep Canva presentation loaded correctly
-    // $(".canvasId").show(function () {
-    //     // Find the iframes within our newly-visible element
-    //     $(this).find("script").prop("src", function () {
-    //       // Set their src attribute to the value of data-src
-    //       return $(this).data("src");
-    //     });
-    // });
-
     $scope.mookie = {};
     $scope.mookie.userCart = {};
     $scope.mookie.user = {};
@@ -34,7 +25,6 @@ alamode.controller('mainCtrl', function (Auth, $timeout, $location, $rootScope,
     $scope.mookie.admin = false;
 
     $scope.mookie.numberOfSiteVisitors = 0;//Display visitors to site
-
     // Checks to see if visitor has visitor's ip address has visited our site before
     $scope.mookie.checkVisitor = function(ipAddress){
         var ipData ={};
@@ -79,7 +69,6 @@ alamode.controller('mainCtrl', function (Auth, $timeout, $location, $rootScope,
                 cartData.cart = data.data.cart;
                 cartData.itemCount = itemCount;
                 $scope.mookie.cartItemCount = itemCount;
-                console.log('success');
                 return callback(cartData);
             }
             else {
@@ -293,6 +282,13 @@ alamode.controller('mainCtrl', function (Auth, $timeout, $location, $rootScope,
 
     $scope.mookie.showStripeModal = function () {
         $("#stripeModal").modal({ backdrop: "static" });
+    };
+
+    $scope.mookie.slides= {
+        image:'../../imgs/Media/dorm5-min.jpg',
+        image:'../../imgs/Media/dorm5-min.jpg',
+        image:'../../imgs/Media/dorm5-min.jpg',
+        image:'../../imgs/Media/dorm5-min.jpg'
     };
 
     //Add a product to product catalog in database

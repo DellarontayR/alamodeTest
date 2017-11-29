@@ -174,6 +174,12 @@ alamode.controller('CartController', function ($scope, $location, User, Cart, Au
                 iconColor: '#fa755a'
             }
         };
+        // style = {
+        //     base: {
+        //         fontSize: '16px',
+        //         lineHeight:'24x'
+        //     }
+        // };
 
         // Create an instance of the card Element
         card = elements.create('card', { style: style });
@@ -192,6 +198,7 @@ alamode.controller('CartController', function ($scope, $location, User, Cart, Au
         //get user's email or most easily available information
         //I should make sure #scope.mookie.email is always available for this situation so that I can always get the user. Or maybe $scope.mookie.user itself.
 
+        stripe.createSource
         //Check to see if values in cart?
         //Ate least make sure app.checkoutData.name and $scope.mookie.total != null
         stripe.createToken(card,extraDetails).then(function(result){

@@ -2,10 +2,22 @@
 <div class="page-wrapper">
   <!-- Featured Categories -->
   <section class="container-fluid" style="padding-top: 7px;">
-   <!-- Place a carousel here for the different categories or maybe just a test carousel to begin with -->
+    <!-- Place a carousel here for the different categories or maybe just a test carousel to begin with -->
 
-   <!--  -->
-
+      <ui-carousel 
+      slides="mookie.slides"
+      slides-to-show="3"
+      slides-to-scroll="1"
+      initial-slide="1"
+      autoplay="true"
+      autoplay-speed="2000"
+      dots="true">
+    
+      <carousel-item>
+        <div class="image"><img src="{{item.image}}"></div>
+      </carousel-item>
+      </ui-carousel>
+    <!--  -->
     <div class="row">
       <div class="col-md-6">
         <a href="/cookiedoughmainshop" class="category-tile">
@@ -83,19 +95,19 @@
         <div class="shop-item" ng-click="mookie.showProductModal(catalogProduct)">
           <div class="shop-thumbnail">
             <span class="item-rating text-warning">
-                <i class="material-icons star"></i>
-                <i class="material-icons star"></i>
-                <i class="material-icons star"></i>
-                <i class="material-icons star"></i>
-                <i class="material-icons star_border"></i>
-              </span>
+              <i class="material-icons star"></i>
+              <i class="material-icons star"></i>
+              <i class="material-icons star"></i>
+              <i class="material-icons star"></i>
+              <i class="material-icons star_border"></i>
+            </span>
             <span class="shop-label text-danger"> Sale</span>
             <a href="#" class="item-link"></a>
             <img ng-src="{{catalogProduct.imagePath}}" alt="Shop item">
             <div class="shop-item-tools">
               <a href="#" class="add-to-wishlist" data-toggle="tooltip" data-placements="top" title="" data-original-title="Wishlist">
-                  <i class="material-icons favorite_border"></i>
-                </a>
+                <i class="material-icons favorite_border"></i>
+              </a>
               <a href="#" class="add-to-cart">
                 <!-- <em ng-click="home.addToCart(catalogProduct)"> Add to Cart</em> -->
                 <em ng-click="mookie.addToCart(catalogProduct); $event.stopPropagation();$event.preventDefault();"> Add to Cart</em>
@@ -109,9 +121,11 @@
             <!-- Inside thumbnail -->
           </div>
           <div class="shop-item-details">
-            <h3 class="shop-item-title"><a href="#">{{catalogProduct.title}}</a></h3>
+            <h3 class="shop-item-title">
+              <a href="#">{{catalogProduct.title}}</a>
+            </h3>
             <span class="shop-item-price">
-                      <span class="old-price">$6.50</span> {{catalogProduct.price | currency}}
+              <span class="old-price">$6.50</span> {{catalogProduct.price | currency}}
             </span>
           </div>
         </div>
@@ -135,20 +149,25 @@
             <img ng-src="{{catalogProduct.imagePath}}" alt="Shop item">
             <div class="shop-item-tools">
               <a href="#" class="add-to-wishlist" data-toggle="tooltip" data-placements="top" title="" data-original-title="Wishlist">
-                  <i class="material-icons favorite_border"></i>
-                </a>
+                <i class="material-icons favorite_border"></i>
+              </a>
               <a href="#" class="add-to-cart">
-                  <em ng-click="mookie.addToCart(catalogProduct); $event.stopPropagation();$event.preventDefault();"> Add to Cart</em>
-                  <svg x="0px" y="0px" width="32px" height="32px" viewBox="0 0 32 32">
-                    <path stroke-dasharray="19.79 19.79" stroke-dashoffset="19.79" fill="none" stroke="#FFFFFF" stroke-width="2" stroke-linecap="square" stroke-miterlimit="10" d="M9,17l3.9,3.9c0.1,0.1,0.2,0.1,0.3,0L23,11"></path>
-                  </svg></a></div>
-                  <!-- <div class="mooke-slider">Some content here....</div> -->
-                  
+                <em ng-click="mookie.addToCart(catalogProduct); $event.stopPropagation();$event.preventDefault();"> Add to Cart</em>
+                <svg x="0px" y="0px" width="32px" height="32px" viewBox="0 0 32 32">
+                  <path stroke-dasharray="19.79 19.79" stroke-dashoffset="19.79" fill="none" stroke="#FFFFFF" stroke-width="2" stroke-linecap="square"
+                    stroke-miterlimit="10" d="M9,17l3.9,3.9c0.1,0.1,0.2,0.1,0.3,0L23,11"></path>
+                </svg>
+              </a>
+            </div>
+            <!-- <div class="mooke-slider">Some content here....</div> -->
+
           </div>
           <div class="shop-item-details">
-            <h3 class="shop-item-title"><a href="#">{{catalogProduct.title}}</a></h3>
+            <h3 class="shop-item-title">
+              <a href="#">{{catalogProduct.title}}</a>
+            </h3>
             <span class="shop-item-price">
-                      <span class="old-price">$6.50</span> {{catalogProduct.price | currency}}
+              <span class="old-price">$6.50</span> {{catalogProduct.price | currency}}
             </span>
           </div>
         </div>
@@ -159,7 +178,7 @@
   <!-- .container -->
 
   <!-- Video Popup -->
-  
+
   <!-- .fw-section -->
 
   <!-- Features -->

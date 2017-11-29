@@ -11,31 +11,16 @@ alamode.controller('CheckoutController', function ($scope, $location, User, Cart
 
     // if ($scope.mookie.checkout) {
     checkoutCtrl.setupStripeCard = function(){
-        var style = {
+        style = {
             base: {
-                iconColor: '#666EE8',
-                color: '#31325F',
-                lineHeight: '40px',
-                fontWeight: 300,
-                fontFamily: '"Helvetica Neue", Helvetica, sans-serif',
-                fontSize: '15px',
-          
-                '::placeholder': {
-                  color: '#CFD7E0',
-                }
+                fontSize: '16px',
+                lineHeight:'24x'
             },
             invalid: {
                 color: '#fa755a',
                 iconColor: '#fa755a'
             }
         };
-
-        style = {
-            base: {
-                fontSize: '16px',
-                lineHeight:'24x'
-            }
-        }
         // Create an instance of the card Element
         card = elements.create('card', { style: style });
 
