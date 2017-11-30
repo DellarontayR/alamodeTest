@@ -280,15 +280,14 @@ alamode.controller('mainCtrl', function (Auth, $timeout, $location, $rootScope,
 
     };
 
+    
+
     $scope.mookie.showStripeModal = function () {
         $("#stripeModal").modal({ backdrop: "static" });
     };
 
     $scope.mookie.slides= {
-        image:'../../imgs/Media/dorm5-min.jpg',
-        image:'../../imgs/Media/dorm5-min.jpg',
-        image:'../../imgs/Media/dorm5-min.jpg',
-        image:'../../imgs/Media/dorm5-min.jpg'
+        slides:["../../imgs/Media/dorm5-min.jpg","../../imgs/Media/header3.png"]
     };
 
     //Add a product to product catalog in database

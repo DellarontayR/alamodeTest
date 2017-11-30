@@ -4,21 +4,25 @@
   <section class="container-fluid" style="padding-top: 7px;">
     <!-- Place a carousel here for the different categories or maybe just a test carousel to begin with -->
 
+    <div class="row">
       <ui-carousel 
-      slides="mookie.slides"
-      slides-to-show="3"
+      slides="mookie.slides.slides"
+      slides-to-show="1"
       slides-to-scroll="1"
       initial-slide="1"
       autoplay="true"
-      autoplay-speed="2000"
-      dots="true">
+      autoplay-speed="5000"
+      arrows="false"
+    >
     
-      <carousel-item>
-        <div class="image"><img src="{{item.image}}"></div>
-      </carousel-item>
+        <carousel-item> 
+          <div class="image"><img  style="height:400px; width:100%;" ng-src="{{item}}"></div>
+        </carousel-item>
       </ui-carousel>
+  </div>
+
     <!--  -->
-    <div class="row">
+    <!-- <div class="row">
       <div class="col-md-6">
         <a href="/cookiedoughmainshop" class="category-tile">
           <div class="inner">
@@ -79,7 +83,7 @@
           </div>
         </a>
       </div>
-    </div>
+    </div> -->
     <!-- .row -->
   </section>
   <!-- .container-fluid -->
