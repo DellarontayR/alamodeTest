@@ -140,96 +140,9 @@ alamode.controller('CartController', function ($scope, $location, User, Cart, Au
                 console.log(data);
             }
             else {
-                console.log('product was not delelted');
+                console.log('something happended would you like to delete your cart and try again?');
                 console.log(data);
             }
         });
     };
-
-
-    //Move all CheckoutController here
-
-    if ($window.location.pathname === '/checkout') app.checkout = true; // Check if user is on home page to show home page div  
-    var card = false;
-    app.checkoutMessage = "";
-    app.chargeSuccessful = false;
-
-
-    if ($scope.mookie.checkout) {
-        var style = {
-            base: {
-                iconColor: '#666EE8',
-                color: '#31325F',
-                lineHeight: '40px',
-                fontWeight: 300,
-                fontFamily: '"Helvetica Neue", Helvetica, sans-serif',
-                fontSize: '15px',
-          
-                '::placeholder': {
-                  color: '#CFD7E0',
-                }
-            },
-            invalid: {
-                color: '#fa755a',
-                iconColor: '#fa755a'
-            }
-        };
-        // style = {
-        //     base: {
-        //         fontSize: '16px',
-        //         lineHeight:'24x'
-        //     }
-        // };
-
-        // Create an instance of the card Element
-        card = elements.create('card', { style: style });
-
-        // Add an instance of the card Element into the `card-element` <div>
-        card.mount('#card-element');
-    }
-
-    app.checkoutData = {};
-
-    app.doCheckout = function(checkoutData){
-        var extraDetails={
-            name: checkoutData.name,
-        };
-
-        //get user's email or most easily available information
-        //I should make sure #scope.mookie.email is always available for this situation so that I can always get the user. Or maybe $scope.mookie.user itself.
-
-        stripe.createSource
-        //Check to see if values in cart?
-        //Ate least make sure app.checkoutData.name and $scope.mookie.total != null
-        stripe.createToken(card,extraDetails).then(function(result){
-            if(result.token){
-
-
-                $scope.mookie.getEmailAndUsername(function(userData){
-                    var stripeData ={};
-                    stripeData.token = result.token.id;
-                    stripeData.name = checkoutData.name;
-                    stripeData.price = $scope.mookie.total * 100;
-                    stripeData.userEmail = userData.userEmail;
-                    stripeService.checkout(stripeData).then(function(data){
-                        app.checkoutMessage = data.data.message;
-                        if(data.data.success){
-                            app.checkoutMessage = "Charge successful";
-
-                            $scope.mookie.showStripeModal();
-                        }
-                        else{
-                            console.log('chekcout failed');
-                            app.checkoutMessage='Charge not successful';    
-                        }
-                    });
-                });
-            }
-            else{
-                //print out error
-                app.checkoutMessage = "Card Incorrect";
-            }
-        });
-    };
-
 });

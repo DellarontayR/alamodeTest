@@ -6,6 +6,9 @@ var app = angular.module('appRoutes',['ngRoute'])
     $routeProvider.when('/',{
         redirectTo: '/home'
     }).
+    when('/catering',{
+        templateUrl: '../views/catering.html'
+    }).
     when('/about',{
         templateUrl: '../mookiedoughfrontend/about.html',
         authenticated: false
@@ -128,7 +131,7 @@ var app = angular.module('appRoutes',['ngRoute'])
     .when('/checkout',{
         templateUrl: '../mookiedoughfrontend/checkout.html',
         authenticated: true,
-        controller: 'CartController',
+        controller: 'CheckoutController',
         controllerAs: 'cartCtrl'
     })
     .when('/blog', {

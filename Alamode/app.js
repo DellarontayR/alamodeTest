@@ -24,7 +24,8 @@ mongoose.Promise = global.Promise;
  * Connection to mongodb database on port: 27107
  */
 // mongoose.connect('mongodb://localhost:27017/test', function(err){
-mongoose.connect('mongodb://13.56.151.113:27017/production', function(err){
+mongoose.connect('mongodb://13.56.184.81:27017/production',function(err){
+// mongoose.connect('mongodb://13.56.151.113:27017/production', function(err){
     if(err){
         console.log("database not connected " + err);
     }else{

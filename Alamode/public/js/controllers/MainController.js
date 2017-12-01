@@ -584,8 +584,6 @@ alamode.controller('mainCtrl', function (Auth, $timeout, $location, $rootScope,
         if (Auth.isLoggedIn()) {
             app.loggedIn = true;
             Auth.getUser().then(function (data) {
-                console.log('here');
-                console.log(data);
                 var userData = {};
                 userData.userEmail = data.data.email;
                 userData.username = data.data.username;
