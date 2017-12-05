@@ -28,7 +28,8 @@ alamode.controller('CheckoutController', function ($scope, $location, User, Cart
             }
         };
         // Create an instance of the card Element
-        card = elements.create('card', { style: style });
+        card = elements.create('card', { style: style }); // elements from cartController
+        // Which means I can use stripe from cartController
 
         // Add an instance of the card Element into the `card-element` <div>
         card.mount('#card-element');
@@ -37,6 +38,21 @@ alamode.controller('CheckoutController', function ($scope, $location, User, Cart
     checkoutCtrl.setupStripeCard();
 
     checkoutCtrl.checkoutData = {};
+
+    checkoutCtrl.doBitcoinCheckout = function(){
+        stripe.sources.create({
+            type: "bitcoin",
+            amount: 1,
+            currency: "usd",
+            owner: {
+              email: "dellreadus@gmail.com"
+            }
+          }, function(err, source) {
+              console.log('stripe source creation');
+              console.log(err);
+              console.log(source);
+          });
+    };
 
     checkoutCtrl.doCheckout = function(checkoutData){
         var extraDetails={

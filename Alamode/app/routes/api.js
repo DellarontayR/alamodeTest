@@ -586,31 +586,6 @@ module.exports = function (router) {
         }
     });
 
-
-    // router.get('/startStripePayment', function (req, res) {
-    //     //token
-    //     //chargeamount
-    //     if (req.body.stripeToken == null || req.body.chargAamount == null) {
-    //         res.json({ success: false, message: 'stripeToken or chargeAmount were not included in http post request' });
-    //     }
-    //     else {
-    //         var token = req.body.stripeToken;
-    //         var chargeAmount = req.body.chargeAmount;
-    //         var charge = stripe.charges.create({
-    //             amount: chargeAmount,
-    //             currency: "usd",
-    //             source: token
-    //         }, function (err, charge) {
-    //             if (err && err.type === "StripeCardError") {
-    //                 console.log("your card declined");
-    //             }
-    //             else {
-    //                 console.log(charge);
-    //             }
-    //         })
-    //     }
-    // });
-
     router.post('/getCatalogProducts', function (req, res) {
         Product.find({ catalogProduct: true }).select().exec(function (err, catalogProducts) {
             if (err) {
