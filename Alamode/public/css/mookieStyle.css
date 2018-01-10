@@ -29,5 +29,22 @@
 	-webkit-overflow-scrolling: touch;
 	-ms-overflow-style: -ms-autohiding-scrollbar; */
   }
+
+  .product-carousel{
+	display:inline-block;
+	white-space: nowrap;
+	overflow-y: hidden;
+	overflow-x: hidden;
+	-webkit-overflow-scrolling: touch;
+	height:300px;
+	max-width:100%;
+
+  }
+
+  .product-carousel-internal{
+	  display:inline-block;
+	  max-width:300px;
+	  margin-right:5px;
+  }
   .nav, .pagination, .carousel, .panel-title a { cursor: pointer; }
   

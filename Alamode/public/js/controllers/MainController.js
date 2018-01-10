@@ -287,7 +287,7 @@ alamode.controller('mainCtrl', function (Auth, $timeout, $location, $rootScope,
     };
 
     $scope.mookie.slides= {
-        slides:["../../imgs/Media/dorm5-min.jpg","../../imgs/Media/header3.png"]
+        slides:["../../imgs/Media/dorm5-min.jpg","../../imgs/Media/header3.png","../../imgs/Media/M00KIE.jpg"]
     };
 
     //Add a product to product catalog in database
