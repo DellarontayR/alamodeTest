@@ -1,50 +1,47 @@
 <!-- Page Wrapper -->
 <div class="page-wrapper">
- 
-  <!-- Featured Categories -->
-  <section class="container-fluid" style="padding-top: 7px;">
-    <!-- Place a carousel here for the different categories or maybe just a test carousel to begin with -->
-    <div class="row">
-        <ui-carousel 
-        slides="mookie.slides.slides"
-        slides-to-show="1"
-        slides-to-scroll="1"
-        initial-slide="1"
-        autoplay="true"
-        autoplay-speed="3000"
-        arrows="false"
-        dots="true"
-        class="visible-mobile"
-      >
-          <carousel-item> 
-            <div class="image"><img class="center-block"  style="height:200px; width:auto; border-left:5px;" ng-src="{{item}}"></div>
-          </carousel-item>
-        </ui-carousel>
+
+  <div class="row">
+      <product class="col-md-6 mookie-imgz" info="home.aCatalogProduct"></product>
+
+  </div>
+
+  <!-- announcement wheel with 2 doors? -->
+  <div class="row">
+    <div class="col-md-6 col-sm-6 col-lg-6 col-xs-6 primary-background">
+
     </div>
 
-    <div class="row">
-      <ui-carousel 
-      slides="mookie.slides.slides"
-      slides-to-show="1"
-      slides-to-scroll="1"
-      initial-slide="1"
-      autoplay="true"
-      autoplay-speed="3000"
-      arrows="false"
-      dots="true"
-      class="visible-desktop"
-    >
-    
-        <carousel-item> 
-          <div class="image"><img class="center-block" style="height:400px; width:auto;" ng-src="{{item}}"></div>
-        </carousel-item>
-      </ui-carousel>
+    <div class="col-md-6 col-sm-6 col-lg-6 col-xs-6 secondary-background">
+      
+    </div>
+
   </div>
-  </section>
-  <!-- .container-fluid -->
 
+  <!--  -->
+  <!-- Featured Categories -->
+  <div class="row">
+    <ui-carousel slides="mookie.slides.slides" slides-to-show="1" slides-to-scroll="1" initial-slide="1" autoplay="true" autoplay-speed="3000"
+      arrows="false" dots="true" class="visible-mobile">
+      <carousel-item>
+        <div class="image">
+          <img class="center-block" style="height:200px; width:auto; border-left:5px;" ng-src="{{item}}">
+        </div>
+      </carousel-item>
+    </ui-carousel>
+  </div>
 
+  <div class="row">
+    <ui-carousel slides="mookie.slides.slides" slides-to-show="1" slides-to-scroll="1" initial-slide="1" autoplay="true" autoplay-speed="3000"
+      arrows="false" dots="true" class="visible-desktop">
 
+      <carousel-item>
+        <div class="image">
+          <img class="center-block" style="height:400px; width:auto;" ng-src="{{item}}">
+        </div>
+      </carousel-item>
+    </ui-carousel>
+  </div>
 
   <!-- Horizontal product list psuedocode
     An ng-repeat list of products formatted currently like they are. With the ability the swipe right if the current view has items to the right and enable swipe left with there are items on the left
@@ -52,11 +49,46 @@
     All of this should work within a row with the overflow setting set to true
   -->
 
-  <section class="container">
-    <div class="row product-carousel" style="height:300px">
-      <div class="product-carousel-internal" ng-repeat="catalogProduct in home.catalogProducts">
+  <section class="container" style="margin-top:50px;">
+    <div class="row product-carousel">
 
-        <div class="shop-item" ng-click="mookie.showProductModal(catalogProduct)">
+      <div class="nav-containers">
+        <i class="fas fa-chevron-left left-product-tab"></i>
+      </div>
+      <!-- ng-if both tabs check to see if there are items to the left or right of the current carousel -->
+
+
+      <div class="product-carousel-internal" ng-repeat="catalogProduct in home.catalogProducts" ng-init="catalogProduct.itemAdded = false">
+
+        <div class="mookie-product" ng-click="mookie.showProductModal(catalogProduct)">
+          <div class="mookie-product-thumbnail">
+            <img align="left" class="mookie-img" ng-src="{{catalogProduct.imagePath}}" alt="Shop item">
+          </div>
+          <div class="mookie-shop-item-tools">
+            <div class="mookie-shop-item-details">
+              <p class="mookie-shop-item-price">
+                {{catalogProduct.price | currency}}
+              </p>
+              <h3 class="mookie-shop-item-title">
+                <span class="mookie-title">{{catalogProduct.title}}</span>
+              </h3>
+            </div>
+
+            <!-- use ng-class="{'animated':catalogProduct.itemAdded,'fadeInUp':catalogProduct.itemAdded}" -->
+            <a href="#" class="mookie-add-to-cart">
+              <em class="mookie-add-to-cart-plus" ng-click="mookie.addToCart(catalogProduct,$event); $event.stopPropagation();$event.preventDefault();">
+                <i class="fas fa-plus fa-2x" ></i>
+                <i class="fas fa-check-circle fa-2x hiddenCheck" ></i>
+
+              </em>
+
+            </a>
+
+          </div>
+
+        </div>
+
+        <!-- <div class="shop-item" ng-click="mookie.showProductModal(catalogProduct)">
           <div class="shop-thumbnail">
             <span class="shop-label text-danger"> Sale</span>
             <a href="#" class="item-link"></a>
@@ -73,7 +105,6 @@
                 </svg>
               </a>
             </div>
-            <!-- <div class="mooke-slider">Some content here....</div> -->
 
           </div>
           <div class="shop-item-details">
@@ -84,8 +115,13 @@
               <span class="old-price">$6.50</span> {{catalogProduct.price | currency}}
             </span>
           </div>
-        </div>
+        </div> -->
       </div>
+
+      <div class="nav-containers">
+        <i class="fas fa-chevron-right right-product-tab"></i>
+      </div>
+
 
 
     </div>

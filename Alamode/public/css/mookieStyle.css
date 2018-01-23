@@ -1,7 +1,7 @@
-.mookie-slider{
-    overflow-y: hidden;
-	max-height: 500px; /* approximate max height */
-
+.mookie-slider {
+	overflow-y: hidden;
+	max-height: 500px;
+	/* approximate max height */
 	transition-property: all;
 	transition-duration: .5s;
 	transition-timing-function: cubic-bezier(0, 1, 0.5, 1);
@@ -10,41 +10,185 @@
 .mookie-slider.closed {
 	max-height: 0;
 }
+
 /* Go on codepen and figure out how to add some fancy css classes that can provide animations through angularjs */
 
 .add-cart-note {
 	display: none;
 	height: 200px;
-	width:100%;
+	width: 100%;
 }
 
 .add-cart-note.ng-hide {
-	display:none;
+	display: none;
 }
-.mookie-carousel{
-	overflow-x:auto;
+
+.mookie-carousel {
+	overflow-x: auto;
 	/* overflow-x:auto;
 	white-space: nowrap;
 	display:flex; 
 	-webkit-overflow-scrolling: touch;
 	-ms-overflow-style: -ms-autohiding-scrollbar; */
-  }
+}
 
-  .product-carousel{
-	display:inline-block;
+.product-carousel {
+	display: inline-block;
 	white-space: nowrap;
 	overflow-y: hidden;
 	overflow-x: hidden;
 	-webkit-overflow-scrolling: touch;
-	height:300px;
-	max-width:100%;
+	height: 300px;
+	max-width: 100%;
+}
 
-  }
+.product-carousel .left-product-tab {
+	left: 0;
+	position: absolute;
+	display: inline-block;
+	vertical-align: middle;
+	text-align: center;
+	top: calc(50% - 10px);
+}
 
-  .product-carousel-internal{
-	  display:inline-block;
-	  max-width:300px;
-	  margin-right:5px;
-  }
-  .nav, .pagination, .carousel, .panel-title a { cursor: pointer; }
-  
+.product-carousel .right-product-tab {
+	right: 0;
+	position: absolute;
+	display: inline-block;
+	vertical-align: middle;
+	text-align: center;
+}
+
+.product-carousel .nav-containers {
+	height: 100%;
+	position: absolute;
+}
+
+.product-carousel-internal {
+	display: inline-block;
+	max-width: 300px;
+	margin-right: 5px;
+	background-color:white;
+}
+/* .product-carousel-internal:hover{
+	
+} */
+
+.nav, .pagination, .carousel, .panel-title a {
+	cursor: pointer;
+}
+
+.primary-background {
+	background-color: #457CFC;
+	min-height:200px;
+}
+
+.secondary-background {
+	background-color: #003BC2;
+	min-height:200px;
+}
+
+.tertiary-background {
+	background-color: #0E05FF;
+}
+.shownCheck{
+	display:inline-block;
+}
+.hiddenCheck{
+	display:none !important;
+}
+.hidden-check.ng-enter{
+	display:inline-block;
+	animation-duration: 1s;
+	animation-name: fadeInUp;
+}
+.hidden-check.ng-leave{
+	animation-duration: 1s;
+	animation-name: bounceOut;
+}
+.hidden-check.ng-leave-active{
+	display:none !important;
+}
+
+.hidden-plus{
+	display:none !important;
+}
+
+
+.mookie-product {
+	width: 100%;
+	max-height:350px;
+}
+
+.mookie-img{
+	display: block;
+	margin: 0 auto;
+	width: 80%;
+}
+.mookie-imgz{
+	display: inline-block;
+	margin: 0 auto;
+	width: 100%;
+}
+product{
+	max-height:300px;
+	position:relative;
+	display:block;
+	margin-bottom:100px;
+	/* overflow-y:hidden; */
+	align-content: left;
+}
+
+.mookie-product .mookie-product-thumbnail {
+	height:200px;
+	width:100%;
+	padding-bottom:15px;
+}
+
+.mookie-product .mookie-shop-item-tools .mookie-shop-item-details{
+	width:100%;
+}
+
+
+.mookie-product .mookie-shop-item-tools .mookie-shop-item-details .mookie-shop-item-price{
+	color:#111111;
+	font-weight:bold;
+}
+
+.mookie-product .mookie-shop-item-tools .mookie-shop-item-details .mookie-shop-item-title{
+	width:90%;
+}
+
+.mookie-product .mookie-shop-item-tools .mookie-shop-item-details  .mookie-shop-item-title .mookie-title{
+	color:#111111;
+	font-size:15px;
+	/* color:black; */
+	/* #606060 */
+	font-family: "Work Sans", Helvetica, Arial, sans-serif;
+	font-weight:bold;
+	overflow-wrap: normal;
+	word-wrap:break-word;
+	word-break:normal;
+	width:100%;
+	white-space: normal;
+}
+.mookie-add-to-cart{
+	position:relative;
+	bottom:0;
+
+}
+
+.mookie-add-to-cart-plus{
+	/* display:block; */
+	position:absolute;
+	right:10px;
+	bottom:5px;
+	min-height:30px;
+	min-width:30px;
+
+	display: inline-block;
+  border-radius: 60px;
+  box-shadow: 0px 0px 2px #111111;
+  padding: 0.5em 0.6em;
+
+}

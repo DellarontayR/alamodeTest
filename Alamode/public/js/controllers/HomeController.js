@@ -8,7 +8,8 @@ alamode.controller('HomeController', function($scope,$rootScope, $location, Auth
     home.isLoggedIn = false;
     home.userId = "";
     home.catalogProducts = false;
-    home.bestsellers = false;        
+    home.bestsellers = false;     
+    home.aCatalogProduct = false;   
 
 
     home.getProductsFromServer = function(callback){
@@ -54,7 +55,12 @@ alamode.controller('HomeController', function($scope,$rootScope, $location, Auth
 
         home.getProductsFromServer(function(catalogProducts){
             home.catalogProducts = catalogProducts;
+            home.aCatalogProduct = home.catalogProducts[0];
+            console.log(home.aCatalogProduct);
+
+
         });
+
 
         home.getBestsellers(function(bestsellers){
             home.bestsellers = bestsellers;

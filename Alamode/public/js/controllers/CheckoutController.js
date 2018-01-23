@@ -56,7 +56,7 @@ alamode.controller('CheckoutController', function ($scope, $location, User, Cart
 
     checkoutCtrl.doCheckout = function(checkoutData){
         var extraDetails={
-            name: checkoutData.name,
+            name: checkoutData.name
         };
 
         //Check to see if values in cart?
@@ -79,7 +79,6 @@ alamode.controller('CheckoutController', function ($scope, $location, User, Cart
                             $scope.mookie.showStripeModal();
                         }
                         else{
-                            console.log('chekcout failed');
                             checkoutCtrl.checkoutMessage='Charge not successful';    
                         }
                     });

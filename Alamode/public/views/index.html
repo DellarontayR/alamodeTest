@@ -28,11 +28,8 @@
   <!-- Older Bootstrap -->
   <link href="../mookiedoughfrontend/css/vendor/bootstrap.min.css" rel="stylesheet" media="screen">
 
-
-
   <!-- <link href="../../node_modules/angular-ui-carousel/dist/ui-carousel.css" rel="stylesheet" media="screen"> -->
 
-  <!-- <link href="../../node_modules/angular-ui-carousel/dist/ui-carousel.css" rel="stylesheet" media="screen"> -->
   <link href="https://cdn.jsdelivr.net/npm/angular-ui-carousel@0.1.10/dist/ui-carousel.css" rel="stylesheet" media="screen">
 
   <!-- This newer bootstrap causes some lists to not be positioned relatively which somehow causes links to stop working -->
@@ -43,7 +40,14 @@
   <link href="../mookiedoughfrontend/css/theme.css" rel="stylesheet" media="screen">
 
   <!-- Mookie Styles -->
+  <link href="../css/animate.css" rel="stylesheet" media="screen">
+
   <link href="../css/mookieStyle.css" rel="stylesheet" media="screen">
+
+
+  <link href="../libs/fontawesome-free-5.0.3/svg-with-js/css/fa-svg-with-js.css" rel="stylesheet">
+
+  <script src="../libs/fontawesome-free-5.0.3/svg-with-js/js/fontawesome-all.js"></script>
 
   <!-- Page Preloading -->
   <script src="../mookiedoughfrontend/js/vendor/page-preloading.js"></script>
@@ -93,6 +97,8 @@
   <script src="../js/controllers/MainShopController.js"></script>
   <script src="../js/controllers/ProfileController.js"></script>
   <script src="../js/controllers/CheckoutController.js"></script>
+  <script src="../js/controllers/DonateController.js"></script>
+
 
 
   <!-- Google maps api -->
@@ -126,7 +132,7 @@
 
       <!-- Site Logo -->
       <a href="/home" class="site-logo visible-desktop">
-        <img src="../imgs/Media/bordered_logo.png">
+        <img src="../imgs/Media/largelogo.png">
       </a>
       <!-- site-logo.visible-desktop -->
       <a href="/home" class="site-logo visible-mobile">
@@ -163,12 +169,6 @@
           <li>
             <a href="/catering">Catering</a>
           </li>
-          <!-- <li>
-            <a href="/faq">FAQ</a>
-          </li>
-          <li>
-            <a href="/fuegophotos">Sneak Preview</a>
-          </li> -->
           <li ng-show="main.loggedIn">
             <a href="/register" ng-click="main.logout();">Logout</a>
           </li>
@@ -178,8 +178,6 @@
           <li ng-show="mookie.admin">
             <a href="/management">Management</a>
           </li>
-
-
         </ul>
         <!-- .menu -->
       </nav>
@@ -318,21 +316,22 @@
     </div>
 
     <!-- Donate -->
-    <!-- <div class="row" style="background-color:#5cb85c">
+    <div class="row" style="background-color:#5cb85c">
       <div class="col-md-12 center-block">
-        <p style="color:white;">Mookie Dough is proud to serve the Stanford area residents delicious cookie dough treats at their convenience. If
+        <p style="color:white; font-size:12px; display:inline-block;"> If
           you tried one of our samples and would like to donate
 
+          <div class="text-center" style="display:inline-block;">
+            <a href='/donate' type="button" style="border:0px solid;box-shadow:none; padding:0 0 0 0;margin-left:10px;">Donate Now</a>
+          </div>
         </p>
       </div>
 
     </div>
     <div class="row" style="background-color:#5cb85c">
-      <div class="col-md-12 text-center">
-        <button class="btn btn-default btn-xs">Donate Now</button>
-      </div>
+      
 
-    </div> -->
+    </div>
 
     <div>
       <!-- Main Angular view where routes will be rendered-->
@@ -399,14 +398,16 @@
   <!-- Older bootstrap and jquery script CDNs-->
   <!-- JavaScript (jQuery) libraries, plugins and custom scripts -->
   <script src="../mookiedoughfrontend/js/vendor/jquery-2.1.4.min.js"></script>
-  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+  <!-- <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script> -->
 
   <!-- <script src="../mookiedoughfrontend/js/vendor/bootstrap.min.js"></script> -->
   <!-- <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u"
       crossorigin="anonymous"> -->
   <!-- <script src="https://code.jquery.com/jquery-3.1.1.slim.min.js" integrity="sha384-A7FZj7v+d/sdmMqp/nOQwliLvUsJfDHW+k9Omg/a/EheAdgtzNs3hpfag6Ed950n" crossorigin="anonymous"></script> -->
   <!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/tether/1.4.0/js/tether.min.js" integrity="sha384-DztdAPBWPRXSA/3eYEEUWrWCy7G5KFbe8fFjk5JAIxUYHKkDx6Qin1DkWx51bBrb" crossorigin="anonymous"></script> -->
-  <!-- <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.6/js/bootstrap.min.js" integrity="sha384-vBWWzlZJ8ea9aCX4pEW3rVHjgjt7zpkNpZk+02D9phzyeVkE+jo0ieGizqPLForn" crossorigin="anonymous"></script> -->
+  <script src="https://npmcdn.com/tether@1.2.4/dist/js/tether.min.js"></script>
+
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.6/js/bootstrap.min.js" integrity="sha384-vBWWzlZJ8ea9aCX4pEW3rVHjgjt7zpkNpZk+02D9phzyeVkE+jo0ieGizqPLForn" crossorigin="anonymous"></script>
 
 
   <script src="../mookiedoughfrontend/js/vendor/isotope.pkgd.min.js"></script>

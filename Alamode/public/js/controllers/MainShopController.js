@@ -25,8 +25,6 @@ alamode.controller('MainShopController', function ($scope, $location, User, Cart
     mainShop.getProductsFromServer(function(catalogProducts){
         mainShop.products = catalogProducts;
     });
-    // $scope.getProducts(function(catalogProducts){
-    //     mainShop.products = catalogProducts;
-    // });
+
 
 });

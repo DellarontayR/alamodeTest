@@ -1,10 +1,10 @@
 alamode.directive('mookieMaps',function($q){
     return {
+        
         restrict: 'E',
         template: '<div></div>',
         replace: true,
         link: function(scope,element, attributes){
-            console.log('present');
             var latLng = new google.maps.LatLng(37.4266083,-122.15756340000002);
             var mapOptions ={
                 center: latLng,

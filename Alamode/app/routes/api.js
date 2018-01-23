@@ -111,6 +111,12 @@ module.exports = function (router) {
         }
     });
 
+    router.post('/donate',function(req,res){
+        if(req.body.token == null || req.body.name == null || req.body.donationAmount == null){
+            res.json({success:false,message:"Sorry we had a problem on our end. Please try to donate again later"});
+        }
+    });
+
     // Checks out a user's cart based on the cart's generated stripe token and user's information
     //TODO: There needs to be a way to start an active delivery order that can be tracked that
     // stores information like the location of the driver and customer and details on the order

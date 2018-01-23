@@ -5,9 +5,16 @@ var app = angular.module('appRoutes',['ngRoute'])
 .config(function ($routeProvider, $locationProvider){
     $routeProvider.when('/',{
         redirectTo: '/home'
+    })
+    .when('/donate',{
+        templateUrl: './/views/donate.html',
+        authenticated:false,
+        controller:'DonateController',
+        controllerAs: 'cartCtrl'
     }).
     when('/catering',{
-        templateUrl: '../views/catering.html'
+        templateUrl: '../views/catering.html',
+        authenticated: false
     }).
     when('/about',{
         templateUrl: '../mookiedoughfrontend/about.html',
