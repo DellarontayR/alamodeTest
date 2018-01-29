@@ -1,4 +1,4 @@
-<div class="mookie-product" ng-click="mookie.showProductModal(catalogProduct)">
+<!-- <div class="mookie-product" ng-click="mookie.showProductModal(catalogProduct)">
     <div class="">
         <img class="" ng-src="{{catalogProduct.imagePath}}" alt="Shop item">
     </div>
@@ -11,8 +11,6 @@
                 <span class="mookie-title">{{catalogProduct.title}}</span>
             </h3>
         </div>
-
-        <!-- use ng-class="{'animated':catalogProduct.itemAdded,'fadeInUp':catalogProduct.itemAdded}" -->
         <a href="#" class="mookie-add-to-cart">
             <em class="mookie-add-to-cart-plus" ng-click="mookie.addToCart(catalogProduct,$event); $event.stopPropagation();$event.preventDefault();">
                 <i class="fas fa-plus fa-2x"></i>
@@ -20,4 +18,18 @@
             </em>
         </a>
     </div>
+</div> -->
+
+
+<div class="mookie-product" ng-click="mookie.showProductModal(catalogProduct)">
+    <p> {{catalogProduct.title}}</p>
+    <div class="image-container">
+        <img class="mookie-img" ng-src="{{catalogProduct.imagePath}}" alt="Shop item"></img>
+     </div><!--
+     --><a href="#" class="mookie-add-to-cart">
+        <em class="mookie-add-to-cart-plus" ng-click="mookie.addToCart(catalogProduct,$event); $event.stopPropagation();$event.preventDefault();">
+            <i class="fas fa-plus fa-2x"></i>
+            <i class="fas fa-check-circle fa-2x hiddenCheck"></i>
+        </em>
+    </a>
 </div>

@@ -1,5 +1,9 @@
 alamode.directive('mookieMaps',function($q){
     return {
+        // somehow get the users current gps location with geolocater or using location selection and search
+        // After deciding the location communicate back to server to theorize the amount of time needed 
+
+
         
         restrict: 'E',
         template: '<div></div>',
