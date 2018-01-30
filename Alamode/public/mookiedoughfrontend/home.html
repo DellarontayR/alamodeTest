@@ -1,24 +1,6 @@
 <!-- Page Wrapper -->
 <div class="page-wrapper">
 
-  <div class="row">
-      <product info="home.aCatalogProduct"></product>
-
-  </div>
-
-  <!-- announcement wheel with 2 doors? -->
-  <!-- <div class="row">
-    <div class="col-md-6 col-sm-6 col-lg-6 col-xs-6 primary-background">
-
-    </div>
-
-    <div class="col-md-6 col-sm-6 col-lg-6 col-xs-6 secondary-background">
-      
-    </div>
-
-  </div> -->
-
-  <!--  -->
   <!-- Featured Categories -->
   <div class="row">
     <ui-carousel slides="mookie.slides.slides" slides-to-show="1" slides-to-scroll="1" initial-slide="1" autoplay="true" autoplay-speed="3000"
@@ -42,95 +24,6 @@
       </carousel-item>
     </ui-carousel>
   </div>
-
-  <!-- Horizontal product list psuedocode
-    An ng-repeat list of products formatted currently like they are. With the ability the swipe right if the current view has items to the right and enable swipe left with there are items on the left
-    A list is easy. Making an overflow is possible. Rewiring that overflow to not have a basic static bar is possible. Adding touch slide support should also be possible.
-    All of this should work within a row with the overflow setting set to true
-  -->
-
-  <section class="container" style="margin-top:50px;">
-    <div class="row product-carousel">
-
-      <div class="nav-containers">
-        <i class="fas fa-chevron-left left-product-tab"></i>
-      </div>
-      <!-- ng-if both tabs check to see if there are items to the left or right of the current carousel -->
-
-
-      <div class="product-carousel-internal" ng-repeat="catalogProduct in home.catalogProducts" ng-init="catalogProduct.itemAdded = false">
-
-        <div class="mookie-product" ng-click="mookie.showProductModal(catalogProduct)">
-          <div class="mookie-product-thumbnail">
-            <img align="left" class="mookie-img" ng-src="{{catalogProduct.imagePath}}" alt="Shop item">
-          </div>
-          <div class="mookie-shop-item-tools">
-            <div class="mookie-shop-item-details">
-              <p class="mookie-shop-item-price">
-                {{catalogProduct.price | currency}}
-              </p>
-              <h3 class="mookie-shop-item-title">
-                <span class="mookie-title">{{catalogProduct.title}}</span>
-              </h3>
-            </div>
-
-            <!-- use ng-class="{'animated':catalogProduct.itemAdded,'fadeInUp':catalogProduct.itemAdded}" -->
-            <a href="#" class="mookie-add-to-cart">
-              <em class="mookie-add-to-cart-plus" ng-click="mookie.addToCart(catalogProduct,$event); $event.stopPropagation();$event.preventDefault();">
-                <i class="fas fa-plus fa-2x" ></i>
-                <i class="fas fa-check-circle fa-2x hiddenCheck" ></i>
-
-              </em>
-
-            </a>
-
-          </div>
-
-        </div>
-
-        <!-- <div class="shop-item" ng-click="mookie.showProductModal(catalogProduct)">
-          <div class="shop-thumbnail">
-            <span class="shop-label text-danger"> Sale</span>
-            <a href="#" class="item-link"></a>
-            <img ng-src="{{catalogProduct.imagePath}}" alt="Shop item">
-            <div class="shop-item-tools">
-              <a href="#" class="add-to-wishlist" data-toggle="tooltip" data-placements="top" title="" data-original-title="Wishlist">
-                <i class="material-icons favorite_border"></i>
-              </a>
-              <a href="#" class="add-to-cart">
-                <em ng-click="mookie.addToCart(catalogProduct); $event.stopPropagation();$event.preventDefault();"> Add to Cart</em>
-                <svg x="0px" y="0px" width="32px" height="32px" viewBox="0 0 32 32">
-                  <path stroke-dasharray="19.79 19.79" stroke-dashoffset="19.79" fill="none" stroke="#FFFFFF" stroke-width="2" stroke-linecap="square"
-                    stroke-miterlimit="10" d="M9,17l3.9,3.9c0.1,0.1,0.2,0.1,0.3,0L23,11"></path>
-                </svg>
-              </a>
-            </div>
-
-          </div>
-          <div class="shop-item-details">
-            <h3 class="shop-item-title">
-              <a href="#">{{catalogProduct.title}}</a>
-            </h3>
-            <span class="shop-item-price">
-              <span class="old-price">$6.50</span> {{catalogProduct.price | currency}}
-            </span>
-          </div>
-        </div> -->
-      </div>
-
-      <div class="nav-containers">
-        <i class="fas fa-chevron-right right-product-tab"></i>
-      </div>
-
-
-
-    </div>
-
-  </section>
-
-
-
-
 
   <!-- Product Grid -->
   <section class="container padding-top-3x">
