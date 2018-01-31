@@ -1,10 +1,24 @@
 "use strict";
 
-var app = angular.module('appRoutes',['ngRoute'])
+var app = angular.module('appRoutes',['ngRoute','angularCSS'])
 
 .config(function ($routeProvider, $locationProvider){
     $routeProvider.when('/',{
         redirectTo: '/home'
+    }).
+    when('/home',{
+        templateUrl: '../updatedFrontend/mookie.html',
+        authenticated: false,
+        controller: 'HomeController',
+        controllerAs: 'home'
+    }).
+    when('/coterie',{
+        templateUrl:'../updatedFrontend/coterie.html',
+        css: ['..updatedFrontend/eCommerceAssets/styles/eCommerceStyle.css','..updatedFrontend/productpage.css','../updatedFrontend/caterie.css']
+    }).
+    when('/productpage',{
+        templateUrl:'../updatedFrontend/productpage.html',
+        css:['..updatedFrontend/eCommerceAssets/styles/eCommerceStyle.css','../updatedFrontend/productpage.css']
     })
     .when('/donate',{
         templateUrl: './/views/donate.html',
@@ -76,12 +90,6 @@ var app = angular.module('appRoutes',['ngRoute'])
         authenticated: false,
         controller:'MainShopController',
         controllerAs:'mainShop'
-    }).
-    when('/home',{
-        templateUrl: '../mookiedoughfrontend/home.html',
-        authenticated: false,
-        controller: 'HomeController',
-        controllerAs: 'home'
     })
     .when('/register',{
         templateUrl: '../mookiedoughfrontend/new-reg.html',
