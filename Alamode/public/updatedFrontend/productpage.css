@@ -1,17 +1,18 @@
 @charset "UTF-8";
 /* CSS Document */
 
-body{
+  /*background-color: #EEEEEE;*/
+
+/* body{
   margin: 8px;
   padding: 0;
   border: 0;
   
-  /*background-color: #EEEEEE;*/
   color: #000000;
   font-family: "Abel Regular", sans-serif;
   height: 100%;
   width: 100%;
-}
+} */
 
 *{
   box-sizing: border-box;

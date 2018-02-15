@@ -1,8 +1,5 @@
 @charset "UTF-8";
 /* CSS Document */
-body{
-    margin:8px;
-}
 .gallery { 
     -webkit-column-count: 3;
     -moz-column-count: 3;

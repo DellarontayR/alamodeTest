@@ -14,11 +14,14 @@ var app = angular.module('appRoutes',['ngRoute','angularCSS'])
     }).
     when('/coterie',{
         templateUrl:'../updatedFrontend/coterie.html',
-        css: ['..updatedFrontend/eCommerceAssets/styles/eCommerceStyle.css','..updatedFrontend/productpage.css','../updatedFrontend/caterie.css']
+        css: ['..updatedFrontend/eCommerceAssets/styles/eCommerceStyle.css','..updatedFrontend/productpage.css','../updatedFrontend/coterie.css']
     }).
     when('/productpage',{
         templateUrl:'../updatedFrontend/productpage.html',
         css:['..updatedFrontend/eCommerceAssets/styles/eCommerceStyle.css','../updatedFrontend/productpage.css']
+    })
+    .when('/thesecret',{
+        css:'../css/secret.css'
     })
     .when('/donate',{
         templateUrl: './/views/donate.html',
