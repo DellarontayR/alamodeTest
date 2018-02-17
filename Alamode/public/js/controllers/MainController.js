@@ -349,114 +349,58 @@ alamode.controller('mainCtrl', function (Auth, $timeout, $location, $rootScope,
             else {
                 if (data.data.noProducts) {
                     (function () {
+                        // var productData = {};
+                        // productData.imagePath = "../imgs/Media/peanutbutter-min.png";
+                        // productData.price = 5.99;
+                        // productData.description = "Peanut Butter Quivering Goodness";
+                        // productData.title = "Peanut Butter Quivering Goodness";
+                        // productData.catalogProduct = true;
+                        // app.addProductToDB(productData);
+                        var standardPrice = 2.99;
                         var productData = {};
-                        productData.imagePath = "../imgs/Media/peanutbutter-min.png";
-                        productData.price = 5.99;
-                        productData.description = "Peanut Butter Quivering Goodness";
-                        productData.title = "Peanut Butter Quivering Goodness";
-                        productData.catalogProduct = true;
-                        app.addProductToDB(productData);
-                        var productData2 = {}
-                        productData2.imagePath = "../imgs/Media/almondmilk-min.png";
-                        productData2.price = 3.99;
-                        productData2.description = "Refreshing almond milk";
-                        productData2.title = "Refreshing almond milk";
-                        productData2.catalogProduct = true;
-                        app.addProductToDB(productData2);
-                        var productData3 = {}
-                        productData3.imagePath = "../imgs/Media/petesbaridi-min.png";
-                        productData3.price = 3.99;
-                        productData3.description = "Ice Cold Brew";
-                        productData3.title = "Ice Cold Brew";
-                        productData3.catalogProduct = true;
-                        app.addProductToDB(productData3);
-                        var productData4 = {};
-                        productData4.imagePath = "../imgs/Media/highbrewcoffee-min.png";
-                        productData4.price = 3.99;
-                        productData4.description = "High Brew Coffee";
-                        productData4.title = "High Brew Coffee";
-                        productData4.catalogProduct = true;
-                        app.addProductToDB(productData4);
-                        var productData5 = {};
-                        productData5.imagePath = "../imgs/Media/minicookiedough-min.png";
-                        productData5.price = 3.99;
-                        productData5.description = "Mini Cookie Dough";
-                        productData5.title = "Mini Cookie Dough";
-                        productData5.catalogProduct = true;
-                        app.addProductToDB(productData5);
-
-                        var productData6 = {};
-                        productData6.imagePath = "../imgs/Media/milk-min.jpg";
-                        productData6.price = 3.99;
-                        productData6.description = "Organic Valley Milk";
-                        productData6.title = "Organic Valley Milk";
-                        productData6.catalogProduct = true;
-                        productData6.category = 'Milk';
-                        app.addProductToDB(productData6);
-                        var productData7 = {};
-                        productData7.imagePath = "../imgs/Media/milk2-min.jpg";
-                        productData7.price = 3.99;
-                        productData7.description = "Horizon Organic Milk";
-                        productData7.title = "Horizon Organic Milk";
-                        productData7.catalogProduct = true;
-                        productData7.category = 'Milk';
-                        app.addProductToDB(productData7);
-                        var productData8 = {};
-                        productData8.imagePath = "../imgs/Media/MANY-min.jpg";
-                        productData8.price = 20.99;
-                        productData8.description = "Assorted Beverages";
-                        productData8.title = "Assorted Beverages";
-                        productData8.catalogProduct = true;
-                        productData8.category = 'Milk';
-                        app.addProductToDB(productData8);
-                        var productData9 = {};
-                        productData9.imagePath = "../imgs/Media/MANYMILK-min.jpg";
-                        productData9.price = 12.99;
-                        productData9.description = "Assorted Milks";
-                        productData9.title = "Assorted Milks";
-                        productData9.catalogProduct = true;
-                        productData9.category = 'Milk';
-                        app.addProductToDB(productData9);
-                        var productData10 = {};
-                        productData10.imagePath = "../imgs/Media/MANYCOFFEE-min.jpg";
-                        productData10.price = 3.99;
-                        productData10.description = "Assorted Coffee";
-                        productData10.title = "Assorted Coffee";
-                        productData10.catalogProduct = true;
-                        productData10.category = 'Milk';
-                        app.addProductToDB(productData10);
-
-
-                    })();
-                    (function () {
-                        var productData = {};
-                        productData.imagePath = "../imgs/Media/localfav-min.png";
-                        productData.price = 5.99;
-                        productData.description = "Delicious birthday cake style cookie dough treat";
-                        productData.title = "Birthday Surprise";
-                        productData.catalogProduct = true;
-                        productData.category = 'Bestseller';
-                        app.addProductToDB(productData);
-
+                        productData.imagePath = "../updatedFrontend/redvelvet.png";
+                        productData.price = standardPrice;
+                        productData.title = "aunty vicky's red velvet";
+                        productData.catalogProduct= true;
+                        productData.category = "cookie dough bricks";
+                        productData.description = "Mookies Dark Chocolate fudge mixed with some red velvet sizzurp syrup \“bricks\” Mookie’s Real Chocolate Chip Cookie Dough Bricks";
+                        productData.about = "No one can touch og mookie’s auntie vicky’s red velvet cake. So we promised to buy her a Red Range Rover if she gave us the recipe so we could bless the world with some straight heat. You’re welcome.";
+                      
                         var productData2 = {};
-                        productData2.imagePath = "../imgs/Media/cookiesnmilk-min.png";
-                        productData2.price = 5.99;
-                        productData2.description = "Oreo Cookie Dough Half Pint";
-                        productData2.title = "Oreo Cookie Dough Half Pint";
+                        productData2.imagePath = "../updatedFrontend/birthdaycakeflavor.png";
+                        productData2.price = standardPrice;
+                        productData2.title = "og mookie's confetti party";
                         productData2.catalogProduct = true;
-                        productData2.category = 'Bestseller';
-                        app.addProductToDB(productData2);
-
+                        productData2.category = "cookie dough bricks";
+                        productData2.description = "Mookie’s White Chocolate fudge mixed with sprinkles and some cupcake sizzurp syrup \“bricks\” Mookie’s Real Chocolate Chip Cookie Dough Bricks"
+                        productData2.about = "Remember those vanilla cupcakes Big Tyler’s mom used to bring to class on his birthday? Yeah we finessed his mom’s recipe.";
+                        
                         var productData3 = {};
-                        productData3.imagePath = "../imgs/Media/ChocolateChip-min.png";
-                        productData3.price = 5.99;
-                        productData3.description = "Chocolate Chip Quarter Pint";
-                        productData3.title = "Chocolate Chip Quarter Pint";
+                        productData3.imagePath = "../updatedFrontend/cookies.png";
+                        productData3.price = standardPrice;
+                        productData3.title = "Cookies N Creme";
                         productData3.catalogProduct = true;
-                        productData3.category = 'Bestseller';
-                        app.addProductToDB(productData3);
-                    })();
+                        productData3.cateogry = "cookie dough bricks";
+                        productData3.description = "Mookies White Chocolate fudge mixed with chocolate and dutch cookie bits \“bricks\” Mookie’s Real Chocolate Chip Cookie Dough Bricks"
+                        productData3.about = "We have a guy that works security at that big cookie company with some deep pockets. You already know what we were on. We busted a lick,cracked the safe, and snatched the recipe.";
 
+                        var productData4 = {};
+                        productData4.imagePath = "../updatedFrontend/mocha.png";
+                        productData4.price = standardPrice;
+                        productData4.title = "dark chocolate mocha";
+                        productData4.catalogProduct = true;
+                        productData4.cateogry = "cookie dough bricks";
+                        productData4.description = "Mookies Dark Chocolate fudge mixed with hints of mocha \“bricks\” Mookie’s Real Chocolate Chip Cookie Dough Bricks";
+
+                        productData4.about = "Not sure yet";
+
+                        app.addProductToDB(productData);
+                        app.addProductToDB(productData2);
+                        app.addProductToDB(productData3);
+                        app.addProductToDB(productData4);
+
+
+                    })();
                 }
                 else {
                     console.log('Getting catalog products has caused errors');

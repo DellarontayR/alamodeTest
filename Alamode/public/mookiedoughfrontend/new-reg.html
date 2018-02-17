@@ -11,7 +11,7 @@
           <form method="post" class="login-form" ng-submit="user.mookieLogin(user.loginData)">
             <input type="email" class="form-control" placeholder="Email" required ng-model="user.loginData.email">
             <input type="password" class="form-control" placeholder="Password" required ng-model="user.loginData.password">
-            <div class="form-footer">
+            <div class="form-footer row">
               <div class="rememberme">
                 <label class="checkbox">
                   <input type="checkbox" checked> Remember me
@@ -40,7 +40,7 @@
                class="form-control" type="password" name="confirmPassword" placeholder="Confirm Password *" match="{{user.regData.password}}"
                 ng-change="user.regData.password = confirm" ng-model="confirm"> -->
 
-              <div class="form-footer">
+              <div class="form-footer row">
                 <div class="rememberme"></div>
                 <div class="form-submit">
                   <button type="submit" class="btn btn-primary btn-block waves-effect waves-light">Sign up</button>
