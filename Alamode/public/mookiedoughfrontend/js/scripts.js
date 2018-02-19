@@ -4,42 +4,42 @@
  * Theme Custom Scripts
  */
 
-jQuery(document).ready(function($) {
+jQuery(document).ready(function ($) {
 	'use strict';
 	// Check if Page Scrollbar is visible
 	//------------------------------------------------------------------------------
-	var hasScrollbar = function() {
-	  // The Modern solution
-	  if (typeof window.innerWidth === 'number') {
-	    return window.innerWidth > document.documentElement.clientWidth;
+	var hasScrollbar = function () {
+		// The Modern solution
+		if (typeof window.innerWidth === 'number') {
+			return window.innerWidth > document.documentElement.clientWidth;
 		}
 
-	  // rootElem for quirksmode
-	  var rootElem = document.documentElement || document.body;
+		// rootElem for quirksmode
+		var rootElem = document.documentElement || document.body;
 
-	  // Check overflow style property on body for fauxscrollbars
-	  var overflowStyle;
+		// Check overflow style property on body for fauxscrollbars
+		var overflowStyle;
 
-	  if (typeof rootElem.currentStyle !== 'undefined') {
+		if (typeof rootElem.currentStyle !== 'undefined') {
 			overflowStyle = rootElem.currentStyle.overflow;
 		}
 
-	  overflowStyle = overflowStyle || window.getComputedStyle(rootElem, '').overflow;
+		overflowStyle = overflowStyle || window.getComputedStyle(rootElem, '').overflow;
 
-	    // Also need to check the Y axis overflow
-	  var overflowYStyle;
+		// Also need to check the Y axis overflow
+		var overflowYStyle;
 
-	  if (typeof rootElem.currentStyle !== 'undefined') {
+		if (typeof rootElem.currentStyle !== 'undefined') {
 			overflowYStyle = rootElem.currentStyle.overflowY;
 		}
 
-	  overflowYStyle = overflowYStyle || window.getComputedStyle(rootElem, '').overflowY;
+		overflowYStyle = overflowYStyle || window.getComputedStyle(rootElem, '').overflowY;
 
-	  var contentOverflows = rootElem.scrollHeight > rootElem.clientHeight;
-	  var overflowShown    = /^(visible|auto)$/.test(overflowStyle) || /^(visible|auto)$/.test(overflowYStyle);
-	  var alwaysShowScroll = overflowStyle === 'scroll' || overflowYStyle === 'scroll';
+		var contentOverflows = rootElem.scrollHeight > rootElem.clientHeight;
+		var overflowShown = /^(visible|auto)$/.test(overflowStyle) || /^(visible|auto)$/.test(overflowYStyle);
+		var alwaysShowScroll = overflowStyle === 'scroll' || overflowYStyle === 'scroll';
 
-	  return (contentOverflows && overflowShown) || (alwaysShowScroll);
+		return (contentOverflows && overflowShown) || (alwaysShowScroll);
 	};
 	if (hasScrollbar()) {
 		$('body').addClass('hasScrollbar');
@@ -49,24 +49,24 @@ jQuery(document).ready(function($) {
 	// Disable default link behavior for dummy links that have href='#'
 	//------------------------------------------------------------------------------
 	var $emptyLink = $('a[href=#]');
-	$emptyLink.on('click', function(e){
+	$emptyLink.on('click', function (e) {
 		e.preventDefault();
 	});
 
 
 	// Page Transitions
-	if($('.page-preloading').length) {
-		$('a:not([href^="#"])').on('click', function(e) {
-	    if($(this).attr('class') !== 'video-popup-btn' && $(this).attr('class') !== 'gallery-item' && $(this).attr('class') !== 'ajax-post-link' && $(this).attr('class') !== 'read-more ajax-post-link') {
+	if ($('.page-preloading').length) {
+		$('a:not([href^="#"])').on('click', function (e) {
+			if ($(this).attr('class') !== 'video-popup-btn' && $(this).attr('class') !== 'gallery-item' && $(this).attr('class') !== 'ajax-post-link' && $(this).attr('class') !== 'read-more ajax-post-link') {
 				console.log($(this).attr('class'));
-	      e.preventDefault();
-	      var linkUrl = $(this).attr('href');
-	      $('.page-preloading').addClass('link-clicked');
-	      setTimeout(function(){
-	        window.open(linkUrl , '_self');
-	      }, 550);
-	    }
-	  });
+				e.preventDefault();
+				var linkUrl = $(this).attr('href');
+				$('.page-preloading').addClass('link-clicked');
+				setTimeout(function () {
+					window.open(linkUrl, '_self');
+				}, 550);
+			}
+		});
 	}
 
 
@@ -74,16 +74,16 @@ jQuery(document).ready(function($) {
 	//------------------------------------------------------------------------------
 	var $scrollTop = $('.scroll-to-top-btn');
 	if ($scrollTop.length > 0) {
-		$(window).on('scroll', function(){
-	    if ($(window).scrollTop() > 600) {
-	      $scrollTop.addClass('visible');
-	    } else {
-	      $scrollTop.removeClass('visible');
-	    }
+		$(window).on('scroll', function () {
+			if ($(window).scrollTop() > 600) {
+				$scrollTop.addClass('visible');
+			} else {
+				$scrollTop.removeClass('visible');
+			}
 		});
-		$scrollTop.on('click', function(e){
+		$scrollTop.on('click', function (e) {
 			e.preventDefault();
-			$('html').velocity("scroll", { offset: 0, duration: 1000, easing:'easeOutExpo', mobileHA: false });
+			$('html').velocity("scroll", { offset: 0, duration: 1000, easing: 'easeOutExpo', mobileHA: false });
 		});
 	}
 
@@ -91,9 +91,9 @@ jQuery(document).ready(function($) {
 	// Smooth scroll to element
 	//------------------------------------------------------------------------------
 	var $scrollTo = $('.scroll-to');
-	$scrollTo.on('click', function(event) {
+	$scrollTo.on('click', function (event) {
 		var $elemOffsetTop = $(this).data('offset-top');
-		$('html').velocity("scroll", { offset:$(this.hash).offset().top-$elemOffsetTop, duration: 1000, easing:'easeOutExpo', mobileHA: false});
+		$('html').velocity("scroll", { offset: $(this.hash).offset().top - $elemOffsetTop, duration: 1000, easing: 'easeOutExpo', mobileHA: false });
 		event.preventDefault();
 	});
 
@@ -101,14 +101,14 @@ jQuery(document).ready(function($) {
 	// Language Dropdown
 	//------------------------------------------------------------------------------
 	var langSwitcher = $('.lang-switcher'),
-			langToggle = $('.lang-toggle');
-	langToggle.on('click', function() {
+		langToggle = $('.lang-toggle');
+	langToggle.on('click', function () {
 		$(this).parent().toggleClass('open');
 	});
-	langSwitcher.on('click', function(e) {
-    e.stopPropagation();
+	langSwitcher.on('click', function (e) {
+		e.stopPropagation();
 	});
-	$(document).on('click', function(e) {
+	$(document).on('click', function (e) {
 		langSwitcher.removeClass('open');
 	});
 
@@ -116,8 +116,8 @@ jQuery(document).ready(function($) {
 	// Toggle Mobile Menu
 	//------------------------------------------------------------------------------
 	var menuToggle = $('.mobile-menu-toggle'),
-			mobileMenu = $('.main-navigation');
-	menuToggle.on('click', function() {
+		mobileMenu = $('.main-navigation');
+	menuToggle.on('click', function () {
 		$(this).toggleClass('active');
 		mobileMenu.toggleClass('open');
 	});
@@ -130,8 +130,8 @@ jQuery(document).ready(function($) {
 	function closeSubmenu() {
 		$hasSubmenu.parent().removeClass('active');
 	}
-	$hasSubmenu.on('click', function(e) {
-		if($(e.target).parent().is('.active')) {
+	$hasSubmenu.on('click', function (e) {
+		if ($(e.target).parent().is('.active')) {
 			closeSubmenu();
 		} else {
 			closeSubmenu();
@@ -142,33 +142,33 @@ jQuery(document).ready(function($) {
 
 	// Isotope Grid / Filters (Gallery)
 	//------------------------------------------------------------------------------
-	$(window).on('load', function(){
+	$(window).on('load', function () {
 
 		// Isotope Grid
 		var $grid = $('.isotope-grid');
-		if($grid.length > 0) {
-		  $grid.isotope({
-			  itemSelector: '.grid-item',
-			  transitionDuration: '0.7s',
-			  masonry: {
-			    columnWidth: '.grid-sizer',
-			    gutter: '.gutter-sizer'
-			  }
-		  });
-			setTimeout( function () {
-        $grid.isotope( 'layout' );
-      }, 1 );
+		if ($grid.length > 0) {
+			$grid.isotope({
+				itemSelector: '.grid-item',
+				transitionDuration: '0.7s',
+				masonry: {
+					columnWidth: '.grid-sizer',
+					gutter: '.gutter-sizer'
+				}
+			});
+			setTimeout(function () {
+				$grid.isotope('layout');
+			}, 1);
 		}
 
 		// Filtering
-		if($('.filter-grid').length > 0) {
-		  var $filterGrid = $('.filter-grid');
-			$('.nav-filters').on( 'click', 'a', function(e) {
+		if ($('.filter-grid').length > 0) {
+			var $filterGrid = $('.filter-grid');
+			$('.nav-filters').on('click', 'a', function (e) {
 				e.preventDefault();
 				$('.nav-filters li').removeClass('active');
 				$(this).parent().addClass('active');
-			  var $filterValue = $(this).attr('data-filter');
-			  $filterGrid.isotope({ filter: $filterValue });
+				var $filterValue = $(this).attr('data-filter');
+				$filterGrid.isotope({ filter: $filterValue });
 			});
 		}
 	});
@@ -177,16 +177,16 @@ jQuery(document).ready(function($) {
 	// Shop Filters Toggle
 	//------------------------------------------------------------------------------
 	var filtersToggle = $('[data-toggle="filters"]'),
-			filtersWrap = $('.filters'),
-			filtersPane = $('.filters-pane');
+		filtersWrap = $('.filters'),
+		filtersPane = $('.filters-pane');
 	function closeFilterPane() {
 		filtersToggle.removeClass('active');
 		filtersPane.removeClass('open');
 		filtersWrap.css('height', 0);
 	}
-	filtersToggle.on('click', function(e) {
+	filtersToggle.on('click', function (e) {
 		var currentFilter = $(this).attr('href');
-		if($(this).is('.active')) {
+		if ($(this).is('.active')) {
 			closeFilterPane();
 		} else {
 			closeFilterPane();
@@ -196,8 +196,8 @@ jQuery(document).ready(function($) {
 		}
 		e.preventDefault();
 	});
-	if(typeof window.Modernizr !== "undefined" && !Modernizr.touch) {
-		$(window).on('resize', function() {
+	if (typeof window.Modernizr !== "undefined" && !Modernizr.touch) {
+		$(window).on('resize', function () {
 			closeFilterPane();
 		});
 	}
@@ -205,12 +205,12 @@ jQuery(document).ready(function($) {
 	// Sidebar Toggle on Mobile
 	//------------------------------------------------------------------------------
 	var sidebar = $('.sidebar'),
-			sidebarToggle = $('.sidebar-toggle');
-	sidebarToggle.on('click', function() {
+		sidebarToggle = $('.sidebar-toggle');
+	sidebarToggle.on('click', function () {
 		$(this).addClass('sidebar-open');
 		sidebar.addClass('open');
 	});
-	$('.sidebar-close').on('click', function() {
+	$('.sidebar-close').on('click', function () {
 		sidebarToggle.removeClass('sidebar-open');
 		sidebar.removeClass('open');
 	});
@@ -218,14 +218,14 @@ jQuery(document).ready(function($) {
 
 	// Count Input (Quantity)
 	//------------------------------------------------------------------------------
-	$(".incr-btn").on("click", function(e) {
+	$(".incr-btn").on("click", function (e) {
 		var $button = $(this);
 		var oldValue = $button.parent().find('.quantity').val();
 		$button.parent().find('.incr-btn[data-action="decrease"]').removeClass('inactive');
 		if ($button.data('action') == "increase") {
 			var newVal = parseFloat(oldValue) + 1;
 		} else {
-		 // Don't allow decrementing below 1
+			// Don't allow decrementing below 1
 			if (oldValue > 1) {
 				var newVal = parseFloat(oldValue) - 1;
 			} else {
@@ -239,37 +239,37 @@ jQuery(document).ready(function($) {
 
 	// Waves Effect (on Buttons)
 	//------------------------------------------------------------------------------
-	if($('.waves-effect').length) {
-		Waves.displayEffect( { duration: 600 } );
+	if ($('.waves-effect').length) {
+		Waves.displayEffect({ duration: 600 });
 	}
 
 	// Add to Cart Button Effect
 	//------------------------------------------------------------------------------
 	var animating = false;
-	$('.shop-item').each(function() {
+	$('.shop-item').each(function () {
 		var addToCartBtn = $(this).find('.add-to-cart');
-		addToCartBtn.on('click', function() {
-			if(!animating) {
+		addToCartBtn.on('click', function () {
+			if (!animating) {
 				//animate if not already animating
-				animating =  true;
+				animating = true;
 				// resetCustomization(addToCartBtn);
 
 				addToCartBtn.addClass('is-added').find('path').eq(0).animate({
 					//draw the check icon
-					'stroke-dashoffset':0
-				}, 300, function(){
-					setTimeout(function(){
+					'stroke-dashoffset': 0
+				}, 300, function () {
+					setTimeout(function () {
 						// updateCart();
-						addToCartBtn.removeClass('is-added').find('em').on('webkitTransitionEnd otransitionend oTransitionEnd msTransitionEnd transitionend', function(){
+						addToCartBtn.removeClass('is-added').find('em').on('webkitTransitionEnd otransitionend oTransitionEnd msTransitionEnd transitionend', function () {
 							//wait for the end of the transition to reset the check icon
 							addToCartBtn.find('path').eq(0).css('stroke-dashoffset', '19.79');
-							animating =  false;
+							animating = false;
 						});
 
-						if( $('.no-csstransitions').length > 0 ) {
+						if ($('.no-csstransitions').length > 0) {
 							// check if browser doesn't support css transitions
 							addToCartBtn.find('path').eq(0).css('stroke-dashoffset', '19.79');
-							animating =  false;
+							animating = false;
 						}
 					}, 600);
 				});
@@ -281,11 +281,11 @@ jQuery(document).ready(function($) {
 	// Product Gallery
 	//------------------------------------------------------------------------------
 	var galleryThumb = $('.product-gallery-thumblist a'),
-			galleryPreview = $('.product-gallery-preview > li');
+		galleryPreview = $('.product-gallery-preview > li');
 
 	// Thumbnails
 	//------------------------------------------------------------------------------
-	galleryThumb.on('click', function(e) {
+	galleryThumb.on('click', function (e) {
 		var target = $(this).attr('href');
 
 		galleryThumb.parent().removeClass('active');
@@ -299,7 +299,7 @@ jQuery(document).ready(function($) {
 
 	// Color Select
 	//------------------------------------------------------------------------------
-	$('.color-select').on('change', function() {
+	$('.color-select').on('change', function () {
 		var target = $(this).find(':selected').data('image');
 		$('[href="#' + target + '"]').trigger('click');
 	});
@@ -308,12 +308,12 @@ jQuery(document).ready(function($) {
 	// Single Post via Ajax
 	//------------------------------------------------------------------------------
 	var ajaxPostLink = $('.ajax-post-link'),
-			postBackdrop = $('.single-post-backdrop'),
-			postContainer = $('.single-post-wrap'),
-			postContentWrap = $('.single-post-wrap .inner'),
-			postContent = $('.single-post-wrap .inner .post-content'),
-			closeBtn = $('.single-post-wrap .close-btn'),
-			postPreloader = $('.single-post-wrap .preloader');
+		postBackdrop = $('.single-post-backdrop'),
+		postContainer = $('.single-post-wrap'),
+		postContentWrap = $('.single-post-wrap .inner'),
+		postContent = $('.single-post-wrap .inner .post-content'),
+		closeBtn = $('.single-post-wrap .close-btn'),
+		postPreloader = $('.single-post-wrap .preloader');
 
 	// Get Data via Ajax
 	function getData(url) {
@@ -323,7 +323,7 @@ jQuery(document).ready(function($) {
 			dataType: "html",
 			success: successFn,
 			error: errorFn,
-			complete: function(xhr, status) {
+			complete: function (xhr, status) {
 				console.log('Request is complete!');
 			}
 		});
@@ -351,7 +351,7 @@ jQuery(document).ready(function($) {
 		postContainer.addClass('open');
 		postPreloader.addClass('active');
 
-		setTimeout(function() {
+		setTimeout(function () {
 			postPreloader.removeClass('active');
 			getData(postUrl);
 		}, 900);
@@ -363,12 +363,12 @@ jQuery(document).ready(function($) {
 		postBackdrop.removeClass('active');
 		postContainer.removeClass('open');
 		postContentWrap.removeClass('loaded');
-		setTimeout(function() {
+		setTimeout(function () {
 			postContent.empty();
 		}, 500);
 	}
 
-	ajaxPostLink.on('click', function(e) {
+	ajaxPostLink.on('click', function (e) {
 		var targetPost = $(this).attr('href');
 
 		openPost(targetPost);
@@ -382,7 +382,7 @@ jQuery(document).ready(function($) {
 	// Tooltips
 	//------------------------------------------------------------------------------
 	var $tooltip = $('[data-toggle="tooltip"]');
-	if ( $tooltip.length > 0 ) {
+	if ($tooltip.length > 0) {
 		// $tooltip.tooltip();
 	}
 
@@ -390,62 +390,62 @@ jQuery(document).ready(function($) {
 	// Custom checkboxes and radios
 	//------------------------------------------------------------------------------
 	var $checkbox = $('input[type="checkbox"], input[type="radio"]');
-	if($checkbox.length) {
+	if ($checkbox.length) {
 		$('input').iCheck();
 	}
 
 
 	// Countdown Function
 	//------------------------------------------------------------------------------
-	function countDownFunc( items, trigger ) {
-		items.each( function() {
+	function countDownFunc(items, trigger) {
+		items.each(function () {
 			var countDown = $(this),
-					dateTime = $(this).data('date-time');
+				dateTime = $(this).data('date-time');
 
-			var countDownTrigger = ( trigger ) ? trigger : countDown;
+			var countDownTrigger = (trigger) ? trigger : countDown;
 			countDownTrigger.downCount({
-		      date: dateTime,
-		      offset: +10
-		  });
+				date: dateTime,
+				offset: +10
+			});
 		});
 	}
-	countDownFunc( $('.countdown') );
+	countDownFunc($('.countdown'));
 
 
 	// Image Carousel
 	//------------------------------------------------------------------------------
-	var $imageCarousel = $( '.image-carousel .inner' );
-	if ( $imageCarousel.length > 0 ) {
-		$imageCarousel.each( function () {
+	var $imageCarousel = $('.image-carousel .inner');
+	if ($imageCarousel.length > 0) {
+		$imageCarousel.each(function () {
 
-			var dataLoop 	 = $( this ).parent().data( 'loop' ),
-					autoPlay   = $( this ).parent().data( 'autoplay' ),
-					timeOut    = $( this ).parent().data( 'interval' ),
-					autoheight = $( this ).parent().data( 'autoheight' ),
-					dataDots 	 = $( this ).parent().data( 'dots' );
+			var dataLoop = $(this).parent().data('loop'),
+				autoPlay = $(this).parent().data('autoplay'),
+				timeOut = $(this).parent().data('interval'),
+				autoheight = $(this).parent().data('autoheight'),
+				dataDots = $(this).parent().data('dots');
 
-			$( this ).owlCarousel( {
+			$(this).owlCarousel({
 				items: 1,
 				loop: dataLoop,
 				margin: 0,
 				nav: true,
 				dots: dataDots,
-				navText: [ , ],
+				navText: [,],
 				autoplay: autoPlay,
 				autoplayTimeout: timeOut,
 				autoHeight: autoheight
-			} );
-		} );
+			});
+		});
 	}
 
 
 	// Hero Slider
 	//------------------------------------------------------------------------------
-	var $heroSlider = $( '.hero-slider .inner' );
-	if ( $heroSlider.length > 0 ) {
-		$heroSlider.each( function () {
+	var $heroSlider = $('.hero-slider .inner');
+	if ($heroSlider.length > 0) {
+		$heroSlider.each(function () {
 
-		var	loop = $(this).parent().data('loop'),
+			var loop = $(this).parent().data('loop'),
 				autoplay = $(this).parent().data('autoplay'),
 				interval = $(this).parent().data('interval') || 3000;
 
@@ -455,7 +455,7 @@ jQuery(document).ready(function($) {
 				margin: 0,
 				nav: true,
 				dots: true,
-				navText: [ , ],
+				navText: [,],
 				autoplay: autoplay,
 				autoplayTimeout: interval,
 				autoplayHoverPause: true,
@@ -467,49 +467,49 @@ jQuery(document).ready(function($) {
 
 	// Video Popup
 	//------------------------------------------------------------------------------
-	var $videoBtn = $( '.video-popup-btn, .gallery-video, .video-popup-placeholder .play-btn' );
-	if( $videoBtn.length > 0 ) {
-		$videoBtn.magnificPopup( {
-		  type: 'iframe',
-		  mainClass: 'mfp-fade',
-		  removalDelay: 500,
-		  gallery: {
-		    enabled: true
-		  }
-		} );
+	var $videoBtn = $('.video-popup-btn, .gallery-video, .video-popup-placeholder .play-btn');
+	if ($videoBtn.length > 0) {
+		$videoBtn.magnificPopup({
+			type: 'iframe',
+			mainClass: 'mfp-fade',
+			removalDelay: 500,
+			gallery: {
+				enabled: true
+			}
+		});
 	}
 
 
 	// Gallery Popup
 	//------------------------------------------------------------------------------
-	var $galleryItem = $( '.gallery-item' );
-	if( $galleryItem.length > 0 ) {
-		$galleryItem.magnificPopup( {
-		  type: 'image',
-		  mainClass: 'mfp-fade',
-		  removalDelay: 500,
-		  gallery: {
-		    enabled: true
-		  }
-		} );
+	var $galleryItem = $('.gallery-item');
+	if ($galleryItem.length > 0) {
+		$galleryItem.magnificPopup({
+			type: 'image',
+			mainClass: 'mfp-fade',
+			removalDelay: 500,
+			gallery: {
+				enabled: true
+			}
+		});
 	}
 
 
 	// Range Slider
 	//------------------------------------------------------------------------------
-	var rangeSlider  = document.querySelector('.ui-range-slider');
-	if(typeof rangeSlider !== 'undefined' && rangeSlider !== null) {
-		var dataStartMin = parseInt(rangeSlider.parentNode.getAttribute( 'data-start-min' ), 10),
-				dataStartMax = parseInt(rangeSlider.parentNode.getAttribute( 'data-start-max' ), 10),
-				dataMin 		 = parseInt(rangeSlider.parentNode.getAttribute( 'data-min' ), 10),
-				dataMax   	 = parseInt(rangeSlider.parentNode.getAttribute( 'data-max' ), 10),
-				dataStep  	 = parseInt(rangeSlider.parentNode.getAttribute( 'data-step' ), 10);
-		var valueMin 			= document.querySelector('.ui-range-value-min span'),
-				valueMax 			= document.querySelector('.ui-range-value-max span'),
-				valueMinInput = document.querySelector('.ui-range-value-min input'),
-				valueMaxInput = document.querySelector('.ui-range-value-max input');
+	var rangeSlider = document.querySelector('.ui-range-slider');
+	if (typeof rangeSlider !== 'undefined' && rangeSlider !== null) {
+		var dataStartMin = parseInt(rangeSlider.parentNode.getAttribute('data-start-min'), 10),
+			dataStartMax = parseInt(rangeSlider.parentNode.getAttribute('data-start-max'), 10),
+			dataMin = parseInt(rangeSlider.parentNode.getAttribute('data-min'), 10),
+			dataMax = parseInt(rangeSlider.parentNode.getAttribute('data-max'), 10),
+			dataStep = parseInt(rangeSlider.parentNode.getAttribute('data-step'), 10);
+		var valueMin = document.querySelector('.ui-range-value-min span'),
+			valueMax = document.querySelector('.ui-range-value-max span'),
+			valueMinInput = document.querySelector('.ui-range-value-min input'),
+			valueMaxInput = document.querySelector('.ui-range-value-max input');
 		noUiSlider.create(rangeSlider, {
-			start: [ dataStartMin, dataStartMax ],
+			start: [dataStartMin, dataStartMax],
 			connect: true,
 			step: dataStep,
 			range: {
@@ -517,13 +517,13 @@ jQuery(document).ready(function($) {
 				'max': dataMax
 			}
 		});
-		rangeSlider.noUiSlider.on('update', function(values, handle) {
+		rangeSlider.noUiSlider.on('update', function (values, handle) {
 			var value = values[handle];
-			if ( handle ) {
-				valueMax.innerHTML  = Math.round(value);
+			if (handle) {
+				valueMax.innerHTML = Math.round(value);
 				valueMaxInput.value = Math.round(value);
 			} else {
-				valueMin.innerHTML  = Math.round(value);
+				valueMin.innerHTML = Math.round(value);
 				valueMinInput.value = Math.round(value);
 			}
 		});
@@ -534,58 +534,100 @@ jQuery(document).ready(function($) {
 	// Google Maps API
 	//------------------------------------------------------------------------------
 	var $googleMap = $('.google-map');
-	if($googleMap.length > 0) {
-		$googleMap.each(function(){
+	if ($googleMap.length > 0) {
+		$googleMap.each(function () {
 			var mapHeight = $(this).data('height'),
-					address = $(this).data('address'),
-					zoom = $(this).data('zoom'),
-					controls = $(this).data('disable-controls'),
-					scrollwheel = $(this).data('scrollwheel'),
-					marker = $(this).data('marker'),
-					markerTitle = $(this).data('marker-title'),
-					styles = $(this).data('styles');
+				address = $(this).data('address'),
+				zoom = $(this).data('zoom'),
+				controls = $(this).data('disable-controls'),
+				scrollwheel = $(this).data('scrollwheel'),
+				marker = $(this).data('marker'),
+				markerTitle = $(this).data('marker-title'),
+				styles = $(this).data('styles');
 			$(this).height(mapHeight);
 			$(this).gmap3({
-          marker:{
-            address: address,
-            data: markerTitle,
-            options: {
-            	icon: marker
-            },
-            events: {
-              mouseover: function(marker, event, context){
-                var map = $(this).gmap3("get"),
-                  	infowindow = $(this).gmap3({get:{name:"infowindow"}});
-                if (infowindow){
-                  infowindow.open(map, marker);
-                  infowindow.setContent(context.data);
-                } else {
-                  $(this).gmap3({
-                    infowindow:{
-                      anchor:marker,
-                      options:{content: context.data}
-                    }
-                  });
-                }
-              },
-              mouseout: function(){
-                var infowindow = $(this).gmap3({get:{name:"infowindow"}});
-                if (infowindow){
-                  infowindow.close();
-                }
-              }
-            }
-          },
-          map:{
-            options:{
-              zoom: zoom,
-              disableDefaultUI: controls,
-              scrollwheel: scrollwheel,
-              styles: styles
-            }
-          }
+				marker: {
+					address: address,
+					data: markerTitle,
+					options: {
+						icon: marker
+					},
+					events: {
+						mouseover: function (marker, event, context) {
+							var map = $(this).gmap3("get"),
+								infowindow = $(this).gmap3({ get: { name: "infowindow" } });
+							if (infowindow) {
+								infowindow.open(map, marker);
+								infowindow.setContent(context.data);
+							} else {
+								$(this).gmap3({
+									infowindow: {
+										anchor: marker,
+										options: { content: context.data }
+									}
+								});
+							}
+						},
+						mouseout: function () {
+							var infowindow = $(this).gmap3({ get: { name: "infowindow" } });
+							if (infowindow) {
+								infowindow.close();
+							}
+						}
+					}
+				},
+				map: {
+					options: {
+						zoom: zoom,
+						disableDefaultUI: controls,
+						scrollwheel: scrollwheel,
+						styles: styles
+					}
+				}
 			});
 		});
+	}
+
+	// header scroll to be moved to controller
+	// Hide Header on on scroll down
+	var didScroll;
+	var lastScrollTop = 0;
+	var delta = 5;
+	var navbarHeight = $('header').outerHeight();
+	var navbar = $('header');
+
+	$(window).scroll(function (event) {
+		didScroll = true;
+	});
+
+	setInterval(function () {
+		if (didScroll) {
+			hasScrolled();
+			didScroll = false;
+		}
+	}, 250);
+
+	function hasScrolled() {
+		var st = navbar.scrollTop();
+		console.log(st);
+
+		// Make sure they scroll more than delta
+		if (Math.abs(lastScrollTop - st) <= delta)
+			return;
+
+		// If they scrolled down and are past the navbar, add class .nav-up.
+		// This is necessary so you never see what is "behind" the navbar.
+		if (st > lastScrollTop && st > navbarHeight) {
+			// Scroll Down
+			$('header').removeClass('nav-down').addClass('nav-up');
+		} else {
+			// Scroll Up
+			if (st + $(window).height() < $(document).height()) {
+				$('header').removeClass('nav-up').addClass('nav-down');
+			}
+		}
+
+		lastScrollTop = st;
 	}
 
 });/*Document Ready End*/
