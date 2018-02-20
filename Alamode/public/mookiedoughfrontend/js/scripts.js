@@ -594,10 +594,13 @@ jQuery(document).ready(function ($) {
 	var lastScrollTop = 0;
 	var delta = 5;
 	var navbarHeight = $('header').outerHeight();
-	var navbar = $('header');
+	var navbar = $("header");
+	// $(window).scroll(function (event) {
+	// 	didScroll = true;
+	// });
 
-	$(window).scroll(function (event) {
-		didScroll = true;
+	$(window).on('scroll',function(e){
+		didScroll= true;
 	});
 
 	setInterval(function () {
@@ -608,9 +611,8 @@ jQuery(document).ready(function ($) {
 	}, 250);
 
 	function hasScrolled() {
-		var st = navbar.scrollTop();
-		console.log(st);
-
+		// $(window) instead of $(this)
+		var st = $(window).scrollTop();
 		// Make sure they scroll more than delta
 		if (Math.abs(lastScrollTop - st) <= delta)
 			return;

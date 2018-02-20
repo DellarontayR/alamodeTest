@@ -550,7 +550,7 @@ footer {
 	display:block;
 	position: absolute;
 	z-index: 10;
-	width: 150px;
+	width: 160px;
 	height: 80px;
 	top: -2px;
 	right: 5px;
@@ -572,6 +572,7 @@ footer {
 	background-color: #333333;
 	margin: 4px 2px;
 	color:white;
+	font-size:10px;
 }
 
 a.mobile-menu-toggle {
@@ -580,11 +581,11 @@ a.mobile-menu-toggle {
 }
 
 a.mobile-menu-toggle:after {
-	display: block;
+	display: inline-block;
 	font-family: 'Material Icons';
 	content: "\e5cd";
 	font-size: 40px;
-	line-height:76px;
+	/* line-height:76px; */
 	/* margin-top: -24px; */
 	color: black;
 	opacity: 0;
@@ -661,13 +662,13 @@ a.mobile-menu-toggle.active:after {
 /* Index only Css */
 /* Other Css should be moved to other files */
 
-/* header{
+header{
 	transition: top 0.2s ease-in-out;
 }
 
 .nav-up {
     top: -80px;
-} */
+}
 
 /* Main Navigation Mobile */
 @media screen and (max-width: 1070px) {
