@@ -683,8 +683,6 @@ alamode.controller('mainCtrl', function (Auth, $timeout, $location, $rootScope,
 
         // Check if user is logged in
         if (Auth.isLoggedIn()) {
-            console.log('logged in through Auth');
-
             // Custom function to retrieve user data
             Auth.getUser().then(function (data) {
                 if (data.data.username === undefined) {
@@ -719,23 +717,23 @@ alamode.controller('mainCtrl', function (Auth, $timeout, $location, $rootScope,
         if ($location.hash() == '_=_') $location.hash(null); // Check if facebook hash is added to URL
     });
 
-    // Function to redirect users to facebook authentication page
-    this.facebook = function () {
-        app.disabled = true;
-        $window.location = $window.location.protocol + '//' + $window.location.host + '/auth/facebook';
-    };
+    // // Function to redirect users to facebook authentication page
+    // this.facebook = function () {
+    //     app.disabled = true;
+    //     $window.location = $window.location.protocol + '//' + $window.location.host + '/auth/facebook';
+    // };
 
-    // Function to redirect users to twitter authentication page        
-    this.twitter = function () {
-        app.disabled = true;
-        $window.location = $window.location.protocol + '//' + $window.location.host + '/auth/twitter';
-    };
+    // // Function to redirect users to twitter authentication page        
+    // this.twitter = function () {
+    //     app.disabled = true;
+    //     $window.location = $window.location.protocol + '//' + $window.location.host + '/auth/twitter';
+    // };
 
-    // Function to redirect users to google authentication page
-    this.google = function () {
-        app.disabled = true;
-        $window.location = $window.location.protocol + '//' + $window.location.host + '/auth/google';
-    };
+    // // Function to redirect users to google authentication page
+    // this.google = function () {
+    //     app.disabled = true;
+    //     $window.location = $window.location.protocol + '//' + $window.location.host + '/auth/google';
+    // };
 
     // Function that performs login
     this.doLogin = function (loginData) {
@@ -781,14 +779,12 @@ alamode.controller('mainCtrl', function (Auth, $timeout, $location, $rootScope,
 
     // Function to logout the user
     app.logout = function () {
-        console.log('logout');
         Auth.logout(); // Logout user by removing jwt token
         app.loggedIn = false;
         $timeout(function () {
             app.loggedIn = false;
             $location.path('/register');
         }, 2000);
-        // $scope.loggedIn = false;
     };
 
 });
