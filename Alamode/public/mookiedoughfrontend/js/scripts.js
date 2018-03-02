@@ -6,6 +6,28 @@
 
 jQuery(document).ready(function ($) {
 	'use strict';
+	console.log('here');
+	var $insta = $('#insta');
+	var getInstaHeight = function(event){
+		if(event.origin.indexOf('http://localhost:8081')){
+			var height = JSON.parse(event.data);
+			$('#insta').css({height:height.size});
+			window.removeEventListener("message", getInstaHeight, false);	
+		}
+		else{
+			return;
+		}
+	}
+
+	var resizeInsta = function(){
+		window.addEventListener('message',getInstaHeight);
+		document.getElementById('insta').contentWindow.postMessage('','*');
+	};
+
+	document.getElementById('insta').onload = function(){
+		resizeInsta();
+	};
+
 	// Check if Page Scrollbar is visible
 	//------------------------------------------------------------------------------
 	var hasScrollbar = function () {

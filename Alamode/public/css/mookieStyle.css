@@ -836,3 +836,7 @@ header{
 .social-signup-btn.ssb-twitter {
 	background-color: #55acee;
 }
+
+.fuschia-gradient {
+    background: linear-gradient(#F93268, #4731B9);
+}
