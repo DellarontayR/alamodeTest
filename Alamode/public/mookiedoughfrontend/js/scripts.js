@@ -9,7 +9,7 @@ jQuery(document).ready(function ($) {
 	console.log('here');
 	var $insta = $('#insta');
 	var getInstaHeight = function(event){
-		if(event.origin.indexOf('http://localhost:8081')){
+		if(event.origin.indexOf('http://localhost:8081') ||event.origin.indexOf('https://www.mookiedough.co')){
 			var height = JSON.parse(event.data);
 			$('#insta').css({height:height.size});
 			window.removeEventListener("message", getInstaHeight, false);	
