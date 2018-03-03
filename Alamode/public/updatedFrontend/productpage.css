@@ -13,6 +13,9 @@
   height: 100%;
   width: 100%;
 } */
+body{
+  color:white;
+}
 
 *{
   box-sizing: border-box;
@@ -46,8 +49,8 @@ p{
 
 
 .product{
-	background-color: #FFFFFF;
-	border-bottom: 1px solid #ddd;
+	/* background-color: #FFFFFF; */
+	/* border-bottom: 1px solid #ddd; */
 	clear: both;
 	padding: 0px 10% 70px 10%;
 }

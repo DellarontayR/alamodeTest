@@ -21,6 +21,7 @@ alamode.controller('mainCtrl', function (Auth, $timeout, $location, $rootScope,
     $scope.mookie.cartItemCount = false;
     $scope.mookie.home = false;
     $scope.mookie.admin = false;
+    $scope.mookie.products = {};
 
     $scope.mookie.numberOfSiteVisitors = 0;//Display visitors to site
     // Checks to see if visitor has visitor's ip address has visited our site before
@@ -343,11 +344,13 @@ alamode.controller('mainCtrl', function (Auth, $timeout, $location, $rootScope,
     app.checkForProducts = function () {
         app.loadme = false;
         Product.getCatalogProducts().then(function (data) {
-            if (data.data.success) {
+            if(false){
+            // if (data.data.success) {
                 app.loadme = true;
             }
             else {
-                if (data.data.noProducts) {
+                if(true){
+                // if (data.data.noProducts) {
                     (function () {
                         // var productData = {};
                         // productData.imagePath = "../imgs/Media/peanutbutter-min.png";
@@ -394,12 +397,13 @@ alamode.controller('mainCtrl', function (Auth, $timeout, $location, $rootScope,
 
                         productData4.about = "Not sure yet";
 
-                        app.addProductToDB(productData);
-                        app.addProductToDB(productData2);
-                        app.addProductToDB(productData3);
-                        app.addProductToDB(productData4);
-
-
+                        // app.addProductToDB(productData);
+                        // app.addProductToDB(productData2);
+                        // app.addProductToDB(productData3);
+                        // app.addProductToDB(productData4);
+                        $scope.mookie.products = {productData,productData2,productData3,productData4};
+                        console.log($scope.mookie.products);
+            
                     })();
                 }
                 else {

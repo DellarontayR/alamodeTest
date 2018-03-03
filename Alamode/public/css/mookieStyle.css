@@ -841,5 +841,7 @@ header{
     background: linear-gradient(#F93268, #4731B9);
 }
 .gray-gradient{
-	background:linear-gradient(rgb(190, 159, 73),rgb(44, 49, 75))
+	/* background:linear-gradient(rgb(190, 159, 73),rgb(44, 49, 75)); */
+	background:linear-gradient(rgb(190, 159, 73),#333333);
+
 }

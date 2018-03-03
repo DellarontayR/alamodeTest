@@ -9,11 +9,9 @@ jQuery(document).ready(function ($) {
 	var $insta = $('#insta');
 	var getInstaHeight = function(event){
 		if(event.origin.indexOf('http://localhost:8081') ||event.origin.indexOf('https://www.mookiedough.co')){
-			var height = JSON.parse(event.data);
-			if(height.type === "lightwidget_widget_size"){
-				console.log(height.size);
-				console.log(height);
-				$('#insta').css({height:height.size});
+			var eventData = JSON.parse(event.data);
+			if(eventData.type === "lightwidget_widget_size"){
+				$('#insta').css({height:eventData.size});
 				window.removeEventListener("message", getInstaHeight, false);	
 			}
 		}
