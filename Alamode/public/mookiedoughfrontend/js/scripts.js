@@ -6,13 +6,16 @@
 
 jQuery(document).ready(function ($) {
 	'use strict';
-	console.log('here');
 	var $insta = $('#insta');
 	var getInstaHeight = function(event){
 		if(event.origin.indexOf('http://localhost:8081') ||event.origin.indexOf('https://www.mookiedough.co')){
 			var height = JSON.parse(event.data);
-			$('#insta').css({height:height.size});
-			window.removeEventListener("message", getInstaHeight, false);	
+			if(height.type === "lightwidget_widget_size"){
+				console.log(height.size);
+				console.log(height);
+				$('#insta').css({height:height.size});
+				window.removeEventListener("message", getInstaHeight, false);	
+			}
 		}
 		else{
 			return;
