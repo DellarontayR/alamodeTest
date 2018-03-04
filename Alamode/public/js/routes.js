@@ -10,7 +10,8 @@ var app = angular.module('appRoutes',['ngRoute','angularCSS'])
         templateUrl: '../updatedFrontend/mookie.html',
         authenticated: false,
         controller: 'HomeController',
-        controllerAs: 'home'
+        controllerAs: 'home',
+        css:'../css/home.css'
     }).
     when('/coterie',{
         templateUrl:'../updatedFrontend/coterie.html',

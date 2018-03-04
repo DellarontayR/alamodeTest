@@ -44,6 +44,8 @@
 
   <link href="../css/mookieStyle.css" rel="stylesheet" media="screen">
 
+  <link href="../css/home.css" rel="stylesheet" media="screen">
+
 
   <link href="../libs/fontawesome-free-5.0.3/svg-with-js/css/fa-svg-with-js.css" rel="stylesheet">
 
@@ -127,7 +129,7 @@
 
 
 
-<body class="page-preloading gray-gradient" ng-controller="mainCtrl as main">
+<body class="page-preloading" ng-controller="mainCtrl as main">
 
   <!-- Page Pre-Loader -->
   <div class="page-preloader">
@@ -245,10 +247,9 @@
   </header>
 
 
-  <div>
+  <div class="default-gradient">
     <!-- Main Angular view where routes will be rendered-->
     <div class="main-view" ng-show="main.loadme" ng-view></div>
-  </div>
 
 
 
@@ -270,6 +271,7 @@
     <a class="twitter-timeline" href="https://twitter.com/_Mookie_Dough?ref_src=twsrc%5Etfw">Tweets by _Mookie_Dough</a>
     <script async src="https://platform.twitter.com/widgets.js" charset="utf-8"></script>
   </div>
+</div>
 
 
 
