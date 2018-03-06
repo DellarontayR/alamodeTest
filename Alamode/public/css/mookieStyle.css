@@ -546,8 +546,8 @@ footer {
 }
 
 .tools {
-	line-height:76px;
-	display:block;
+	line-height: 76px;
+	display: block;
 	position: absolute;
 	z-index: 10;
 	width: 160px;
@@ -558,9 +558,9 @@ footer {
 
 .tools .inner {
 	/* display: table; */
-	display:block;
-	position:absolute;
-	bottom:0;
+	display: block;
+	position: absolute;
+	bottom: 0;
 	width: 100%;
 	height: 100%;
 	/* table-layout: fixed; */
@@ -571,8 +571,8 @@ footer {
 	border-radius: 20px;
 	background-color: #333333;
 	margin: 4px 2px;
-	color:white;
-	font-size:10px;
+	color: white;
+	font-size: 10px;
 }
 
 a.mobile-menu-toggle {
@@ -580,14 +580,11 @@ a.mobile-menu-toggle {
 	/* position: relative; */
 }
 
-a.mobile-menu-toggle:after {
-	display: inline-block;
+/* a.mobile-menu-toggle:after {
+	display: block;
 	font-family: 'Material Icons';
 	content: "\e5cd";
-	font-size: 40px;
-	/* line-height:76px; */
-	/* margin-top: -24px; */
-	color: black;
+	margin-top: -24px;
 	opacity: 0;
 	-webkit-transform: translateY(20px) scale(0.7);
 	-moz-transform: translateY(20px) scale(0.7);
@@ -597,6 +594,25 @@ a.mobile-menu-toggle:after {
 	-webkit-transition: transform 0.3s, opacity 0.15s;
 	-o-transition: transform 0.3s, opacity 0.15s;
 	transition: transform 0.3s, opacity 0.15s;
+} */
+
+a.mobile-menu-toggle:after {
+	display: inline-block;
+	font-family: 'Material Icons';
+	content: "\e5cd";
+	margin-top: -24px;
+	opacity: 0;
+	-webkit-transform: translateY(20px) scale(0.7);
+	-moz-transform: translateY(20px) scale(0.7);
+	-ms-transform: translateY(20px) scale(0.7);
+	-o-transform: translateY(20px) scale(0.7);
+	transform: translateY(20px) scale(0.7);
+	-webkit-transition: transform 0.3s, opacity 0.15s;
+	-o-transition: transform 0.3s, opacity 0.15s;
+	transition: transform 0.3s, opacity 0.15s;
+	line-height:76px;
+	color:black;
+	font-size: 40px;
 }
 
 a.mobile-menu-toggle.active>i {
@@ -617,7 +633,7 @@ a.mobile-menu-toggle.active:after {
 	transform: translateY(0) scale(1);
 }
 
-.mobile-menu-toggle>i {
+a.mobile-menu-toggle>i {
 	position: relative;
 	display: inline-block;
 	font-style: normal;
@@ -632,22 +648,6 @@ a.mobile-menu-toggle.active:after {
 	transition: transform 0.3s, opacity 0.15s;
 }
 
-.mobile-menu-toggle:after {
-	display: block;
-	font-family: 'Material Icons';
-	content: "\e5cd";
-	margin-top: -24px;
-	opacity: 0;
-	-webkit-transform: translateY(20px) scale(0.7);
-	-moz-transform: translateY(20px) scale(0.7);
-	-ms-transform: translateY(20px) scale(0.7);
-	-o-transform: translateY(20px) scale(0.7);
-	transform: translateY(20px) scale(0.7);
-	-webkit-transition: transform 0.3s, opacity 0.15s;
-	-o-transition: transform 0.3s, opacity 0.15s;
-	transition: transform 0.3s, opacity 0.15s;
-}
-
 .mobile-menu-toggle.active>i {
 	opacity: 0;
 	-webkit-transform: translateY(-20px) scale(0.7);
@@ -657,23 +657,23 @@ a.mobile-menu-toggle.active:after {
 	transform: translateY(-20px) scale(0.7);
 }
 
-
-
 /* Index only Css */
+
 /* Other Css should be moved to other files */
 
-header{
+header {
 	transition: top 0.2s ease-in-out;
 }
 
 .nav-up {
-    top: -80px;
+	top: -80px;
 }
 
 /* Main Navigation Mobile */
+
 @media screen and (max-width: 1070px) {
 	a.mobile-menu-toggle {
-		display: inline-table;
+		display: inline-block;
 		/* font-size: 1.5em; */
 	}
 	.main-navigation {
@@ -712,12 +712,13 @@ header{
 		-o-animation: slideUpLong 0.5s;
 		animation: slideUpLong 0.5s;
 	}
-	.tools{
-		line-height:76px;
+	.tools {
+		line-height: 76px;
 	}
 }
 
 /* Form control inputs */
+
 .form-control {
 	display: block;
 	width: 100%;
@@ -838,21 +839,24 @@ header{
 }
 
 .fuschia-gradient {
-    background: linear-gradient(#F93268, #4731B9);
+	background: linear-gradient(#F93268, #4731B9);
 }
 
-.default-gradient{
-	background: #000046; /* fallback for old browsers */
-	background: -webkit-linear-gradient(to top, #000046, #333333); /* Chrome 10-25, Safari 5.1-6 */
-	background: linear-gradient(to top, #000046, #333333); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
-	padding-bottom:10px;
+.default-gradient {
+	background: #000046;
+	/* fallback for old browsers */
+	background: -webkit-linear-gradient(to top, #f5f5f5, #333333);
+	/* Chrome 10-25, Safari 5.1-6 */
+	background: linear-gradient(to top, #f5f5f5, #333333);
+	/* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
+	padding-bottom: 10px;
 }
 
-.gray-gradient{
+.gray-gradient {
 	/* background:linear-gradient(rgb(190, 159, 73),rgb(44, 49, 75)); */
-	background:linear-gradient(rgb(190, 159, 73),#333333);
-
+	background: linear-gradient(rgb(190, 159, 73), #333333);
 }
-.widget-title{
-	margin-top:0px;
+
+.widget-title {
+	margin-top: 0px;
 }
