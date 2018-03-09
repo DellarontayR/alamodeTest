@@ -402,7 +402,6 @@ alamode.controller('mainCtrl', function (Auth, $timeout, $location, $rootScope,
                         // app.addProductToDB(productData3);
                         // app.addProductToDB(productData4);
                         $scope.mookie.products = {productData,productData2,productData3,productData4};
-                        console.log($scope.mookie.products);
             
                     })();
                 }

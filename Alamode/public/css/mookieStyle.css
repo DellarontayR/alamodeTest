@@ -6,25 +6,6 @@
 	text-align: center;
 }
 
-/* body{
-	margin:8px;
-} */
-
-.mookie-slider {
-	overflow-y: hidden;
-	max-height: 500px;
-	/* approximate max height */
-	transition-property: all;
-	transition-duration: .5s;
-	transition-timing-function: cubic-bezier(0, 1, 0.5, 1);
-}
-
-.mookie-slider.closed {
-	max-height: 0;
-}
-
-/* Go on codepen and figure out how to add some fancy css classes that can provide animations through angularjs */
-
 .add-cart-note {
 	display: none;
 	height: 200px;
@@ -33,15 +14,6 @@
 
 .add-cart-note.ng-hide {
 	display: none;
-}
-
-.mookie-carousel {
-	overflow-x: auto;
-	/* overflow-x:auto;
-	white-space: nowrap;
-	display:flex; 
-	-webkit-overflow-scrolling: touch;
-	-ms-overflow-style: -ms-autohiding-scrollbar; */
 }
 
 .product-carousel {
@@ -83,26 +55,8 @@
 	background-color: white;
 }
 
-/* .product-carousel-internal:hover{
-	
-} */
-
 .nav, .pagination, .carousel, .panel-title a {
 	cursor: pointer;
-}
-
-.primary-background {
-	background-color: #457CFC;
-	min-height: 200px;
-}
-
-.secondary-background {
-	background-color: #003BC2;
-	min-height: 200px;
-}
-
-.tertiary-background {
-	background-color: #0E05FF;
 }
 
 .shownCheck {
@@ -278,7 +232,7 @@ product {
 
 .main-navigation {
 	display: block;
-	z-index: 5;
+	z-index: 10;
 	left: 139px;
 	top: 0;
 	/* padding-right: 170px;
@@ -338,7 +292,7 @@ product {
 	animation: slideUp 0.4s;
 }
 
-.main-navigation.text-center>.menu>li>a {
+/* .main-navigation.text-center>.menu>li>a {
 	padding-right: 15px;
 	padding-left: 15px;
 }
@@ -346,7 +300,7 @@ product {
 .main-navigation.text-right>.menu>li>a {
 	padding-right: 0;
 	padding-left: 30px;
-}
+} */
 
 @-webkit-keyframes slideUp {
 	from {
@@ -458,10 +412,9 @@ product {
 	margin-top: 80px;
 }
 
-i.icon-black {
-	color: black;
-	font-size: 40px;
-}
+/* i.icon-black {
+
+} */
 
 footer {
 	background-color: #333333;
@@ -537,6 +490,10 @@ footer {
 	color: #999;
 }
 
+/* Index only Css */
+
+/* Other Css should be moved to other files */
+
 @media screen and (max-width: 480px) {
 	.scroll-to-top-btn {
 		height: 42px;
@@ -544,122 +501,6 @@ footer {
 		line-height: 38px;
 	}
 }
-
-.tools {
-	line-height: 76px;
-	display: block;
-	position: absolute;
-	z-index: 10;
-	width: 160px;
-	height: 80px;
-	top: -2px;
-	right: 5px;
-}
-
-.tools .inner {
-	/* display: table; */
-	display: block;
-	position: absolute;
-	bottom: 0;
-	width: 100%;
-	height: 100%;
-	/* table-layout: fixed; */
-}
-
-.tools a.sign-in-button {
-	padding: 11px 16px;
-	border-radius: 20px;
-	background-color: #333333;
-	margin: 4px 2px;
-	color: white;
-	font-size: 10px;
-}
-
-a.mobile-menu-toggle {
-	display: none;
-	/* position: relative; */
-}
-
-/* a.mobile-menu-toggle:after {
-	display: block;
-	font-family: 'Material Icons';
-	content: "\e5cd";
-	margin-top: -24px;
-	opacity: 0;
-	-webkit-transform: translateY(20px) scale(0.7);
-	-moz-transform: translateY(20px) scale(0.7);
-	-ms-transform: translateY(20px) scale(0.7);
-	-o-transform: translateY(20px) scale(0.7);
-	transform: translateY(20px) scale(0.7);
-	-webkit-transition: transform 0.3s, opacity 0.15s;
-	-o-transition: transform 0.3s, opacity 0.15s;
-	transition: transform 0.3s, opacity 0.15s;
-} */
-
-a.mobile-menu-toggle:after {
-	display: inline-block;
-	font-family: 'Material Icons';
-	content: "\e5cd";
-	margin-top: -24px;
-	opacity: 0;
-	-webkit-transform: translateY(20px) scale(0.7);
-	-moz-transform: translateY(20px) scale(0.7);
-	-ms-transform: translateY(20px) scale(0.7);
-	-o-transform: translateY(20px) scale(0.7);
-	transform: translateY(20px) scale(0.7);
-	-webkit-transition: transform 0.3s, opacity 0.15s;
-	-o-transition: transform 0.3s, opacity 0.15s;
-	transition: transform 0.3s, opacity 0.15s;
-	line-height:76px;
-	color:black;
-	font-size: 40px;
-}
-
-a.mobile-menu-toggle.active>i {
-	opacity: 0;
-	-webkit-transform: translateY(-20px) scale(0.7);
-	-moz-transform: translateY(-20px) scale(0.7);
-	-ms-transform: translateY(-20px) scale(0.7);
-	-o-transform: translateY(-20px) scale(0.7);
-	transform: translateY(-20px) scale(0.7);
-}
-
-a.mobile-menu-toggle.active:after {
-	opacity: 1;
-	-webkit-transform: translateY(0) scale(1);
-	-moz-transform: translateY(0) scale(1);
-	-ms-transform: translateY(0) scale(1);
-	-o-transform: translateY(0) scale(1);
-	transform: translateY(0) scale(1);
-}
-
-a.mobile-menu-toggle>i {
-	position: relative;
-	display: inline-block;
-	font-style: normal;
-	opacity: 1;
-	-webkit-transform: translateY(0) scale(1);
-	-moz-transform: translateY(0) scale(1);
-	-ms-transform: translateY(0) scale(1);
-	-o-transform: translateY(0) scale(1);
-	transform: translateY(0) scale(1);
-	-webkit-transition: transform 0.3s, opacity 0.15s;
-	-o-transition: transform 0.3s, opacity 0.15s;
-	transition: transform 0.3s, opacity 0.15s;
-}
-
-.mobile-menu-toggle.active>i {
-	opacity: 0;
-	-webkit-transform: translateY(-20px) scale(0.7);
-	-moz-transform: translateY(-20px) scale(0.7);
-	-ms-transform: translateY(-20px) scale(0.7);
-	-o-transform: translateY(-20px) scale(0.7);
-	transform: translateY(-20px) scale(0.7);
-}
-
-/* Index only Css */
-
-/* Other Css should be moved to other files */
 
 header {
 	transition: top 0.2s ease-in-out;
@@ -672,10 +513,6 @@ header {
 /* Main Navigation Mobile */
 
 @media screen and (max-width: 1070px) {
-	a.mobile-menu-toggle {
-		display: inline-block;
-		/* font-size: 1.5em; */
-	}
 	.main-navigation {
 		position: fixed;
 		width: 100%;
@@ -859,4 +696,106 @@ header {
 
 .widget-title {
 	margin-top: 0px;
+}
+
+.toolbar {
+	position: absolute;
+	font-size: 24px;
+	right: 0px;
+	height: 80px;
+	width:150px;
+	top:-2px;
+
+	display: -ms-flexbox;
+	display: -webkit-flex;
+	display: flex;
+
+	-ms-flex-align: center;
+	-webkit-align-items: center;
+	-webkit-box-align: center;
+
+	align-items: center;
+}
+
+.toolbar a.sign-in-button {
+	padding: 11px 16px;
+	border-radius: 20px;
+	background-color: #333333;
+	margin: 4px 2px;
+	color: white;
+	font-size: 10px;
+}
+
+a.mobile-menu-toggle {
+	display: none;
+	color:black;
+}
+
+a.mobile-menu-toggle:after {
+	display: none;
+	font-family: 'Material Icons';
+	content: "\e5cd";
+	opacity: 0;
+	-webkit-transform: translateY(20px) scale(0.7);
+	-moz-transform: translateY(20px) scale(0.7);
+	-ms-transform: translateY(20px) scale(0.7);
+	-o-transform: translateY(20px) scale(0.7);
+	transform: translateY(20px) scale(0.7);
+	-webkit-transition: transform 0.3s, opacity 0.15s;
+	-o-transition: transform 0.3s, opacity 0.15s;
+	transition: transform 0.3s, opacity 0.15s;
+	color:black;
+}
+
+a.mobile-menu-toggle.active>i {
+	opacity: 0;
+	-webkit-transform: translateY(-20px) scale(0.7);
+	-moz-transform: translateY(-20px) scale(0.7);
+	-ms-transform: translateY(-20px) scale(0.7);
+	-o-transform: translateY(-20px) scale(0.7);
+	transform: translateY(-20px) scale(0.7);
+}
+
+a.mobile-menu-toggle.active:after {
+	display:inline-block;
+	opacity: 1;
+	-webkit-transform: translateY(0) scale(1);
+	-moz-transform: translateY(0) scale(1);
+	-ms-transform: translateY(0) scale(1);
+	-o-transform: translateY(0) scale(1);
+	transform: translateY(0) scale(1);
+}
+a.mobile-menu-toggle.active .menu{
+	display:none;
+}
+
+a.mobile-menu-toggle>i {
+	position: relative;
+	display: inline-block;
+	font-style: normal;
+	opacity: 1;
+	-webkit-transform: translateY(0) scale(1);
+	-moz-transform: translateY(0) scale(1);
+	-ms-transform: translateY(0) scale(1);
+	-o-transform: translateY(0) scale(1);
+	transform: translateY(0) scale(1);
+	-webkit-transition: transform 0.3s, opacity 0.15s;
+	-o-transition: transform 0.3s, opacity 0.15s;
+	transition: transform 0.3s, opacity 0.15s;
+}
+
+.mobile-menu-toggle.active>i {
+	opacity: 0;
+	-webkit-transform: translateY(-20px) scale(0.7);
+	-moz-transform: translateY(-20px) scale(0.7);
+	-ms-transform: translateY(-20px) scale(0.7);
+	-o-transform: translateY(-20px) scale(0.7);
+	transform: translateY(-20px) scale(0.7);
+}
+
+@media screen and (max-width: 1070px) {
+	a.mobile-menu-toggle {
+		display: inline-block;
+		/* font-size: 1.5em; */
+	}
 }

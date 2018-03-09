@@ -25,9 +25,9 @@ jQuery(document).ready(function ($) {
 		document.getElementById('insta').contentWindow.postMessage('','*');
 	};
 
-	document.getElementById('insta').onload = function(){
-		resizeInsta();
-	};
+	// document.getElementById('insta').onload = function(){
+	// 	resizeInsta();
+	// };
 
 	// Check if Page Scrollbar is visible
 	//------------------------------------------------------------------------------
