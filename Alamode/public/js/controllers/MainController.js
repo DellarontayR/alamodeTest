@@ -289,7 +289,7 @@ alamode.controller('mainCtrl', function (Auth, $timeout, $location, $rootScope,
         $scope.mookie.cartItemCount = cartData.itemCount;
     });
 
-    //Modal fucntions
+    //Modal functions
 
 
     $scope.mookie.hideModal = function () {
@@ -307,6 +307,7 @@ alamode.controller('mainCtrl', function (Auth, $timeout, $location, $rootScope,
         $scope.mookie.modal.title = product.title;
         $scope.mookie.modal.description = product.description;
         $scope.mookie.modal.price = product.price;
+        console.log($scope.mookie.modal);
         $("#productModal").modal({ backdrop: "static" }); // Open modal        
 
     };

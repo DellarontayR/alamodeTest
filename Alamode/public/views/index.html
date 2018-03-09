@@ -90,6 +90,7 @@
   <script src="../js/directives/product.js"></script>
   <script src="../js/directives/mookie-maps.js"></script>
   <script src="../js/directives/insta.js"></script>
+  <script src="../js/directives/productwidget.js"></script>
 
   <!-- Alamode Controllers -->
   <script src="../js/controllers/MainController.js"></script>
@@ -153,8 +154,28 @@
     </div>
   </div>
 
-  <div class="modal fade" id="productModal" role="dialog">
+
+
+  <div class="modal fade" id="stripeModal" role="dialog">
     <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <button type="button" class="close" data-dismiss="modal">&times;</button>
+          {{mookie.modalTitle}}
+          <h2> Mookie Dough Customer Experience</h2>
+        </div>
+        <div class="modal-body">
+          <h4> Thank you for shopping with us</h4>
+          <img src="../imgs/Media/header2.png">
+
+        </div>
+      </div>
+    </div>
+  </div> -->
+
+  <div class="modal fade" id="productModal" role="dialog">
+    <productwidget catalogProduct="{{mookie.modal}}"></productwidget>
+    <!-- <div class="modal-dialog">
       <div class="modal-content">
         <div class="modal-header">
           <button type="button" class="close" data-dismiss="modal">&times;</button>
@@ -182,25 +203,8 @@
 
         </div>
       </div>
-    </div>
+    </div> -->
   </div>
-
-  <div class="modal fade" id="stripeModal" role="dialog">
-    <div class="modal-dialog">
-      <div class="modal-content">
-        <div class="modal-header">
-          <button type="button" class="close" data-dismiss="modal">&times;</button>
-          {{mookie.modalTitle}}
-          <h2> Mookie Dough Customer Experience</h2>
-        </div>
-        <div class="modal-body">
-          <h4> Thank you for shopping with us</h4>
-          <img src="../imgs/Media/header2.png">
-
-        </div>
-      </div>
-    </div>
-  </div> -->
 
   <header class="navbar navbar-sticky nav-down">
     <div id="logo" href="/home">
@@ -323,7 +327,7 @@
 
       </div>
       <!-- .social-bar -->
-      <p class="copyright">&copy; 2017. Mookie Dough LLC</p>
+      <p class="copyright">&copy; 2018. Mookie Dough LLC</p>
       <p ng-if="mookie.numberOfSiteVisitors > 0"> Site has been accessed {{mookie.numberOfSiteVisitors}} times.</p>
 
       <div class="column">
@@ -340,13 +344,14 @@
   <!-- Older bootstrap and jquery script CDNs-->
   <!-- JavaScript (jQuery) libraries, plugins and custom scripts -->
   <script src="../mookiedoughfrontend/js/vendor/jquery-2.1.4.min.js"></script>
+  <script src="../libs/bootstrap-3.3.7/dist/js/bootstrap.js"></script>
   <script src="https://npmcdn.com/tether@1.2.4/dist/js/tether.min.js"></script>
   <script src="../mookiedoughfrontend/js/vendor/isotope.pkgd.min.js"></script>
   <script src="../mookiedoughfrontend/js/vendor/smoothscroll.js"></script>
   <script src="../mookiedoughfrontend/js/vendor/velocity.min.js"></script>
   <script src="../mookiedoughfrontend/js/vendor/waves.min.js"></script>
   <script src="../mookiedoughfrontend/js/vendor/icheck.min.js"></script>
-  <script src="../mookiedoughfrontend/js/vendor/jquery.downCount.js"></script>
+  <!-- <script src="../mookiedoughfrontend/js/vendor/jquery.downCount.js"></script> -->
   <script src="../mookiedoughfrontend/js/vendor/magnific-popup.min.js"></script>
   <script src="../mookiedoughfrontend/js/vendor/gmap3.min.js"></script>
   <script src="../mookiedoughfrontend/mailer/mailer.js"></script>

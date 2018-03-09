@@ -11,8 +11,8 @@ var app = angular.module('appRoutes',['ngRoute','angularCSS'])
         authenticated: false,
         controller: 'HomeController',
         controllerAs: 'home',
-        css:'../css/home.css'
-    }).
+        css:['../css/home.css']
+    }).   
     when('/coterie',{
         templateUrl:'../updatedFrontend/coterie.html',
         css: ['..updatedFrontend/eCommerceAssets/styles/eCommerceStyle.css','..updatedFrontend/productpage.css','../updatedFrontend/coterie.css']
