@@ -26,7 +26,7 @@
   <link href="../mookiedoughfrontend/css/vendor/socicon.min.css" rel="stylesheet" media="screen">
 
   <!-- Older Bootstrap -->
-  <link href="../mookiedoughfrontend/css/vendor/bootstrap.min.css" rel="stylesheet" media="screen">
+  <link href="../mookiedoughfrontend/css/vendor/bootstrap.css" rel="stylesheet" media="screen">
 
   <!-- <link href="../../node_modules/angular-ui-carousel/dist/ui-carousel.css" rel="stylesheet" media="screen"> -->
 
@@ -91,6 +91,7 @@
   <script src="../js/directives/mookie-maps.js"></script>
   <script src="../js/directives/insta.js"></script>
   <script src="../js/directives/productwidget.js"></script>
+  <script src="../js/directives/mookie-carousel.js"></script>
 
   <!-- Alamode Controllers -->
   <script src="../js/controllers/MainController.js"></script>
@@ -245,7 +246,7 @@
     <div class="toolbar">
       <div class="inner">
         <a href="#" class="mobile-menu-toggle">
-          <i class="material-icons menu"></i>
+          <i class="material-icons menu icon-black"></i>
         </a>
         <!-- <a href="register" type="button" class="btn btn-primary sign-in-button">
           Sign In/Up
@@ -267,27 +268,31 @@
   </header>
 
 
+
+
   <div class="default-gradient">
     <!-- Main Angular view where routes will be rendered-->
     <div class="main-view" ng-show="main.loadme" ng-view></div>
+  </div>
 
 
 
-    <!--  -->
-    <div class="container socialMedia">
-      <div class="text-center">
-        <p>Check out our instagram and Twitter Feeds</p>
-        <i class="fab fa-instagram"></i>
-        <i class="fab fa-twitter"></i>
-      </div>
 
-
-      <!-- LightWidget WIDGET -->
-      <insta style="width: 100%; border: 0; display:block;"></insta>
-
-      <a class="twitter-timeline" href="https://twitter.com/_Mookie_Dough?ref_src=twsrc%5Etfw">Tweets by _Mookie_Dough</a>
-      <script async src="https://platform.twitter.com/widgets.js" charset="utf-8"></script>
+  <!--  -->
+  <div class="container socialMedia">
+    <div class="text-center">
+      <p>Check out our instagram and Twitter Feeds</p>
+      <i class="fab fa-instagram"></i>
+      <i class="fab fa-twitter"></i>
     </div>
+
+
+    <!-- LightWidget WIDGET -->
+    <insta style="width: 100%; border: 0; display:block;"></insta>
+
+    <a class="twitter-timeline" href="https://twitter.com/_Mookie_Dough?ref_src=twsrc%5Etfw">Tweets by _Mookie_Dough</a>
+    <script async src="https://platform.twitter.com/widgets.js" charset="utf-8"></script>
+  </div>
   </div>
 
 

@@ -6,6 +6,7 @@
 
 jQuery(document).ready(function ($) {
 	'use strict';
+
 	var $insta = $('#insta');
 	var getInstaHeight = function(event){
 		if(event.origin.indexOf('http://localhost:8081') ||event.origin.indexOf('https://www.mookiedough.co')){
@@ -434,6 +435,9 @@ jQuery(document).ready(function ($) {
 		});
 	}
 	countDownFunc($('.countdown'));
+
+	// Carousel 
+	// ----------------------------------------------
 
 
 	// Image Carousel

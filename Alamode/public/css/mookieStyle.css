@@ -414,9 +414,9 @@ product {
 	margin-top: 80px;
 }
 
-/* i.icon-black {
-
-} */
+i.icon-black {
+	color:black;
+}
 
 footer {
 	background-color: #333333;
