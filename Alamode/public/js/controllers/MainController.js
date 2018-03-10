@@ -307,6 +307,7 @@ alamode.controller('mainCtrl', function (Auth, $timeout, $location, $rootScope,
         $scope.mookie.modal.title = product.title;
         $scope.mookie.modal.description = product.description;
         $scope.mookie.modal.price = product.price;
+        $scope.mookie.modal.category = product.category;
         console.log($scope.mookie.modal);
         $("#productModal").modal({ backdrop: "static" }); // Open modal        
 

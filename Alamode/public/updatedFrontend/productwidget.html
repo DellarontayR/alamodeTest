@@ -1,14 +1,18 @@
 <!-- <link href="eCommerceAssets/styles/eCommerceStyle.css" rel="stylesheet" type="text/css"> -->
 
-<div class="container clearfix">
+<div class="product-container clearfix">
   <div class="shoe-details-right">
     <span class="product-title">
       <strong>{{catalogProduct.title}}</strong>
+
     </span>
     <div class="product-category">
       {{catalogProduct.category}}
     </div>
-    <ul class="product-tabs">
+    <img class="mookie-product" ng-src="{{catalogProduct.imagePath}}"/>
+    <p>{{catalogProduct.description}}</p>
+
+    <!-- <ul class="product-tabs">
       <li class="active">
         <a href="#pane1">pane</a>
       </li>
@@ -17,7 +21,7 @@
       <div id="pane1" class="tab-pane-active">
         Great shit
       </div>
-    </div>
+    </div> -->
     <h2>Quantity</h2>
     <ul class="quantity">
       <li>

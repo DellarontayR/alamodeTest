@@ -1,3 +1,5 @@
+body { padding-right: 0 !important }
+
 .text-right {
 	text-align: right;
 }
@@ -394,7 +396,7 @@ product {
 	border-bottom-style: solid;
 	border-bottom-color: rgb(204, 204, 204);
 	position: relative;
-	/* z-index: 9900; */
+	z-index: 10;
 	width: 100%;
 	max-height: 80px;
 	min-height: 80px;
@@ -791,6 +793,10 @@ a.mobile-menu-toggle>i {
 	-ms-transform: translateY(-20px) scale(0.7);
 	-o-transform: translateY(-20px) scale(0.7);
 	transform: translateY(-20px) scale(0.7);
+}
+
+.no-scroll-body{
+	overflow:hidden;
 }
 
 @media screen and (max-width: 1070px) {

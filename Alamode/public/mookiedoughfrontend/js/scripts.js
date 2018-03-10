@@ -143,6 +143,7 @@ jQuery(document).ready(function ($) {
 	menuToggle.on('click', function () {
 		$(this).toggleClass('active');
 		mobileMenu.toggleClass('open');
+		$('body').toggleClass('no-scroll-body');
 	});
 
 

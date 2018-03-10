@@ -5,12 +5,10 @@
 *, *:before, *:after {
   box-sizing: border-box;
 }
-body {
-  background: #e2ddde;
-  font: 12px/18px "Lato", Arial, sans-serif;
-}
-.container {
+
+.product-container {
   background: white;
+  color:black;
   width: 740px;
   margin: 50px auto;
   border-radius: 20px;
