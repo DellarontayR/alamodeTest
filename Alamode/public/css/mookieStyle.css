@@ -702,21 +702,20 @@ header {
 
 .toolbar {
 	position: absolute;
-	font-size: 24px;
-	right: 0px;
+	font-size: 36px;
+	right: 5px;
 	height: 80px;
-	width:150px;
-	top:-2px;
+	width:auto;
 
 	display: -ms-flexbox;
 	display: -webkit-flex;
 	display: flex;
 
-	-ms-flex-align: center;
-	-webkit-align-items: center;
-	-webkit-box-align: center;
+	-ms-flex-align: flex-end;
+	-webkit-align-items: flex-end;
+	-webkit-box-align: flex-end;
 
-	align-items: center;
+	align-items: flex-end;
 }
 
 .toolbar a.sign-in-button {

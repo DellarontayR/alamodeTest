@@ -64,7 +64,7 @@ angular.module('authServices', [])
             data.data = {};
             data.data.success=false;
             data.data.message ="User token not found locally";
-            // return (data);
+            // return (data);var 
             return $q.reject({message:'User not logged in.',data:data}); // Reject if no token exists
         }
     };

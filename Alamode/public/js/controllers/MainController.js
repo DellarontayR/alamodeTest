@@ -167,6 +167,8 @@ alamode.controller('mainCtrl', function (Auth, $timeout, $location, $rootScope,
             var title = "Local user token not found";
             var body = "Item could not be added to unknown user cart. Please register or sign in user";
             $scope.mookie.showModal(title, body);
+        }).catch(function(error){
+            console.log(error);
         });
     };
 
@@ -470,6 +472,8 @@ alamode.controller('mainCtrl', function (Auth, $timeout, $location, $rootScope,
             else {
                 console.log('fail');
             }
+        },function(error){
+            console.log(error);
         });
 
     };
@@ -578,6 +582,8 @@ alamode.controller('mainCtrl', function (Auth, $timeout, $location, $rootScope,
                 else {
                     return callback(userData);
                 }
+            },function(error){
+                console.log(error);
             });
         }
     };
@@ -714,6 +720,8 @@ alamode.controller('mainCtrl', function (Auth, $timeout, $location, $rootScope,
                         }
                     });
                 }
+            },function(error){
+                console.log(error);
             });
         } else {
             app.username = ''; // Clear username
