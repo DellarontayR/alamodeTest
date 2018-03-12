@@ -393,10 +393,10 @@ product {
 }
 
 .navbar {
-	border-bottom: 1px solid #CCCCCC;
+	/* border-bottom: 1px solid #CCCCCC;
 	border-bottom-width: 1px;
 	border-bottom-style: solid;
-	border-bottom-color: rgb(204, 204, 204);
+	border-bottom-color: rgb(204, 204, 204); */
 	position: relative;
 	z-index: 10;
 	width: 100%;
@@ -609,7 +609,7 @@ header {
 .social-signup-btn {
 	position: relative;
 	display: block;
-	width: 240px;
+	/* width: 240px; */
 	height: 48px;
 	line-height: 48px;
 	font-size: 14px;
@@ -617,6 +617,11 @@ header {
 	text-decoration: none;
 	padding-left: 66px;
 	margin-bottom: 12px;
+}
+@media screen and (min-width: 768px) {
+	.social-signup-btn{
+		width:auto;
+	}
 }
 
 .social-signup-btn>i {
@@ -835,4 +840,30 @@ a.mobile-menu-toggle>i {
 	overflow: hidden;
 	border: 1px solid transparent;
 	position: relative;
+}
+.inlineButton{
+	width:auto;
+	display:inline-block;
+}
+
+.flexvertical-align {
+    display: flex;
+	align-items: center;
+	flex-direction: column;
+}
+
+.row.match-my-cols {
+    overflow: hidden; 
+}
+
+.row.match-my-cols [class*="col-"].sethalf{
+	transform:translate(0,50%);
+/* 
+    margin-bottom: -99999px;
+    padding-bottom: 99999px; */
+}
+@media screen and (max-width: 768px) {
+	.row.match-my-cols [class*="col-"].sethalf{
+		transform: none;
+	}
 }

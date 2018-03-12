@@ -4,7 +4,7 @@
     <section class="container padding-top-3x padding-bottom-2x">
       <h1 ng-show="!user.loggedIn">User Account</h1>
 
-      <div class="row padding-top">
+      <div class="row match-my-cols">
 
         <div class="col-md-4 col-md-offset-3 padding-bottom" ng-show="user.chooseLogin">
           <h3>Login</h3>
@@ -18,7 +18,7 @@
                 </label>
               </div>
               <div class="form-submit">
-                <button type="submit" class="btn btn-primary btn-block waves-effect waves-light">Login</button>
+                <button type="submit" class="btn btn-primary btn-block waves-effect waves-light inlineButton">Login</button>
               </div>
             </div>
             <div class="form-element help-block" ng-show="user.loginMessage">
@@ -43,7 +43,7 @@
               <div class="form-footer row">
                 <div class="rememberme"></div>
                 <div class="form-submit">
-                  <button type="submit" class="btn btn-primary btn-block waves-effect waves-light">Sign up</button>
+                  <button type="submit" class="btn btn-primary btn-block waves-effect waves-light inlineButton">Sign up</button>
                 </div>
               </div>
               <div class="form-element help-block" ng-show="user.regMessage">
@@ -55,7 +55,7 @@
         </div><!-- .col-md-4.col-md-offset-1 -->
 
         <!-- Social media login links -->
-        <div class="col-md-3 padding-top-2x" ng-show="user.chooseLogin">
+        <div class="col-md-3 padding-top-2x sethalf" ng-show="user.chooseLogin">
           <a href="/auth/facebook" target="_" class="social-signup-btn ssb-facebook">
             <i class="socicon-facebook"></i>
             <span>Login with Facebook</span>
@@ -65,7 +65,7 @@
             <span>Login with Google+</span>
           </a>
         </div><!-- .col-md-3 -->
-        <div class="col-md-3 padding-top-2x" ng-show="user.chooseReg">
+        <div class="col-md-3 padding-top-2x sethalf" ng-show="user.chooseReg">
           <a  href="/auth/facebook" target="_" class="social-signup-btn ssb-facebook">
             <i class="socicon-facebook"></i>
             <span>Signup with Facebook</span>

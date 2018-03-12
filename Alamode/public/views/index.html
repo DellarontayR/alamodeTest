@@ -140,12 +140,9 @@
     </div>
   </div>
   <!-- .page-preloader -->
-
-
-
-
-
-  <!-- <div class="modal fade" id="stripeModal" role="dialog">
+  
+  <!-- Stripe modal -->
+  <div class="modal fade" id="stripeModal" role="dialog">
     <div class="modal-dialog">
       <div class="modal-content">
         <div class="modal-header">
@@ -160,8 +157,10 @@
         </div>
       </div>
     </div>
-  </div> -->
+  </div>
+  <!--  -->
 
+  <!-- Etc Modal -->
   <div class="modal fade container" id="myModal" role="dialog" style="color:black;">
     <div class="modal-dialog">
       <div class="modal-content">
@@ -175,38 +174,11 @@
       </div>
     </div>
   </div>
+  <!--  -->
 
+  <!-- Product Modal -->
   <div class="modal fade" id="productModal" role="dialog">
     <productwidget info="mookie.modal"></productwidget>
-    <!-- <div class="modal-dialog">
-      <div class="modal-content">
-        <div class="modal-header">
-          <button type="button" class="close" data-dismiss="modal">&times;</button>
-          {{mookie.modal.title}}
-        </div>
-        <div class="modal-body">
-
-          <div class="row">
-            <div class="col-sm-6 col-md-6 col-lg-6">
-              <img ng-src="{{mookie.modal.imagePath}}">
-              <p> {{mookie.modal.description}}</p>
-            </div>
-            <div class="col-sm-6 col-md-6 col-lg-6">
-              <p> {{mookie.modal.price | currency}}</p>
-              <a href="#" class="add-to-cart" ng-click="mookie.addToCart(mookie.modal); $event.stopPropagation();startAnim = !startAnim;">
-                <a class='button glyphicon glyphicon-plus' href='#'></a>
-                <svg x="0px" y="0px" width="32px" height="32px" viewBox="0 0 32 32">
-                  <path stroke-dasharray="19.79 19.79" stroke-dashoffset="19.79" fill="none" stroke="#FFFFFF" stroke-width="2" stroke-linecap="square"
-                    stroke-miterlimit="10" d="M9,17l3.9,3.9c0.1,0.1,0.2,0.1,0.3,0L23,11" />
-                </svg>
-              </a>
-              <div class="add-cart-note" ng-class="{'show-me':startAnim}">+</div>
-            </div>
-          </div>
-
-        </div>
-      </div>
-    </div> -->
   </div>
 
   <header class="navbar navbar-sticky nav-down">
