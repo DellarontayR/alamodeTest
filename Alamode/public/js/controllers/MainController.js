@@ -87,31 +87,6 @@ alamode.controller('mainCtrl', function (Auth, $timeout, $location, $rootScope,
                 userData.userEmail = data.data.email;
                 User.getUser(userData).then(function (data) {
                     if (data.data.success) {
-                        var target = event.target.correspondingUseElement || event.target;
-                        console.log(event);
-                        // console.log(product.itemAdded);
-                        // product.itemAdded=true;
-                        // console.log(product.itemAdded);
-                        console.log(angular.element(target));
-                        console.log(angular.element(target).next());
-                        if (!angular.element(target).next().hasClass("hiddenCheck")) {
-
-                            // Base case that somehow works and somehow doesn't
-                        }
-                        else {
-                            angular.element(target).addClass("hiddenCheck");
-                            angular.element(target).next().addClass("shownCheck animated fadeInUp");
-                            angular.element(target).next().removeClass("hiddenCheck");
-
-                            $timeout(function (target) {
-                                angular.element(target).removeClass("hiddenCheck");
-                                angular.element(target).next().removeClass("animated fadeInUp");
-                                angular.element(target).next().addClass("hiddenCheck");
-                                $scope.$apply();
-                            }, 2000);
-
-                        }
-
 
                         // instead of channging product.itemAdded to true. get the angualrjs. element
                         //Previous issue with this was getting the correct element from the list

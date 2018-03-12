@@ -721,14 +721,11 @@ header {
 	-webkit-box-align: flex-end;
 	align-items: flex-end;
 }
-
-.toolbar a.sign-in-button {
-	padding: 11px 16px;
-	border-radius: 20px;
-	background-color: #333333;
-	margin: 4px 2px;
-	color: white;
-	font-size: 10px;
+.toolbar i.fas{
+	display:inline-block;
+	-webkit-animation: slideUpLong 0.5s;
+	-o-animation: slideUpLong 0.5s;
+	animation: slideUpLong 0.5s;
 }
 
 a.mobile-menu-toggle {
