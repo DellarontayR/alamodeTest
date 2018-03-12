@@ -1,6 +1,40 @@
 <!-- <link href="eCommerceAssets/styles/eCommerceStyle.css" rel="stylesheet" type="text/css"> -->
 
-<div class="product-container clearfix">
+<div class="modal-dialog">
+  <div class="modal-content">
+    <div class="modal-header">
+      <span class="product-title">
+        <strong>{{catalogProduct.title}}</strong>
+
+      </span>
+      <div class="product-category">
+        {{catalogProduct.category}}
+      </div>
+      <button type="button" class="close myClose" data-dismiss="modal">&times;</button>
+
+    </div>
+    <div class="modal-body">
+      <img class="mookie-img" ng-src="{{catalogProduct.imagePath}}" />
+      <p>{{catalogProduct.description}}</p>
+
+      <!-- <h2 style="font-size:16px">Quantity</h2>
+      <ul class="quantity">
+        <li>
+          <a href="#">1</a>
+        </li>
+      </ul> -->
+      <ul class="colours">
+  
+      </ul>
+  
+      <a href="#" class="btn btn-primary">
+        add to cart
+      </a>
+    </div>
+  </div>
+</div>
+
+<!-- <div class="product-container clearfix container">
   <div class="shoe-details-right">
     <span class="product-title">
       <strong>{{catalogProduct.title}}</strong>
@@ -9,20 +43,8 @@
     <div class="product-category">
       {{catalogProduct.category}}
     </div>
-    <img class="mookie-product" ng-src="{{catalogProduct.imagePath}}"/>
-    <p>{{catalogProduct.description}}</p>
-
-    <!-- <ul class="product-tabs">
-      <li class="active">
-        <a href="#pane1">pane</a>
-      </li>
-    </ul>
-    <div class="tab-content">
-      <div id="pane1" class="tab-pane-active">
-        Great shit
-      </div>
-    </div> -->
-    <h2>Quantity</h2>
+ 
+    <h2 style="font-size:16px">Quantity</h2>
     <ul class="quantity">
       <li>
         <a href="#">1</a>
@@ -38,4 +60,4 @@
     <div class="close-button close" data-dismiss="modal">&times;</div>
 
   </div>
-</div>
+</div> -->

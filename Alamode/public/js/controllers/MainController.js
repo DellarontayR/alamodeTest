@@ -78,6 +78,7 @@ alamode.controller('mainCtrl', function (Auth, $timeout, $location, $rootScope,
 
     // Adds an item to a user's cart, shuold be used as a model for errors for users
     $scope.mookie.addToCart = function (product, event) {
+        console.log('add to cart');
         Auth.getUser().then(function (data) {
             if (data.data.email) {
                 $scope.mookie.userEmail = data.data.email;
@@ -164,11 +165,15 @@ alamode.controller('mainCtrl', function (Auth, $timeout, $location, $rootScope,
             // if (Auth.isLoggedIn()) {
             //     Auth.logout();
             // }
+
             var title = "Local user token not found";
             var body = "Item could not be added to unknown user cart. Please register or sign in user";
             $scope.mookie.showModal(title, body);
         }).catch(function(error){
             console.log(error);
+            var title = "Unknown Error occurred.";
+            var body = "Please try again later.";
+            $scope.mookie.showModal(title, body);
         });
     };
 
@@ -201,7 +206,7 @@ alamode.controller('mainCtrl', function (Auth, $timeout, $location, $rootScope,
             else {
                 var title = "Contact Message not saved";
                 var body = data.data.message;
-                // $scope.mookie.showModal(title, body);
+                $scope.mookie.showModal(title, body);
             }
         });
     };

@@ -141,23 +141,11 @@
   </div>
   <!-- .page-preloader -->
 
-  <!-- <div class="modal fade" id="myModal" role="dialog">
-    <div class="modal-dialog">
-      <div class="modal-content">
-        <div class="modal-header">
-          <button type="button" class="close" data-dismiss="modal">&times;</button>
-          {{mookie.modalTitle}}
-        </div>
-        <div class="modal-body">
-          {{mookie.modalBody}}
-        </div>
-      </div>
-    </div>
-  </div>
 
 
 
-  <div class="modal fade" id="stripeModal" role="dialog">
+
+  <!-- <div class="modal fade" id="stripeModal" role="dialog">
     <div class="modal-dialog">
       <div class="modal-content">
         <div class="modal-header">
@@ -173,6 +161,20 @@
       </div>
     </div>
   </div> -->
+
+  <div class="modal fade container" id="myModal" role="dialog" style="color:black;">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          {{mookie.modalTitle}}
+          <button type="button" class="close myClose" data-dismiss="modal">&times;</button>
+        </div>
+        <div class="modal-body">
+          {{mookie.modalBody}}
+        </div>
+      </div>
+    </div>
+  </div>
 
   <div class="modal fade" id="productModal" role="dialog">
     <productwidget info="mookie.modal"></productwidget>
@@ -270,30 +272,32 @@
 
 
 
-  <div class="default-gradient">
+  <div class="">
     <!-- Main Angular view where routes will be rendered-->
     <div class="main-view" ng-show="main.loadme" ng-view></div>
+
+    <div class="container socialMedia">
+      <div class="text-center">
+        <p>Check out our instagram and Twitter Feeds</p>
+        <i class="fab fa-instagram"></i>
+        <i class="fab fa-twitter"></i>
+      </div>
+
+
+      <!-- LightWidget WIDGET -->
+      <insta style="width: 100%; border: 0; display:block;"></insta>
+
+      <a class="twitter-timeline" href="https://twitter.com/_Mookie_Dough?ref_src=twsrc%5Etfw">Tweets by _Mookie_Dough</a>
+      <script async src="https://platform.twitter.com/widgets.js" charset="utf-8"></script>
+    </div>
+  </div>
   </div>
 
 
 
 
   <!--  -->
-  <div class="container socialMedia">
-    <div class="text-center">
-      <p>Check out our instagram and Twitter Feeds</p>
-      <i class="fab fa-instagram"></i>
-      <i class="fab fa-twitter"></i>
-    </div>
 
-
-    <!-- LightWidget WIDGET -->
-    <insta style="width: 100%; border: 0; display:block;"></insta>
-
-    <a class="twitter-timeline" href="https://twitter.com/_Mookie_Dough?ref_src=twsrc%5Etfw">Tweets by _Mookie_Dough</a>
-    <script async src="https://platform.twitter.com/widgets.js" charset="utf-8"></script>
-  </div>
-  </div>
 
 
 

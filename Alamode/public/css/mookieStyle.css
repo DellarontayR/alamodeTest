@@ -1,4 +1,6 @@
-body { padding-right: 0 !important }
+body {
+	padding-right: 0 !important
+}
 
 .text-right {
 	text-align: right;
@@ -415,7 +417,7 @@ product {
 }
 
 i.icon-black {
-	color:black;
+	color: black;
 }
 
 footer {
@@ -705,16 +707,13 @@ header {
 	font-size: 36px;
 	right: 5px;
 	height: 80px;
-	width:auto;
-
+	width: auto;
 	display: -ms-flexbox;
 	display: -webkit-flex;
 	display: flex;
-
 	-ms-flex-align: flex-end;
 	-webkit-align-items: flex-end;
 	-webkit-box-align: flex-end;
-
 	align-items: flex-end;
 }
 
@@ -729,7 +728,7 @@ header {
 
 a.mobile-menu-toggle {
 	display: none;
-	color:black;
+	color: black;
 }
 
 a.mobile-menu-toggle:after {
@@ -745,7 +744,7 @@ a.mobile-menu-toggle:after {
 	-webkit-transition: transform 0.3s, opacity 0.15s;
 	-o-transition: transform 0.3s, opacity 0.15s;
 	transition: transform 0.3s, opacity 0.15s;
-	color:black;
+	color: black;
 }
 
 a.mobile-menu-toggle.active>i {
@@ -758,7 +757,7 @@ a.mobile-menu-toggle.active>i {
 }
 
 a.mobile-menu-toggle.active:after {
-	display:inline-block;
+	display: inline-block;
 	opacity: 1;
 	-webkit-transform: translateY(0) scale(1);
 	-moz-transform: translateY(0) scale(1);
@@ -766,8 +765,9 @@ a.mobile-menu-toggle.active:after {
 	-o-transform: translateY(0) scale(1);
 	transform: translateY(0) scale(1);
 }
-a.mobile-menu-toggle.active .menu{
-	display:none;
+
+a.mobile-menu-toggle.active .menu {
+	display: none;
 }
 
 a.mobile-menu-toggle>i {
@@ -794,8 +794,8 @@ a.mobile-menu-toggle>i {
 	transform: translateY(-20px) scale(0.7);
 }
 
-.no-scroll-body{
-	overflow:hidden;
+.no-scroll-body {
+	overflow: hidden;
 }
 
 @media screen and (max-width: 1070px) {
@@ -803,4 +803,36 @@ a.mobile-menu-toggle>i {
 		display: inline-block;
 		/* font-size: 1.5em; */
 	}
+}
+
+.close.myClose {
+	transform: translate(-50%, -50%);
+	position: absolute;
+	top: 50%;
+	right: 5px;
+}
+
+.modal {
+	color: black;
+	text-align: center;
+}
+
+@media screen and (min-width: 768px) {
+	.modal:before {
+		display: inline-block;
+		vertical-align: middle;
+		/* content: " "; */
+		height: 100%;
+	}
+	.modal-dialog {
+		display: inline-block;
+		text-align: center;
+		vertical-align: middle;
+	}
+}
+
+.modal-header {
+	overflow: hidden;
+	border: 1px solid transparent;
+	position: relative;
 }
