@@ -11,6 +11,7 @@ var nodemailer = require('nodemailer'); // Import Nodemailer Package
 var stripe = require('stripe')('sk_test_N3kcDk7Gi6QdJewLusdBT2Tc');
 //google maps api key AIzaSyDaah9NRImsLSSwF3KhofpShgf9tt26lDA
 //The actual google maps api key AIzaSyBPVL49OMjEcc82nQlsobcNmr9j9ZBDTHE
+// nodemailer is secure from here along with stripe and other apis
 
 var mongoose = require('mongoose');
 mongoose.Promise = global.Promise;
