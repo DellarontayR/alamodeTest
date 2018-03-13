@@ -14,7 +14,7 @@
   width: 100%;
 } */
 body{
-  color:white;
+  color:#333333;
 }
 
 *{
@@ -32,7 +32,6 @@ h1{
 }
 
 h2{
-  color: white;
   font-size: 18px;
   font-weight: 400;
 }
