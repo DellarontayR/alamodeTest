@@ -1,6 +1,10 @@
 "use strict";
-const conversions = require("webidl-conversions");
+const { EOL } = require("os");
 const Blob = require("../generated/Blob");
+
+function convertLineEndingsToNative(s) {
+  return s.replace(/\r\n|\r|\n/g, EOL);
+}
 
 exports.implementation = class BlobImpl {
   constructor(args) {
@@ -13,13 +17,17 @@ exports.implementation = class BlobImpl {
       for (const part of parts) {
         let buffer;
         if (part instanceof ArrayBuffer) {
-          buffer = new Buffer(new Uint8Array(part));
+          buffer = Buffer.from(part);
         } else if (ArrayBuffer.isView(part)) {
-          buffer = new Buffer(new Uint8Array(part.buffer, part.byteOffset, part.byteLength));
+          buffer = Buffer.from(part.buffer, part.byteOffset, part.byteLength);
         } else if (Blob.isImpl(part)) {
           buffer = part._buffer;
         } else {
-          buffer = new Buffer(conversions.USVString(part));
+          let s = part;
+          if (properties.endings === "native") {
+            s = convertLineEndingsToNative(part);
+          }
+          buffer = Buffer.from(s);
         }
         buffers.push(buffer);
       }
@@ -40,7 +48,7 @@ exports.implementation = class BlobImpl {
   }
 
   slice(start, end, contentType) {
-    const size = this.size;
+    const { size } = this;
 
     let relativeStart;
     let relativeEnd;

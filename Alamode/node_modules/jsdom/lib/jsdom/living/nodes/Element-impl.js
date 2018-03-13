@@ -1,5 +1,6 @@
 "use strict";
 const { addNwmatcher } = require("../helpers/selectors");
+const { mixin, memoizeQuery } = require("../../utils");
 const idlUtils = require("../generated/utils");
 const NodeImpl = require("./Node-impl").implementation;
 const ParentNodeImpl = require("./ParentNode-impl").implementation;
@@ -7,18 +8,16 @@ const ChildNodeImpl = require("./ChildNode-impl").implementation;
 const attributes = require("../attributes");
 const namedPropertiesWindow = require("../named-properties-window");
 const NODE_TYPE = require("../node-type");
-const domToHtml = require("../../browser/domtohtml").domToHtml;
-const memoizeQuery = require("../../utils").memoizeQuery;
-const clone = require("../node").clone;
-const domSymbolTree = require("../helpers/internal-constants").domSymbolTree;
-const resetDOMTokenList = require("../dom-token-list").reset;
-const DOMException = require("../../web-idl/DOMException");
-const createDOMTokenList = require("../dom-token-list").create;
+const { domToHtml } = require("../../browser/domtohtml");
+const { domSymbolTree } = require("../helpers/internal-constants");
+const DOMException = require("domexception");
+const DOMTokenList = require("../generated/DOMTokenList");
 const attrGenerated = require("../generated/Attr");
+const NamedNodeMap = require("../generated/NamedNodeMap");
 const validateNames = require("../helpers/validate-names");
-const listOfElementsWithQualifiedName = require("../node").listOfElementsWithQualifiedName;
-const listOfElementsWithNamespaceAndLocalName = require("../node").listOfElementsWithNamespaceAndLocalName;
-const listOfElementsWithClassNames = require("../node").listOfElementsWithClassNames;
+const { asciiLowercase } = require("../helpers/strings");
+const { clone, listOfElementsWithQualifiedName, listOfElementsWithNamespaceAndLocalName,
+  listOfElementsWithClassNames } = require("../node");
 const NonDocumentTypeChildNode = require("./NonDocumentTypeChildNode-impl").implementation;
 
 function clearChildNodes(node) {
@@ -38,7 +37,7 @@ function setInnerHTML(document, node, html) {
   if (node.nodeName === "#document") {
     document._htmlToDom.appendToDocument(html, node);
   } else {
-    document._htmlToDom.appendToElement(html, node);
+    document._htmlToDom.appendToNode(html, node);
   }
 }
 
@@ -76,10 +75,16 @@ class ElementImpl extends NodeImpl {
     this.scrollTop = 0;
     this.scrollLeft = 0;
 
-    this._namespaceURI = null;
+    this._namespaceURI = privateData.namespace || null;
     this._prefix = null;
     this._localName = privateData.localName;
-    this._attributes = attributes.createNamedNodeMap(this);
+
+    this._attributeList = [];
+    // Used for caching.
+    this._attributesByNameMap = new Map();
+    this._attributes = NamedNodeMap.createImpl([], {
+      element: this
+    });
   }
 
   _attach() {
@@ -115,8 +120,8 @@ class ElementImpl extends NodeImpl {
     }
 
     // update classList
-    if (name === "class") {
-      resetDOMTokenList(this.classList, value);
+    if (name === "class" && this._classList !== undefined) {
+      this._classList.attrModified();
     }
   }
 
@@ -162,17 +167,16 @@ class ElementImpl extends NodeImpl {
 
     let contextElement;
     if (parent.nodeType === NODE_TYPE.DOCUMENT_NODE) {
-      throw new DOMException(DOMException.NO_MODIFICATION_ALLOWED_ERR,
-                                  "Modifications are not allowed for this document");
+      throw new DOMException("Modifications are not allowed for this document", "NoModificationAllowedError");
     } else if (parent.nodeType === NODE_TYPE.DOCUMENT_FRAGMENT_NODE) {
       contextElement = document.createElementNS("http://www.w3.org/1999/xhtml", "body");
     } else if (parent.nodeType === NODE_TYPE.ELEMENT_NODE) {
-      contextElement = clone(this._core, parent, undefined, false);
+      contextElement = clone(parent, undefined, false);
     } else {
       throw new TypeError("This should never happen");
     }
 
-    document._htmlToDom.appendToElement(html, contextElement);
+    document._htmlToDom.appendToNode(html, contextElement);
 
     while (contextElement.firstChild) {
       parent.insertBefore(contextElement.firstChild, this);
@@ -182,7 +186,8 @@ class ElementImpl extends NodeImpl {
   }
 
   get innerHTML() {
-    const tagName = this.tagName;
+    // TODO is this necessary? I would have thought this would be handled at a different level.
+    const { tagName } = this;
     if (tagName === "SCRIPT" || tagName === "STYLE") {
       const type = this.getAttribute("type");
       if (!type || /^text\//i.test(type) || /\/javascript$/i.test(type)) {
@@ -208,7 +213,10 @@ class ElementImpl extends NodeImpl {
 
   get classList() {
     if (this._classList === undefined) {
-      this._classList = createDOMTokenList(this, "class");
+      this._classList = DOMTokenList.createImpl([], {
+        element: this,
+        attributeLocalName: "class"
+      });
     }
     return this._classList;
   }
@@ -222,18 +230,26 @@ class ElementImpl extends NodeImpl {
   }
 
   getAttribute(name) {
-    return attributes.getAttributeValue(this, name);
+    const attr = attributes.getAttributeByName(this, name);
+    if (!attr) {
+      return null;
+    }
+    return attr._value;
   }
 
   getAttributeNS(namespace, localName) {
-    return attributes.getAttributeValueByNameNS(this, namespace, localName);
+    const attr = attributes.getAttributeByNameNS(this, namespace, localName);
+    if (!attr) {
+      return null;
+    }
+    return attr._value;
   }
 
   setAttribute(name, value) {
     validateNames.name(name);
 
     if (this._namespaceURI === "http://www.w3.org/1999/xhtml" && this._ownerDocument._parsingMode === "html") {
-      name = name.toLowerCase();
+      name = asciiLowercase(name);
     }
 
     const attribute = attributes.getAttributeByName(this, name);
@@ -263,7 +279,7 @@ class ElementImpl extends NodeImpl {
 
   hasAttribute(name) {
     if (this._namespaceURI === "http://www.w3.org/1999/xhtml" && this._ownerDocument._parsingMode === "html") {
-      name = name.toLowerCase();
+      name = asciiLowercase(name);
     }
 
     return attributes.hasAttributeByName(this, name);
@@ -295,7 +311,7 @@ class ElementImpl extends NodeImpl {
 
   removeAttributeNode(attr) {
     if (!attributes.hasAttribute(this, attr)) {
-      throw new DOMException(DOMException.NOT_FOUND_ERR, "Tried to remove an attribute that was not present");
+      throw new DOMException("Tried to remove an attribute that was not present", "NotFoundError");
     }
 
     attributes.removeAttribute(this, attr);
@@ -352,8 +368,8 @@ class ElementImpl extends NodeImpl {
       case "afterend": {
         context = this.parentNode;
         if (context === null || context.nodeType === NODE_TYPE.DOCUMENT_NODE) {
-          throw new DOMException(DOMException.NO_MODIFICATION_ALLOWED_ERR, "Cannot insert HTML adjacent to " +
-            "parent-less nodes or children of document nodes.");
+          throw new DOMException("Cannot insert HTML adjacent to " +
+            "parent-less nodes or children of document nodes.", "NoModificationAllowedError");
         }
         break;
       }
@@ -363,8 +379,8 @@ class ElementImpl extends NodeImpl {
         break;
       }
       default: {
-        throw new DOMException(DOMException.SYNTAX_ERR, "Must provide one of \"beforebegin\", \"afterend\", " +
-          "\"afterbegin\", or \"beforeend\".");
+        throw new DOMException("Must provide one of \"beforebegin\", \"afterend\", " +
+          "\"afterbegin\", or \"beforeend\".", "SyntaxError");
       }
     }
 
@@ -393,9 +409,9 @@ class ElementImpl extends NodeImpl {
   }
 }
 
-idlUtils.mixin(ElementImpl.prototype, NonDocumentTypeChildNode.prototype);
-idlUtils.mixin(ElementImpl.prototype, ParentNodeImpl.prototype);
-idlUtils.mixin(ElementImpl.prototype, ChildNodeImpl.prototype);
+mixin(ElementImpl.prototype, NonDocumentTypeChildNode.prototype);
+mixin(ElementImpl.prototype, ParentNodeImpl.prototype);
+mixin(ElementImpl.prototype, ChildNodeImpl.prototype);
 
 ElementImpl.prototype.getElementsByTagName = memoizeQuery(function (qualifiedName) {
   return listOfElementsWithQualifiedName(qualifiedName, this);
@@ -415,7 +431,7 @@ ElementImpl.prototype.matches = memoizeQuery(function (selectors) {
   try {
     return matcher.match(idlUtils.wrapperForImpl(this), selectors);
   } catch (e) {
-    throw new DOMException(DOMException.SYNTAX_ERR, e.message);
+    throw new DOMException(e.message, "SyntaxError");
   }
 });
 
