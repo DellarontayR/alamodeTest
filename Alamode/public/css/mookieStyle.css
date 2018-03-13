@@ -438,6 +438,7 @@ i.icon-black {
 }
 
 footer {
+	padding-top:10px;
 	background-color: #333333;
 	color: #ffffff;
 	height: 100%;
@@ -912,4 +913,9 @@ a.mobile-menu-toggle>i {
 	.row.match-my-cols [class*="col-"].sethalf {
 		transform: none;
 	}
+}
+
+.black-a{
+	background-color:#333333;
+	border-color:#333333;
 }
