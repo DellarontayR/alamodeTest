@@ -1,4 +1,5 @@
 body {
+	line-height: normal !important;
 	padding-right: 0 !important
 }
 
@@ -220,6 +221,22 @@ product {
 	background-image: url("../imgs/Media/mookie good cart.svg");
 	top: -2px;
 	right: -17px;
+}
+
+.shop-count {
+	position: absolute;
+	display: block;
+	width: 20px;
+	height:20px;
+	border-radius: 50%;
+	color: white;
+	background-color: #333333;
+	top: -5px;
+	right: -5px;
+	/* font-size: 10px; */
+	text-align: center;
+	font: 10px Arial, sans-serif;
+	padding:4px;
 }
 
 .main-navigation.open {
@@ -618,9 +635,10 @@ header {
 	padding-left: 66px;
 	margin-bottom: 12px;
 }
+
 @media screen and (min-width: 768px) {
-	.social-signup-btn{
-		width:auto;
+	.social-signup-btn {
+		width: auto;
 	}
 }
 
@@ -708,11 +726,11 @@ header {
 }
 
 .toolbar {
-	color:black;
+	color: black;
 	position: absolute;
 	font-size: 36px;
 	right: 5px;
-	bottom:0px;
+	bottom: 0px;
 	/* height: 80px; */
 	width: auto;
 	display: -ms-flexbox;
@@ -723,19 +741,19 @@ header {
 	-webkit-box-align: flex-end;
 	align-items: flex-end;
 }
-.mookieIcon{
-	color:#333333;
-	text-decoration-line:none;
-	display:inline-flex;
-	vertical-align:text-top;
+
+.mookieIcon {
+	color: #333333;
+	text-decoration-line: none;
+	display: inline-flex;
+	vertical-align: text-top;
 	-webkit-animation: slideUpLong 0.5s;
 	-o-animation: slideUpLong 0.5s;
 	animation: slideUpLong 0.5s;
-
 }
 
-.mookieIcon:hover{
-	color:#333333;
+.mookieIcon:hover {
+	color: #333333;
 }
 
 a.mobile-menu-toggle {
@@ -786,14 +804,16 @@ a.mobile-menu-toggle.active>i {
 
 a.mobile-menu-toggle.active .menu {
 	display: none;
-	color:black
+	color: black
 }
+
 a.mobile-menu-toggle.active .cross {
-	color:black;
+	color: black;
 	display: inline-flex;
 }
-a.mobile-menu-toggle .cross{
-	display:none;
+
+a.mobile-menu-toggle .cross {
+	display: none;
 }
 
 a.mobile-menu-toggle>i {
@@ -830,7 +850,7 @@ a.mobile-menu-toggle>i {
 @media screen and (max-width: 1070px) {
 	a.mobile-menu-toggle {
 		display: inline-flex;
-		vertical-align:text-top;
+		vertical-align: text-top;
 	}
 }
 
@@ -865,29 +885,31 @@ a.mobile-menu-toggle>i {
 	border: 1px solid transparent;
 	position: relative;
 }
-.inlineButton{
-	width:auto;
-	display:inline-block;
+
+.inlineButton {
+	width: auto;
+	display: inline-block;
 }
 
 .flexvertical-align {
-    display: flex;
+	display: flex;
 	align-items: center;
 	flex-direction: column;
 }
 
 .row.match-my-cols {
-    overflow: hidden; 
+	overflow: hidden;
 }
 
-.row.match-my-cols [class*="col-"].sethalf{
-	transform:translate(0,50%);
-/* 
+.row.match-my-cols [class*="col-"].sethalf {
+	transform: translate(0, 50%);
+	/* 
     margin-bottom: -99999px;
     padding-bottom: 99999px; */
 }
+
 @media screen and (max-width: 768px) {
-	.row.match-my-cols [class*="col-"].sethalf{
+	.row.match-my-cols [class*="col-"].sethalf {
 		transform: none;
 	}
 }

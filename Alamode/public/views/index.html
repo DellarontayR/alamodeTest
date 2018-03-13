@@ -140,7 +140,7 @@
     </div>
   </div>
   <!-- .page-preloader -->
-  
+
   <!-- Stripe modal -->
   <div class="modal fade" id="stripeModal" role="dialog">
     <div class="modal-dialog">
@@ -186,6 +186,7 @@
       <a href="/home">
         <img src="updatedFrontend/toplogo.svg" alt="" />
         <span class="count"></span>
+
       </a>
     </div>
     <nav class="main-navigation text-center">
@@ -225,15 +226,15 @@
           <i class="material-icons menu icon-black"></i>
         </a> -->
         <a href="#" class="mobile-menu-toggle mookieIcon">
-            <i class="fas fa-bars fa-xs fa-fw menu"></i>
-            <i class="fas fa-times fa-xs fa-fw cross"></i>
+          <i class="fas fa-bars fa-xs fa-fw menu"></i>
+          <i class="fas fa-times fa-xs fa-fw cross"></i>
         </a>
-        <a href="/account" class="mookieIcon">
+        <a href="/account" class="mookieIcon" ng-hide="mookie.loggedIn">
           <i class="fas fa-user fa-xs fa-fw"></i>
-
         </a>
-        <a href="/shopping-cart" class="mookieIcon">
+        <a href="/shopping-cart" class="mookieIcon" ng-show="mookie.cartItemCount > 0">
           <i class="fas fa-shopping-cart fa-xs fa-fw"></i>
+          <span class="shop-count">{{mookie.cartItemCount}}</span>
         </a>
 
 
@@ -268,17 +269,9 @@
   </div>
   </div>
 
-
-
-
   <!--  -->
-
-
-
-
-
   <!-- Footer -->
-  <footer class="footer text-center">
+  <footer class="footer text-center" style="margin-top:10px">
     <div class="column">
       <h3 class="widget-title">
         Subscribe

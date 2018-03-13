@@ -554,8 +554,7 @@ alamode.controller('mainCtrl', function (Auth, $timeout, $location, $rootScope,
                 if (data.data.username === undefined) {
                     console.log(data.data.username);
                     Auth.logout(); // Log the user out
-                    app.isLoggedIn = false; // Set session to false
-                    app.loggedIn = false;
+                    app.loggedIn = false; // Set session to false
                     $location.path('/'); // Redirect to home page
                     app.loadme = true; // Allow loading of page
                 }
@@ -678,12 +677,12 @@ alamode.controller('mainCtrl', function (Auth, $timeout, $location, $rootScope,
             Auth.getUser().then(function (data) {
                 if (data.data.username === undefined) {
                     console.log('username invalid');
-                    app.isLoggedIn = false; // Variable to deactivate ng-show on index
+                    app.loggedIn = false;  // Variable to deactivate ng-show on index
                     Auth.logout();
-                    app.isLoggedIn = false;
+                    app.loggedIn = false;
                     $location.path('/');
                 } else {
-                    app.isLoggedIn = true; // Variable to activate ng-show on index
+                    app.loggedIn = true; // Variable to activate ng-show on index
                     app.username = data.data.username; // Get the user name for use in index
                     app.checkLoginStatus = data.data.username;
                     app.useremail = data.data.email; // Get the user e-mail for us ein index
@@ -781,3 +780,4 @@ alamode.controller('mainCtrl', function (Auth, $timeout, $location, $rootScope,
     };
 
 });
+

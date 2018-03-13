@@ -33,6 +33,7 @@ alamode.controller('CheckoutController', function ($scope, $location, User, Cart
 
         // Add an instance of the card Element into the `card-element` <div>
         card.mount('#card-element');
+        console.log('setup at least happened');
     };
 
     checkoutCtrl.setupStripeCard();

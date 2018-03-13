@@ -8,7 +8,7 @@
 
       <!-- add bitcoin as a payment method -->
 
-      
+
 
       <!-- Checkout Form -->
       <div class="col-sm-8 col-md-4 col-md-offset-3 padding-bottom">
@@ -21,49 +21,41 @@
                 </svg>
             </a> -->
 
-            <p> Please use 4242-4242-4242-4242 for card number and any date or zip code during test experience</p>
-              <form>
-                <div class="group">
-                  <label>
-                        <input name="cardholder-name" class="field is-empty" placeholder="Name Jane Doe" ng-model="cartCtrl.checkoutData.name" style="color:black"/>
-                  </label>
-                  <label>
-                        <input class="field is-empty" type="tel" placeholder="Phone number (123) 456-7890" ng-model="cartCtrl.checkoutData.number" style="color:black"/>
-                  </label>
-                </div>
-                <div class="group">
-                  <label>
-                        <div id="card-element" class="field is-empty" required></div>
-                  </label>
-                 
-                 
-                </div>
-                <label for="card-element" style="height:auto">
-                  <span><span><p style="position:absolute">
-                  {{cartCtrl.checkoutMessage}}</p></span></span>                
-                </label>
-              </form>
+          <p> Please use 4242-4242-4242-4242 for card number and any date or zip code during test experience</p>
+          <form>
+            <div class="group">
+              <label>
+                <input name="cardholder-name" class="field is-empty" placeholder="Name Jane Doe" ng-model="cartCtrl.checkoutData.name" style="color:black"
+                />
+              </label>
+              <label>
+                <input class="field is-empty" type="tel" placeholder="Phone number (123) 456-7890" ng-model="cartCtrl.checkoutData.number"
+                  style="color:black" />
+              </label>
+            </div>
+            <div class="group cardGroup">
+              <label>
+                <div id="card-element" class="field is-empty" required></div>
+              </label>
+
+            </div>
+          </form>
 
         </div>
         <div class="row" ng-show="cartCtrl.chargeSuccessful">
-
         </div>
-        <div class="row">
+
+        <!-- <div class="row">
           <form action="/your-server-side-code" method="POST">
-            <script
-              src="https://checkout.stripe.com/checkout.js" class="stripe-button"
-              data-key="pk_test_EPjnzpxnrgvUiGWsYrJjqN5t"
-              data-amount="2000"
-              data-name="Mookie Dough LLC"
-              data-description="2 widgets"
-              data-image="https://stripe.com/img/documentation/checkout/marketplace.png"
+            <script src="https://checkout.stripe.com/checkout.js" class="stripe-button" data-key="pk_test_EPjnzpxnrgvUiGWsYrJjqN5t" data-amount="2000"
+              data-name="Mookie Dough LLC" data-description="2 widgets" data-image="https://stripe.com/img/documentation/checkout/marketplace.png"
               data-locale="auto">
             </script>
             </form>
-        </div>
+        </div> -->
       </div>
 
-      
+
       <!-- .col-sm-8 -->
 
       <!-- Sidebar -->
@@ -72,12 +64,20 @@
           <h3>Cart total:</h3>
           <h4>${{mookie.total}}</h4>
           <a href="/shopping-cart" class="btn btn-default btn-ghost icon-left btn-block">
-              <i class="material-icons arrow_back"></i>
-              Back To Cart
-            </a>
+            <i class="material-icons arrow_back"></i>
+            Back To Cart
+          </a>
           <!-- <button type="submit" class="btn btn-primary btn-block waves-effect waves-light space-top-none" ng-click="mookie.showStripeModal()">Checkout</button> -->
           <button type="submit" class="btn btn-primary btn-block waves-effect waves-light space-top-none" ng-click="cartCtrl.doCheckout(cartCtrl.checkoutData)">Checkout</button>
-          
+          <label for="card-element" class="checkoutMsg">
+              <span>
+                <span>
+                  <p style="position:absolute">
+                    {{cartCtrl.checkoutMessage}}</p>
+                </span>
+              </span>
+            </label>
+
         </aside>
       </div>
       <!-- .col-md-3.col-sm-4 -->
