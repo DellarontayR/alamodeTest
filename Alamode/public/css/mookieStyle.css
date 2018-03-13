@@ -10,6 +10,39 @@ body {
 .text-center {
 	text-align: center;
 }
+.social-bar a {
+    display: inline-block;
+    vertical-align: middle;
+    font-size: 14px;
+    text-decoration: none;
+    margin-right: 18px;
+    margin-top: 5px;
+    margin-bottom: 5px;
+    -webkit-transition: color 0.3s;
+    -o-transition: color 0.3s;
+    transition: color 0.3s;
+}
+
+.social-bar.text-center a {
+    margin-left: 9px;
+    margin-right: 9px;
+}
+
+.social-bar.text-right a {
+    margin-left: 18px;
+    margin-right: 0;
+}
+
+.text-center .social-bar a {
+    margin-left: 9px;
+    margin-right: 9px;
+}
+
+.text-right .social-bar a {
+    margin-left: 18px;
+    margin-right: 0;
+}
+
 
 .add-cart-note {
 	display: none;
@@ -227,7 +260,7 @@ product {
 	position: absolute;
 	display: block;
 	width: 20px;
-	height:20px;
+	height: 20px;
 	border-radius: 50%;
 	color: white;
 	background-color: #333333;
@@ -236,7 +269,7 @@ product {
 	/* font-size: 10px; */
 	text-align: center;
 	font: 10px Arial, sans-serif;
-	padding:4px;
+	padding: 4px;
 }
 
 .main-navigation.open {
@@ -438,46 +471,13 @@ i.icon-black {
 }
 
 footer {
-	padding-top:10px;
+	padding-top: 10px;
 	background-color: #333333;
 	color: #ffffff;
 	height: 100%;
 }
 
 /* Base class */
-
-.social-bar a {
-	display: inline-block;
-	vertical-align: middle;
-	font-size: 14px;
-	text-decoration: none;
-	margin-right: 18px;
-	margin-top: 5px;
-	margin-bottom: 5px;
-	-webkit-transition: color 0.3s;
-	-o-transition: color 0.3s;
-	transition: color 0.3s;
-}
-
-.social-bar.text-center a {
-	margin-left: 9px;
-	margin-right: 9px;
-}
-
-.social-bar.text-right a {
-	margin-left: 18px;
-	margin-right: 0;
-}
-
-.text-center .social-bar a {
-	margin-left: 9px;
-	margin-right: 9px;
-}
-
-.text-right .social-bar a {
-	margin-left: 18px;
-	margin-right: 0;
-}
 
 .scroll-to-top-btn {
 	display: block;
@@ -622,85 +622,32 @@ header {
 	color: #606060;
 }
 
-/* Social media btns */
-
-.social-signup-btn {
-	position: relative;
-	display: block;
-	/* width: 240px; */
-	height: 48px;
-	line-height: 48px;
-	font-size: 14px;
-	color: #fff;
-	text-decoration: none;
-	padding-left: 66px;
-	margin-bottom: 12px;
-}
-
-@media screen and (min-width: 768px) {
-	.social-signup-btn {
-		width: auto;
-	}
-}
-
-.social-signup-btn>i {
-	display: block;
-	position: absolute;
-	width: 48px;
-	height: 48px;
-	line-height: 48px;
-	font-size: 16px;
-	text-align: center;
-	top: 0;
-	left: 0;
-	background-color: rgba(255, 255, 255, 0.12);
-	-webkit-transition: width 0.3s;
-	-o-transition: width 0.3s;
-	transition: width 0.3s;
-}
-
-.social-signup-btn>i:before {
-	line-height: 48px;
-}
-
-.social-signup-btn>i.socicon-googleplus {
-	font-size: 18px;
-}
-
-.social-signup-btn>span {
-	opacity: 1;
-	-webkit-transition: opacity 0.2s;
-	-o-transition: opacity 0.2s;
-	transition: opacity 0.2s;
-}
-
-.social-signup-btn:focus, .social-signup-btn:active {
-	color: #fff;
-	text-decoration: none;
-}
-
-.social-signup-btn:hover {
-	color: #fff;
-}
-
-.social-signup-btn:hover>i {
-	width: 100%;
-}
-
-.social-signup-btn:hover>span {
-	opacity: 0;
-}
-
-.social-signup-btn.ssb-facebook {
+.ssb-facebook {
 	background-color: #3b5998;
+	color:white;
+	vertical-align:top;
 }
 
-.social-signup-btn.ssb-google {
+.ssb-google {
 	background-color: #dd4b39;
+	color:white;
+	vertical-align:top;
 }
 
-.social-signup-btn.ssb-twitter {
+.ssb-twitter {
 	background-color: #55acee;
+	color:white;
+	vertical-align:top;
+}
+
+.ssb-instagram {
+	background: #f09433;
+	background: -moz-linear-gradient(45deg, #f09433 0%, #e6683c 25%, #dc2743 50%, #cc2366 75%, #bc1888 100%);
+	background: -webkit-linear-gradient(45deg, #f09433 0%, #e6683c 25%, #dc2743 50%, #cc2366 75%, #bc1888 100%);
+	background: linear-gradient(45deg, #f09433 0%, #e6683c 25%, #dc2743 50%, #cc2366 75%, #bc1888 100%);
+	filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#f09433', endColorstr='#bc1888', GradientType=1);
+	color:white;
+	vertical-align:top;
 }
 
 .fuschia-gradient {
@@ -915,11 +862,41 @@ a.mobile-menu-toggle>i {
 	}
 }
 
-.black-a{
-	background-color:#333333;
-	border-color:#333333;
+.black-a {
+	background-color: #333333;
+	border-color: #333333;
 }
 
-.thankshopper{
-	width:100%;
+.thankshopper {
+	width: 100%;
+}
+
+.addcartsuc {
+	display: none;
+}
+
+.addcartsuc.active {
+	display: inline-block;
+	color: white;
+	font-size: 14px;
+}
+
+.addcartsuc>i {
+	-webkit-animation: slideInRight 0.5s;
+	-o-animation: slideInRight 0.5s;
+	animation: slideInRight 0.5s;
+}
+
+.addcartsuc.active >i{
+	display:inline-block;
+	text-align:center;
+	vertical-align:middle;
+}
+
+.secretsocial{
+	color:#333333;
+	text-decoration-line:none;
+}
+.secretsocial:hover{
+	color:#333333;
 }

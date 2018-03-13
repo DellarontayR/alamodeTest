@@ -78,7 +78,6 @@ alamode.controller('mainCtrl', function (Auth, $timeout, $location, $rootScope,
 
     // Adds an item to a user's cart, shuold be used as a model for errors for users
     $scope.mookie.addToCart = function (product, event) {
-        console.log('add to cart');
         Auth.getUser().then(function (data) {
             if (data.data.email) {
                 $scope.mookie.userEmail = data.data.email;
@@ -87,10 +86,8 @@ alamode.controller('mainCtrl', function (Auth, $timeout, $location, $rootScope,
                 userData.userEmail = data.data.email;
                 User.getUser(userData).then(function (data) {
                     if (data.data.success) {
-
-                        // instead of channging product.itemAdded to true. get the angualrjs. element
-                        //Previous issue with this was getting the correct element from the list
-
+                        console.log(anular.element(event.target));
+                        
                         var cartData = {};
                         cartData.price = product.price;
                         cartData.description = product.description;

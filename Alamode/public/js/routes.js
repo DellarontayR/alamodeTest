@@ -99,7 +99,9 @@ var app = angular.module('appRoutes', ['ngRoute', 'angularCSS'])
                 templateUrl: '../mookiedoughfrontend/new-reg.html',
                 controller: 'regCtrl',
                 controllerAs: 'user',
-                authenticated: false
+                authenticated: false,
+                css: '../css/register.css'
+
             })
             .when('/new-reg', {
                 templateUrl: '../mookiedoughfrontend/login.html',
@@ -109,7 +111,8 @@ var app = angular.module('appRoutes', ['ngRoute', 'angularCSS'])
             })
             .when('/login', {
                 templateUrl: '../mookiedoughfrontend/register.html',
-                authenticated: false
+                authenticated: false,
+                css: '../css/register.css'
             })
             // Route: User Profile
             .when('/account', {

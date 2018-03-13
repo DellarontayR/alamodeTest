@@ -30,9 +30,9 @@
     }
 }
 
-.tab-content {
+/* .tab-content {
     padding-top: 36px;
-}
+} */
 
 .tab-content>.tab-pane {
     display: none;
@@ -66,7 +66,7 @@
     text-decoration: none;
     font-weight: normal;
     text-transform: uppercase;
-    padding: 18px;
+    padding: 15px;
     line-height: 1.5;
     background-color: transparent;
     border: none;

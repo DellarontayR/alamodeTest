@@ -1,0 +1,82 @@
+
+/* Social media btns */
+
+.social-signup-btn {
+	position: relative;
+	display: block;
+	/* width: 240px; */
+	height: 48px;
+	line-height: 48px;
+	font-size: 14px;
+	color: #fff;
+	text-decoration: none;
+	padding-left: 66px;
+	margin-bottom: 12px;
+}
+
+@media screen and (min-width: 768px) {
+	.social-signup-btn {
+		width: auto;
+	}
+}
+
+.social-signup-btn>i {
+	display: block;
+	position: absolute;
+	width: 48px;
+	height: 48px;
+	line-height: 48px;
+	font-size: 16px;
+	text-align: center;
+	top: 0;
+	left: 0;
+	background-color: rgba(255, 255, 255, 0.12);
+	-webkit-transition: width 0.3s;
+	-o-transition: width 0.3s;
+	transition: width 0.3s;
+}
+
+.social-signup-btn>i:before {
+	line-height: 48px;
+}
+
+.social-signup-btn>i.socicon-googleplus {
+	font-size: 18px;
+}
+
+.social-signup-btn>span {
+	opacity: 1;
+	-webkit-transition: opacity 0.2s;
+	-o-transition: opacity 0.2s;
+	transition: opacity 0.2s;
+}
+
+.social-signup-btn:focus, .social-signup-btn:active {
+	color: #fff;
+	text-decoration: none;
+}
+
+.social-signup-btn:hover {
+	color: #fff;
+}
+
+.social-signup-btn:hover>i {
+	width: 100%;
+}
+
+.social-signup-btn:hover>span {
+	opacity: 0;
+}
+.social-signup-btn.ssb-facebook {
+	background-color: #3b5998;
+}
+
+.social-signup-btn.ssb-google {
+	background-color: #dd4b39;
+
+}
+
+.social-signup-btn.ssb-twitter {
+	background-color: #55acee;
+
+}
