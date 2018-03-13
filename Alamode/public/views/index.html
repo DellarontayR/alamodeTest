@@ -219,15 +219,21 @@
     </nav>
     <div class="toolbar">
       <div class="inner">
-        <a href="#" class="mobile-menu-toggle">
+        <!-- <a href="#" class="mobile-menu-toggle">
+
+
           <i class="material-icons menu icon-black"></i>
+        </a> -->
+        <a href="#" class="mobile-menu-toggle mookieIcon">
+            <i class="fas fa-bars fa-xs fa-fw menu"></i>
+            <i class="fas fa-times fa-xs fa-fw cross"></i>
         </a>
-        <a href="/account">
-          <i class="fas fa-user fa-xs"></i>
+        <a href="/account" class="mookieIcon">
+          <i class="fas fa-user fa-xs fa-fw"></i>
 
         </a>
-        <a href="/shopping-cart">
-          <i class="fas fa-shopping-cart fa-xs"></i>
+        <a href="/shopping-cart" class="mookieIcon">
+          <i class="fas fa-shopping-cart fa-xs fa-fw"></i>
         </a>
 
 
@@ -243,7 +249,6 @@
 
   <div class="">
     <!-- Main Angular view where routes will be rendered-->
-    <a href="/shopping-cart"> and here we gooooo</a>
     <div class="main-view" ng-show="main.loadme" ng-view></div>
 
     <div class="container socialMedia">

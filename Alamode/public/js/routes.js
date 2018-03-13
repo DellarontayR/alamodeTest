@@ -133,7 +133,8 @@ var app = angular.module('appRoutes',['ngRoute','angularCSS'])
         templateUrl: '../mookiedoughfrontend/shopping-cart.html',
         authenticated: false,
         controller: 'CartController',
-        controllerAs: 'cartCtrl'
+        controllerAs: 'cartCtrl',
+        css:'../css/shoppingCart.css'
     })
     .when('/faq', {
         templateUrl: '../mookiedoughfrontend/faq.html',
