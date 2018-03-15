@@ -8,6 +8,8 @@ var SiteVisit = require('../models/sitevisit');
 var jwt = require('jsonwebtoken'); // Import JWT Package
 var secret = 'zm!_0@0hu_7&ii-@j&0wpm3t%ojnvmjx6j0!1*&j@x51&mdzk@'; // Create custom secret for use in JWT
 var nodemailer = require('nodemailer'); // Import Nodemailer Package
+var xoauth2 = require('xoauth2');
+
 var stripe = require('stripe')('sk_test_N3kcDk7Gi6QdJewLusdBT2Tc');
 //google maps api key AIzaSyDaah9NRImsLSSwF3KhofpShgf9tt26lDA
 //The actual google maps api key AIzaSyBPVL49OMjEcc82nQlsobcNmr9j9ZBDTHE
@@ -31,90 +33,120 @@ module.exports = function (router) {
     //     }
     // };
 
-    // Nodemailer options (use with g-mail or SMTP)
-    let client = nodemailer.createTransport({
-        service: 'Gmail',
-        auth: {
-            user: 'dellreadus@gmail.com', // Your email address
-            pass: '######' // Your password
-        },
-        tls: { rejectUnauthorized: false }
-    });
-    // var client = nodemailer.createTransport(sgTransport(options)); // Use if using sendgrid configuration
-    // End Sendgrid Configuration Settings  
 
-    // SiteVisit apis
-    router.post('/getSiteVisitors',function(req,res){
-        SiteVisit.find({}).select().exec(function(err,siteVisits){
+    // Nodemailer options (use with g-mail or SMTP)
+    var serverConfig = {};
+    serverConfig.gmail = {};
+    serverConfig.gmail.user = 'readus@mookiedough.com';
+    serverConfig.gmail.client_id = '196096326234-qlbj0t2huom8sbuh2fsgd45918spg768.apps.googleusercontent.com';
+    serverConfig.gmail.secret = 'zGvdxHXCjHop4snlYUJvIkaC';
+    serverConfig.gmail.refresh_token = '1/9oAOubCiP8-DQYYbglQuMlS7x-6HiBShLPbephqFnVU';
+
+    let client = nodemailer.createTransport({
+        host: 'smtp.gmail.com',
+        port: 587,
+        secure: false,
+        auth: {
+            type: 'OAuth2',
+            user: serverConfig.gmail.user,
+            clientId: serverConfig.gmail.client_id,
+            clientSecret: serverConfig.gmail.secret,
+            refreshToken: serverConfig.gmail.refresh_token
+            // accessToken: serverConfig.gmail.access_token,
+        }
+
+
+    });
+
+    var sendMail = function (to, subject, html) {
+        var email = {
+            from: 'Mookie Dough Staff, readus@mookiedough.com',
+            to:to,
+            subject:subject,
+            html:html
+        };
+        client.sendMail(email,function(err,inf){
             if(err){
-                res.json({success:false,message:'There was an error trying to look up site visitors',err:err});
+                //Log errors to db / send error to user
             }
             else{
-                if(!siteVisits){
-                    res.json({success:true,message:'There are no site visitors which should be impossible if youre visiting the site.',numberOfSiteVisitors:0});
+                // email sent
+            }
+        });
+    }
+    
+    // SiteVisit apis
+    router.post('/getSiteVisitors', function (req, res) {
+        SiteVisit.find({}).select().exec(function (err, siteVisits) {
+            if (err) {
+                res.json({ success: false, message: 'There was an error trying to look up site visitors', err: err });
+            }
+            else {
+                if (!siteVisits) {
+                    res.json({ success: true, message: 'There are no site visitors which should be impossible if youre visiting the site.', numberOfSiteVisitors: 0 });
                 }
-                else{
-                    res.json({success:true,message:'Site visitors found',numberOfSiteVisitors:siteVisits.length});
+                else {
+                    res.json({ success: true, message: 'Site visitors found', numberOfSiteVisitors: siteVisits.length });
                 }
             }
         });
     });
 
-    router.post('/checkVisitor',function(req,res){
-        if(req.body.ipAddress == null || req.body.ipAddress==''){
-            res.json({success:false,message:'IP address not included in psot body'});
+    router.post('/checkVisitor', function (req, res) {
+        if (req.body.ipAddress == null || req.body.ipAddress == '') {
+            res.json({ success: false, message: 'IP address not included in psot body' });
         }
-        else{
-            SiteVisit.findOne({ipAddress:req.body.ipAddress}).select().exec(function(err,siteVisit){
-                if(err){
-                    res.json({success:false,message:'There was an error trying to look for the ipAddress',err:err});
+        else {
+            SiteVisit.findOne({ ipAddress: req.body.ipAddress }).select().exec(function (err, siteVisit) {
+                if (err) {
+                    res.json({ success: false, message: 'There was an error trying to look for the ipAddress', err: err });
                 }
-                else{
-                    if(!siteVisit){
+                else {
+                    if (!siteVisit) {
                         var newSiteVisit = new SiteVisit();
                         newSiteVisit.ipAddress = req.body.ipAddress;
-                        newSiteVisit.save(function(err,newSite){
-                            if(err){
-                                res.json({success:false,message:'There was an error tyring to save new new site visitation',err:err});
+                        newSiteVisit.save(function (err, newSite) {
+                            if (err) {
+                                res.json({ success: false, message: 'There was an error tyring to save new new site visitation', err: err });
                             }
-                            else{
-                                res.json({success:true,message:'This was the users first time visiting the site'});                                
+                            else {
+                                res.json({ success: true, message: 'This was the users first time visiting the site' });
                             }
                         });
                     }
-                    else{
-                        res.json({success:true,message:'User has visited site'});
+                    else {
+                        res.json({ success: true, message: 'User has visited site' });
                     }
                 }
             });
-        }    
+        }
     });
 
     //Get all old carts of a user
-    router.post('/getOldCarts',function(req,res){
-        if(req.body.user == null || req.body.user == ''){
-            res.json({success:false,message:'There was an error'});
+    router.post('/getOldCarts', function (req, res) {
+        if (req.body.user == null || req.body.user == '') {
+            res.json({ success: false, message: 'There was an error' });
         }
-        else{
-            Cart.find({oldCart:true,user:req.body.user}).populate('products').exec(function(err,carts){
-                if(err){
-                    res.json({success:false,message:'There was an error trying to find users cart history',err:err});
+        else {
+            Cart.find({ oldCart: true, user: req.body.user }).populate('products').exec(function (err, carts) {
+                if (err) {
+                    res.json({ success: false, message: 'There was an error trying to find users cart history', err: err });
                 }
-                else{
-                    if(!carts){
-                        res.json({success:false,message:'The user has no carts'});
+                else {
+                    if (!carts) {
+                        res.json({ success: false, message: 'The user has no carts' });
                     }
-                    else{
-                        res.json({success:true,message:'Users cart history detect',carts:carts});
+                    else {
+                        res.json({ success: true, message: 'Users cart history detect', carts: carts });
                     }
                 }
             });
         }
     });
 
-    router.post('/donate',function(req,res){
-        if(req.body.token == null || req.body.name == null || req.body.donationAmount == null){
-            res.json({success:false,message:"Sorry we had a problem on our end. Please try to donate again later"});
+    router.post('/donate', function (req, res) {
+        if (req.body.token == null || req.body.name == null || req.body.donationAmount == null) {
+            res.json({ success: false, message: "Sorry we had a problem on our end. Please try to donate again later" });
         }
     });
 
@@ -132,48 +164,48 @@ module.exports = function (router) {
             stripe.charges.create({
                 amount: req.body.price,
                 currency: "usd",
-                description:'first payment',
+                description: 'first payment',
                 source: req.body.token // obtained with Stripe.js
-            }, function (err,charge) {
-                if(err){
-                    res.json({success:false,message:'There was an error',err:err});
+            }, function (err, charge) {
+                if (err) {
+                    res.json({ success: false, message: 'There was an error', err: err });
                 }
-                else{
-                    if(!charge){
-                        res.json({success:false,message:'Something went wrong'});
+                else {
+                    if (!charge) {
+                        res.json({ success: false, message: 'Something went wrong' });
                     }
-                    else{
-                        User.findOne({email:req.body.userEmail}).select().exec(function(err,user){
-                            if(err){
-                                res.json({success:false,message:'There was an error trying to change user cart during checkout',err:err});
+                    else {
+                        User.findOne({ email: req.body.userEmail }).select().exec(function (err, user) {
+                            if (err) {
+                                res.json({ success: false, message: 'There was an error trying to change user cart during checkout', err: err });
                             }
-                            else{
-                                if(!user){
-                                    res.json({success:false,message:'There is no user with that email'});
+                            else {
+                                if (!user) {
+                                    res.json({ success: false, message: 'There is no user with that email' });
                                 }
-                                else{
+                                else {
                                     var cartData = {};
                                     cartData.cartId = user.cart;
                                     user.cart = null;
-                                    user.save(function(err,user){
-                                        if(err){
-                                            res.json({success:false,message:'There was an error trying to delete the userCart',err:err});
+                                    user.save(function (err, user) {
+                                        if (err) {
+                                            res.json({ success: false, message: 'There was an error trying to delete the userCart', err: err });
                                         }
-                                        else{
-                                            if(!user){
-                                                res.json({success:false,message:'There was an error'});
+                                        else {
+                                            if (!user) {
+                                                res.json({ success: false, message: 'There was an error' });
                                             }
-                                            else{
-                                                Cart.findOneAndUpdate({_id:cartData.cartId},{$set:{oldCart:true,user:user._id,checkoutDate:Date.now()}}).select().exec(function(err,cart){
-                                                    if(err){
-                                                        res.json({success:false,message:'There was an error trying update old user cart',err:err});
+                                            else {
+                                                Cart.findOneAndUpdate({ _id: cartData.cartId }, { $set: { oldCart: true, user: user._id, checkoutDate: Date.now() } }).select().exec(function (err, cart) {
+                                                    if (err) {
+                                                        res.json({ success: false, message: 'There was an error trying update old user cart', err: err });
                                                     }
-                                                    else{
-                                                        if(!cart){
-                                                            res.json({success:false,message:'There was an error trying to find old user cart'});
-                                                        }   
-                                                        else{
-                                                            res.json({success:true,message:'Charge completed successfully',charge:charge});
+                                                    else {
+                                                        if (!cart) {
+                                                            res.json({ success: false, message: 'There was an error trying to find old user cart' });
+                                                        }
+                                                        else {
+                                                            res.json({ success: true, message: 'Charge completed successfully', charge: charge });
                                                         }
                                                     }
                                                 });
@@ -299,24 +331,24 @@ module.exports = function (router) {
             }
         });
     });
-    
-    router.post('/removeCart',function(req,res){
-        User.findOne({email:req.body.userEmail}).select().exec(function(err,user){
-            if(err){
-                res.json({success:false,err:err});
+
+    router.post('/removeCart', function (req, res) {
+        User.findOne({ email: req.body.userEmail }).select().exec(function (err, user) {
+            if (err) {
+                res.json({ success: false, err: err });
             }
-            else{
-                if(!user){
-                    res.json({success:false,message:'There was no user associated with that email address'});
+            else {
+                if (!user) {
+                    res.json({ success: false, message: 'There was no user associated with that email address' });
                 }
-                else{
+                else {
                     user.cart = '';
-                    user.save(function(err,user){
-                        if(err){
-                            res.json({success:false,err:err});
+                    user.save(function (err, user) {
+                        if (err) {
+                            res.json({ success: false, err: err });
                         }
-                        else{
-                            res.json({success:true,message:'Cart removed'});
+                        else {
+                            res.json({ success: true, message: 'Cart removed' });
                         }
                     });
                 }
@@ -330,11 +362,11 @@ module.exports = function (router) {
                 res.json({ success: false, message: err });
             }
             else {
-                if(!user){
-                    res.json({success:false,message:'Incorrect user infomation'});
+                if (!user) {
+                    res.json({ success: false, message: 'Incorrect user infomation' });
                 }
-                else{
-                    res.json({ success: true, user: user });                    
+                else {
+                    res.json({ success: true, user: user });
                 }
             }
         });
@@ -723,47 +755,47 @@ module.exports = function (router) {
         });
     });
 
-    router.post('/facebookRegister',function(req,res){
+    router.post('/facebookRegister', function (req, res) {
         var user = new User();
         user.email = req.body.email;
         user.socialToken = req.body.socialToken;
         user.username = req.body.username;
-        user.temporaryToken = jwt.sign({username: user.username,email:user.email},secret,{expiresIn:'7d'});
+        user.temporaryToken = jwt.sign({ username: user.username, email: user.email }, secret, { expiresIn: '7d' });
 
-        if(req.body.username === null || req.body.username === '' || req.body.socialToken === null || req.body.email === null 
-            || req.body.email ===''){
-                res.json({success:false,message:'Ensure social login occured successfully'});
-        } else{
-            user.save(function(err,user){
-                if(err){
-                    if(err.errors!=null){
-                        if(err.errors.email){
-                            res.json({success:false,message: err.errors.email.message});
-                        } else if(err.errors.username){
-                            res.json({success:false,message:err.errors.username.message});
+        if (req.body.username === null || req.body.username === '' || req.body.socialToken === null || req.body.email === null
+            || req.body.email === '') {
+            res.json({ success: false, message: 'Ensure social login occured successfully' });
+        } else {
+            user.save(function (err, user) {
+                if (err) {
+                    if (err.errors != null) {
+                        if (err.errors.email) {
+                            res.json({ success: false, message: err.errors.email.message });
+                        } else if (err.errors.username) {
+                            res.json({ success: false, message: err.errors.username.message });
                         }
                     }
-                    else if(err){
+                    else if (err) {
                         if (err.code == 11000) {
                             if (err.errmsg[65] == "u") {
                                 res.json({ success: false, message: 'That username is already taken' }); // Display error if username already taken
                             } else if (err.errmsg[65] == "e") {
                                 res.json({ success: false, message: 'That e-mail is already taken' }); // Display error if e-mail already taken
                             }
-                            else{
-                                res.json({success:false,message:'An error occurred'});
+                            else {
+                                res.json({ success: false, message: 'An error occurred' });
                             }
                         } else {
                             res.json({ success: false, message: err }); // Display any other error
                         }
                     }
                 }
-                else{
+                else {
                     res.json({ success: true, message: 'Account registered! Please check your e-mail for activation link.' }); // Send success message back to controller/request                    
                 }
 
-            },function(err){
-                res.json({success:false, message: 'There was an unknown error'});
+            }, function (err) {
+                res.json({ success: false, message: 'There was an unknown error' });
             });
         }
     });
@@ -775,12 +807,12 @@ module.exports = function (router) {
         user.password = req.body.password;
         user.username = req.body.username;
         user.temporarytoken = jwt.sign({ username: user.username, email: user.email }, secret, { expiresIn: '7d' });
-        
+
         if (req.body.username === null || req.body.username === '' || req.body.password === null || req.body.password === '' ||
             req.body.email === null || req.body.email === '') {
             res.json({ success: false, message: 'Ensure username, email, and password were provided' });
         } else {
-            user.save(function (err,user) {
+            user.save(function (err, user) {
                 if (err) {
                     if (err.errors != null) {
                         if (err.errors.email) {
@@ -790,8 +822,8 @@ module.exports = function (router) {
                         } else if (err.errors.password) {
                             res.json({ success: false, message: err.errors.password.message }); // Display error in validation (password)
                         }
-                        else{
-                            res.json({success:false,message:'An Error has ocurred'});
+                        else {
+                            res.json({ success: false, message: 'An Error has ocurred' });
                         }
                     }
                     else if (err) {
@@ -803,8 +835,8 @@ module.exports = function (router) {
                             } else if (err.errmsg[65] == "e") {
                                 res.json({ success: false, message: 'That e-mail is already taken' }); // Display error if e-mail already taken
                             }
-                            else{
-                                res.json({success:false,message:'An error occurred'});
+                            else {
+                                res.json({ success: false, message: 'An error occurred' });
                             }
                         } else {
                             res.json({ success: false, message: err }); // Display any other error
@@ -814,9 +846,9 @@ module.exports = function (router) {
                 else {
                     res.json({ success: true, message: 'Account registered! Please check your e-mail for activation link.' }); // Send success message back to controller/request
                 }
-            },function(err){
+            }, function (err) {
                 console.log('There was an error');
-                res.json({success:false,message:'An Error has occurred',err:err});
+                res.json({ success: false, message: 'An Error has occurred', err: err });
             });
         }
     });
@@ -834,7 +866,7 @@ module.exports = function (router) {
                         res.json({ success: false, message: err.errors.password.message }); // Display error in validation (password)
                     }
                 }
-                else{
+                else {
                     // Check if duplication error exists
                     res.json({ success: false, message: err });
                 }
