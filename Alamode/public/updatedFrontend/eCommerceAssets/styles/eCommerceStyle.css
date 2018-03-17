@@ -309,7 +309,7 @@ footer .footerlinks {
 	flex-direction: column;
 	min-height: 0vh;
 }
-
+/* 
 .price {
 	margin-top: 0px;
 	display: flex;
@@ -319,7 +319,7 @@ footer .footerlinks {
 	margin-left: 0px;
 	text-transform: lowercase;
 	flex: 1;
-}
+} */
 
 .img {
 	background-image: url(medium.jpg);
