@@ -25,8 +25,7 @@
           <form>
             <div class="group">
               <label>
-                <input name="cardholder-name" class="field is-empty" placeholder="Name Jane Doe" ng-model="cartCtrl.checkoutData.name" style="color:black"
-                />
+                <input name="cardholder-name" class="field is-empty" placeholder="Name Jane Doe" ng-model="cartCtrl.checkoutData.name" />
               </label>
               <label>
                 <input class="field is-empty" type="tel" placeholder="Phone number (123) 456-7890" ng-model="cartCtrl.checkoutData.number"
@@ -35,7 +34,7 @@
             </div>
             <div class="group cardGroup">
               <label>
-                <div id="card-element" class="field is-empty" required></div>
+                <div id="card-element" class="field is-empty stripeElement" required></div>
               </label>
 
             </div>

@@ -11,8 +11,8 @@ alamode.controller('CheckoutController', function ($scope, $location, User, Cart
     checkoutCtrl.setupStripeCard = function(){
         var style = {
             base: {
-                iconColor: '#666EE8',
-                color: '#31325F',
+                iconColor: 'white',
+                color: 'white',
                 lineHeight: '40px',
                 fontWeight: 300,
                 fontFamily: '"Helvetica Neue", Helvetica, sans-serif',

@@ -34,6 +34,7 @@ module.exports = function (router) {
     // };
 
 
+    // Create a format email function to create or manipulate invoice emails
     // Nodemailer options (use with g-mail or SMTP)
     var serverConfig = {};
     serverConfig.gmail = {};

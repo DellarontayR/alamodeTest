@@ -20,7 +20,7 @@
   
   .shopping-cart .item .item-thumb {
     width: 165px;
-    /* padding-right: 25px; */
+    padding-right: 25px;
   }
   
   .shopping-cart .item .item-thumb > img {
