@@ -13,6 +13,11 @@ var app = angular.module('appRoutes', ['ngRoute', 'angularCSS'])
                 controllerAs: 'home',
                 css: ['../css/home.css']
             }).
+            when('/ontheway',{
+                templateUrl:'../views/ontheway.html',
+                css: '../css/ontheway.css'
+
+            }).
             when('/coterie', {
                 templateUrl: '../updatedFrontend/coterie.html',
                 css: ['..updatedFrontend/eCommerceAssets/styles/eCommerceStyle.css', '..updatedFrontend/productpage.css', '../updatedFrontend/coterie.css']

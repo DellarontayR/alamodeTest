@@ -89,6 +89,7 @@
   <!-- Alamode Directives -->
   <script src="../js/directives/product.js"></script>
   <script src="../js/directives/mookie-maps.js"></script>
+  <script src="../js/directives/order-maps.js"></script>
   <script src="../js/directives/insta.js"></script>
   <script src="../js/directives/productwidget.js"></script>
   <script src="../js/directives/mookie-carousel.js"></script>
@@ -108,9 +109,8 @@
 
 
   <!-- Google maps api -->
-  <script src="https://maps.googleapis.com/maps/api/js?v=3.exp&key=AIzaSyC5COdjfvATFrP2GIA9_5fabKmrse1CXdo&libraries=geometry"></script>
-
-
+  <!-- <script src="https://maps.googleapis.com/maps/api/js?v=3.exp&key=AIzaSyC5COdjfvATFrP2GIA9_5fabKmrse1CXdo&libraries=geometry,places"></script> -->
+  <script src="https://maps.googleapis.com/maps/api/js?v=3.exp&key=AIzaSyDIK5nijNemroAnlHUxH6iElr3HVBtniH4&libraries=places"></script> 
   <!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/angular-ui-bootstrap/1.0.0/ui-bootstrap.js"></script> -->
 
   <!-- <script type="text/javascript" src="../libs/ui-bootstrap-custom-2.5.0.js"></script> -->
@@ -184,7 +184,7 @@
   <header class="navbar navbar-sticky nav-down">
     <div id="logo" href="/home">
       <a href="/home">
-        <img src="updatedFrontend/toplogo.svg" alt="" />
+        <img src="updatedFrontend/toplogo.svg" alt="nothing" >
         <span class="count"></span>
 
       </a>
@@ -250,6 +250,7 @@
 
   <div class="">
     <!-- Main Angular view where routes will be rendered-->
+    <a href="/ontheway">here we go</a>
     <div class="main-view" ng-show="main.loadme" ng-view></div>
 
     <div class="container socialMedia">

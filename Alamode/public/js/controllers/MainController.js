@@ -86,7 +86,7 @@ alamode.controller('mainCtrl', function (Auth, $timeout, $location, $rootScope,
                 userData.userEmail = data.data.email;
                 User.getUser(userData).then(function (data) {
                     if (data.data.success) {
-                        console.log(anular.element(event.target));
+                        // console.log(anular.element(event.target));
                         
                         var cartData = {};
                         cartData.price = product.price;

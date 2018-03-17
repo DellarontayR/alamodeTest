@@ -1,51 +1,116 @@
 'use strict';
+console.log('order maps directive');
 alamode.directive('orderMaps', function ($q) {
     return {
         // somehow get the users current gps location with geolocater or using location selection and search
         // After deciding the location communicate back to server to theorize the amount of time needed        
         restrict: 'E',
         template: '<div></div>',
-        scope: {
-            type: '=',
-            userLocation: '=location'
-        },
-        replace: false,
+        replace: true,
         link: function (scope, element, attributes) {
+            console.log(scope.mookie);
 
             // Genereal flow is user is finished checking out, They choose delivery or pickup, from delivery they'll put in an address and a map will pop up, They can have a box to chang the address
 
             //ordermaps starts when user already has given previous location
 
-            var setupOnUserLocation = function(location){
-                var coords = location || scope.userLocation;
-                var latLng = new google.maps.LatLng(coords.latitude,coords.longitude);
-                var mapOptions ={
-                    center:latLng,
-                    zoom:13,
+            var setupOnUserLocation = function (location) {
+                if (location === null) return;
+                var coords = location.coords || scope.userLocation;
+                var latLng = new google.maps.LatLng(coords.latitude, coords.longitude);
+                var mapOptions = {
+                    center: latLng,
+                    zoom: 13,
                     mapTypeId: google.maps.MapTypeId.ROADMAP
                 };
-                var map = new google.maps.Map(document.getElementById(attibutes.id),mapOptions);
+                var map = new google.maps.Map(document.getElementById(attributes.id), mapOptions);
                 var userMarker = new google.maps.Marker({
-                    position:latLng,
-                    map:map,
-                    title:'Welcome to Mookie Dough'
+                    position: latLng,
+                    map: map,
+                    title: 'Welcome to Mookie Dough'
                 });
                 userMarker.setMap(map);
+
+
+                var input = document.getElementById('order-input');
+                map.controls[google.maps.ControlPosition.TOP_CENTER].push(input);
+
+
+                var autocomplete = new google.maps.places.Autocomplete(input);
+
+                // Bind the map's bounds (viewport) property to the autocomplete object,
+                // so that the autocomplete requests use the current map bounds for the
+                // bounds option in the request.
+                autocomplete.bindTo('bounds', map);
+
+                var infowindow = new google.maps.InfoWindow();
+                var infowindowContent = document.getElementById('infowindow-content');
+                infowindow.setContent(infowindowContent);
+                var marker = new google.maps.Marker({
+                    map: map,
+                    anchorPoint: new google.maps.Point(0, -29)
+                });
+
+
+                autocomplete.addListener('place_changed', function () {
+                    infowindow.close();
+                    marker.setVisible(false);
+                    var place = autocomplete.getPlace();
+                    console.log(place.formatted_address);
+                    console.log(place);
+                    if (!place.geometry) {
+                        // User entered the name of a Place that was not suggested and
+                        // pressed the Enter key, or the Place Details request failed.
+                        window.alert("No details available for input: '" + place.name + "'");
+                        return;
+                    }
+
+                    // If the place has a geometry, then present it on a map.
+                    if (place.geometry.viewport) {
+                        map.fitBounds(place.geometry.viewport);
+                    } else {
+                        map.setCenter(place.geometry.location);
+                        map.setZoom(17);  // Why 17? Because it looks good.
+                    }
+                    marker.setPosition(place.geometry.location);
+                    marker.setVisible(true);
+
+                    var address = '';
+                    if (place.address_components) {
+                        address = [
+                            (place.address_components[0] && place.address_components[0].short_name || ''),
+                            (place.address_components[1] && place.address_components[1].short_name || ''),
+                            (place.address_components[2] && place.address_components[2].short_name || '')
+                        ].join(' ');
+                    }
+
+                    infowindowContent.children['place-icon'].src = place.icon;
+                    infowindowContent.children['place-name'].textContent = place.name;
+                    infowindowContent.children['place-address'].textContent = address;
+                    infowindow.open(map, marker);
+                });
+
+                var types = ['address'];
+                autocomplete.setTypes(types);
+                autocomplete.setOptions({ strictBounds: true });
             }
 
-            
-
-            var findUserLocation = function () {
-                var checkLocation = false;
+            function findUserLocation() {
                 if (navigator.geolocation) {
-                    navigator.geolocation.getCurrentPosition(checkLocation);
-                    if(checkLocation){
-                        setupOnUserLocation(checkLocation);
-                    }
+                    navigator.geolocation.getCurrentPosition(setupOnUserLocation, function (err, info) {
+                        var tries = 0;
+                        while (tries < 5) {
+                            navigator.geolocation.getCurrentPosition(setupOnUserLocation, function (err, info) {
+                                console.log(err);
+                                console.log(tries);
+                                console.log('We could not use GPS to find your address at this time');
+                            }, { timeout: 1000 });
+                            setTimeout(1000);
+                        }
+                    }, { timeout: 5000 });
                 }
             };
-
-            // 
+            findUserLocation();
 
             // var trip = [latLng, latLng2];
             // var path = new google.maps.Polyline({

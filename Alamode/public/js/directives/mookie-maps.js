@@ -54,6 +54,7 @@ alamode.directive('mookieMaps', function ($q) {
                 strokeWeight: 2
             });
             path.setMap(map);
+            console.log('map set up');
 
 
             // var searchbox = new google.maps.places.SearchBox

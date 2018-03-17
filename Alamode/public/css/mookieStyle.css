@@ -251,7 +251,7 @@ product {
 	color: black;
 	text-align: right;
 	border-radius: 50%;
-	background-image: url("../imgs/Media/mookie good cart.svg");
+	background-image: url("../imgs/Media/goodmookie.svg");
 	top: -2px;
 	right: -17px;
 }
@@ -871,27 +871,6 @@ a.mobile-menu-toggle>i {
 	width: 100%;
 }
 
-.addcartsuc {
-	display: none;
-}
-
-.addcartsuc.active {
-	display: inline-block;
-	color: white;
-	font-size: 14px;
-}
-
-.addcartsuc>i {
-	-webkit-animation: slideInRight 0.5s;
-	-o-animation: slideInRight 0.5s;
-	animation: slideInRight 0.5s;
-}
-
-.addcartsuc.active >i{
-	display:inline-block;
-	text-align:center;
-	vertical-align:middle;
-}
 
 .secretsocial{
 	color:#333333;
