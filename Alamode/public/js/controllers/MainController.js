@@ -5,7 +5,6 @@ alamode.controller('mainCtrl', function (Auth, $timeout, $location, $rootScope,
     var app = this;
     if ($window.location.pathname === '/') app.home = true; // Check if user is on home page to show home page div
 
-    app.loggedIn = false;
     app.userEmail = "";
     app.userData = {};
     app.loadme = true;
@@ -24,6 +23,8 @@ alamode.controller('mainCtrl', function (Auth, $timeout, $location, $rootScope,
     $scope.mookie.products = {};
     $scope.mookie.deliveryLocationChanged = false;
     $scope.mookie.deliveryLocation = null;
+    $scope.mookie.loggedIn = false;
+
 
     $scope.mookie.numberOfSiteVisitors = 0;//Display visitors to site
     // Checks to see if visitor has visitor's ip address has visited our site before
@@ -544,7 +545,7 @@ alamode.controller('mainCtrl', function (Auth, $timeout, $location, $rootScope,
     //Check to see if user
     app.checkUserState = function (callback) {
         if (Auth.isLoggedIn()) {
-            app.loggedIn = true;
+            $scope.mookie.loggedIn = true;
             Auth.getUser().then(function (data) {
                 var userData = {};
                 userData.userEmail = data.data.email;
@@ -553,7 +554,7 @@ alamode.controller('mainCtrl', function (Auth, $timeout, $location, $rootScope,
                 if (data.data.username === undefined) {
                     console.log(data.data.username);
                     Auth.logout(); // Log the user out
-                    app.loggedIn = false; // Set session to false
+                    $scope.mookie.loggedIn = false; // Set session to false
                     $location.path('/'); // Redirect to home page
                     app.loadme = true; // Allow loading of page
                 }
@@ -614,7 +615,7 @@ alamode.controller('mainCtrl', function (Auth, $timeout, $location, $rootScope,
         // Only run check if user is logged in
 
         if (Auth.isLoggedIn()) {
-            app.loggedIn = true;
+            $scope.mookie.loggedIn = true;
 
             app.checkingSession = true; // Use variable to keep track if the interval is already running
             // Run interval ever 30000 milliseconds (30 seconds) 
@@ -676,12 +677,12 @@ alamode.controller('mainCtrl', function (Auth, $timeout, $location, $rootScope,
             Auth.getUser().then(function (data) {
                 if (data.data.username === undefined) {
                     console.log('username invalid');
-                    app.loggedIn = false;  // Variable to deactivate ng-show on index
+                    $scope.mookie.loggedIn = false;  // Variable to deactivate ng-show on index
                     Auth.logout();
-                    app.loggedIn = false;
+                    $scope.mookie.loggedIn = false;
                     $location.path('/');
                 } else {
-                    app.loggedIn = true; // Variable to activate ng-show on index
+                    $scope.mookie.loggedIn = true; // Variable to activate ng-show on index
                     app.username = data.data.username; // Get the user name for use in index
                     app.checkLoginStatus = data.data.username;
                     app.useremail = data.data.email; // Get the user e-mail for us ein index
@@ -771,9 +772,9 @@ alamode.controller('mainCtrl', function (Auth, $timeout, $location, $rootScope,
     // Function to logout the user
     app.logout = function () {
         Auth.logout(); // Logout user by removing jwt token
-        app.loggedIn = false;
+        $scope.mookie.loggedIn = false;
         $timeout(function () {
-            app.loggedIn = false;
+            $scope.mookie.loggedIn = false;
             $location.path('/register');
         }, 2000);
     };
