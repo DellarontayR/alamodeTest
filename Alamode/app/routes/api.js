@@ -76,6 +76,7 @@ module.exports = function (router) {
         });
     }
     
+    
     // SiteVisit apis
     router.post('/getSiteVisitors', function (req, res) {
         SiteVisit.find({}).select().exec(function (err, siteVisits) {
