@@ -28,9 +28,9 @@
 }
 
 .mookie-confirm{
-    -webkit-animation: slideInUp 0.2s;
-    -o-animation: slideInUp 0.2s;
-    animation: slideInUp 0.2s;
+    -webkit-animation: slideInUp 0.5s;
+    -o-animation: slideInUp 0.5s;
+    animation: slideInUp 0.5s;
 }
 .mookie-confirm-message{
     background-color:#333333;

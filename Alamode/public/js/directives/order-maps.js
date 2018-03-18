@@ -62,6 +62,7 @@ alamode.directive('orderMaps', function ($q) {
                     if (place) {
                         scope.mookie.deliveryLocationChanged = true;
                         scope.mookie.deliveryLocation = place.formatted_address;
+                        scope.$apply();
                     }
                     if (!place.geometry) {
                         // User entered the name of a Place that was not suggested and

@@ -11,6 +11,7 @@ alamode.directive('mookieMaps', function ($q) {
         },
         replace: true,
         link: function (scope, element, attributes) {
+   
             var checkLocation = function (location) {
                 var coords = location.coords;
                 console.log(coords);
