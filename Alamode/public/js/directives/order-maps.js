@@ -1,5 +1,4 @@
 'use strict';
-console.log('order maps directive');
 alamode.directive('orderMaps', function ($q) {
     return {
         // somehow get the users current gps location with geolocater or using location selection and search
@@ -14,8 +13,11 @@ alamode.directive('orderMaps', function ($q) {
 
             //ordermaps starts when user already has given previous location
 
-            var setupOnUserLocation = function (location) {
-                if (location === null) return;
+            scope.setupOnUserLocation = function() {
+                // if (location === null) return;
+                var location = { coords:{latitude: '37.4266083', longitude: '-122.15756340000002'} };
+
+
                 var coords = location.coords || scope.userLocation;
                 var latLng = new google.maps.LatLng(coords.latitude, coords.longitude);
                 var mapOptions = {
@@ -61,7 +63,6 @@ alamode.directive('orderMaps', function ($q) {
                         scope.mookie.deliveryLocationChanged = true;
                         scope.mookie.deliveryLocation = place.formatted_address;
                     }
-                    console.log(place);
                     if (!place.geometry) {
                         // User entered the name of a Place that was not suggested and
                         // pressed the Enter key, or the Place Details request failed.
@@ -97,24 +98,27 @@ alamode.directive('orderMaps', function ($q) {
                 var types = ['address'];
                 autocomplete.setTypes(types);
                 autocomplete.setOptions({ strictBounds: true });
-            }
-            var location = { coords:{latitude: '37.4266083', longitude: '-122.15756340000002'} };
-            setUpOnUserLocation(location);
+            };
+            // setUpOnUserLocation(location);
+            scope.setupOnUserLocation();
 
+            // setTimeout(setUpOnUserLocation(location),1000);
             function findUserLocation() {
-                if (navigator.geolocation) {
-                    navigator.geolocation.getCurrentPosition(setupOnUserLocation, function (err, info) {
-                        var tries = 0;
-                        while (tries < 5) {
-                            navigator.geolocation.getCurrentPosition(setupOnUserLocation, function (err, info) {
-                                console.log(err);
-                                console.log(tries);
-                                console.log('We could not use GPS to find your address at this time');
-                            }, { timeout: 1000 });
-                            setTimeout(1000);
-                        }
-                    }, { timeout: 5000 });
-                }
+                // setUpOnUserLocation(location);
+
+                // if (navigator.geolocation) {
+                //     navigator.geolocation.getCurrentPosition(setupOnUserLocation, function (err, info) {
+                //         var tries = 0;
+                //         while (tries < 5) {
+                //             navigator.geolocation.getCurrentPosition(setupOnUserLocation, function (err, info) {
+                //                 console.log(err);
+                //                 console.log(tries);
+                //                 console.log('We could not use GPS to find your address at this time');
+                //             }, { timeout: 1000 });
+                //             setTimeout(1000);
+                //         }
+                //     }, { timeout: 5000 });
+                // }
             };
             // findUserLocation();
 
