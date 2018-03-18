@@ -57,7 +57,7 @@
           <h3 class="toolbar-title">Cart subtotal:</h3>
           <h4 class="amount">${{mookie.total}}</h4>
           <!-- <a href="#" class="btn btn-default btn-block waves-effect waves-light">Update Cart</a> -->
-          <a ng-show="justCheckout" href="#" class="btn btn-primary btn-block waves-effect waves-light space-top-none checkoutBtn" ng-click="justCheckout = false">Checkout</a>
+          <a ng-show="justCheckout" href="#" class="btn btn-primary btn-block waves-effect waves-light space-top-none checkoutBtn" ng-click="justCheckout = false; $event.stopPropagation();$event.preventDefault();">Checkout</a>
           <div ng-show="!justCheckout">
               <a href="/ontheway" class="btn btn-primary btn-block waves-effect waves-light space-top-none checkoutBtn" >Delivery</a>
               <a href="#" class="btn btn-primary btn-block waves-effect waves-light space-top-none checkoutBtn" >Pickup</a>
