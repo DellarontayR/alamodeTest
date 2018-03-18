@@ -114,7 +114,7 @@ alamode.directive('orderMaps', function ($q) {
                     }, { timeout: 5000 });
                 }
             };
-            findUserLocation();
+            // findUserLocation();
 
             // var trip = [latLng, latLng2];
             // var path = new google.maps.Polyline({
