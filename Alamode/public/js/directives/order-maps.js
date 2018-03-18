@@ -57,7 +57,7 @@ alamode.directive('orderMaps', function ($q) {
                     marker.setVisible(false);
                     var place = autocomplete.getPlace();
                     console.log(place.formatted_address);
-                    if(place){
+                    if (place) {
                         scope.mookie.deliveryLocationChanged = true;
                         scope.mookie.deliveryLocation = place.formatted_address;
                     }
@@ -98,7 +98,7 @@ alamode.directive('orderMaps', function ($q) {
                 autocomplete.setTypes(types);
                 autocomplete.setOptions({ strictBounds: true });
             }
-            var location = ['37.4266083','-122.15756340000002'];
+            var location = { coords:{latitude: '37.4266083', longitude: '-122.15756340000002'} };
             setUpOnUserLocation(location);
 
             function findUserLocation() {
