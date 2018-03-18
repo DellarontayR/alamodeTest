@@ -24,6 +24,9 @@
     color: #CFD7E0;
 } */
 
+.checkoutBtn, .checkoutBtn:hover, .checkoutBtn:active,.checkoutBtn:focus{
+    background-color:#333333;
+}
 .field::placeholder {
     background-color: #333333;
     color: white;

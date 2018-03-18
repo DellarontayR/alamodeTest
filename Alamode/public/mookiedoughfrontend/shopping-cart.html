@@ -52,12 +52,19 @@
       <!-- .col-sm-8 -->
 
       <!-- Sidebar -->
-      <div class="col-md-3 col-md-offset-1 col-sm-4 padding-bottom-2x">
+      <div class="col-md-3 col-md-offset-1 col-sm-4 padding-bottom-2x" ng-init="justCheckout = true">
         <aside>
           <h3 class="toolbar-title">Cart subtotal:</h3>
           <h4 class="amount">${{mookie.total}}</h4>
           <!-- <a href="#" class="btn btn-default btn-block waves-effect waves-light">Update Cart</a> -->
-          <a href="/checkout" class="btn btn-primary btn-block waves-effect waves-light space-top-none checkoutBtn">Checkout</a>
+          <a ng-show="justCheckout" href="#" class="btn btn-primary btn-block waves-effect waves-light space-top-none checkoutBtn" ng-click="justCheckout = !justCheckout">Checkout</a>
+          <div ng-show="!justCheckout">
+              <a href="/ontheway" class="btn btn-primary btn-block waves-effect waves-light space-top-none checkoutBtn" >Delivery</a>
+              <a href="#" class="btn btn-primary btn-block waves-effect waves-light space-top-none checkoutBtn" >Pickup</a>
+
+              <!-- still have to go to /Checkout at some point -->
+          </div>
+          <!-- instead of going from shopping-car to checkout directly we want to make checkouthappen after the user defines their order type or otherwise -->
         </aside>
       </div>
       <!-- .col-md-3.col-sm-4 -->

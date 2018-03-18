@@ -57,6 +57,10 @@ alamode.directive('orderMaps', function ($q) {
                     marker.setVisible(false);
                     var place = autocomplete.getPlace();
                     console.log(place.formatted_address);
+                    if(place){
+                        scope.mookie.deliveryLocationChanged = true;
+                        scope.mookie.deliveryLocation = place.formatted_address;
+                    }
                     console.log(place);
                     if (!place.geometry) {
                         // User entered the name of a Place that was not suggested and

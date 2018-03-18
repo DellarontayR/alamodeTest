@@ -67,15 +67,15 @@
             Back To Cart
           </a>
           <!-- <button type="submit" class="btn btn-primary btn-block waves-effect waves-light space-top-none" ng-click="mookie.showStripeModal()">Checkout</button> -->
-          <button type="submit" class="btn btn-primary btn-block waves-effect waves-light space-top-none" ng-click="cartCtrl.doCheckout(cartCtrl.checkoutData)">Checkout</button>
+          <button type="submit" class="btn btn-primary btn-block waves-effect waves-light space-top-none checkoutBtn" ng-click="cartCtrl.doCheckout(cartCtrl.checkoutData)">Checkout</button>
           <label for="card-element" class="checkoutMsg">
+            <span>
               <span>
-                <span>
-                  <p style="position:absolute">
-                    {{cartCtrl.checkoutMessage}}</p>
-                </span>
+                <p style="position:absolute">
+                  {{cartCtrl.checkoutMessage}}</p>
               </span>
-            </label>
+            </span>
+          </label>
 
         </aside>
       </div>

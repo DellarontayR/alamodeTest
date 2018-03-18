@@ -22,6 +22,8 @@ alamode.controller('mainCtrl', function (Auth, $timeout, $location, $rootScope,
     $scope.mookie.home = false;
     $scope.mookie.admin = false;
     $scope.mookie.products = {};
+    $scope.mookie.deliveryLocationChanged = false;
+    $scope.mookie.deliveryLocation = null;
 
     $scope.mookie.numberOfSiteVisitors = 0;//Display visitors to site
     // Checks to see if visitor has visitor's ip address has visited our site before
