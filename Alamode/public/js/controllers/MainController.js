@@ -90,7 +90,7 @@ alamode.controller('mainCtrl', function (Auth, $timeout, $location, $rootScope,
                 User.getUser(userData).then(function (data) {
                     if (data.data.success) {
                         // console.log(anular.element(event.target));
-                        
+
                         var cartData = {};
                         cartData.price = product.price;
                         cartData.description = product.description;
@@ -144,7 +144,7 @@ alamode.controller('mainCtrl', function (Auth, $timeout, $location, $rootScope,
             var title = "Local user token not found";
             var body = "Item could not be added to unknown user cart. Please register or sign in user";
             $scope.mookie.showModal(title, body);
-        }).catch(function(error){
+        }).catch(function (error) {
             console.log(error);
             var title = "Unknown Error occurred.";
             var body = "Please try again later.";
@@ -328,13 +328,13 @@ alamode.controller('mainCtrl', function (Auth, $timeout, $location, $rootScope,
     app.checkForProducts = function () {
         app.loadme = false;
         Product.getCatalogProducts().then(function (data) {
-            if(false){
-            // if (data.data.success) {
+            if (false) {
+                // if (data.data.success) {
                 app.loadme = true;
             }
             else {
-                if(true){
-                // if (data.data.noProducts) {
+                if (true) {
+                    // if (data.data.noProducts) {
                     (function () {
                         // var productData = {};
                         // productData.imagePath = "../imgs/Media/peanutbutter-min.png";
@@ -348,11 +348,11 @@ alamode.controller('mainCtrl', function (Auth, $timeout, $location, $rootScope,
                         productData.imagePath = "../updatedFrontend/redvelvet.png";
                         productData.price = standardPrice;
                         productData.title = "aunty vicky's red velvet";
-                        productData.catalogProduct= true;
+                        productData.catalogProduct = true;
                         productData.category = "cookie dough bricks";
                         productData.description = "Mookies Dark Chocolate fudge mixed with some red velvet sizzurp syrup \“bricks\” Mookie’s Real Chocolate Chip Cookie Dough Bricks";
                         productData.about = "No one can touch og mookie’s auntie vicky’s red velvet cake. So we promised to buy her a Red Range Rover if she gave us the recipe so we could bless the world with some straight heat. You’re welcome.";
-                      
+
                         var productData2 = {};
                         productData2.imagePath = "../updatedFrontend/birthdaycakeflavor.png";
                         productData2.price = standardPrice;
@@ -361,7 +361,7 @@ alamode.controller('mainCtrl', function (Auth, $timeout, $location, $rootScope,
                         productData2.category = "cookie dough bricks";
                         productData2.description = "Mookie’s White Chocolate fudge mixed with sprinkles and some cupcake sizzurp syrup \“bricks\” Mookie’s Real Chocolate Chip Cookie Dough Bricks"
                         productData2.about = "Remember those vanilla cupcakes Big Tyler’s mom used to bring to class on his birthday? Yeah we finessed his mom’s recipe.";
-                        
+
                         var productData3 = {};
                         productData3.imagePath = "../updatedFrontend/cookies.png";
                         productData3.price = standardPrice;
@@ -385,8 +385,8 @@ alamode.controller('mainCtrl', function (Auth, $timeout, $location, $rootScope,
                         // app.addProductToDB(productData2);
                         // app.addProductToDB(productData3);
                         // app.addProductToDB(productData4);
-                        $scope.mookie.products = {productData,productData2,productData3,productData4};
-            
+                        $scope.mookie.products = { productData, productData2, productData3, productData4 };
+
                     })();
                 }
                 else {
@@ -452,7 +452,7 @@ alamode.controller('mainCtrl', function (Auth, $timeout, $location, $rootScope,
             else {
                 console.log('fail');
             }
-        },function(error){
+        }, function (error) {
             console.log(error);
         });
 
@@ -561,7 +561,7 @@ alamode.controller('mainCtrl', function (Auth, $timeout, $location, $rootScope,
                 else {
                     return callback(userData);
                 }
-            },function(error){
+            }, function (error) {
                 console.log(error);
             });
         }
@@ -699,7 +699,7 @@ alamode.controller('mainCtrl', function (Auth, $timeout, $location, $rootScope,
                         }
                     });
                 }
-            },function(error){
+            }, function (error) {
                 console.log(error);
             });
         } else {
@@ -773,6 +773,15 @@ alamode.controller('mainCtrl', function (Auth, $timeout, $location, $rootScope,
     app.logout = function () {
         Auth.logout(); // Logout user by removing jwt token
         $scope.mookie.loggedIn = false;
+        $timeout(function () {
+            $scope.mookie.loggedIn = false;
+            $location.path('/register');
+        }, 2000);
+    };
+    $scope.mookie.logout = function () {
+        Auth.logout(); // Logout user by removing jwt token
+        $scope.mookie.loggedIn = false;
+        $scope.apply();
         $timeout(function () {
             $scope.mookie.loggedIn = false;
             $location.path('/register');
