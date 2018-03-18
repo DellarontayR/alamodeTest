@@ -98,6 +98,8 @@ alamode.directive('orderMaps', function ($q) {
                 autocomplete.setTypes(types);
                 autocomplete.setOptions({ strictBounds: true });
             }
+            var location = ['37.4266083','-122.15756340000002'];
+            setUpOnUserLocation(location);
 
             function findUserLocation() {
                 if (navigator.geolocation) {
