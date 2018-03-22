@@ -668,8 +668,13 @@ alamode.controller('mainCtrl', function (Auth, $timeout, $location, $rootScope,
     });
 
     // Will run code every time a route changes
-    $rootScope.$on('$routeChangeStart', function () {
+    $rootScope.$on('$routeChangeStart', function (event, next, current) {
         if (!app.checkingSession) app.checkSession();
+        // var parentScope = $scope.$parent;
+        // $scope.$watch(function(){}); 
+
+        // $rootScope.mookieChild = {};
+        // $rootScope.mookieChild = $scope;
 
         // Check if user is logged in
         if (Auth.isLoggedIn()) {
@@ -688,13 +693,15 @@ alamode.controller('mainCtrl', function (Auth, $timeout, $location, $rootScope,
                     app.useremail = data.data.email; // Get the user e-mail for us ein index
                     User.getPermission().then(function (data) {
                         if (data.data.permission === 'admin' || data.data.permission === 'moderator') {
+                            $scope.mookie.admin = true;
+
                             app.authorized = true; // Set user's current permission to allow management
                             app.permission = 'admin';
-                            $scope.mookie.admin = true;
                             app.loadme = true; // Show main HTML now that data is obtained in AngularJS
                         } else {
-                            app.authorized = false;
                             $scope.mookie.admin = false;
+
+                            app.authorized = false;
                             app.loadme = true; // Show main HTML now that data is obtained in AngularJS
                         }
                     });
@@ -782,10 +789,12 @@ alamode.controller('mainCtrl', function (Auth, $timeout, $location, $rootScope,
         Auth.logout(); // Logout user by removing jwt token
         $scope.mookie.loggedIn = false;
         $scope.apply();
-        $timeout(function () {
-            $scope.mookie.loggedIn = false;
-            $location.path('/register');
-        }, 2000);
+        $scope.mookie.loggedIn = false;
+        $location.path('/register');
+        // $timeout(function () {
+        //     $scope.mookie.loggedIn = false;
+        //     $location.path('/register');
+        // }, 2000);
     };
 
 });

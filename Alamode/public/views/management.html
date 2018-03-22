@@ -1,57 +1,9 @@
 <div class="page-wrapper">
-    <div class="row">
-            <div class="col-md-6">
-                    <h1>Users</h1>                
-            </div>
-    </div>
-    <div class="row">
-        <div class="col-md-6" ng-repeat="user in management.users">
-                
-            <h1>username: {{user.username}}</h1>
-            <h3>email: {{user.email}}</h3>
-            <h3>permission: {{user.permission}}</h3>
-        </div>
-    </div>
-    <hr>
-    <div class="row">
-            <div class="col-md-6">
-                    <h1>Catalog Products</h1>                
-            </div>
-    </div>
-    <div class="row">
-        <div class="col-md-6" ng-repeat="product in management.products">
-            <h1>Title: {{product.title}}</h1>
-            <h4>price: {{product.price}}</h4>
-            <h4>Description: {{product.description}}</h4>
-            <h4>Category: {{product.category}}</h4>            
-            <img ng-src="{{product.imagePath}}" style="max-height:200px;"></img>
-        </div>
-    </div>
-    <hr>
-    <div class="row">
-            <div class="col-md-6">
-                    <h1> Contact Messages</h1>                
-            </div>
-    </div>
-    <div class="row">
-        <div class="col-md-6" ng-repeat="contactMessage in management.contactMessages">
-            <h1>Name: {{contactMessage.name}}</h1>
-            <h4>Email: {{contactMessage.email}}</h4>
-            <p>Message: {{contactMessage.message}}</p>
-        </div>
-    </div>
-    <hr>
-    <div class="row">
-        <div class="col-md-6">
-                <h1> Subscribers</h1>
-                
-        </div>
-    </div>
-    <div class="row">    
-        <div class="col-md-6" ng-repeat="subscriber in management.subscribers">
-            <h1>Email: {{subscriber.email}}</h1>
-            <p>Created: {{subscriber.created}}</p>
-        </div>
-    </div>  
+    <admin-header></admin-header>
+
+  
+   
+   
+
     <hr>
 </div>

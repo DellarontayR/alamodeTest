@@ -1,0 +1,15 @@
+<admin-header></admin-header>
+<div class="row">
+        <div class="col-md-6">
+                <h1>Catalog Products</h1>                
+        </div>
+</div>
+<div class="row">
+    <div class="col-md-6" ng-repeat="product in management.products">
+        <h1>Title: {{product.title}}</h1>
+        <h4>price: {{product.price}}</h4>
+        <h4>Description: {{product.description}}</h4>
+        <h4>Category: {{product.category}}</h4>            
+        <img ng-src="{{product.imagePath}}" style="max-height:200px;"></img>
+    </div>
+</div>

@@ -12,10 +12,34 @@ var app = angular.module('appRoutes', ['ngRoute', 'angularCSS'])
                 controller: 'HomeController',
                 controllerAs: 'home',
                 css: ['../css/home.css']
+            })
+            .when('/management/users', {
+                templateUrl: '../views/manageusers.html',
+                css: '../css/manageusers.css',
+                controller: 'managementCtrl',
+                controllerAs: 'management',
+                authenticated: true,
+                permission: ['admin', 'moderator']
             }).
-            when('/ontheway',{
-                templateUrl:'../views/ontheway.html',
-                css: ['../css/ontheway.css','../css/checkout.css'],
+            when('/management/products', {
+                templateUrl: '../views/manageproducts.html',
+                css: '../css/manageproducts.css',
+                controller: 'managementCtrl',
+                controllerAs: 'management',
+                authenticated: true,
+                permission: ['admin', 'moderator']
+            }).
+            when('/management/otherdata', {
+                templateUrl: '../views/manageotherdata.html',
+                css: '../css/manageotherdata.css',
+                controller: 'managementCtrl',
+                controllerAs: 'management',
+                authenticated: true,
+                permission: ['admin', 'moderator']
+            }).
+            when('/ontheway', {
+                templateUrl: '../views/ontheway.html',
+                css: ['../css/ontheway.css', '../css/checkout.css'],
                 controller: 'CheckoutController',
                 controllerAs: 'cartCtrl'
             }).
@@ -43,63 +67,6 @@ var app = angular.module('appRoutes', ['ngRoute', 'angularCSS'])
             when('/about', {
                 templateUrl: '../mookiedoughfrontend/about.html',
                 authenticated: false
-            }).
-            when('single-post01', {
-                templateUrl: '../mookiedoughfrontend/blog/single-post01.html',
-                authenticated: false
-            }).
-            when('single-post02', {
-                templateUrl: '../mookiedoughfrontend/blog/single-post02.html',
-                authenticated: false
-            }).
-            when('single-post03', {
-                templateUrl: '../mookiedoughfrontend/blog/single-post03.html',
-                authenticated: false
-            }).
-            when('single-post04', {
-                templateUrl: '../mookiedoughfrontend/blog/single-post04.html',
-                authenticated: false
-            }).
-            when('/minicookiesncreme', {
-                templateUrl: '../mookiedoughfrontend/minicookiedough/minicookiesncreme.html',
-                authenticated: false
-            }).
-            when('/minimamachocochip', {
-                templateUrl: '../mookiedoughfrontend/minicookiedough/minimamachocochip.html',
-                authenticated: false
-            }).
-            when('/minilowfat_milk', {
-                templateUrl: '../mookiedoughfrontend/minicookiedough/lowfat_milk.html',
-                authenticated: false
-            }).
-            when('/minibirthdaybatter', {
-                templateUrl: '../mookiedoughfrontend/minicookiedough/minibirthdaybatter.html',
-                authenticated: false
-            }).
-            when('/cookiedoughmainshop', {
-                templateUrl: '../mookiedoughfrontend/cookiedough/cookiedoughmainshop.html',
-                authenticated: false,
-                controller: 'MainShopController',
-                controllerAs: 'mainShop'
-            }).
-            when('/localfavmainshop', {
-                templateUrl: '../mookiedoughfrontend/localfav/localfavmainshop.html',
-                authenticated: false,
-                controller: 'MainShopController',
-                controllerAs: 'mainShop'
-            }).
-
-            when('/minicookiedoughmainshop', {
-                templateUrl: '../mookiedoughfrontend/minicookiedough/minicookiedoughmainshop.html',
-                authenticated: false,
-                controller: 'MainShopController',
-                controllerAs: 'mainShop'
-            }).
-            when('/milkmainshop', {
-                templateUrl: '../mookiedoughfrontend/organicvalley/milkmainshop.html',
-                authenticated: false,
-                controller: 'MainShopController',
-                controllerAs: 'mainShop'
             })
             .when('/register', {
                 templateUrl: '../mookiedoughfrontend/new-reg.html',
@@ -339,8 +306,10 @@ var app = angular.module('appRoutes', ['ngRoute', 'angularCSS'])
     });
 
 // Run a check on each route to see if user is logged in or not (depending on if it is specified in the individual route)
-app.run(['$rootScope', 'Auth', '$location', 'User', 'Carousel', function ($rootScope, Auth, $location, User, Carousel) {
+app.run(['$rootScope', 'Auth', '$location', 'User', 'Carousel',function ($rootScope, Auth, $location, User, Carousel,scope) {
+    // $rootScope.mookieChild = {}
 
+    console.log(scope);
     Carousel.setOptions({
         arrows: true,
         autoplay: false,
@@ -360,6 +329,7 @@ app.run(['$rootScope', 'Auth', '$location', 'User', 'Carousel', function ($rootS
     // Check each time route changes    
     $rootScope.$on('$routeChangeStart', function (event, next, current) {
 
+        // $rootScope.mookieChild.mookie.admin = false;
         // Only perform if user visited a route listed above
         if (next.$$route !== undefined) {
             // Check if authentication is required on route
@@ -378,6 +348,8 @@ app.run(['$rootScope', 'Auth', '$location', 'User', 'Carousel', function ($rootS
                                 $location.path('/'); // Redirect to home instead
                             }
                         }
+                        // $rootScope.mookieChild.mookie.admin = false;
+
                     });
                 }
             } else if (next.$$route.authenticated === false) {
