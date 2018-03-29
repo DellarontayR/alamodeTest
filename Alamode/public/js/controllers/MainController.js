@@ -559,6 +559,7 @@ alamode.controller('mainCtrl', function (Auth, $timeout, $location, $rootScope,
             });
         }, 15000);
     };
+    
 
     app.mookieCheckSession();
     // Function to run an interval that checks if the user's token has expired
