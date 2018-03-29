@@ -37,6 +37,14 @@ var app = angular.module('appRoutes', ['ngRoute', 'angularCSS'])
                 authenticated: true,
                 permission: ['admin', 'moderator']
             }).
+            when('/management/currentorders', {
+                templateUrl: '../views/currentorders.html',
+                css: '../css/currentorders.css',
+                controller: 'managementCtrl',
+                controllerAs: 'management',
+                authenticated: true,
+                permission: ['admin', 'moderator']
+            }).
             when('/ontheway', {
                 templateUrl: '../views/ontheway.html',
                 css: ['../css/ontheway.css', '../css/checkout.css'],

@@ -1,10 +1,15 @@
 'use strict';
+// Mongoose Models
 var User = require('../models/user'); // Import User Model
 var Product = require('../models/product');
 var Cart = require('../models/cart');
 var Subscription = require('../models/subscription');
 var ContactMessage = require('../models/contactmessage');
 var SiteVisit = require('../models/sitevisit');
+var Order = require('../models/order');
+var Receipt = require('../models/receipt');
+
+// Libs
 var jwt = require('jsonwebtoken'); // Import JWT Package
 var secret = 'zm!_0@0hu_7&ii-@j&0wpm3t%ojnvmjx6j0!1*&j@x51&mdzk@'; // Create custom secret for use in JWT
 var nodemailer = require('nodemailer'); // Import Nodemailer Package
@@ -19,23 +24,16 @@ var mongoose = require('mongoose');
 mongoose.Promise = global.Promise;
 var Schema = mongoose.Schema;
 
-//Get emails to work
-
-// var sgTransport = require('nodemailer-sendgrid-transport'); // Import Nodemailer Sengrid Transport Package
-
 module.exports = function (router) {
+    // Donation api endpoint
+    router.post('/donate', function (req, res) {
+        if (req.body.token == null || req.body.name == null || req.body.donationAmount == null) {
+            res.json({ success: false, message: "Sorry we had a problem on our end. Please try to donate again later" });
+        }
+    });
+    // >
 
-    // Start Sendgrid Configuration Settings (Use only if using sendgrid)
-    // var options = {
-    //     auth: {
-    //         api_user: 'dbrian332', // Sendgrid username
-    //         api_key: 'PAssword123!@#' // Sendgrid password
-    //     }
-    // };
-
-
-    // Create a format email function to create or manipulate invoice emails
-    // Nodemailer options (use with g-mail or SMTP)
+    // Email Configuration Endpoint
     var serverConfig = {};
     serverConfig.gmail = {};
     serverConfig.gmail.user = 'readus@mookiedough.com';
@@ -43,6 +41,7 @@ module.exports = function (router) {
     serverConfig.gmail.secret = 'zGvdxHXCjHop4snlYUJvIkaC';
     serverConfig.gmail.refresh_token = '1/9oAOubCiP8-DQYYbglQuMlS7x-6HiBShLPbephqFnVU';
 
+    // cont.
     let client = nodemailer.createTransport({
         host: 'smtp.gmail.com',
         port: 587,
@@ -59,24 +58,26 @@ module.exports = function (router) {
 
     });
 
+    // cont.
     var sendMail = function (to, subject, html) {
         var email = {
             from: 'Mookie Dough Staff, readus@mookiedough.com',
-            to:to,
-            subject:subject,
-            html:html
+            to: to,
+            subject: subject,
+            html: html
         };
-        client.sendMail(email,function(err,inf){
-            if(err){
+        client.sendMail(email, function (err, inf) {
+            if (err) {
                 //Log errors to db / send error to user
+                console.log(err);
             }
-            else{
+            else {
                 // email sent
             }
         });
     }
-    
-    
+    // >
+
     // SiteVisit apis
     router.post('/getSiteVisitors', function (req, res) {
         SiteVisit.find({}).select().exec(function (err, siteVisits) {
@@ -94,6 +95,7 @@ module.exports = function (router) {
         });
     });
 
+    // cont.
     router.post('/checkVisitor', function (req, res) {
         if (req.body.ipAddress == null || req.body.ipAddress == '') {
             res.json({ success: false, message: 'IP address not included in psot body' });
@@ -123,8 +125,10 @@ module.exports = function (router) {
             });
         }
     });
+    //  >
 
-    //Get all old carts of a user
+    // Cart api endpoint 
+    // Get all old carts of a user
     router.post('/getOldCarts', function (req, res) {
         if (req.body.user == null || req.body.user == '') {
             res.json({ success: false, message: 'There was an error' });
@@ -146,11 +150,9 @@ module.exports = function (router) {
         }
     });
 
-    router.post('/donate', function (req, res) {
-        if (req.body.token == null || req.body.name == null || req.body.donationAmount == null) {
-            res.json({ success: false, message: "Sorry we had a problem on our end. Please try to donate again later" });
-        }
-    });
+    var createReceipt = function(){
+        // 
+    };
 
     // Checks out a user's cart based on the cart's generated stripe token and user's information
     //TODO: There needs to be a way to start an active delivery order that can be tracked that
@@ -169,6 +171,8 @@ module.exports = function (router) {
                 description: 'first payment',
                 source: req.body.token // obtained with Stripe.js
             }, function (err, charge) {
+                console.log(charge);
+                console.log(req.body.token);
                 if (err) {
                     res.json({ success: false, message: 'There was an error', err: err });
                 }
@@ -222,9 +226,9 @@ module.exports = function (router) {
             });
         }
     });
+    // >
 
-
-    // Android Apis
+    // Android Api Endpoint
     router.post('/tryAndroid', function (req, res) {
         if (req.body.message == '' || req.body.message == null) {
             res.json({ success: false, message: 'Did not include a message to print out' });
@@ -233,9 +237,9 @@ module.exports = function (router) {
             res.json({ success: true, message: 'We got your try android post' });
         }
     });
+    // >
 
-    // contact message api
-
+    // ContactMessage Api Endpoint
     router.get('/getContactMessages', function (req, res) {
         ContactMessage.find({}).select('name email message').exec(function (err, contactMessages) {
             if (err) {
@@ -252,6 +256,7 @@ module.exports = function (router) {
         });
     });
 
+    // cont.
     router.post('/addContactMessage', function (req, res) {
         if (req.body.name == '' || req.body.name == null || req.body.email == null || req.body.email == '' ||
             req.body.message == null || req.body.message == '') {
@@ -277,9 +282,10 @@ module.exports = function (router) {
             })
         }
     });
+    // >
 
 
-    // Subscription api
+    // Subscription api Endpoint
     router.get('/getSubscribers', function (req, res) {
         Subscription.find({}).select('email created').exec(function (err, subscribers) {
             if (err) {
@@ -296,6 +302,7 @@ module.exports = function (router) {
         });
     });
 
+    // cont.
     router.post('/addSubscription', function (req, res) {
         var sub = new Subscription();
         if (req.body.subEmail == '' || req.body.subEmail == null) {
@@ -318,11 +325,13 @@ module.exports = function (router) {
             });
         }
     });
+    // >
+
     //I need to define how my apis will be entitled. 
     //A cart is a cart but you can also get a cart through the user
     // My method of getting the cart is not conssitent. Sometimes I ge the cart by 
 
-    // Cart apis
+    // Cart Api Endpoint
     router.post('/getCart', function (req, res) {
         Cart.findById(req.body.cartId).populate('products').exec(function (err, cart) {
             if (err || !cart) {
@@ -358,21 +367,7 @@ module.exports = function (router) {
         });
     });
 
-    router.post('/getUser', function (req, res) {
-        User.findOne({ email: req.body.userEmail }).select().exec(function (err, user) {
-            if (err || !user) {
-                res.json({ success: false, message: err });
-            }
-            else {
-                if (!user) {
-                    res.json({ success: false, message: 'Incorrect user infomation' });
-                }
-                else {
-                    res.json({ success: true, user: user });
-                }
-            }
-        });
-    });
+
 
     router.get('/checkUserCart', function (req, res) {
         User.findById(req.body.userId).select().exec(function (err, user) {
@@ -728,7 +723,24 @@ module.exports = function (router) {
     });
 
 
-    // User apis
+    // User api Endpoint
+    router.post('/getUser', function (req, res) {
+        User.findOne({ email: req.body.userEmail }).select().exec(function (err, user) {
+            if (err || !user) {
+                res.json({ success: false, message: err });
+            }
+            else {
+                if (!user) {
+                    res.json({ success: false, message: 'Incorrect user infomation' });
+                }
+                else {
+                    res.json({ success: true, user: user });
+                }
+            }
+        });
+    });
+
+    // cont.
     router.get('/getUsers', function (req, res) {
         User.find({}).select('email username permission cart').exec(function (err, users) {
             if (err) {
@@ -746,6 +758,7 @@ module.exports = function (router) {
     });
 
 
+    // cont.
     router.post('/removeFromCartFromUser', function (req, res) {
         User.findById(req.body.userId).select().exec(function (err, user) {
             if (err || !user) {
@@ -756,6 +769,7 @@ module.exports = function (router) {
             }
         });
     });
+    // >
 
     router.post('/facebookRegister', function (req, res) {
         var user = new User();

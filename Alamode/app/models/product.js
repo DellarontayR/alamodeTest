@@ -11,6 +11,8 @@ var ProductSchema = new Schema({
     catalogProduct:{type:Boolean,required:true,default:false},
     category:{type:String,required:true,default:'inCart'},
     qty:{type:Number, required:false}
+
+    // productCode to enable products to be shownby relation from the code instead individually as different objects
 });
 
 module.exports = mongoose.model('Product',ProductSchema);
