@@ -6,6 +6,8 @@ alamode.controller('CheckoutController', function ($scope, $location, User, Cart
     checkoutCtrl.checkoutMessage = "";
     checkoutCtrl.chargeSuccessful = false;
 
+    // When checkout is complete redie
+
 
     // if ($scope.mookie.checkout) {
     checkoutCtrl.setupStripeCard = function(){
@@ -33,7 +35,6 @@ alamode.controller('CheckoutController', function ($scope, $location, User, Cart
 
         // Add an instance of the card Element into the `card-element` <div>
         card.mount('#card-element');
-        console.log('setup at least happened');
     };
 
     checkoutCtrl.setupStripeCard();
@@ -64,8 +65,6 @@ alamode.controller('CheckoutController', function ($scope, $location, User, Cart
         //Ate least make sure checkoutCtrl.checkoutData.name and $scope.mookie.total != null
         stripe.createToken(card,extraDetails).then(function(result){
             if(result.token){
-
-
                 $scope.mookie.getEmailAndUsername(function(userData){
                     var stripeData ={};
                     stripeData.token = result.token.id;
@@ -78,6 +77,18 @@ alamode.controller('CheckoutController', function ($scope, $location, User, Cart
                             checkoutCtrl.checkoutMessage = "Charge successful";
 
                             $scope.mookie.showStripeModal();
+
+                            // After successful checkout display user's receipt and begin delivery
+
+                            // Create Receipt
+                            // Show Receipt
+                            // Show Pending Status of Order on Map
+                            // Create additional Icon on map that shows That we're coming
+
+                            // Receipt needs name,address,and cart
+                            
+
+
                         }
                         else{
                             checkoutCtrl.checkoutMessage='Charge not successful';    

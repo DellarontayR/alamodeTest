@@ -10,6 +10,10 @@ alamode.controller('CartController', function ($scope, $location, User, Cart, Au
 
     //Seperate cart controller into checkoutController, shoppingCartController
 
+    // W
+
+
+
     //Move all cartController content here
     app.checkUserState = function (callback) {
         if (Auth.isLoggedIn()) {

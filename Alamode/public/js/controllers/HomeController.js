@@ -67,7 +67,7 @@ alamode.controller('HomeController', function($scope,$rootScope, $location, Auth
         });
     };
 
-    home.getProducts();
+    // home.getProducts();
     
     home.checkUserState = function(callback){
         if(Auth.isLoggedIn()){

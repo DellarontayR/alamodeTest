@@ -150,7 +150,7 @@ module.exports = function (router) {
         }
     });
 
-    var createReceipt = function(){
+    var createReceipt = function () {
         // 
     };
 
@@ -419,91 +419,87 @@ module.exports = function (router) {
     });
 
     router.post('/addItemToCart', function (req, res) {
-        var product = new Product(req.body);
-
-        if (req.body.title == null || req.body.title == '' || req.body.description == null ||
-            req.body.description == '' || req.body.price == null || req.body.price == '' || req.body.imagePath == null || req.body.imagePath == '') {
-            res.json({ success: false, message: "The uploaded item wasn't set correctly please try again. " });
+        // var product = new Product(req.body);
+        if (req.body.product === null) {
+            res.json({ success: false, message: "The Product isn't in our registry" });
         }
         else {
-            product.save(function (err, newProduct) {
-                User.findById(req.body.userId).select().exec(function (err, user) {
-                    var userData = {};
-                    userData.user = user;
-                    if (err || !user) {
-                        res.json({ success: false, message: 'user was not found', err: err });
-                    }
-                    else if (user.cart == null || user.cart == "") {
-                        var cart = new Cart();
-                        cart.save(function (err, cart) {
-                            if (err) {
-                                res.json({ success: false, message: err });
-                            }
-                            else {
-                                user.cart = cart._id;
-                                user.save(function (err, user) {
+            User.findById(req.body.userId).select().exec(function (err, user) {
+                var userData = {};
+                userData.user = user;
+                if (err || !user) {
+                    res.json({ success: false, message: 'user was not found', err: err });
+                }
+                else if (user.cart == null || user.cart == "") {
+                    var cart = new Cart();
+                    cart.save(function (err, cart) {
+                        if (err) {
+                            res.json({ success: false, message: err });
+                        }
+                        else {
+                            user.cart = cart._id;
+                            user.save(function (err, user) {
+                                if (err) {
+                                    console.log(err);
+                                    res.json({ success: false, message: 'user could not be updated to contain cart', err: err });
+                                }
+                                else {
+                                    cart.products.push(req.body.product);
+                                    cart.save(function (err, cart) {
+                                        res.json({ success: true, message: 'User Cart has been created and updated', cart: cart });
+                                    });
+                                }
+
+                            });
+                        }
+                    });
+                } else {
+                    Cart.findById(user.cart).select().exec(function (err, cart) {
+                        if (err) {
+                            res.json({ success: false, message: 'cart could not be found from user in this amazing mess' });
+                        }
+                        else {
+                            if (!cart) {
+                                // res.json({ success: false, message: 'Could not find the cart', user: user });
+                                var cart = new Cart();
+                                cart.save(function (err, cart) {
                                     if (err) {
-                                        console.log(err);
-                                        res.json({ success: false, message: 'user could not be updated to contain cart', err: err });
+                                        res.json({ success: false, message: err });
                                     }
                                     else {
-                                        cart.products.push(newProduct);
-                                        cart.save(function (err, cart) {
-                                            res.json({ success: true, message: 'User Cart has been created and updated', cart: cart });
+                                        user.cart = cart._id;
+                                        user.save(function (err, user) {
+                                            if (err) {
+                                                console.log(err);
+                                                res.json({ success: false, message: 'user could not be updated to contain cart', err: err });
+                                            }
+                                            else {
+                                                cart.products.push(req.body.product);
+                                                cart.save(function (err, cart) {
+                                                    res.json({ success: true, message: 'User Cart has been created and updated', cart: cart });
+                                                });
+                                            }
+
                                         });
+                                    }
+                                });
+
+                            }
+                            else {
+                                cart.products.push(req.body.product);
+                                cart.save(function (err, cart) {
+                                    if (err) {
+                                        res.json({ success: false, message: 'There was an error trying to save new cart' });
+                                    }
+                                    else {
+                                        res.json({ success: true, message: 'Cart has been updated', cart: cart });
                                     }
 
                                 });
                             }
-                        });
-                    } else {
-                        Cart.findById(user.cart).select().exec(function (err, cart) {
-                            if (err) {
-                                res.json({ success: false, message: 'cart could not be found from user in this amazing mess' });
-                            }
-                            else {
-                                if (!cart) {
-                                    // res.json({ success: false, message: 'Could not find the cart', user: user });
-                                    var cart = new Cart();
-                                    cart.save(function (err, cart) {
-                                        if (err) {
-                                            res.json({ success: false, message: err });
-                                        }
-                                        else {
-                                            user.cart = cart._id;
-                                            user.save(function (err, user) {
-                                                if (err) {
-                                                    console.log(err);
-                                                    res.json({ success: false, message: 'user could not be updated to contain cart', err: err });
-                                                }
-                                                else {
-                                                    cart.products.push(newProduct);
-                                                    cart.save(function (err, cart) {
-                                                        res.json({ success: true, message: 'User Cart has been created and updated', cart: cart });
-                                                    });
-                                                }
-
-                                            });
-                                        }
-                                    });
-
-                                }
-                                else {
-                                    cart.products.push(newProduct);
-                                    cart.save(function (err, cart) {
-                                        if (err) {
-                                            res.json({ success: false, message: 'There was an error trying to save new cart' });
-                                        }
-                                        else {
-                                            res.json({ success: true, message: 'Cart has been updated', cart: cart });
-                                        }
-
-                                    });
-                                }
-                            }
-                        });
-                    }
-                });
+                        }
+                    });
+                }
             });
         }
     });

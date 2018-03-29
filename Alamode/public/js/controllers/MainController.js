@@ -2,31 +2,26 @@
 
 alamode.controller('mainCtrl', function (Auth, $timeout, $location, $rootScope,
     $window, $interval, User, AuthToken, $scope, Cart, Product, MookieSubscription, ContactMessage) {
+
     var app = this;
-    if ($window.location.pathname === '/') app.home = true; // Check if user is on home page to show home page div
 
-    app.userEmail = "";
-    app.userData = {};
-    app.loadme = true;
-    app.cart = {};
-    app.products = false;
-    if (navigator.geolocation) {
-        // console.log(navigator.geolocation);
-    }
+    // if ($window.location.pathname === '/') app.home = true; // Check if user is on home page to show home page div
 
+
+    // Definitely Used Mookie Scope vars
     $scope.mookie = {};
-    $scope.mookie.userCart = {};
-    $scope.mookie.user = {};
+    $scope.mookie.cart = {};
     $scope.mookie.cartItemCount = false;
-    $scope.mookie.home = false;
     $scope.mookie.admin = false;
     $scope.mookie.products = {};
+    $scope.mookie.loggedIn = false;
     $scope.mookie.deliveryLocationChanged = false;
     $scope.mookie.deliveryLocation = null;
-    $scope.mookie.loggedIn = false;
-
-
     $scope.mookie.numberOfSiteVisitors = 0;//Display visitors to site
+    // >
+
+
+    // This is a good time to implement a Thanks for visiting our site bool
     // Checks to see if visitor has visitor's ip address has visited our site before
     $scope.mookie.checkVisitor = function (ipAddress) {
         var ipData = {};
@@ -52,12 +47,13 @@ alamode.controller('mainCtrl', function (Auth, $timeout, $location, $rootScope,
             }
         })
     };
+    // >
 
+    // Use Auth's acess to 3rd party api to get user's ip address
     Auth.getIp().then(function (data) {
         $scope.mookie.checkVisitor(data.data.ip);
     });
-
-    //
+    // >
 
     // Updates the cart after adding an item to the cart
     $scope.mookie.updateCart = function (getCartData, callback) {
@@ -65,7 +61,7 @@ alamode.controller('mainCtrl', function (Auth, $timeout, $location, $rootScope,
             if (data.data.success) {
                 var itemCount = 0;
                 data.data.cart.products.forEach(function (cartProduct) {
-                    itemCount += cartProduct.qty;
+                    itemCount++;
                 });
                 var cartData = {};
                 cartData.cart = data.data.cart;
@@ -78,19 +74,18 @@ alamode.controller('mainCtrl', function (Auth, $timeout, $location, $rootScope,
             }
         });
     };
+    // >
 
     // Adds an item to a user's cart, shuold be used as a model for errors for users
-    $scope.mookie.addToCart = function (product, event) {
+    $scope.mookie.addToCart = function (product, catalogProduct) {
         Auth.getUser().then(function (data) {
             if (data.data.email) {
-                $scope.mookie.userEmail = data.data.email;
+                // $scope.mookie.userEmail = data.data.email;
                 $scope.mookie.username = data.data.username;
                 var userData = {};
                 userData.userEmail = data.data.email;
                 User.getUser(userData).then(function (data) {
                     if (data.data.success) {
-                        // console.log(anular.element(event.target));
-
                         var cartData = {};
                         cartData.price = product.price;
                         cartData.description = product.description;
@@ -98,6 +93,7 @@ alamode.controller('mainCtrl', function (Auth, $timeout, $location, $rootScope,
                         cartData.imagePath = product.imagePath;
                         cartData.qty = 1;
                         cartData.userId = data.data.user._id;// replace with $scope.mookie.user._id
+                        cartData.product = catalogProduct;
                         Cart.addItemToCart(cartData).then(function (data) {
                             if (data.data.success) {
                                 var getCartData = {};
@@ -110,7 +106,7 @@ alamode.controller('mainCtrl', function (Auth, $timeout, $location, $rootScope,
                             }
                             else {
                                 var title = "Item could not be added cart";
-                                var body = "Item could not be added to cart.";
+                                var body = "Item could not be added to cart for some unknown reason.";
                                 $scope.mookie.showModal(title, body);
                             }
                         });
@@ -120,7 +116,7 @@ alamode.controller('mainCtrl', function (Auth, $timeout, $location, $rootScope,
                         // if (Auth.isLoggedIn()) {
                         //     Auth.logout();
                         // }
-                        var title = "User could not be found on server";
+                        var title = "We couldn't add the item to your cart.";
                         var body = "Item could not be added to unknown user cart. Please register new user";
                         $scope.mookie.showModal(title, body);
                     }
@@ -131,7 +127,7 @@ alamode.controller('mainCtrl', function (Auth, $timeout, $location, $rootScope,
                 // if (Auth.isLoggedIn()) {
                 //     Auth.logout();
                 // }
-                var title = "Local user token not found";
+                var title = "We couldn't add the item to your cart.";
                 var body = "Item could not be added to unknown user cart. Please register or sign in user";
                 $scope.mookie.showModal(title, body);
             }
@@ -151,6 +147,7 @@ alamode.controller('mainCtrl', function (Auth, $timeout, $location, $rootScope,
             $scope.mookie.showModal(title, body);
         });
     };
+    // >
 
     // Adds a email subscription to be added for our newsletters and special announcements
     app.addSubscription = function (subEmail) {
@@ -165,10 +162,11 @@ alamode.controller('mainCtrl', function (Auth, $timeout, $location, $rootScope,
 
         })
     };
+    // >
 
-    $scope.mookie.contactMes = {};//Used to reset contact information form after information is put in
 
-
+    //Used to reset contact information form after information is put in
+    $scope.mookie.contactMes = {};
     // Adds a contact message with a person's email and name
     $scope.mookie.addContactMessage = function (contactData) {
         Auth.addContactMessage(contactData).then(function (data) {
@@ -185,6 +183,7 @@ alamode.controller('mainCtrl', function (Auth, $timeout, $location, $rootScope,
             }
         });
     };
+    // >
 
     // Get a user's email and username from authtoken
     $scope.mookie.getEmailAndUsername = function (callback) {
@@ -266,23 +265,22 @@ alamode.controller('mainCtrl', function (Auth, $timeout, $location, $rootScope,
 
         });
     };
-
-    $scope.mookie.getCurrentCart(function (cartData) {//Call when maincontroller is loaded to get current cart information//Also possible to get user information here
+    //Call when maincontroller is loaded to get current cart information//Also possible to get user information here
+    $scope.mookie.getCurrentCart(function (cartData) {
         $scope.mookie.cartItemCount = cartData.itemCount;
     });
 
     //Modal functions
-
-
     $scope.mookie.hideModal = function () {
         $("#myModal").modal('hide');
     };
+    // cont.
     $scope.mookie.showModal = function (title, body) {
         $scope.mookie.modalTitle = title;
         $scope.mookie.modalBody = body;
         $("#myModal").modal({ backdrop: "static" }); // Open modal        
     };
-
+    // cont.
     $scope.mookie.showProductModal = function (product) {
         $scope.mookie.modal = {};
         $scope.mookie.modal.imagePath = product.imagePath;
@@ -290,20 +288,18 @@ alamode.controller('mainCtrl', function (Auth, $timeout, $location, $rootScope,
         $scope.mookie.modal.description = product.description;
         $scope.mookie.modal.price = product.price;
         $scope.mookie.modal.category = product.category;
-        console.log($scope.mookie.modal);
         $("#productModal").modal({ backdrop: "static" }); // Open modal        
-
     };
-
-
-
     $scope.mookie.showStripeModal = function () {
         $("#stripeModal").modal({ backdrop: "static" });
     };
+    // >
 
+    // Attempt to provide slides at home page
     $scope.mookie.slides = {
         slides: ["../../imgs/Media/dorm5-min.jpg", "../../imgs/Media/header3.png", "../../imgs/Media/M00KIE.jpg"]
     };
+    // >
 
     //Add a product to product catalog in database
     app.addProductToDB = function (productData) {
@@ -324,25 +320,19 @@ alamode.controller('mainCtrl', function (Auth, $timeout, $location, $rootScope,
             }
         })
     };
+    // >
 
-    app.checkForProducts = function () {
+    // Run to check the database and see if the products are currently there
+    app.resetProducts = function () {
         app.loadme = false;
         Product.getCatalogProducts().then(function (data) {
-            if (false) {
-                // if (data.data.success) {
+            if (data.data.success) {
                 app.loadme = true;
             }
             else {
-                if (true) {
-                    // if (data.data.noProducts) {
+                if (data.data.noProducts) {
                     (function () {
-                        // var productData = {};
-                        // productData.imagePath = "../imgs/Media/peanutbutter-min.png";
-                        // productData.price = 5.99;
-                        // productData.description = "Peanut Butter Quivering Goodness";
-                        // productData.title = "Peanut Butter Quivering Goodness";
-                        // productData.catalogProduct = true;
-                        // app.addProductToDB(productData);
+          
                         var standardPrice = 2.99;
                         var productData = {};
                         productData.imagePath = "../updatedFrontend/redvelvet.png";
@@ -379,13 +369,13 @@ alamode.controller('mainCtrl', function (Auth, $timeout, $location, $rootScope,
                         productData4.cateogry = "cookie dough bricks";
                         productData4.description = "Mookies Dark Chocolate fudge mixed with hints of mocha \“bricks\” Mookie’s Real Chocolate Chip Cookie Dough Bricks";
 
-                        productData4.about = "Not sure yet";
+                        productData4.about = "";
 
                         // app.addProductToDB(productData);
                         // app.addProductToDB(productData2);
                         // app.addProductToDB(productData3);
                         // app.addProductToDB(productData4);
-                        $scope.mookie.products = { productData, productData2, productData3, productData4 };
+                        // $scope.mookie.products = { productData, productData2, productData3, productData4 };
 
                     })();
                 }
@@ -396,18 +386,21 @@ alamode.controller('mainCtrl', function (Auth, $timeout, $location, $rootScope,
         })
     };
 
-    app.checkForProducts();
+    app.resetProducts();
 
     $scope.mookie.getProductsFromServer = function (callback) {
         (function () {
             Product.getCatalogProducts().then(function (data) {
                 if (data.data.success) {
-                    return callback(data.data.catalogProducts);
+                    console.log(data.data.catalogProducts);
+                    $scope.mookie.products = data.data.catalogProducts;
+                    // return callback(data.data.catalogProducts);
                 }
             })
         })();
     };
 
+    $scope.mookie.getProductsFromServer();
     $scope.mookie.getSubscribers = function (callback) {
         MookieSubscription.getSubscribers().then(function (data) {
             if (data.data.success) {
@@ -462,47 +455,6 @@ alamode.controller('mainCtrl', function (Auth, $timeout, $location, $rootScope,
         app.email = data.userEmail;
         app.cartId = data.cartId;
     });
-
-    app.getProductsFromServer = function (callback) {
-        (function () {
-            Product.getCatalogProducts().then(function (data) {
-                if (data.data.success) {
-                    return callback(data.data.catalogProducts);
-                }
-                else {
-                    console.log("get catalog list failure");
-                }
-            })
-
-        })();
-    };
-
-    app.getBestsellers = function (callback) {
-        var best = {};
-        best.category = 'Bestseller';
-
-        // Get Bestseller products for display in model
-        (function (best) {
-            Product.getProductCategory(best).then(function (data) {
-                if (data.data.success) {
-                    // app.bestsellers = data.data.bestsellers;
-                    return callback(data.data.bestsellers);
-                }
-            });
-        }(best));
-
-    };
-
-    app.getProducts = function (callback) {
-        app.getProductsFromServer(function (catalogProducts) {
-            app.catalogProducts = catalogProducts;
-            return callback(catalogProducts);
-        });
-
-        app.getBestsellers(function (bestsellers) {
-            app.bestsellers = bestsellers;
-        });
-    };
 
     app.getCurrentCart = function (callback) {
         var userData = {};
@@ -571,16 +523,15 @@ alamode.controller('mainCtrl', function (Auth, $timeout, $location, $rootScope,
         app.username = userData.username;
         app.email = userData.userEmail;
         app.getCurrentCart(function (products) {
-            app.products = products;
-            console.log(app.products);
             var total = 0;
             var counter = products.length;
             products.forEach(function (product) {
-                total += product.qty * product.price;
+                // product.price
+                total +=product.price;
                 counter -= 1;
                 if (counter === 0) {
-                    app.cart.total = Math.round(total);
                     $scope.mookie.total = Math.round(total);
+                    $scope.mookie.cart.products = products;
                 }
             });
         });
@@ -593,16 +544,16 @@ alamode.controller('mainCtrl', function (Auth, $timeout, $location, $rootScope,
                 app.username = userData.username;
                 app.email = userData.userEmail;
                 app.getCurrentCart(function (products) {
-                    app.products = products;
                     var total = 0;
                     var count = 0;
                     products.forEach(function (product) {
-                        total += product.qty * product.price;
-                        count += product.qty;
+                        total += product.price;
+                        count ++;
                     })
                     $scope.mookie.cartItemCount = count;
                     $scope.mookie.total = Math.round(total);
-                    app.cart.total = Math.round(total);
+                    $scope.mookie.cart.products = products;
+                    console.log(products);
                 });
                 app.loadme = true;
             });
@@ -646,14 +597,8 @@ alamode.controller('mainCtrl', function (Auth, $timeout, $location, $rootScope,
 
     app.checkSession(); // Ensure check is ran check, even if user refreshes
 
-    // Check if user is on the home page
+    // Check if user is on checkout
     $rootScope.$on('$routeChangeSuccess', function () {
-        if ($window.location.pathname === '/') {
-            app.home = true; // Set home page div
-        } else {
-            app.home = false; // Clear home page div
-        }
-
         if ($window.location.pathname === '/checkout') {
             $scope.mookie.checkout = true;
         } else {
@@ -666,16 +611,11 @@ alamode.controller('mainCtrl', function (Auth, $timeout, $location, $rootScope,
             $scope.mookie.about = false; // Clear home page div
         }
     });
+    // >
 
     // Will run code every time a route changes
     $rootScope.$on('$routeChangeStart', function (event, next, current) {
         if (!app.checkingSession) app.checkSession();
-        // var parentScope = $scope.$parent;
-        // $scope.$watch(function(){}); 
-
-        // $rootScope.mookieChild = {};
-        // $rootScope.mookieChild = $scope;
-
         // Check if user is logged in
         if (Auth.isLoggedIn()) {
             // Custom function to retrieve user data
@@ -690,7 +630,7 @@ alamode.controller('mainCtrl', function (Auth, $timeout, $location, $rootScope,
                     $scope.mookie.loggedIn = true; // Variable to activate ng-show on index
                     app.username = data.data.username; // Get the user name for use in index
                     app.checkLoginStatus = data.data.username;
-                    app.useremail = data.data.email; // Get the user e-mail for us ein index
+                    // app.useremail = data.data.email; // Get the user e-mail for use in index
                     User.getPermission().then(function (data) {
                         if (data.data.permission === 'admin' || data.data.permission === 'moderator') {
                             $scope.mookie.admin = true;

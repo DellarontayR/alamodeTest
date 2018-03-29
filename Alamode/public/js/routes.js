@@ -317,7 +317,6 @@ var app = angular.module('appRoutes', ['ngRoute', 'angularCSS'])
 app.run(['$rootScope', 'Auth', '$location', 'User', 'Carousel',function ($rootScope, Auth, $location, User, Carousel,scope) {
     // $rootScope.mookieChild = {}
 
-    console.log(scope);
     Carousel.setOptions({
         arrows: true,
         autoplay: false,
