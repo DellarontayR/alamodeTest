@@ -12,10 +12,13 @@ alamode.directive('orderMaps', function ($q) {
             // Genereal flow is user is finished checking out, They choose delivery or pickup, from delivery they'll put in an address and a map will pop up, They can have a box to chang the address
 
             //ordermaps starts when user already has given previous location
+            var map = false;
+            var infowindow = false;
+            var marker = false;
 
-            scope.setupOnUserLocation = function() {
+            scope.setupOnUserLocation = function () {
                 // if (location === null) return;
-                var location = { coords:{latitude: '37.4266083', longitude: '-122.15756340000002'} };
+                var location = { coords: { latitude: '37.4266083', longitude: '-122.15756340000002' } };
 
 
                 var coords = location.coords || scope.userLocation;
@@ -25,13 +28,14 @@ alamode.directive('orderMaps', function ($q) {
                     zoom: 13,
                     mapTypeId: google.maps.MapTypeId.ROADMAP
                 };
-                var map = new google.maps.Map(document.getElementById(attributes.id), mapOptions);
+                map = new google.maps.Map(document.getElementById(attributes.id), mapOptions);
                 var userMarker = new google.maps.Marker({
                     position: latLng,
                     map: map,
                     title: 'Welcome to Mookie Dough'
                 });
                 userMarker.setMap(map);
+
 
 
                 var input = document.getElementById('order-input');
@@ -45,10 +49,10 @@ alamode.directive('orderMaps', function ($q) {
                 // bounds option in the request.
                 autocomplete.bindTo('bounds', map);
 
-                var infowindow = new google.maps.InfoWindow();
+                infowindow = new google.maps.InfoWindow();
                 var infowindowContent = document.getElementById('infowindow-content');
                 infowindow.setContent(infowindowContent);
-                var marker = new google.maps.Marker({
+                marker = new google.maps.Marker({
                     map: map,
                     anchorPoint: new google.maps.Point(0, -29)
                 });
@@ -80,6 +84,7 @@ alamode.directive('orderMaps', function ($q) {
                     }
                     marker.setPosition(place.geometry.location);
                     marker.setVisible(true);
+                    userMarker.setMap(null);
 
                     var address = '';
                     if (place.address_components) {
@@ -103,7 +108,15 @@ alamode.directive('orderMaps', function ($q) {
             // setUpOnUserLocation(location);
             scope.setupOnUserLocation();
 
-            // setTimeout(setUpOnUserLocation(location),1000);
+            function setBounds(markersArray) {
+                var bounds = new google.maps.LatLngBounds();
+                for (var i = 0; i < markersArray.length; i++) {
+                    bounds.extend(markersArray[i].getPosition());
+                }
+                console.log(bounds);
+                map.fitBounds(bounds);
+            }
+
             function findUserLocation() {
                 // setUpOnUserLocation(location);
 
@@ -131,11 +144,40 @@ alamode.directive('orderMaps', function ($q) {
             //     strokeWeight: 2
             // });
             // path.setMap(map);
+            scope.mookie.deliveryInProgress = false;
+            scope.$watch('mookie.deliveryInProgress', function (value) {//From CheckoutController:89
+                if (value && value !== undefined) {
+                    var latLng = new google.maps.LatLng(37.4266083, -122.15756340000002);
 
+                    var icon = {
+                        url: "../imgs/Media/goodmookie.svg", // url
+                        scaledSize: new google.maps.Size(50, 50), // scaled size
+                        origin: new google.maps.Point(0, 0), // origin
+                        anchor: new google.maps.Point(0, 0) // anchor
+                    };
 
-            // var searchbox = new google.maps.places.SearchBox
-            // var places = new google.maps.places.PlacesService(map);
+                    var leesMarker = new google.maps.Marker({
+                        position: latLng,
+                        map: map,
+                        title: 'The Lees',
+                        icon: icon
+                    });
+                    leesMarker.setMap(map);
+                    
+                    setBounds([leesMarker, marker]);
 
+                    var trip = [marker.getPosition(), leesMarker.getPosition()];
+                    var path = new google.maps.Polyline({
+                        path: trip,
+                        strokeColor: "#000000",
+                        strokeOpacity: 0.8,
+                        strokeWeight: 2
+                    });
+                    path.setMap(map);
+
+                    google.maps.event.trigger(map, "resize");
+                }
+            });
         }
     }
 });

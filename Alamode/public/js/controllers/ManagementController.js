@@ -47,11 +47,10 @@ alamode.controller('managementCtrl', function (User, orderService, $scope, $rout
 
 .controller('orderCtrl', function ($scope, orderService, $routeParams) {
     var order = this;
-
-
-    console.log($routeParams.orderId);
     var container = {};
     container.orderId = $routeParams.orderId;
+
+    // Get the order to display for Management
     orderService.getOrder(container).then(function (data) {
         console.log(data);
         if (data.data.success) {
@@ -66,6 +65,12 @@ alamode.controller('managementCtrl', function (User, orderService, $scope, $rout
         console.log('this is the error');
         console.log(err);
     });
+    // >
+
+
+    // Get Map to print and use this screen to update customer on delivery driver's location
+
+
 });
 
 

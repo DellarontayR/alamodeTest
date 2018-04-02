@@ -182,7 +182,7 @@ module.exports = function (router) {
                 else {
                     res.json({ success: true, message: 'Order found', order: order });
                 }
-            },function(err){
+            }, function (err) {
                 res.json({ success: false, message: 'Could not find order with that id', err: err });
             });
         }
@@ -199,19 +199,21 @@ module.exports = function (router) {
                     Cart.findById(order.customerReceipt.customerCart).populate('products user').exec(function (err, cart) {
                         if (err || !cart) {
                             res.json({ success: false, message: 'There was an error trying to populate all orders', err: err, orders: orders });
+                            return;
                         }
                         else {
                             order.customerReceipt.customerCart = cart;
                             console.log(orders);
-                            res.json({ success: true, message: "Orders populated", orders: orders });
                         }
                     }, function (err) {
                         console.log('187');
                         console.log(err);
                         res.json({ success: false, message: 'There was an error trying to populate all orders', err: err, orders: orders });
                     });
-
                 });
+                console.log(orders);
+                res.json({ success: true, message: "Orders populated", orders: orders });
+
             }
         }, function (err) {
             res.json({ success: false, message: 'There was an error trying to populate all orders', err: err });

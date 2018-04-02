@@ -85,6 +85,8 @@ alamode.controller('CheckoutController', function ($scope, $location, User, Cart
                             checkoutCtrl.checkoutMessage = "Charge successful";
                             // $scope.mookie.showStripeModal();
                             $scope.mookie.deliveryLocationChanged = false;
+                            $scope.mookie.deliveryInProgress = true;
+                            
                             setTimeout(function () {
                                 checkoutCtrl.receipt = data.data.receipt;
                                 var total = 0;
@@ -92,10 +94,11 @@ alamode.controller('CheckoutController', function ($scope, $location, User, Cart
                                     total+= product.price;
                                 });
                                 checkoutCtrl.receipt.customerCart.total = total;
+
+                                $('#order-input').toggleClass('hide-input');
+
                             }, 1000);
-                            // After successful checkout display user's receipt and begin delivery
-                            // Show Pending Status of Order on Map
-                            // Create additional Icon on map that shows That we're coming
+
                         }
                         else {
                             checkoutCtrl.checkoutMessage = 'Charge not successful';
