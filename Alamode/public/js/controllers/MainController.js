@@ -18,6 +18,7 @@ alamode.controller('mainCtrl', function (Auth, $timeout, $location, $rootScope,
     $scope.mookie.deliveryLocationChanged = false;
     $scope.mookie.deliveryLocation = null;
     $scope.mookie.numberOfSiteVisitors = 0;//Display visitors to site
+    $scope.mookie.user = {};
     // >
 
 
@@ -237,6 +238,7 @@ alamode.controller('mainCtrl', function (Auth, $timeout, $location, $rootScope,
                     if (data.data.user.cart != null && data.data.user.cart) {
                         var cartData = {};
                         cartData.cartId = data.data.user.cart;
+                        // $scope.mookie.cart.id =data.data.user.cart;
                         Cart.getCart(cartData).then(function (data) {
                             if (data.data.success) {
                                 var itemCount = 0;
@@ -467,7 +469,9 @@ alamode.controller('mainCtrl', function (Auth, $timeout, $location, $rootScope,
                     cartData.cartId = data.data.user.cart;
                     Cart.getCart(cartData).then(function (data) {
                         if (data.data.success) {
-                            return callback(data.data.cart.products);
+                            console.log(data.data);
+                            $scope.mookie.cart = data.data.cart;
+                            return callback(data.data.cart);
 
                         } else {
                             if (!data.data.cart) {
@@ -520,18 +524,20 @@ alamode.controller('mainCtrl', function (Auth, $timeout, $location, $rootScope,
     };
 
     app.checkUserState(function (userData) {
+        $scope.mookie.user.username = userData.username;
+        $scope.mookie.user.userEmail = userData.userEmail;
+        // abigail
         app.username = userData.username;
         app.email = userData.userEmail;
-        app.getCurrentCart(function (products) {
+        app.getCurrentCart(function (cart) {
             var total = 0;
-            var counter = products.length;
-            products.forEach(function (product) {
+            var counter = cart.products.length;
+            cart.products.forEach(function (product) {
                 // product.price
                 total +=product.price;
                 counter -= 1;
                 if (counter === 0) {
                     $scope.mookie.total = Math.round(total);
-                    $scope.mookie.cart.products = products;
                 }
             });
         });
@@ -543,17 +549,18 @@ alamode.controller('mainCtrl', function (Auth, $timeout, $location, $rootScope,
             app.checkUserState(function (userData) {
                 app.username = userData.username;
                 app.email = userData.userEmail;
-                app.getCurrentCart(function (products) {
+                $scope.mookie.user.username = userData.username;
+                $scope.mookie.user.userEmail = userData.userEmail;
+                
+                app.getCurrentCart(function (cart) {
                     var total = 0;
                     var count = 0;
-                    products.forEach(function (product) {
+                    cart.products.forEach(function (product) {
                         total += product.price;
                         count ++;
                     })
                     $scope.mookie.cartItemCount = count;
                     $scope.mookie.total = Math.round(total);
-                    $scope.mookie.cart.products = products;
-                    console.log(products);
                 });
                 app.loadme = true;
             });

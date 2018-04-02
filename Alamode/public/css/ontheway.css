@@ -27,10 +27,36 @@
     display: none;
 }
 
+@keyframes fadein {
+    from { opacity: 0; }
+    to { opacity: 1; }
+}
+@keyframes fadeout {
+    from { opacity: 1; }
+    to { opacity: 0; }
+}
+
+.otw-spinner{
+    padding-top:20px;
+    width:100%;
+    text-align:center;
+    vertical-align:center;
+}
+
+
 .mookie-confirm{
-    -webkit-animation: slideInUp 0.5s;
-    -o-animation: slideInUp 0.5s;
-    animation: slideInUp 0.5s;
+    -webkit-animation: slideInUp 1s;
+    -o-animation: slideInUp 1s;
+    animation: slideInUp 1s;
+    -webkit-animation: fadein 1s;
+    -o-animation: fadein 1s;
+    animation: fadein 1s;
+}
+
+.mookie-confirm.ng-leave{
+    -webkit-animation: fadeout 1s;
+    -o-animation: fadeout 1s;
+    animation: fadeout 1s;
 }
 .mookie-confirm-message{
     background-color:#333333;

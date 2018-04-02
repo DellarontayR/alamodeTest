@@ -13,6 +13,11 @@ var app = angular.module('appRoutes', ['ngRoute', 'angularCSS'])
                 controllerAs: 'home',
                 css: ['../css/home.css']
             })
+            .when('/orderComplete', {
+                templateUrl: '../views/ordercomplete.html',
+                css: '../css/ordercomplete.css',
+                authenticated:true
+            })
             .when('/management/users', {
                 templateUrl: '../views/manageusers.html',
                 css: '../css/manageusers.css',
@@ -36,6 +41,13 @@ var app = angular.module('appRoutes', ['ngRoute', 'angularCSS'])
                 controllerAs: 'management',
                 authenticated: true,
                 permission: ['admin', 'moderator']
+            }).
+            when('/orders/:orderId',{
+                templateUrl: '../views/manageorder.html',
+                controller: 'orderCtrl',
+                controllerAs: 'orderContainer',
+                authenticated: true,
+                permission: ['admin','moderator']
             }).
             when('/management/currentorders', {
                 templateUrl: '../views/currentorders.html',
@@ -140,36 +152,6 @@ var app = angular.module('appRoutes', ['ngRoute', 'angularCSS'])
                 controllerAs: 'cartCtrl',
                 css: '../css/checkout.css'
             })
-            .when('/blog', {
-                templateUrl: '../mookiedoughfrontend/blog.html',
-                authenticated: false
-            })
-            .when('/oreos', {
-                templateUrl: '../mookiedoughfrontend/cookiedough/oreos.html',
-                authenticated: false
-            })
-            .when('/choco_milk', {
-                templateUrl: '../mookiedoughfrontend/organicvalley/choco_milk.html',
-                authenticated: false
-            })
-            .when('/lowfat_milk', {
-                templateUrl: '../mookiedoughfrontend/organicvalley/lowfat_milk.html',
-                authenticated: false
-            })
-            .when('/wholeorganic_milk.html', {
-                templateUrl: '../mookiedoughfrontend/organicvalley/wholeorganic_milk.html',
-                authenticated: false
-            })
-
-            .when('/mamachocohip', {
-                templateUrl: '../mookiedoughfrontend/cookiedough/mamachocochip.html',
-                authenticated: false
-            })
-            .when('/birthdaybatter', {
-                templateUrl: '../mookiedoughfrontend/cookiedough/birthdaybatter.html',
-                authenticated: false
-            })
-
             // Route: Twitter Callback Result
             .when('/twitter/:token', {
                 templateUrl: '../views/social.html',
@@ -314,7 +296,7 @@ var app = angular.module('appRoutes', ['ngRoute', 'angularCSS'])
     });
 
 // Run a check on each route to see if user is logged in or not (depending on if it is specified in the individual route)
-app.run(['$rootScope', 'Auth', '$location', 'User', 'Carousel',function ($rootScope, Auth, $location, User, Carousel,scope) {
+app.run(['$rootScope', 'Auth', '$location', 'User', 'Carousel', function ($rootScope, Auth, $location, User, Carousel, scope) {
     // $rootScope.mookieChild = {}
 
     Carousel.setOptions({

@@ -8,6 +8,7 @@ var ContactMessage = require('../models/contactmessage');
 var SiteVisit = require('../models/sitevisit');
 var Order = require('../models/order');
 var Receipt = require('../models/receipt');
+var ReceiptCounter = require('../models/receiptcounter');
 
 // Libs
 var jwt = require('jsonwebtoken'); // Import JWT Package
@@ -25,6 +26,18 @@ mongoose.Promise = global.Promise;
 var Schema = mongoose.Schema;
 
 module.exports = function (router) {
+
+    // Create receipt counter
+    // var counter = new ReceiptCounter();
+    // counter.save(function(err,Counter){
+    //     if(err){
+    //         console.log(err);
+    //     }
+    //     else{
+    //         console.log(Counter);
+    //     }
+    // });
+    // >
     // Donation api endpoint
     router.post('/donate', function (req, res) {
         if (req.body.token == null || req.body.name == null || req.body.donationAmount == null) {
@@ -150,9 +163,60 @@ module.exports = function (router) {
         }
     });
 
-    var createReceipt = function () {
-        // 
-    };
+    // Get order currently for management possibly for user
+    router.post('/getOrder', function (req, res) {
+        if (req.body.orderId === null || req.body.orderId === '') {
+            res.json({ success: false, message: 'Could not get the order because orderId was somehow not provided.' });
+        }
+        else {
+            console.log(req.body.orderId);
+            // res.json({ success: false, message: 'Could not get the order because orderId was somehow not provided.' });
+
+            Order.findById(req.body.orderId).populate('customerReceipt customerReceipt.customerCart customerReceipt.customerCart.user customerReceipt.customerCart.products').exec(function (err, order) {
+                console.log(order);
+                console.log(err);
+                console.log('didnt get the order');
+                if (err || !order) {
+                    res.json({ success: false, message: 'Could not find order with that id', err: err });
+                }
+                else {
+                    res.json({ success: true, message: 'Order found', order: order });
+                }
+            },function(err){
+                res.json({ success: false, message: 'Could not find order with that id', err: err });
+            });
+        }
+    });
+    // >
+
+    router.post('/getCurrentOrders', function (req, res) {
+        Order.find({}).populate({ path: 'customerReceipt', model: 'Receipt' }).exec(function (err, orders) {
+            if (err || !orders) {
+                res.json({ success: false, message: 'There was an error tying to populate all orders', err: err });
+            }
+            else {
+                orders.forEach(function (order) {
+                    Cart.findById(order.customerReceipt.customerCart).populate('products user').exec(function (err, cart) {
+                        if (err || !cart) {
+                            res.json({ success: false, message: 'There was an error trying to populate all orders', err: err, orders: orders });
+                        }
+                        else {
+                            order.customerReceipt.customerCart = cart;
+                            console.log(orders);
+                            res.json({ success: true, message: "Orders populated", orders: orders });
+                        }
+                    }, function (err) {
+                        console.log('187');
+                        console.log(err);
+                        res.json({ success: false, message: 'There was an error trying to populate all orders', err: err, orders: orders });
+                    });
+
+                });
+            }
+        }, function (err) {
+            res.json({ success: false, message: 'There was an error trying to populate all orders', err: err });
+        });
+    });
 
     // Checks out a user's cart based on the cart's generated stripe token and user's information
     //TODO: There needs to be a way to start an active delivery order that can be tracked that
@@ -161,7 +225,7 @@ module.exports = function (router) {
     // Or! google how to order product ids for e commerce products
     router.post('/checkout', function (req, res) {
         if (req.body.token == null || req.body.name == null || req.body.price == null || req.body.userEmail == null
-            || req.body.userEmail == '') {
+            || req.body.userEmail == '' || req.body.user === null || req.body.deliveryLocation === null || req.body.cart === null) {
             res.json({ success: false, message: "Please try checkout again at a later time" });
         }
         else {
@@ -171,14 +235,12 @@ module.exports = function (router) {
                 description: 'first payment',
                 source: req.body.token // obtained with Stripe.js
             }, function (err, charge) {
-                console.log(charge);
-                console.log(req.body.token);
                 if (err) {
-                    res.json({ success: false, message: 'There was an error', err: err });
+                    res.json({ success: false, message: 'There was an error with our stripe api', err: err });
                 }
                 else {
                     if (!charge) {
-                        res.json({ success: false, message: 'Something went wrong' });
+                        res.json({ success: false, message: 'Something went wrong when connecting to our stripe charges api' });
                     }
                     else {
                         User.findOne({ email: req.body.userEmail }).select().exec(function (err, user) {
@@ -210,8 +272,45 @@ module.exports = function (router) {
                                                         if (!cart) {
                                                             res.json({ success: false, message: 'There was an error trying to find old user cart' });
                                                         }
-                                                        else {
-                                                            res.json({ success: true, message: 'Charge completed successfully', charge: charge });
+                                                        else {// Abigail
+                                                            // start devliery process for management users
+                                                            var receipt = new Receipt();
+                                                            receipt.customerName = req.body.user.username;
+                                                            receipt.customerAddress = req.body.deliveryLocation;
+                                                            receipt.customerCart = req.body.cart._id;
+                                                            receipt.save(function (err, newReceipt) {
+                                                                if (err || !newReceipt) {
+                                                                    res.json({ success: false, message: 'Could not generate receipt', err: err });
+                                                                }
+                                                                Receipt.populate(newReceipt, {
+                                                                    path: "customerCart", populate: { path: 'products', model: 'Product' }
+                                                                }, function (err, newreceipt) {
+                                                                    if (err || !newreceipt) {
+                                                                        res.json({ success: false, message: 'Could not generate receipt', err: err });
+                                                                    }
+                                                                    else {
+
+                                                                        var order = new Order();
+                                                                        order.customerReceipt = newreceipt;
+                                                                        order.save(function (err, newOrder) {
+                                                                            if (err || !newOrder) {
+                                                                                res.json({ success: false, message: 'Could not start new order', err: err });
+                                                                            }
+                                                                            else {
+                                                                                res.json({ success: true, message: 'Charge completed successfully', charge: charge, receipt: newreceipt, order: newOrder });
+
+                                                                            }
+                                                                        });
+                                                                        // Once charge is completed successful and the user has been given "and emailed" a receipt create an order that will be pending and update it to configure to the receipt 
+
+
+                                                                    }
+                                                                }
+                                                                );
+                                                            }, function (err) {
+                                                                res.json({ success: false, message: 'There was another errror', err: err });
+                                                            });
+
                                                         }
                                                     }
                                                 });

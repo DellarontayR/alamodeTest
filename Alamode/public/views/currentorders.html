@@ -3,6 +3,24 @@
     <div class="row">
         <div class="col-xs-12">
             <h3> Current Orders</h3>
+            <ul ng-repeat="order in management.orders">
+                <li>
+                    {{order.orderStatus}}
+                </li>
+                <li>
+                    <!-- link to oder -->
+                    <a ng-href="/orders/{{order._id}}">Order Link</a>
+                </li>
+                <li ng-repeat="product in order.customerReceipt.customerCart.products">
+                    <p>{{product.title}}</p>
+                    <p>{{product.price}}</p>
+                    <p>{{product._id}}</p>
+            
+                </li>
+                <li>
+                    {{order.customerReceipt.customerCart.user.username}}
+                </li>
+            </ul>
 
             <!-- For a current order I want to have to users name or guest id maybe, time of the order, address, information, payment, everything -->
             

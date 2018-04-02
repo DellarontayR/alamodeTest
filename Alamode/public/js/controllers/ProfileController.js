@@ -17,6 +17,8 @@ alamode.controller('ProfileController', function($scope, $location, User) {
     //     return callback(cartHistoryData);
     // };
 
+    // TODO: Change to get Orders instead of Carts
+
     
     $scope.mookie.getEmailAndUsername(function(userData){
         profileCtrl.username = userData.username;
