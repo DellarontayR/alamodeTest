@@ -748,13 +748,13 @@ alamode.controller('mainCtrl', function (Auth, $timeout, $location, $rootScope,
     $scope.mookie.logout = function () {
         Auth.logout(); // Logout user by removing jwt token
         $scope.mookie.loggedIn = false;
-        $scope.apply();
+        // $scope.apply();
         $scope.mookie.loggedIn = false;
         $location.path('/register');
-        // $timeout(function () {
-        //     $scope.mookie.loggedIn = false;
-        //     $location.path('/register');
-        // }, 2000);
+        $timeout(function () {
+            $scope.mookie.loggedIn = false;
+            $location.path('/register');
+        }, 2000);
     };
 
 });
