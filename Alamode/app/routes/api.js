@@ -185,38 +185,36 @@ module.exports = function (router) {
         }
     });
     // >
+    router.post('/updateDriverLocation', function (req, res) {
+        if (req.body.lat === null || req.body.lat === '' || req.body.lng === null || req.body.lat === '' || req.body.order === null || req.body.order === '') {
+            res.json({ success: false, message: 'Header body incorrect' });
+        }
+        else {
+            Order.findByIdAndUpdate(req.body.order, { 'currentDriverLocation.lat': req.body.lat, 'currentDriverLocation.lng': req.body.lng }, function (err,updatedOrder) {
+                if(err || !updatedOrder){
+                    console.log(err);
+                    console.log(updatedOrder);
+                    res.json({success:false,message:'There was an error trying to update the order',err:err});
+                }
+                else{
+                    res.json({success:true,message:'Driver Location has been updated',updatedorder:updatedOrder});
+                }
+            },function(err){
+                res.json({success:false,message:'There was an error trying to update the order',err:err});
+            });
+        }
+    });
 
+    // Get current orders for management
     router.post('/getCurrentOrders', function (req, res) {
         Order.find({}).populate({ path: 'customerReceipt', model: 'Receipt' }).exec(function (err, orders) {
             if (err || !orders) {
                 res.json({ success: false, message: 'There was an error tying to populate all orders', err: err });
             }
             else {
-                // for (var i = 0; i < orders.length - 1; i++) {
-                //     console.log(i);
-                //     Cart.findById(orders[i].customerReceipt.customerCart).populate('user').populate('products').exec(function (err, cart) {
-                //         if (err || !cart) {
-                //             res.json({ success: false, message: 'There was an error trying to populate all orders', err: err, orders: orders });
-                //         }
-                //         else {
-                //             orders[i].customerReceipt.customerCart = cart;
-                //             // console.log(orders[i]);
-                //         }
-
-
-                //     }, function (err) {
-                //         console.log(err);
-                //         res.json({ success: false, message: 'There was an error trying to populate all orders', err: err, orders: orders });
-                //     });
-                //     if (orders.length - 2 == i) {
-                //         console.log(orders[0]);
-                //         res.json({ success: true, message: "Orders populated", orders: orders });
-                //     }
-                // }
-
                 orders.forEach(function (order, index, arr) {
                     Cart.findById(order.customerReceipt.customerCart).populate('user').populate('products').exec(function (err, cart) {
-                        
+
                         if (err || !cart) {
                             res.json({ success: false, message: 'There was an error trying to populate all orders', err: err, orders: orders });
                         }

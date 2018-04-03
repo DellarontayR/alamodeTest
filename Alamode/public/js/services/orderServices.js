@@ -13,6 +13,10 @@ angular.module('orderServices',[])
         return $http.post('/api/getOrder',orderId);
     };
 
+    orderServiceFactory.updateDriverLocation = function(driverLatLng){
+        return $http.post('/api/updateDriverLocation',driverLatLng);
+    };
+
 
 
     // stripeServiceFactory.checkout = function(checkoutData){

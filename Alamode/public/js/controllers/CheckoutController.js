@@ -89,6 +89,11 @@ alamode.controller('CheckoutController', function ($scope, $location, User, Cart
                             $scope.mookie.deliveryInProgress = true;
                             
                             setTimeout(function () {
+                                // Reset session cart
+                                $scope.mookie.cart = {};
+                                $scope.mookie.cartItemCount = false;
+                                // >
+                                
                                 checkoutCtrl.receipt = data.data.receipt;
                                 var total = 0;
                                 checkoutCtrl.receipt.customerCart.products.forEach(product => {

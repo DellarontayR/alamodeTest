@@ -52,6 +52,63 @@ alamode.controller('managementCtrl', function (User, orderService, $scope, $rout
         var container = {};
         container.orderId = $routeParams.orderId;
 
+        if ("geolocation" in navigator) {
+            console.log('hmmmmmm');
+            /* geolocation is available */
+        } else {
+            /* geolocation IS NOT available */
+        }
+        var handleErr = function (err) {
+            console.log(err);
+        };
+        order.updateDriverLocation = function (pos) {
+            var coords = pos.coords;
+
+            var orderData = {};
+            orderData.deliveryLatLng = {};
+            orderData.lat = coords.latitude;
+            orderData.lng = coords.longitude;
+            orderData.order = order.order._id;
+
+
+            orderService.updateDriverLocation(orderData).then(function (data) {
+                console.log(data);
+                if (data.data.success) {
+                    console.log(data)
+                }
+
+            }, handleErr);
+        };
+
+        order.updateLocation = function () {
+            navigator.geolocation.getCurrentPosition(
+                order.updateDriverLocation,
+                // Optional settings below
+                handleErr,
+                {
+                    timeout: 500,
+                    // enableHighAccuracy: true,
+                    maximumAge: Infinity
+                }
+            );
+        };
+
+        order.updateDeliveryStatus = function(status){
+
+        };
+
+        // //Tracking users position
+        // watchId = navigator.geolocation.watchPosition(
+        //     processGeolocation,
+        //     // Optional settings below
+        //     geolocationError,
+        //     {
+        //         timeout: 0,
+        //         enableHighAccuracy: true,
+        //         maximumAge: Infinity
+        //     }
+        // );
+
         // Get the order to display for Management
         orderService.getOrder(container).then(function (data) {
             console.log(data);
@@ -70,7 +127,7 @@ alamode.controller('managementCtrl', function (User, orderService, $scope, $rout
         // >
     })
     // Controller to handle customer orders
-    .controller('customerOrderCtrl', function ($scope, orderService, $routeParams,Auth,$location) {
+    .controller('customerOrderCtrl', function ($scope, orderService, $routeParams, Auth, $location) {
         var order = this;
         order.order = {};
         var container = {};
@@ -82,24 +139,21 @@ alamode.controller('managementCtrl', function (User, orderService, $scope, $rout
         orderService.getOrder(container).then(function (data) {
             console.log(data);
             if (data.data.success) {
-                Auth.getUser().then(function(userData){
+                Auth.getUser().then(function (userData) {
                     console.log(data.data.order.customerReceipt.customerCart);
-                    if(userData.data.email === data.data.order.customerReceipt.customerCart.user.email){
-                        console.log('here');
+                    if (userData.data.email === data.data.order.customerReceipt.customerCart.user.email) {
                         console.log(data.data);
                         var orderData = data.data.order;
                         order.order = orderData;
-                        console.log(order.order);
-                        order.message= 'There is something weird going on ';
-                        order.showMe= true;
+                        order.showMe = true;
 
 
                     }
-                    else{
+                    else {
                         $location.path('/');
                     }
 
-                },function(err){
+                }, function (err) {
                     $location.path('/');
 
                 });

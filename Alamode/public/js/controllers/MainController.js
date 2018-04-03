@@ -347,7 +347,7 @@ alamode.controller('mainCtrl', function (Auth, $timeout, $location, $rootScope,
                         productData.about = "No one can touch og mookie’s auntie vicky’s red velvet cake. So we promised to buy her a Red Range Rover if she gave us the recipe so we could bless the world with some straight heat. You’re welcome.";
 
                         var productData2 = {};
-                        productData2.imagePath = "../updatedFrontend/birthdaycakeflavor.png";
+                        productData2.imagePath = "../imgs/Media/Ogmookieconfetti.png";
                         productData2.price = standardPrice;
                         productData2.title = "og mookie's confetti party";
                         productData2.catalogProduct = true;
@@ -372,6 +372,15 @@ alamode.controller('mainCtrl', function (Auth, $timeout, $location, $rootScope,
                         productData4.cateogry = "cookie dough bricks";
                         productData4.description = "Mookies Dark Chocolate fudge mixed with hints of mocha \“bricks\” Mookie’s Real Chocolate Chip Cookie Dough Bricks";
 
+                        productData4.about = "";
+
+                        var productData4 = {};
+                        productData4.imagePath = "../imgs/Media/OGMookiepackaging.png";
+                        productData4.price = standardPrice;
+                        productData4.title = "og mookie";
+                        productData4.catalogProduct = true;
+                        productData4.cateogry = "cookie dough bricks";
+                        productData4.description = "Mookies OG Cookie Dough Bricks packed with tasty cookie dough";
                         productData4.about = "";
 
                         // app.addProductToDB(productData);
