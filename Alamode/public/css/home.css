@@ -23,6 +23,17 @@ body {
     font-weight: 900;
     content: 'f00c';
 } */
+.mookie-product-img{
+  height: 300px;
+  width:200px;
+}
+@media screen and (min-width: 780px) {
+  .product-card{
+    max-height:460px;
+    min-height:460px;
+  }
+}
+
 
 .addcartsuc.active {
   display: inline-block;
@@ -56,6 +67,10 @@ body {
 } */
 
 /* product card advanced */
+.product-shadow{
+  box-shadow: 0 0 5px rgba(0, 0, 0, 0.15);
+}
+
 
 @import url(https://code.ionicframework.com/ionicons/2.0.1/css/ionicons.min.css);
 @import url(https://fonts.googleapis.com/css?family=Raleway:400,500,700);
@@ -71,7 +86,7 @@ body {
   background: white;
   text-align: center;
   color: #333333;
-  box-shadow: 0 0 5px rgba(0, 0, 0, 0.15);
+  /* box-shadow: 0 0 5px rgba(0, 0, 0, 0.15); */
   font-size: 16px;
   -webkit-transform: translateZ(0);
   transform: translateZ(0);

@@ -1,11 +1,10 @@
 <div>
 	<div id="mainWrapper" class="container">
-
 		<section class="row">
-			<div class="product-card col-xs-12 col-sm-6 col-md-4 col-lg-3" ng-repeat="catalogProduct in mookie.products">
+			<div class="product-card col-xs-12 col-sm-6 col-md-4 col-lg-3 product-shadow" ng-repeat="catalogProduct in mookie.products">
 				<figure class="snip1418">
 					<!-- <img ng-click="mookie.showProductModal(catalogProduct)" ng-src="{{catalogProduct.imagePath}}" alt="sample85" /> -->
-					<img ng-src="{{catalogProduct.imagePath}}" alt="sample85" />
+					<img class="mookie-product-img" ng-src="{{catalogProduct.imagePath}}" alt="sample85" />
 
 					<div class="add-to-cart" onclick="">
 						<i class="ion-android-add"></i>
@@ -13,7 +12,7 @@
 					</div>
 					<figcaption>
 						<h3>{{catalogProduct.title}}</h3>
-						<p>{{catalogProduct.description}}</p>
+						<!-- <p>{{catalogProduct.description}}</p> -->
 						<div class="price">
 							{{catalogProduct.price | currency}}
 						</div>

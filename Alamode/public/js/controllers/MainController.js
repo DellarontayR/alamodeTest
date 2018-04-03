@@ -374,19 +374,21 @@ alamode.controller('mainCtrl', function (Auth, $timeout, $location, $rootScope,
 
                         productData4.about = "";
 
-                        var productData4 = {};
-                        productData4.imagePath = "../imgs/Media/OGMookiepackaging.png";
-                        productData4.price = standardPrice;
-                        productData4.title = "og mookie";
-                        productData4.catalogProduct = true;
-                        productData4.cateogry = "cookie dough bricks";
-                        productData4.description = "Mookies OG Cookie Dough Bricks packed with tasty cookie dough";
-                        productData4.about = "";
+                        var productData5 = {};
+                        productData5.imagePath = "../imgs/Media/OGMookiepackaging.png";
+                        productData5.price = standardPrice;
+                        productData5.title = "og mookie";
+                        productData5.catalogProduct = true;
+                        productData5.cateogry = "cookie dough bricks";
+                        productData5.description = "Mookies OG Cookie Dough Bricks packed with tasty cookie dough";
+                        productData5.about = "";
 
                         // app.addProductToDB(productData);
                         // app.addProductToDB(productData2);
                         // app.addProductToDB(productData3);
                         // app.addProductToDB(productData4);
+                        // app.addProductToDB(productData5);
+
                         // $scope.mookie.products = { productData, productData2, productData3, productData4 };
 
                     })();
