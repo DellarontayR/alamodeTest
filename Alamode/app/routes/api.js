@@ -171,11 +171,8 @@ module.exports = function (router) {
         else {
             console.log(req.body.orderId);
             // res.json({ success: false, message: 'Could not get the order because orderId was somehow not provided.' });
-
-            Order.findById(req.body.orderId).populate('customerReceipt customerReceipt.customerCart customerReceipt.customerCart.user customerReceipt.customerCart.products').exec(function (err, order) {
-                console.log(order);
-                console.log(err);
-                console.log('didnt get the order');
+            // 'customerReceipt customerReceipt.customerCart customerReceipt.customerCart.user customerReceipt.customerCart.products'
+            Order.findById(req.body.orderId).populate({ path: 'customerReceipt', populate: { path: 'customerCart', populate: { path: 'user' } } }).populate({ path: 'customerReceipt', populate: { path: 'customerCart', populate: { path: 'products' } } }).exec(function (err, order) {
                 if (err || !order) {
                     res.json({ success: false, message: 'Could not find order with that id', err: err });
                 }
@@ -195,26 +192,58 @@ module.exports = function (router) {
                 res.json({ success: false, message: 'There was an error tying to populate all orders', err: err });
             }
             else {
-                orders.forEach(function (order) {
-                    Cart.findById(order.customerReceipt.customerCart).populate('products user').exec(function (err, cart) {
+                // for (var i = 0; i < orders.length - 1; i++) {
+                //     console.log(i);
+                //     Cart.findById(orders[i].customerReceipt.customerCart).populate('user').populate('products').exec(function (err, cart) {
+                //         if (err || !cart) {
+                //             res.json({ success: false, message: 'There was an error trying to populate all orders', err: err, orders: orders });
+                //         }
+                //         else {
+                //             orders[i].customerReceipt.customerCart = cart;
+                //             // console.log(orders[i]);
+                //         }
+
+
+                //     }, function (err) {
+                //         console.log(err);
+                //         res.json({ success: false, message: 'There was an error trying to populate all orders', err: err, orders: orders });
+                //     });
+                //     if (orders.length - 2 == i) {
+                //         console.log(orders[0]);
+                //         res.json({ success: true, message: "Orders populated", orders: orders });
+                //     }
+                // }
+
+                orders.forEach(function (order, index, arr) {
+                    Cart.findById(order.customerReceipt.customerCart).populate('user').populate('products').exec(function (err, cart) {
+                        
                         if (err || !cart) {
                             res.json({ success: false, message: 'There was an error trying to populate all orders', err: err, orders: orders });
-                            return;
                         }
                         else {
-                            order.customerReceipt.customerCart = cart;
-                            console.log(orders);
+                            if (index == 2) console.log(orders[index]);
+                            var newCart = cart;
+                            arr[index].customerReceipt.customerCart = newCart;
+                            if (index == 2) console.log(orders[index]);
+
+                            // console.log(orders[i]);
                         }
+                        if (index === orders.length - 1) {
+                            res.json({ success: true, message: "Orders populated", orders: orders });
+
+                        }
+
+
                     }, function (err) {
-                        console.log('187');
                         console.log(err);
                         res.json({ success: false, message: 'There was an error trying to populate all orders', err: err, orders: orders });
                     });
+
                 });
-                console.log(orders);
-                res.json({ success: true, message: "Orders populated", orders: orders });
+
 
             }
+
         }, function (err) {
             res.json({ success: false, message: 'There was an error trying to populate all orders', err: err });
         });
@@ -226,8 +255,9 @@ module.exports = function (router) {
     // Use stripes charge and token system to store information about specific orders, copy the hash/token in stripe as the id for the order 
     // Or! google how to order product ids for e commerce products
     router.post('/checkout', function (req, res) {
+        console.log(req.body.deliveryLatLng);
         if (req.body.token == null || req.body.name == null || req.body.price == null || req.body.userEmail == null
-            || req.body.userEmail == '' || req.body.user === null || req.body.deliveryLocation === null || req.body.cart === null) {
+            || req.body.userEmail == '' || req.body.user === null || req.body.deliveryLocation === null || req.body.cart === null, req.body.deliveryLatLng === null) {
             res.json({ success: false, message: "Please try checkout again at a later time" });
         }
         else {
@@ -280,6 +310,8 @@ module.exports = function (router) {
                                                             receipt.customerName = req.body.user.username;
                                                             receipt.customerAddress = req.body.deliveryLocation;
                                                             receipt.customerCart = req.body.cart._id;
+                                                            receipt.geometryAddress = req.body.deliveryLatLng;
+
                                                             receipt.save(function (err, newReceipt) {
                                                                 if (err || !newReceipt) {
                                                                     res.json({ success: false, message: 'Could not generate receipt', err: err });
@@ -310,7 +342,7 @@ module.exports = function (router) {
                                                                 }
                                                                 );
                                                             }, function (err) {
-                                                                res.json({ success: false, message: 'There was another errror', err: err });
+                                                                res.json({ success: false, message: 'There was another errror trying to save receipt', err: err });
                                                             });
 
                                                         }

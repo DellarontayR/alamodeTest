@@ -78,6 +78,7 @@ alamode.controller('CheckoutController', function ($scope, $location, User, Cart
                     stripeData.user = $scope.mookie.user;
                     stripeData.cart = $scope.mookie.cart;
                     stripeData.deliveryLocation = $scope.mookie.deliveryLocation;
+                    stripeData.deliveryLatLng = $scope.mookie.deliveryLatLng;
                     stripeService.checkout(stripeData).then(function (data) {
                         console.log(data);
                         checkoutCtrl.checkoutMessage = data.data.message;
@@ -96,6 +97,9 @@ alamode.controller('CheckoutController', function ($scope, $location, User, Cart
                                 checkoutCtrl.receipt.customerCart.total = total;
 
                                 $('#order-input').toggleClass('hide-input');
+                                setTimeout(function(){
+                                    $location.path('/orders/'+ data.data.order._id);
+                                },1000)
 
                             }, 1000);
 

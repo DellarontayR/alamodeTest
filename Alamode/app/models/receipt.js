@@ -10,6 +10,7 @@ var ReceiptSchema = new Schema({
     customerName: { type: String, required: true, unique: false },
     created: { type: Date, required: true, default: Date.now },
     customerAddress: { type: String, required: true, unique: false },
+    geometryAddress:{lat: {type:String,required:true},lng: {type:String,required:true}},
     customerCart: { type: Schema.ObjectId, ref: 'Cart' },
     receiptNumber: { type: Number }
 });

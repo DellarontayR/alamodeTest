@@ -15,6 +15,7 @@ alamode.controller('mainCtrl', function (Auth, $timeout, $location, $rootScope,
     $scope.mookie.admin = false;
     $scope.mookie.products = {};
     $scope.mookie.loggedIn = false;
+    $scope.mookie.deliveryLatLng = {};
     $scope.mookie.deliveryLocationChanged = false;
     $scope.mookie.deliveryLocation = null;
     $scope.mookie.numberOfSiteVisitors = 0;//Display visitors to site

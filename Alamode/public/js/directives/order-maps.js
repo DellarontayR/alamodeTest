@@ -36,11 +36,8 @@ alamode.directive('orderMaps', function ($q) {
                 });
                 userMarker.setMap(map);
 
-
-
                 var input = document.getElementById('order-input');
                 map.controls[google.maps.ControlPosition.TOP_CENTER].push(input);
-
 
                 var autocomplete = new google.maps.places.Autocomplete(input);
 
@@ -56,7 +53,6 @@ alamode.directive('orderMaps', function ($q) {
                     map: map,
                     anchorPoint: new google.maps.Point(0, -29)
                 });
-
 
                 autocomplete.addListener('place_changed', function () {
                     infowindow.close();
@@ -74,6 +70,9 @@ alamode.directive('orderMaps', function ($q) {
                         window.alert("No details available for input: '" + place.name + "'");
                         return;
                     }
+                    // Get delivery geoemtry address
+                    scope.mookie.deliveryLatLng.lat = place.geometry.location.lat();
+                    scope.mookie.deliveryLatLng.lng = place.geometry.location.lng();
 
                     // If the place has a geometry, then present it on a map.
                     if (place.geometry.viewport) {
@@ -101,11 +100,12 @@ alamode.directive('orderMaps', function ($q) {
                     infowindow.open(map, marker);
                 });
 
+                // Types changes what can be translated into a marker on the google map
                 var types = ['address'];
                 autocomplete.setTypes(types);
                 autocomplete.setOptions({ strictBounds: true });
             };
-            // setUpOnUserLocation(location);
+            
             scope.setupOnUserLocation();
 
             function setBounds(markersArray) {
@@ -113,37 +113,9 @@ alamode.directive('orderMaps', function ($q) {
                 for (var i = 0; i < markersArray.length; i++) {
                     bounds.extend(markersArray[i].getPosition());
                 }
-                console.log(bounds);
                 map.fitBounds(bounds);
             }
 
-            function findUserLocation() {
-                // setUpOnUserLocation(location);
-
-                // if (navigator.geolocation) {
-                //     navigator.geolocation.getCurrentPosition(setupOnUserLocation, function (err, info) {
-                //         var tries = 0;
-                //         while (tries < 5) {
-                //             navigator.geolocation.getCurrentPosition(setupOnUserLocation, function (err, info) {
-                //                 console.log(err);
-                //                 console.log(tries);
-                //                 console.log('We could not use GPS to find your address at this time');
-                //             }, { timeout: 1000 });
-                //             setTimeout(1000);
-                //         }
-                //     }, { timeout: 5000 });
-                // }
-            };
-            // findUserLocation();
-
-            // var trip = [latLng, latLng2];
-            // var path = new google.maps.Polyline({
-            //     path: trip,
-            //     strokeColor: "#000000",
-            //     strokeOpacity: 0.8,
-            //     strokeWeight: 2
-            // });
-            // path.setMap(map);
             scope.mookie.deliveryInProgress = false;
             scope.$watch('mookie.deliveryInProgress', function (value) {//From CheckoutController:89
                 if (value && value !== undefined) {

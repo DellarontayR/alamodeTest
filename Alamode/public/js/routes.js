@@ -16,7 +16,7 @@ var app = angular.module('appRoutes', ['ngRoute', 'angularCSS'])
             .when('/orderComplete', {
                 templateUrl: '../views/ordercomplete.html',
                 css: '../css/ordercomplete.css',
-                authenticated:true
+                authenticated: true
             })
             .when('/management/users', {
                 templateUrl: '../views/manageusers.html',
@@ -42,12 +42,20 @@ var app = angular.module('appRoutes', ['ngRoute', 'angularCSS'])
                 authenticated: true,
                 permission: ['admin', 'moderator']
             }).
-            when('/orders/:orderId',{
-                templateUrl: '../views/manageorder.html',
+            when('/manageorders/:orderId', {
+                templateUrl: '../views/manageorders.html',
+                css:'../css/manageorders.css',
                 controller: 'orderCtrl',
                 controllerAs: 'orderContainer',
                 authenticated: true,
-                permission: ['admin','moderator']
+                permission: ['admin', 'moderator']
+            }).
+            when('/orders/:orderId', {
+                templateUrl: '../views/order.html',
+                css: '../css/order.css',
+                authenticated: true,
+                controller:'customerOrderCtrl',
+                controllerAs: 'customerCtrl'
             }).
             when('/management/currentorders', {
                 templateUrl: '../views/currentorders.html',
