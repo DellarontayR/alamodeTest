@@ -277,6 +277,10 @@ alamode.controller('mainCtrl', function (Auth, $timeout, $location, $rootScope,
     $scope.mookie.hideModal = function () {
         $("#myModal").modal('hide');
     };
+    //cont.
+    $scope.mookie.hideStripeModal = function(){
+        $('#stripeModal').modal('hide');
+    };
     // cont.
     $scope.mookie.showModal = function (title, body) {
         $scope.mookie.modalTitle = title;

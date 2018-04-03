@@ -13,7 +13,9 @@ alamode.directive('userMaps', function ($q) {
         link: function (scope, element, attributes) {
             var map = false;
             var marker = false;
-            
+            var userMarker = false;
+            var leesMarker = false;
+
             function setBounds(markersArray) {
                 var bounds = new google.maps.LatLngBounds();
                 for (var i = 0; i < markersArray.length; i++) {
@@ -32,7 +34,7 @@ alamode.directive('userMaps', function ($q) {
                     mapTypeId: google.maps.MapTypeId.ROADMAP
                 };
                 map = new google.maps.Map(document.getElementById(attributes.id), mapOptions);
-                var userMarker = new google.maps.Marker({
+                userMarker = new google.maps.Marker({
                     position: latLng,
                     map: map,
                     title: 'Your order is on it\'s way'
@@ -48,7 +50,7 @@ alamode.directive('userMaps', function ($q) {
                     anchor: new google.maps.Point(0, 0) // anchor
                 };
 
-                var leesMarker = new google.maps.Marker({
+                leesMarker = new google.maps.Marker({
                     position: originalDriverLatLng,
                     map: map,
                     title: 'The Lees',
@@ -69,9 +71,16 @@ alamode.directive('userMaps', function ($q) {
 
                 // google.maps.event.trigger(map, "resize");
             };
+            scope.resetBounds = function () {
+                setBounds([leesMarker,userMarker]);
+                map.setZoom(13);
+            };
 
-            scope.$watch('receipt',function(value){
-                if(value && value !== undefined){
+
+            google.maps.event.addDomListener(window, 'load', scope.resetBounds);
+
+            scope.$watch('receipt', function (value) {
+                if (value && value !== undefined) {
                     scope.setupOnOrder();
                 }
             });

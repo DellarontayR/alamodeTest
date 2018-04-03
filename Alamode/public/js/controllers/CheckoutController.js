@@ -84,29 +84,29 @@ alamode.controller('CheckoutController', function ($scope, $location, User, Cart
                         checkoutCtrl.checkoutMessage = data.data.message;
                         if (data.data.success) {// Abigail
                             checkoutCtrl.checkoutMessage = "Charge successful";
-                            // $scope.mookie.showStripeModal();
                             $scope.mookie.deliveryLocationChanged = false;
                             $scope.mookie.deliveryInProgress = true;
-                            
+                            $scope.mookie.showStripeModal();
                             setTimeout(function () {
                                 // Reset session cart
                                 $scope.mookie.cart = {};
                                 $scope.mookie.cartItemCount = false;
                                 // >
-                                
+
                                 checkoutCtrl.receipt = data.data.receipt;
                                 var total = 0;
                                 checkoutCtrl.receipt.customerCart.products.forEach(product => {
-                                    total+= product.price;
+                                    total += product.price;
                                 });
                                 checkoutCtrl.receipt.customerCart.total = total;
 
                                 $('#order-input').toggleClass('hide-input');
-                                setTimeout(function(){
-                                    $location.path('/orders/'+ data.data.order._id);
-                                },1000)
+                                setTimeout(function () {
+                                    $scope.mookie.hideStripeModal();
+                                    $location.path('/orders/' + data.data.order._id);
+                                }, 500)
 
-                            }, 1000);
+                            }, 500);
 
                         }
                         else {
