@@ -14,11 +14,17 @@
 	margin-bottom: 12px;
 }
 
-@media screen and (min-width: 768px) {
+@media screen and (max-width: 990px) {
 	.social-signup-btn {
 		width: auto;
 	}
+	/* .row.match-my-cols [class*="col-"].sethalf {
+		transform: translate(0, -50%);
+		
+	
+	} */
 }
+
 
 .social-signup-btn>i {
 	display: block;

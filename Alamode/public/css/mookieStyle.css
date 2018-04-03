@@ -863,7 +863,7 @@ a.mobile-menu-toggle>i {
     padding-bottom: 99999px; */
 }
 
-@media screen and (max-width: 768px) {
+@media screen and (max-width: 990px) {
 	.row.match-my-cols [class*="col-"].sethalf {
 		transform: none;
 	}
