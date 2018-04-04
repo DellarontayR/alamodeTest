@@ -15,6 +15,8 @@ var jwt = require('jsonwebtoken'); // Import JWT Package
 var secret = 'zm!_0@0hu_7&ii-@j&0wpm3t%ojnvmjx6j0!1*&j@x51&mdzk@'; // Create custom secret for use in JWT
 var nodemailer = require('nodemailer'); // Import Nodemailer Package
 var xoauth2 = require('xoauth2');
+var twilio = require('twilio');
+var twilioClient = new twilio('ACa327b445a29e04cd8235115c07c15d24', '16fa92229aa2f8a5b309a67cbb75bb5d');
 
 var stripe = require('stripe')('sk_test_N3kcDk7Gi6QdJewLusdBT2Tc');
 //google maps api key AIzaSyDaah9NRImsLSSwF3KhofpShgf9tt26lDA
@@ -45,6 +47,15 @@ module.exports = function (router) {
         }
     });
     // >
+
+    // twilioClient.messages.create({
+    //     to: '9013649552',
+    //     from: '6503341693',
+    //     body: 'Ahoy from Twilio!'
+    // },function(err){
+    //     console.log('error');
+    //     console.log(err);
+    // });
 
     // Email Configuration Endpoint
     var serverConfig = {};
@@ -190,17 +201,17 @@ module.exports = function (router) {
             res.json({ success: false, message: 'Header body incorrect' });
         }
         else {
-            Order.findByIdAndUpdate(req.body.order, { 'currentDriverLocation.lat': req.body.lat, 'currentDriverLocation.lng': req.body.lng }, function (err,updatedOrder) {
-                if(err || !updatedOrder){
+            Order.findByIdAndUpdate(req.body.order, { 'currentDriverLocation.lat': req.body.lat, 'currentDriverLocation.lng': req.body.lng }, function (err, updatedOrder) {
+                if (err || !updatedOrder) {
                     console.log(err);
                     console.log(updatedOrder);
-                    res.json({success:false,message:'There was an error trying to update the order',err:err});
+                    res.json({ success: false, message: 'There was an error trying to update the order', err: err });
                 }
-                else{
-                    res.json({success:true,message:'Driver Location has been updated',updatedorder:updatedOrder});
+                else {
+                    res.json({ success: true, message: 'Driver Location has been updated', updatedorder: updatedOrder });
                 }
-            },function(err){
-                res.json({success:false,message:'There was an error trying to update the order',err:err});
+            }, function (err) {
+                res.json({ success: false, message: 'There was an error trying to update the order', err: err });
             });
         }
     });
@@ -329,6 +340,18 @@ module.exports = function (router) {
                                                                                 res.json({ success: false, message: 'Could not start new order', err: err });
                                                                             }
                                                                             else {
+                                                                                // Should be used to allow text communication for admins
+                                                                                if (false) {
+                                                                                    twilioClient.messages.create({
+                                                                                        to: '9013649552',
+                                                                                        from: '6503341693',
+                                                                                        body: 'New order:\ncustomerName: ' + newOrder.customerReceipt.customerCart.user.username + 'Address: ' +
+                                                                                            newOrder.customerAddress + ''
+                                                                                    }, function (err) {
+                                                                                        console.log('error');
+                                                                                        console.log(err);
+                                                                                    });
+                                                                                }
                                                                                 res.json({ success: true, message: 'Charge completed successfully', charge: charge, receipt: newreceipt, order: newOrder });
 
                                                                             }

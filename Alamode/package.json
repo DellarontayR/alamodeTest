@@ -30,6 +30,7 @@
     "passport-twitter": "^1.0.4",
     "python": "^0.0.4",
     "stripe": "^5.5.0",
+    "twilio": "^3.14.0",
     "window": "^4.2.5",
     "xoauth2": "^1.2.0"
   },
