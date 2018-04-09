@@ -145,8 +145,7 @@ alamode.controller('managementCtrl', function (User, orderService, $scope, $rout
                         console.log(data.data);
                         var orderData = data.data.order;
                         order.order = orderData;
-                        order.showMe = true;
-
+                        order.showMe = true;``
 
                     }
                     else {

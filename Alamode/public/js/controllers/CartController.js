@@ -3,18 +3,15 @@ var stripe = Stripe('pk_test_EPjnzpxnrgvUiGWsYrJjqN5t');
 var elements = stripe.elements();
 
 alamode.controller('CartController', function ($scope, $location, User, Cart, Auth, Product, stripeService, $window) {
+    // Controller Variables
     var app = this;
     app.cartProducts = false;
     app.cartId = false;
     app.checkout = false;
+    app.cartChanged = false;
+    // >
 
-    //Seperate cart controller into checkoutController, shoppingCartController
-
-    // W
-
-
-
-    //Move all cartController content here
+    // Check userState and get pertinent information, Could easily probably be subtistiuted for $scope.mookie call
     app.checkUserState = function (callback) {
         if (Auth.isLoggedIn()) {
             app.loggedIn = true;
@@ -35,12 +32,14 @@ alamode.controller('CartController', function ($scope, $location, User, Cart, Au
             });
         }
     };
+    // >
+    // I have 22222???
 
     // Is this really in use??? Omg 
+    // Obviously this contains huge issues from when I was toying around with callback functions and getting data from functions
     app.getCurrentCart = function (callback) {
         var userData = {};
         userData.userEmail = app.email;
-
         User.getUser(userData).then(function (data) {
             if (data.data.success) {
                 if (data.data.user.cart != null && data.data.user.cart != "") {
@@ -72,64 +71,78 @@ alamode.controller('CartController', function ($scope, $location, User, Cart, Au
             }
         });
     };
+    // >
 
+    // Check userState and get pertinent information, Could easily probably be subtistiuted for $scope.mookie call
     app.checkUserState(function (userData) {
         app.username = userData.username;
         app.email = userData.userEmail;
         app.getCurrentCart(function (cart) {
-            app.cartProducts = cart.products;
+            // Create product map to get quantity of each product from array of products
+            var productMap = new Map();
+            cart.products.forEach(element => {
+                if (productMap.has(element._id)) {
+                    productMap.set(element._id, productMap.get(element._id) + 1);
+                }
+                else {
+                    productMap.set(element._id, 1);
+                }
+            });
+            // >
+            // Create array of products with quantities set to productMap vars
+            var cartProducts = [];
+            for (var key of productMap.keys()) {
+                for (var element of cart.products) {
+                    if (element._id === key) {
+                        element.qty = productMap.get(element._id);
+                        cartProducts.push(element);
+                        break;
+                    }
+                }
+            }
+            // >
+            app.cartProducts = cartProducts;
             app.cartId = cart._id;
         });
-
     });
+    // >
 
+    // Update cart in database when user changes cart on frontend
+    app.updateCart = function (cart) {
+        console.log(app.cartChanged);
+        console.log(app.cartProducts);
+        // Update Cart in DB and $scope.mookie
+        // 
+        var cartData = {};
+        cartData.cartProducts = app.cartProducts;
+        cartData.cartId = app.cartId;
+        Cart.updateCart(cartData).then(function(data){
+            console.log(data);
+            if(data.data.success){
+                
+            }
+            else{
+
+            }
+        })
+    };
+    // >
+
+    // Add item to cartProducts on Frontend
     app.addItem = function (cartProduct) {
-        var productData = {};
-        productData.qty = cartProduct.qty + 1;
-        productData.productId = cartProduct._id;
-        Product.updateProductQty(productData).then(function (data) {
-            if (data.data.success) {
-                app.cartProducts[app.cartProducts.indexOf(cartProduct)] = data.data.product;
-                // app.checkUserState(function (userData) {
-                //     console.log('user state');
-                //     app.username = userData.username;
-                //     app.email = userData.userEmail;
-                //     app.getCurrentCart(function (products) {
-                //         app.cartProducts = products;
-                //     });
-                // });
-            }
-            else {
-                if (data.data.err) {
-                    console.log(data.data.err);
-                }
-                else {
-                    console.log(data);
-                }
-            }
-        });
-
+        cartProduct.qty++;
+        app.cartChanged = true;
     };
+    // >
 
+    // Remove item from cartProducts on Frontend
     app.removeItem = function (cartProduct) {
-        var productData = {};
-        productData.qty = cartProduct.qty - 1;
-        productData.productId = cartProduct._id;
-        Product.updateProductQty(productData).then(function (data) {
-            if (data.data.success) {
-                app.cartProducts[app.cartProducts.indexOf(cartProduct)] = data.data.product;
-            }
-            else {
-                if (data.data.err) {
-                    console.log(data.data.err);
-                }
-                else {
-                    console.log(data);
-                }
-            }
-        });
+        cartProduct.qty--;
+        app.cartChanged = true;
     };
+    // >
 
+    // Delete Item on frontend and in database
     app.deleteItem = function (cartProduct) {
         var productData = {};
         productData.productId = cartProduct._id;
@@ -149,4 +162,5 @@ alamode.controller('CartController', function ($scope, $location, User, Cart, Au
             }
         });
     };
+    // >
 });

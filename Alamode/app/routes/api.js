@@ -658,33 +658,60 @@ module.exports = function (router) {
         }
     });
 
-    router.post('/updateProductQty', function (req, res) {
-        if (req.body.productId == '' || req.body.productId == null || req.body.qty == null) {
-            res.json({ success: false, messsage: 'PorductId or qty was not found in post request' });
+    // router.post('/updateProductQty', function (req, res) {
+    //     // Get product Id and find product/
+    //     // Change to get cart and update products completely
+    //     if(req.body.products === null || req.body.cartId === null || req.body.cartId === ''){
+    //         res.json({ success: false, messsage: 'cartId or products were not found in post request' });
+
+    //     }
+    //     else {
+    //         Cart.findById(req.body.cartId).select().exec(function(err,cart){
+    //             if(err || !cart){
+    //                 res.json({success:false,message:'There was an error trying to get the cart by id',err:err})
+    //             }
+    //             else{
+    //                 cart.products = req.body.products;
+    //                 cart.save(function(err,newCart){
+    //                     if(err || !newCart){
+    //                         res.json({success:false,message:'Product could not be updated',err:err});
+    //                     }
+    //                     else{
+    //                         res.json({success:true,message:'Cart updated Successfully',cart:newCart});
+    //                     }
+    //                 });
+    //             }
+    //         });
+    //     }
+    // });
+
+    router.post('/updateUserCart',function(req,res){
+        if(req.body.cartProducts === null || req.body.cartId === null || req.body.cartId === ''){
+            res.json({success:false,message:'Cant get cart to update'});
         }
-        else {
-            Product.findById(req.body.productId).select().exec(function (err, product) {
-                if (err) {
-                    res.json({ success: false, message: 'There was an error tyring to get the product by id', err: err });
+        else{
+            Cart.findById(req.body.cartId).select().exec(function(err,cart){
+                if(err || !cart){
+                    res.json({success:false,message:'Error attempting to get cart',err:err});
                 }
-                else {
-                    if (!product) {
-                        res.json({ success: false, message: 'Could not find product with request Id' });
-                    }
-                    else {
-                        product.qty = req.body.qty;
-                        product.save(function (err, product) {
-                            if (err) {
-                                res.json({ success: false, message: 'Product could not be updated' });
-                            }
-                            else {
-                                res.json({ success: true, message: 'Product was successful updated', product: product });
-                            }
-                        });
-                    }
+                else{
+                    cart.products = [];
+                    req.body.cartProducts.forEach(function(product){
+                        for(var i = 0; i < product.qty; i++){
+                            cart.products.push(product._id);
+                        }
+                    });
+
+                    cart.save(function(err,newCart){
+                        if(err || !cart){
+                            res.json({success:false,message:'There was an error while trying to save the cart',err});
+                        }
+                        else{
+                            res.json({success:true,message:'Cart successfully updated',cart:newCart});
+                        }
+                    });
                 }
             });
-
         }
     });
 

@@ -9,6 +9,12 @@ angular.module('cartServices',[])
         return $http.post('/api/deleteCartProduct',productData);
     };
 
+    // Update user Cart
+    cartFactory.updateCart = function(cartData){
+        return $http.post('/api/updateUserCart',cartData);
+    };
+    // >
+
     cartFactory.getCart = function(cartId){
         return $http.post('/api/getCart',cartId);
     };
