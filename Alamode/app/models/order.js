@@ -11,7 +11,7 @@ var OrderSchema = new Schema({
     orderStartedOn:{type:Date,required:true,default:Date.now},
     orderCompleted:{type:Boolean,required:true,default:false},
     orderStatus:{type:String,required:true,default:'Pending'},
-    currentDriverLocation:{lat:{type:String},lng:{type:String}}
+    currentDriverLocation:{lat:{type:String,default:'37.4266083'},lng:{type:String,default:'-122.15756340000002'}}
     // created: { type: Date, required: true, default: Date.now },
 
 

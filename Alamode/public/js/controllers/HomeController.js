@@ -1,5 +1,4 @@
 'use strict';
-console.log('home');
 
 alamode.controller('HomeController', function($scope,$rootScope, $location, Auth, User, Cart,Product) {
     var home = this;
@@ -58,9 +57,7 @@ alamode.controller('HomeController', function($scope,$rootScope, $location, Auth
             home.aCatalogProduct = home.catalogProducts[0];
             console.log(home.aCatalogProduct);
 
-
         });
-
 
         home.getBestsellers(function(bestsellers){
             home.bestsellers = bestsellers;

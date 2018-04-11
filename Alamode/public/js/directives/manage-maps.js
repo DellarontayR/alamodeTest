@@ -44,6 +44,7 @@ alamode.directive('manageMaps', function ($q) {
                 userMarker.setMap(map);
                 directionsDisplay.setMap(map);
 
+                console.log(scope.$parent.orderContainer.order);
                 var originalDriverLatLng = new google.maps.LatLng(scope.$parent.orderContainer.order.currentDriverLocation.lat, scope.$parent.orderContainer.order.currentDriverLocation.lng);
 
                 var icon = {

@@ -1,9 +1,6 @@
 'use strict';
-console.log('at javascript');
 alamode.controller('TestController', function ($scope, $location, User,orderService,$routeParams) {
     var order = this;
-
-
     orderService.getOrder($routeParams.orderId).then(function (data) {
         console.log(data);
         if (data.data.success) {
