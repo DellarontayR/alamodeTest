@@ -17,13 +17,8 @@ var ReceiptSchema = new Schema({
 
 ReceiptSchema.pre('save', function (next) {
     var doc = this;
-    console.log('outside save');
-    console.log(ReceiptCounter);
     ReceiptCounter.findByIdAndUpdate('5abf017117d0b116a0ad161d', { $inc: { seq: 1 } }, { new: true, upsert: true },function (error,count) {
-        console.log('What the fuck');
         if(error){
-            console.log('error');
-            console.log(error);
             return next(error);
         }
         doc.receiptNumber = count.seq;

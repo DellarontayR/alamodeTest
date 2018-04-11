@@ -379,7 +379,7 @@ jQuery(document).ready(function ($) {
 		setTimeout(function () {
 			postPreloader.removeClass('active');
 			getData(postUrl);
-		}, 900);
+		}, 100);
 	}
 
 	// Close Post

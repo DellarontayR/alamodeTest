@@ -93,9 +93,26 @@ alamode.controller('managementCtrl', function (User, orderService, $scope, $rout
             );
         };
 
-        order.updateDeliveryStatus = function(status){
+        // Delivery status, Pending, OutForOrders, OnTheWay, Completed
 
+        var deliveryStatuses =  ['Pending','OutForOrders','OnTheWay','Completed'];
+        // Updated order Delivery status
+        order.updateDeliveryStatus = function (status) {
+            var orderData = {};
+            orderData.orderStatus = status;
+            orderData.orderId = order.order._id;
+            orderService.updateDeliveryStatus(orderData).then(function(data){
+                console.log(data);
+                if(data.data.success){
+                    order.order.orderStatus = status;
+
+                }
+                else{
+
+                }
+            });
         };
+        // >
 
         // //Tracking users position
         // watchId = navigator.geolocation.watchPosition(
@@ -115,6 +132,8 @@ alamode.controller('managementCtrl', function (User, orderService, $scope, $rout
             if (data.data.success) {
                 if (data.data.order) {
                     order.order = data.data.order;
+                    order.order.customerReceipt.customerCart.total = order.order.customerReceipt.customerCart.subtotal + order.order.customerReceipt.customerCart.tax;
+                    order.order.customerReceipt.customerCart.total = order.order.customerReceipt.customerCart.total.toFixed(2);
                 }
             }
             else {
@@ -145,7 +164,10 @@ alamode.controller('managementCtrl', function (User, orderService, $scope, $rout
                         console.log(data.data);
                         var orderData = data.data.order;
                         order.order = orderData;
-                        order.showMe = true;``
+
+                        order.order.customerReceipt.customerCart.total = order.order.customerReceipt.customerCart.subtotal + order.order.customerReceipt.customerCart.tax;
+                        order.order.customerReceipt.customerCart.total = order.order.customerReceipt.customerCart.total.toFixed(2);
+                        order.showMe = true;
 
                     }
                     else {

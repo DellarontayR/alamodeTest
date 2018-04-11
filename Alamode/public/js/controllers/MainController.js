@@ -97,6 +97,7 @@ alamode.controller('mainCtrl', function (Auth, $timeout, $location, $rootScope,
                         cartData.userId = data.data.user._id;// replace with $scope.mookie.user._id
                         cartData.product = catalogProduct;
                         Cart.addItemToCart(cartData).then(function (data) {
+                            console.log(data);
                             if (data.data.success) {
                                 var getCartData = {};
                                 getCartData.cartId = data.data.cart._id;
@@ -487,7 +488,9 @@ alamode.controller('mainCtrl', function (Auth, $timeout, $location, $rootScope,
                         if (data.data.success) {
                             console.log(data.data);
                             $scope.mookie.cart = data.data.cart;
-                            return callback(data.data.cart);
+                            $scope.mookie.cart.total = $scope.mookie.cart.subtotal + $scope.mookie.cart.tax;
+                            $scope.mookie.cart.total = $scope.mookie.cart.total.toFixed(2);
+                            return callback($scope.mookie.cart);
 
                         } else {
                             if (!data.data.cart) {

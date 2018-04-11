@@ -44,8 +44,8 @@ alamode.directive('userMaps', function ($q) {
                 var originalDriverLatLng = new google.maps.LatLng(37.4266083, -122.15756340000002);
 
                 var icon = {
-                    url: "../imgs/Media/mookiecar.svg", // url
-                    scaledSize: new google.maps.Size(50, 50), // scaled size
+                    url: "../imgs/Media/dot.svg", // url
+                    scaledSize: new google.maps.Size(20, 20), // scaled size
                     origin: new google.maps.Point(0, 0), // origin
                     anchor: new google.maps.Point(0, 0) // anchor
                 };
@@ -60,16 +60,7 @@ alamode.directive('userMaps', function ($q) {
 
                 setBounds([leesMarker, userMarker]);
 
-                var trip = [userMarker.getPosition(), leesMarker.getPosition()];
-                var path = new google.maps.Polyline({
-                    path: trip,
-                    strokeColor: "#000000",
-                    strokeOpacity: 0.8,
-                    strokeWeight: 2
-                });
-                path.setMap(map);
-
-                // google.maps.event.trigger(map, "resize");
+                google.maps.event.trigger(map, "resize");
             };
             scope.resetBounds = function () {
                 setBounds([leesMarker,userMarker]);

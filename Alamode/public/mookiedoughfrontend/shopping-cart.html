@@ -22,6 +22,8 @@
             <div class="item-details">
               <h3 class="item-title">{{cartItem.title}}</h3>
               <h4 class="item-price">{{cartItem.price}} x {{cartItem.qty}}</h4>
+              <h4 class="item-price">{{cartItem.subtotalOnProduct}}</h4>
+
               <div class="count-input">
                 <a class="incr-btn" data-action="decrease" href="#" ng-click="cartCtrl.removeItem(cartItem)" ng-show="cartItem.qty >=2">-</a>
                 <input class="quantity" type="text" ng-value="cartItem.qty">
@@ -54,8 +56,15 @@
       <!-- Sidebar -->
       <div class="col-md-3 col-md-offset-1 col-sm-4 padding-bottom-2x" ng-init="justCheckout = true">
         <aside>
-          <h3 class="toolbar-title">Cart subtotal:</h3>
-          <h4 class="amount">${{mookie.total}}</h4>
+          <h4 class="toolbar-title">Cart subtotal:</h4>
+          <h4 class="amount">${{cartCtrl.subTotal}}</h4>
+          <h4 class="toolbar-title">Sales Tax</h4>
+          <h4 class="amount">${{cartCtrl.tax}}</h4>
+          <h4 class="toolbar-title">Cart Total</h4>
+          <h4 class="amount">${{cartCtrl.total}}</h4>
+
+
+          
           <!-- <a href="#" class="btn btn-default btn-block waves-effect waves-light">Update Cart</a> -->
           <a ng-show="justCheckout" href="#" class="btn btn-primary btn-block waves-effect waves-light space-top-none checkoutBtn" ng-click="justCheckout = false; $event.stopPropagation();$event.preventDefault();">Checkout</a>
           <a ng-show="justCheckout" href="#" class="btn btn-primary btn-block waves-effect waves-light space-top-none checkoutBtn" ng-click="cartCtrl.updateCart();$event.stopPropagation();$event.preventDefault();" ng-disabled="!cartCtrl.cartChanged">Update Cart</a>

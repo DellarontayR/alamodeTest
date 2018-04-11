@@ -73,10 +73,12 @@ alamode.controller('CheckoutController', function ($scope, $location, User, Cart
                     var stripeData = {};
                     stripeData.token = result.token.id;
                     stripeData.name = checkoutData.name;
-                    stripeData.price = $scope.mookie.total * 100;
+                    // stripeData.price = $scope.mookie.total * 100;
                     stripeData.userEmail = userData.userEmail;
                     stripeData.user = $scope.mookie.user;
                     stripeData.cart = $scope.mookie.cart;
+                    stripeData.price = $scope.mookie.cart.tax + $scope.mookie.cart.subtotal;
+                    stripeData.price = stripeData.price*100;
                     stripeData.deliveryLocation = $scope.mookie.deliveryLocation;
                     stripeData.deliveryLatLng = $scope.mookie.deliveryLatLng;
                     stripeService.checkout(stripeData).then(function (data) {
@@ -94,11 +96,9 @@ alamode.controller('CheckoutController', function ($scope, $location, User, Cart
                                 // >
 
                                 checkoutCtrl.receipt = data.data.receipt;
-                                var total = 0;
-                                checkoutCtrl.receipt.customerCart.products.forEach(product => {
-                                    total += product.price;
-                                });
-                                checkoutCtrl.receipt.customerCart.total = total;
+
+                                checkoutCtrl.receipt.customerCart.total = checkoutCtrl.receipt.customerCart.tax + checkoutCtrl.receipt.customerCart.subtotal;
+                                checkoutCtrl.receipt.customerCart.total = checkoutCtrl.receipt.customerCart.total.toFixed(2);
 
                                 $('#order-input').toggleClass('hide-input');
                                 setTimeout(function () {

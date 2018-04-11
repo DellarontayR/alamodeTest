@@ -44,7 +44,7 @@ var app = angular.module('appRoutes', ['ngRoute', 'angularCSS'])
             }).
             when('/manageorders/:orderId', {
                 templateUrl: '../views/manageorders.html',
-                css:'../css/manageorders.css',
+                css: '../css/manageorders.css',
                 controller: 'orderCtrl',
                 controllerAs: 'orderContainer',
                 authenticated: true,
@@ -54,7 +54,7 @@ var app = angular.module('appRoutes', ['ngRoute', 'angularCSS'])
                 templateUrl: '../views/order.html',
                 css: '../css/order.css',
                 authenticated: true,
-                controller:'customerOrderCtrl',
+                controller: 'customerOrderCtrl',
                 controllerAs: 'customerCtrl'
             }).
             when('/management/currentorders', {
@@ -81,6 +81,7 @@ var app = angular.module('appRoutes', ['ngRoute', 'angularCSS'])
             })
             .when('/thesecret', {
                 css: '../css/secret.css'
+                // , templateUrl: '../views/secret.html'
             })
             .when('/donate', {
                 templateUrl: './/views/donate.html',

@@ -95,6 +95,7 @@ alamode.controller('CartController', function ($scope, $location, User, Cart, Au
                 for (var element of cart.products) {
                     if (element._id === key) {
                         element.qty = productMap.get(element._id);
+                        element.subtotalOnProduct = element.qty * element.price;
                         cartProducts.push(element);
                         break;
                     }
@@ -103,23 +104,26 @@ alamode.controller('CartController', function ($scope, $location, User, Cart, Au
             // >
             app.cartProducts = cartProducts;
             app.cartId = cart._id;
+            // Handle Receipt display
+            app.subTotal = cart.subtotal;
+            app.tax = cart.tax;
+            app.total = app.tax + app.subTotal;
+            app.total = app.total.toFixed(2);
+            // >
         });
     });
     // >
 
     // Update cart in database when user changes cart on frontend
     app.updateCart = function (cart) {
-        console.log(app.cartChanged);
-        console.log(app.cartProducts);
-        // Update Cart in DB and $scope.mookie
-        // 
+        // update cart in $scope
         var cartData = {};
         cartData.cartProducts = app.cartProducts;
         cartData.cartId = app.cartId;
         Cart.updateCart(cartData).then(function(data){
             console.log(data);
             if(data.data.success){
-                
+                app.cartChanged = false;
             }
             else{
 

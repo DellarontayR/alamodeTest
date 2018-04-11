@@ -17,4 +17,17 @@ var OrderSchema = new Schema({
 
 });
 
+// OrderSchema.pre('save',function(next){
+//     var doc = this;
+//     if(doc.orderStatus === 'Completed'){
+//         doc.orderCompleted = true;
+//         doc.orderCompletedOn = Date.now();
+//         next();
+//     }
+//     else{
+//         next();
+//     }
+
+// });
+
 module.exports = mongoose.model('Order', OrderSchema);

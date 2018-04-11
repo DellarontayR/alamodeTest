@@ -7,19 +7,13 @@ alamode.directive('orderMaps', function ($q) {
         template: '<div></div>',
         replace: true,
         link: function (scope, element, attributes) {
-            console.log(scope.mookie);
-
-            // Genereal flow is user is finished checking out, They choose delivery or pickup, from delivery they'll put in an address and a map will pop up, They can have a box to chang the address
-
-            //ordermaps starts when user already has given previous location
             var map = false;
             var infowindow = false;
             var marker = false;
+            // >
 
             scope.setupOnUserLocation = function () {
-                // if (location === null) return;
-                var location = { coords: { latitude: '37.4266083', longitude: '-122.15756340000002' } };
-
+                var location = { coords: { latitude: '37.4266083', longitude: '-122.15756340000002' } };//Lees
 
                 var coords = location.coords || scope.userLocation;
                 var latLng = new google.maps.LatLng(coords.latitude, coords.longitude);
@@ -58,7 +52,6 @@ alamode.directive('orderMaps', function ($q) {
                     infowindow.close();
                     marker.setVisible(false);
                     var place = autocomplete.getPlace();
-                    console.log(place.formatted_address);
                     if (place) {
                         scope.mookie.deliveryLocationChanged = true;
                         scope.mookie.deliveryLocation = place.formatted_address;
@@ -122,8 +115,8 @@ alamode.directive('orderMaps', function ($q) {
                     var latLng = new google.maps.LatLng(37.4266083, -122.15756340000002);
 
                     var icon = {
-                        url: "../imgs/Media/goodmookie.svg", // url
-                        scaledSize: new google.maps.Size(50, 50), // scaled size
+                        url: "../imgs/Media/dot.svg", // url
+                        scaledSize: new google.maps.Size(20, 20), // scaled size
                         origin: new google.maps.Point(0, 0), // origin
                         anchor: new google.maps.Point(0, 0) // anchor
                     };
@@ -137,15 +130,6 @@ alamode.directive('orderMaps', function ($q) {
                     leesMarker.setMap(map);
                     
                     setBounds([leesMarker, marker]);
-
-                    var trip = [marker.getPosition(), leesMarker.getPosition()];
-                    var path = new google.maps.Polyline({
-                        path: trip,
-                        strokeColor: "#000000",
-                        strokeOpacity: 0.8,
-                        strokeWeight: 2
-                    });
-                    path.setMap(map);
 
                     google.maps.event.trigger(map, "resize");
                 }

@@ -69,6 +69,10 @@
                 <!-- Sidebar -->
                 <div class="col-md-3 col-md-offset-1 col-sm-4 padding-bottom">
                     <aside>
+                        <h3>Cart subtotal:</h3>
+                        <h4>${{mookie.total}}</h4>
+                        <h3>Cart tax:</h3>
+                        <h4>${{mookie.total}}</h4>
                         <h3>Cart total:</h3>
                         <h4>${{mookie.total}}</h4>
                         <a href="/shopping-cart" class="btn btn-default btn-ghost icon-left btn-block">
@@ -103,7 +107,7 @@
                 </div>
                 <div class="receipt-header__meta">
                     <!-- 25.04.2016 -->
-                    <span class="receipt-header__date">{{cartCtrl.receipt.created  | date:"MM/dd/yyyy 'at' h:mma"}}}</span>
+                    <span class="receipt-header__date">{{cartCtrl.receipt.created | date:"MM/dd/yyyy 'at' h:mma"}}}</span>
                     <span class="receipt-header__serial">Receipt Number: #{{cartCtrl.receipt.receiptNumber}} </span>
                     <!-- <span class="receipt-header__number">{{cartCtrl.receipt.receiptNumber}}</span> -->
                 </div>
@@ -126,10 +130,17 @@
             </ol>
             <hr class="cart__hr" />
             <div class="cart__total">
+                <h3 class="cart__total-label">Subtotal</h3>
+                <span class="cart__total-price">{{cartCtrl.receipt.customerCart.subtotal}}</span>
+            </div>
+            <div class="cart__total">
+                <h6 class="cart__total-label">Sales Tax</h6>
+                <span class="cart__total-price">{{cartCtrl.receipt.customerCart.tax}}</span>
+            </div>
+            <div class="cart__total">
                 <h3 class="cart__total-label">Total</h3>
                 <span class="cart__total-price">{{cartCtrl.receipt.customerCart.total}}</span>
             </div>
         </section>
-
     </div>
 </div>

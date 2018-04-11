@@ -1,16 +1,23 @@
 <ul>
     <li>
         {{orderContainer.order.orderStatus}} {{orderContainer.order.customerReceipt.customerAddress}} {{orderContainer.order.customerReceipt.geometryAddress}}
-
     </li>
     <manage-maps id="manage-map" receipt="orderContainer.order.customerReceipt" style="height:400px;width:100%;border: 2px solid black;"></manage-maps>
 
     <div class="order-message-container">
         <p class="order-message pending">Mookie Dough Delivery</p>
+        <p class="order-message">Customer {{orderContainer.distanceFromUser}} Miles and {{orderContainer.timeFromUser}} Minutes from driver</p>
+
         <div>
-            <button class="primary">
+            <button ng-show="orderContainer.order.orderStatus === 'Pending'" class="primary" ng-click="orderContainer.updateDeliveryStatus('OnTheWay')">
+                <!-- Start delivery, finish delivery -->
                 Start Delivery
             </button>
+            <button ng-show="orderContainer.order.orderStatus === 'OnTheWay'" class="primary" ng-click="orderContainer.updateDeliveryStatus('Completed')">
+                <!-- Start delivery, finish delivery -->
+                Finish Delivery
+            </button>
+
             <button class="secondary">
                 Send Message to customer
             </button>
@@ -19,8 +26,6 @@
             </buton>
         </div>
     </div>
-
-
 
     <div class="receipt mookie-confirm" ng-show="orderContainer.order.customerReceipt">
         <div class="receipt-header">
@@ -52,8 +57,16 @@
             </ol>
             <hr class="cart__hr" />
             <div class="cart__total">
+                <h3 class="cart__total-label">Subtotal</h3>
+                <span class="cart__total-price">{{orderContainer.order.customerReceipt.customerCart.subtotal}}</span>
+            </div>
+            <div class="cart__total">
+                <h3 class="cart__total-label">Tax</h3>
+                <span class="cart__total-price">{{orderContainer.order.customerReceipt.customerCart.tax}}</span>
+            </div>
+            <div class="cart__total">
                 <h3 class="cart__total-label">Total</h3>
-                <span class="cart__total-price">{{orderContainer.order.customerReceipt.customerCart.total}}</span>
+                <span class="cart__total-price">{{orderContainer.order.customerReceipt.customerCart.subtotal}}</span>
             </div>
         </section>
 

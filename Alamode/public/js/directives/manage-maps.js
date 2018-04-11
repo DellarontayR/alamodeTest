@@ -10,9 +10,10 @@ alamode.directive('manageMaps', function ($q) {
         template: '<div></div>',
         replace: true,
         link: function (scope, element, attributes) {
+            console.log(scope.$parent);
             var map = false;
             var marker = false;
-            
+
             function setBounds(markersArray) {
                 var bounds = new google.maps.LatLngBounds();
                 for (var i = 0; i < markersArray.length; i++) {
@@ -22,6 +23,9 @@ alamode.directive('manageMaps', function ($q) {
             };
 
             scope.setupOnOrder = function () {
+                var directionsService = new google.maps.DirectionsService();
+                var directionsDisplay = new google.maps.DirectionsRenderer();
+
                 var location = { coords: { latitude: scope.receipt.geometryAddress.lat, longitude: scope.receipt.geometryAddress.lng } };
                 var coords = location.coords;
                 var latLng = new google.maps.LatLng(coords.latitude, coords.longitude);
@@ -38,11 +42,13 @@ alamode.directive('manageMaps', function ($q) {
                 });
 
                 userMarker.setMap(map);
-                var originalDriverLatLng = new google.maps.LatLng(37.4266083, -122.15756340000002);
+                directionsDisplay.setMap(map);
+
+                var originalDriverLatLng = new google.maps.LatLng(scope.$parent.orderContainer.order.currentDriverLocation.lat, scope.$parent.orderContainer.order.currentDriverLocation.lng);
 
                 var icon = {
-                    url: "../imgs/Media/mookiecar.svg", // url
-                    scaledSize: new google.maps.Size(50, 50), // scaled size
+                    url: "../imgs/Media/dot.svg", // url
+                    scaledSize: new google.maps.Size(20, 20), // scaled size
                     origin: new google.maps.Point(0, 0), // origin
                     anchor: new google.maps.Point(0, 0) // anchor
                 };
@@ -57,20 +63,34 @@ alamode.directive('manageMaps', function ($q) {
 
                 setBounds([leesMarker, userMarker]);
 
-                var trip = [userMarker.getPosition(), leesMarker.getPosition()];
-                var path = new google.maps.Polyline({
-                    path: trip,
-                    strokeColor: "#000000",
-                    strokeOpacity: 0.8,
-                    strokeWeight: 2
-                });
-                path.setMap(map);
+                var request = {
+                    origin: leesMarker.getPosition(),
+                    destination: userMarker.getPosition(),
+                    travelMode: 'DRIVING'
+                };
 
+                directionsService.route(request, function (result, status) {
+                    if (status == 'OK') {
+                        directionsDisplay.setDirections(result);
+                        scope.manager = {};
+                        scope.manager.distanceFromUser = 0;
+                        scope.manager.timeFromUser = 0;
+                        var route = result.routes[0];
+
+                        for (var i = 0; i < route.legs.length; i++) {
+                            // ("123 hello everybody 4").replace(/(^\d+)(.+$)/i,'$1'); //=> '123' regex to first integer from string
+                            // replace(/[^0-9.]/g, ""); Regex to get only numbers from string
+                            scope.manager.distanceFromUser += route.legs[i].distance.text.replace(/[^0-9.]/g, "");
+                        }
+                        scope.$parent.orderContainer.distanceFromUser = route.legs[0].distance.text.replace(/[^0-9.]/g, "");
+                        scope.$parent.orderContainer.timeFromUser = route.legs[0].duration.text.replace(/[^0-9.]/g, "");
+                    }
+                });
                 google.maps.event.trigger(map, "resize");
             };
 
-            scope.$watch('receipt',function(value){
-                if(value && value !== undefined){
+            scope.$watch('receipt', function (value) {
+                if (value && value !== undefined) {
                     scope.setupOnOrder()
                 }
             });

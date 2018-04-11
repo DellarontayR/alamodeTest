@@ -196,6 +196,8 @@ module.exports = function (router) {
         }
     });
     // >
+
+    // Update Driver location for a delivery order
     router.post('/updateDriverLocation', function (req, res) {
         if (req.body.lat === null || req.body.lat === '' || req.body.lng === null || req.body.lat === '' || req.body.order === null || req.body.order === '') {
             res.json({ success: false, message: 'Header body incorrect' });
@@ -215,6 +217,37 @@ module.exports = function (router) {
             });
         }
     });
+    // >
+
+    // Update delivery status to Pending, Started, OnTheWay, and Completed
+    router.post('/updateDeliveryStatus',function(req,res){
+        if(req.body.orderId === null || req.body.orderId === '' || req.body.orderStatus === null || req.body.orderStatus === ''){
+            res.json({success:false,message:'Correct order id not presented'});
+        }
+        else{
+            Order.findById(req.body.orderId,function(err,order){
+                if(err || !order){
+                    res.json({success:false,message:'Could not find and update order',err:err});
+                }
+                else{
+                    order.orderStatus = req.body.orderStatus;
+                    if(order.orderStatus === 'Completed'){
+                        order.orderCompleted = true;
+                        order.orderCompeltedOn = Date.now();
+                    }
+                    order.save(function(err,newOrder){
+                        if(err || !newOrder){
+                            res.json({success:false,message:'Could not update order status',err:err});
+                        }
+                        else{
+                            res.json({success:true,message:'Order updated successfully',order:newOrder});
+                        }
+                    })
+                }
+            });
+        }
+    });
+    // >
 
     // Get current orders for management
     router.post('/getCurrentOrders', function (req, res) {
@@ -264,7 +297,6 @@ module.exports = function (router) {
     // Use stripes charge and token system to store information about specific orders, copy the hash/token in stripe as the id for the order 
     // Or! google how to order product ids for e commerce products
     router.post('/checkout', function (req, res) {
-        console.log(req.body.deliveryLatLng);
         if (req.body.token == null || req.body.name == null || req.body.price == null || req.body.userEmail == null
             || req.body.userEmail == '' || req.body.user === null || req.body.deliveryLocation === null || req.body.cart === null, req.body.deliveryLatLng === null) {
             res.json({ success: false, message: "Please try checkout again at a later time" });
@@ -273,9 +305,10 @@ module.exports = function (router) {
             stripe.charges.create({
                 amount: req.body.price,
                 currency: "usd",
-                description: 'first payment',
+                description: "Mookie Dough LLC Payment",
                 source: req.body.token // obtained with Stripe.js
             }, function (err, charge) {
+                console.log(charge);
                 if (err) {
                     res.json({ success: false, message: 'There was an error with our stripe api', err: err });
                 }
@@ -585,6 +618,7 @@ module.exports = function (router) {
                     res.json({ success: false, message: 'user was not found', err: err });
                 }
                 else if (user.cart == null || user.cart == "") {
+                    console.log('make new cart');
                     var cart = new Cart();
                     cart.save(function (err, cart) {
                         if (err) {
@@ -614,6 +648,7 @@ module.exports = function (router) {
                         }
                         else {
                             if (!cart) {
+                                console.log('make new cart');
                                 // res.json({ success: false, message: 'Could not find the cart', user: user });
                                 var cart = new Cart();
                                 cart.save(function (err, cart) {
@@ -640,10 +675,11 @@ module.exports = function (router) {
 
                             }
                             else {
+                                console.log('push into cart');
                                 cart.products.push(req.body.product);
                                 cart.save(function (err, cart) {
-                                    if (err) {
-                                        res.json({ success: false, message: 'There was an error trying to save new cart' });
+                                    if (err || !cart) {
+                                        res.json({ success: false, message: 'There was an error trying to save new cart',err:err });
                                     }
                                     else {
                                         res.json({ success: true, message: 'Cart has been updated', cart: cart });
