@@ -153,10 +153,17 @@ alamode.controller('managementCtrl', function (User, orderService, $scope, $rout
         order.showMe = false;
 
         container.orderId = $routeParams.orderId;
-        // Give em order and allow to be updated
+
+        // Order Statuses
+        // Pending, OnTheWay, Completed
+        // 
+
+        var statusMap = new Map();
+        statusMap.set('Pending','Your order is being Prepared');
+        statusMap.set('OnTheWay','The driver is out with your order!');
+        statusMap.set('Completed','Your order was completed');
 
         orderService.getOrder(container).then(function (data) {
-            console.log(data);
             if (data.data.success) {
                 Auth.getUser().then(function (userData) {
                     console.log(data.data.order.customerReceipt.customerCart);
@@ -167,7 +174,9 @@ alamode.controller('managementCtrl', function (User, orderService, $scope, $rout
 
                         order.order.customerReceipt.customerCart.total = order.order.customerReceipt.customerCart.subtotal + order.order.customerReceipt.customerCart.tax;
                         order.order.customerReceipt.customerCart.total = order.order.customerReceipt.customerCart.total.toFixed(2);
+                        order.orderMessage = statusMap.get(order.order.orderStatus);
                         order.showMe = true;
+
 
                     }
                     else {
