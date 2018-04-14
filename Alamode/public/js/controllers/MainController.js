@@ -2,11 +2,8 @@
 
 alamode.controller('mainCtrl', function (Auth, $timeout, $location, $rootScope,
     $window, $interval, User, AuthToken, $scope, Cart, Product, MookieSubscription, ContactMessage) {
-
+    // $window.location.pathname
     var app = this;
-
-    // if ($window.location.pathname === '/') app.home = true; // Check if user is on home page to show home page div
-
 
     // Definitely Used Mookie Scope vars
     $scope.mookie = {};
@@ -211,7 +208,9 @@ alamode.controller('mainCtrl', function (Auth, $timeout, $location, $rootScope,
             });
         }
     };
+    // >
 
+    // Mookie get user session should be consolidated into one function currently in multiple
     $scope.mookie.getUserSession = function () {
         $scope.mookie.getEmailAndUsername(function (userData) {
             User.getUser(userData).then(function (data) {
@@ -232,7 +231,9 @@ alamode.controller('mainCtrl', function (Auth, $timeout, $location, $rootScope,
             });
         });
     };
+    // >
 
+    // Get user's current user
     $scope.mookie.getCurrentCart = function (callback) {
         $scope.mookie.getEmailAndUsername(function (userData) {
             User.getUser(userData).then(function (data) {
@@ -269,17 +270,20 @@ alamode.controller('mainCtrl', function (Auth, $timeout, $location, $rootScope,
 
         });
     };
+    // >
+
     //Call when maincontroller is loaded to get current cart information//Also possible to get user information here
     $scope.mookie.getCurrentCart(function (cartData) {
         $scope.mookie.cartItemCount = cartData.itemCount;
     });
+    // >
 
     //Modal functions
     $scope.mookie.hideModal = function () {
         $("#myModal").modal('hide');
     };
     //cont.
-    $scope.mookie.hideStripeModal = function(){
+    $scope.mookie.hideStripeModal = function () {
         $('#stripeModal').modal('hide');
     };
     // cont.
@@ -313,6 +317,8 @@ alamode.controller('mainCtrl', function (Auth, $timeout, $location, $rootScope,
     app.addProductToDB = function (productData) {
         Product.seedProduct(productData).then(function (data) {
             if (data.data.success) {
+                // Telemetry model could include Category, field one, field two, field three, Date, 
+
                 // Some kind of telemetry maybe
 
                 //No telemetry system setup yet
@@ -340,7 +346,7 @@ alamode.controller('mainCtrl', function (Auth, $timeout, $location, $rootScope,
             else {
                 if (data.data.noProducts) {
                     (function () {
-          
+
                         var standardPrice = 2.99;
                         var productData = {};
                         productData.imagePath = "../updatedFrontend/redvelvet.png";
@@ -406,7 +412,9 @@ alamode.controller('mainCtrl', function (Auth, $timeout, $location, $rootScope,
     };
 
     app.resetProducts();
+    // >
 
+    // Get products from server to produce on home page in mookie scope
     $scope.mookie.getProductsFromServer = function (callback) {
         (function () {
             Product.getCatalogProducts().then(function (data) {
@@ -420,6 +428,9 @@ alamode.controller('mainCtrl', function (Auth, $timeout, $location, $rootScope,
     };
 
     $scope.mookie.getProductsFromServer();
+    // >
+
+    // Get Subscribers for Management
     $scope.mookie.getSubscribers = function (callback) {
         MookieSubscription.getSubscribers().then(function (data) {
             if (data.data.success) {
@@ -427,7 +438,9 @@ alamode.controller('mainCtrl', function (Auth, $timeout, $location, $rootScope,
             }
         });
     };
+    // >
 
+    // Get Contact Messages for Management
     $scope.mookie.getContactMessages = function (callback) {
         ContactMessage.getContactMessages().then(function (data) {
             if (data.data.success) {
@@ -435,7 +448,9 @@ alamode.controller('mainCtrl', function (Auth, $timeout, $location, $rootScope,
             }
         });
     };
+    // >
 
+    // Get Users for Management
     $scope.mookie.getUsers = function (callback) {
         User.getUsers().then(function (data) {
             if (data.data.success) {
@@ -443,7 +458,9 @@ alamode.controller('mainCtrl', function (Auth, $timeout, $location, $rootScope,
             }
         });
     };
+    // >
 
+    // Get the User and populate cart at the same time
     $scope.mookie.getUserAndCart = function (callback) {
         Auth.getUser().then(function (data) {
             if (data.data.success) {
@@ -469,15 +486,19 @@ alamode.controller('mainCtrl', function (Auth, $timeout, $location, $rootScope,
         });
 
     };
-
+    // Usage of getUserAndCart
     $scope.mookie.getUserAndCart(function (data) {
         app.email = data.userEmail;
         app.cartId = data.cartId;
     });
+    // >
 
+
+    // Get The User's current cart
     app.getCurrentCart = function (callback) {
         var userData = {};
         userData.userEmail = app.email;
+        // Email different things to user
 
         User.getUser(userData).then(function (data) {
             if (data.data.success) {
@@ -514,6 +535,7 @@ alamode.controller('mainCtrl', function (Auth, $timeout, $location, $rootScope,
             }
         });
     };
+    // >
 
     // Check if user's session has expired upon opening page for the first time
     //For all intents and purposes getemailAndUsername
@@ -541,7 +563,7 @@ alamode.controller('mainCtrl', function (Auth, $timeout, $location, $rootScope,
             });
         }
     };
-
+    // Usage of checkUserState
     app.checkUserState(function (userData) {
         $scope.mookie.user.username = userData.username;
         $scope.mookie.user.userEmail = userData.userEmail;
@@ -553,7 +575,7 @@ alamode.controller('mainCtrl', function (Auth, $timeout, $location, $rootScope,
             var counter = cart.products.length;
             cart.products.forEach(function (product) {
                 // product.price
-                total +=product.price;
+                total += product.price;
                 counter -= 1;
                 if (counter === 0) {
                     $scope.mookie.total = Math.round(total);
@@ -562,7 +584,9 @@ alamode.controller('mainCtrl', function (Auth, $timeout, $location, $rootScope,
         });
         app.loadme = true;
     });
+    // >
 
+    // Setup interval to check user session every 15 seconds
     app.mookieCheckSession = function () {
         var interval = $interval(function () {
             app.checkUserState(function (userData) {
@@ -570,13 +594,13 @@ alamode.controller('mainCtrl', function (Auth, $timeout, $location, $rootScope,
                 app.email = userData.userEmail;
                 $scope.mookie.user.username = userData.username;
                 $scope.mookie.user.userEmail = userData.userEmail;
-                
+
                 app.getCurrentCart(function (cart) {
                     var total = 0;
                     var count = 0;
                     cart.products.forEach(function (product) {
                         total += product.price;
-                        count ++;
+                        count++;
                     })
                     $scope.mookie.cartItemCount = count;
                     $scope.mookie.total = Math.round(total);
@@ -585,9 +609,11 @@ alamode.controller('mainCtrl', function (Auth, $timeout, $location, $rootScope,
             });
         }, 15000);
     };
-    
-
+    // Usage of mookieCheckSession
     app.mookieCheckSession();
+    // >
+
+
     // Function to run an interval that checks if the user's token has expired
     app.checkSession = function () {
         // Only run check if user is logged in
