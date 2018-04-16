@@ -86,7 +86,7 @@
   <script src="../js/services/stripeServices.js"></script>
   <script src="../js/services/gpsServices.js"></script>
   <script src="../js/services/orderServices.js"></script>
-  
+
 
   <!-- Alamode Directives -->
   <script src="../js/directives/product.js"></script>
@@ -117,7 +117,7 @@
 
   <!-- Google maps api -->
   <!-- <script src="https://maps.googleapis.com/maps/api/js?v=3.exp&key=AIzaSyC5COdjfvATFrP2GIA9_5fabKmrse1CXdo&libraries=geometry,places"></script> -->
-  <script src="https://maps.googleapis.com/maps/api/js?v=3.exp&key=AIzaSyDIK5nijNemroAnlHUxH6iElr3HVBtniH4&libraries=drawing,places"></script> 
+  <script src="https://maps.googleapis.com/maps/api/js?v=3.exp&key=AIzaSyDIK5nijNemroAnlHUxH6iElr3HVBtniH4&libraries=drawing,places"></script>
   <!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/angular-ui-bootstrap/1.0.0/ui-bootstrap.js"></script> -->
 
   <!-- <script type="text/javascript" src="../libs/ui-bootstrap-custom-2.5.0.js"></script> -->
@@ -191,7 +191,7 @@
   <header class="navbar navbar-sticky nav-down">
     <div id="logo" href="/home">
       <a href="/home">
-        <img src="../updatedFrontend/toplogo.svg" alt="App Loading" >
+        <img src="../updatedFrontend/toplogo.svg" alt="App Loading">
         <span class="count"></span>
 
       </a>
@@ -255,7 +255,7 @@
 
 
 
-  <div class="">
+  <div>
     <!-- Main Angular view where routes will be rendered-->
     <div class="main-view" ng-show="main.loadme" ng-view></div>
 
@@ -319,8 +319,10 @@
 
       </div>
       <!-- .social-bar -->
-      <p class="copyright">&copy; 2018. Mookie Dough LLC</p>
       <p ng-if="mookie.numberOfSiteVisitors > 0"> Site has been accessed {{mookie.numberOfSiteVisitors}} times.</p>
+      <p class="copyright">
+        <img src="https://res.cloudinary.com/de8cuyd0n/image/upload/v1520412543/E-commerce%20landing%20page/icons/copy-right-img_1x.png"
+          alt="&copy"> 2018 all rights reserved. Mookie Dough LLC</p>
 
       <div class="column">
         <div class="scroll-to-top-btn">

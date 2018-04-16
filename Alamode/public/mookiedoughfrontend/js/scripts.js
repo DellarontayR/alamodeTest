@@ -110,6 +110,21 @@ jQuery(document).ready(function ($) {
 			$('html').velocity("scroll", { offset: 0, duration: 1000, easing: 'easeOutExpo', mobileHA: false });
 		});
 	}
+	var $shopNow = $('.shop-now-button');
+	if ($shopNow.length > 0) {
+		$(window).on('scroll', function () {
+			if ($(window).scrollTop() > 600) {
+				$shopNow.addClass('visible');
+			} else {
+				$shopNow.removeClass('visible');
+			}
+		});
+		$shopNow.on('click', function (e) {
+			console.log('onclick');
+			e.preventDefault();
+			$('html').velocity("scroll", { offset: 0, duration: 1000, easing: 'easeOutExpo', mobileHA: false });
+		});
+	}
 
 
 	// Smooth scroll to element

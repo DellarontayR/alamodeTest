@@ -1,25 +1,128 @@
-<div>
-	<div id="mainWrapper" class="container">
-		<section class="row">
-			<div class="product-card col-xs-12 col-sm-6 col-md-4 col-lg-3 product-shadow" ng-repeat="catalogProduct in mookie.products">
-				<figure class="snip1418">
-					<!-- <img ng-click="mookie.showProductModal(catalogProduct)" ng-src="{{catalogProduct.imagePath}}" alt="sample85" /> -->
-					<img class="mookie-product-img" ng-src="{{catalogProduct.imagePath}}" alt="sample85" />
+<div id="mainWrapper" class="container">
 
-					<div class="add-to-cart" onclick="">
-						<i class="ion-android-add"></i>
-						<span ng-click="mookie.addToCart(catalogProduct,catalogProduct._id); $event.stopPropagation();$event.preventDefault();"><a href="#"></a>Buy Now</span>
+	<h1 style="text-align:center;font-family:\" Lato\ "" class="logo-style">Mookie Dough Delivery Coming soon</h1>
+	<section class="row">
+		<div class="product-card col-xs-12 col-sm-6 col-md-4 col-lg-3 product-shadow" ng-repeat="catalogProduct in mookie.products">
+			<figure class="snip1418">
+				<!-- <img ng-click="mookie.showProductModal(catalogProduct)" ng-src="{{catalogProduct.imagePath}}" alt="sample85" /> -->
+				<img class="mookie-product-img" ng-src="{{catalogProduct.imagePath}}" alt="sample85" />
+
+				<div class="add-to-cart" onclick="">
+					<i class="ion-android-add"></i>
+					<span ng-click="mookie.addToCart(catalogProduct,catalogProduct._id); $event.stopPropagation();$event.preventDefault();">
+						<a href="#"></a>Buy Now</span>
+				</div>
+				<figcaption>
+					<h3>{{catalogProduct.title}}</h3>
+					<!-- <p>{{catalogProduct.description}}</p> -->
+					<div class="price">
+						{{catalogProduct.price | currency}}
 					</div>
-					<figcaption>
-						<h3>{{catalogProduct.title}}</h3>
-						<!-- <p>{{catalogProduct.description}}</p> -->
-						<div class="price">
-							{{catalogProduct.price | currency}}
-						</div>
-					</figcaption>
-					<!-- <a href="#"></a> -->
-				</figure>
+				</figcaption>
+				<!-- <a href="#"></a> -->
+			</figure>
+		</div>
+	</section>
+
+	<!-- NEW HOME -->
+	<div class="newHome">
+		<header>
+			<div id="header-hero">
+				<div class="headerBg">
+					<div class="sc-media">
+						<img class="center-image" src="../imgs/Media/mookie_dab.png" alt="header-image" />
+					</div>
+				</div>
+				<!-- <div class="header-bg">
+					<div class="sc-media">
+						<img src="../imgs/Media/chocolatechipdough.JPG" alt="header-image" />
+					</div>
+				</div> -->
+				<div class="header-content">
+					<p class="heading-1"></p>
+					<h1>welcome to
+						<span class="logo-style">Mookie Dough</span>
+					</h1>
+					<p class="description">Artisian cookie dough treats at your door or for your next catering event.</p>
+					<a href="#" class="button shop-now-button" style="display:block;">
+						<p>shop now</p>
+					</a>
+				</div>
+			</div>
+		</header>
+		<section id="summer-collection">
+			<div class="container">
+				<div class="sc-content">
+					<h1>Exclusive Catering</h1>
+					<p class="description">Contact Andrew Bempah or Oluwaseyi Olaleye at bempah@mookiedough.com and olaleye@mookiedough.com for exclusive catering
+						for Stanford club events and nearby areas
+					</p>
+					<a href="#">discover now</a>
+				</div>
+				<div class="sc-media">
+					<div class="sc-media-bg">
+						<img src="../imgs/Media/M00KIE.jpg" alt="sc-image" /> </div>
+				</div>
 			</div>
 		</section>
+		<section id="products">
+			<div class="container">
+				<div class="products-header">
+					<h2>popular products</h2>
+					<p>Our Artisian frozen cookie dough bricks will leave you wanting more</p>
+				</div>
+				<div class="product product-1">
+					<figure>
+						<img src="../imgs/Media/OGMookiepackaging.png" alt="product-image">
+						<figcaption>Cookie Dough Bricks</figcaption>
+						<figcaption>$ 2.99</figcaption>
+					</figure>
+				</div>
+				<div class="product product-2">
+					<figure>
+						<img src="../updatedFrontend/cookies.png" alt="product-image">
+						<figcaption>Cookie Dough Bricks</figcaption>
+						<figcaption>$ 2.99</figcaption>
+					</figure>
+				</div>
+				<div class="product product-3">
+					<figure>
+						<img src="../imgs/Media/Ogmookieconfetti.png" alt="product-image">
+						<figcaption>Cookie Dough Bricks</figcaption>
+						<figcaption>$ 2.99</figcaption>
+					</figure>
+				</div>
+				<div class="product product-4">
+					<figure>
+						<img src="../updatedFrontend/redvelvet.png" alt="product-image">
+						<figcaption>Cookie Dough Bricks</figcaption>
+						<figcaption>$ 2.99</figcaption>
+					</figure>
+				</div>
+			</div>
+		</section>
+		<section id="collections">
+			<div class="container">
+				<div class="c-1">
+					<div class="c-1-image-holder">
+						<img src="../imgs/Media/mookiecar.svg" alt="image"> </div>
+				</div>
+				<div class="c-2">
+					<h2>Work Coming Soon</h2>
+					<hr />
+					<div class="c-2-image-holder">
+						<img class="left" src="../imgs/Media/dorm5-min.jpg" alt="">
+						<img class="right" src="../imgs/Media/header3.png" alt="">
+					</div>
+				</div>
+			</div>
+		</section>
+
+		<div class="back-to-top">
+			<a href="#nav">
+				<img title="Back to Top." src="https://res.cloudinary.com/de8cuyd0n/image/upload/v1520412541/E-commerce%20landing%20page/icons/back_-_top_1x.png"
+				 alt="back to top">
+			</a>
+		</div>
 	</div>
 </div>
