@@ -51,11 +51,15 @@ var passwordValidator = [
 
 // User Mongoose Schema
 var UserSchema = new Schema({
-    username: { type: String, lowercase: true, required: true},
-    email: { type: String, required: true, lowercase: true, unique: true, validate:emailValidator},
-    socialToken: {type:String,required:false},    
+    username: { type: String, lowercase: true, required: true },
+    email: { type: String, required: true, lowercase: true, unique: true, validate: emailValidator },
+    socialToken: { type: String, required: false },
     password: { type: String, required: false, select: false },
-    cart: {type:Schema.ObjectId, ref:'Cart',required:false},
+    cart: { type: Schema.ObjectId, ref: 'Cart', required: false },
+    active: { type: Boolean, required: true, default: false },
+    temporarytoken: { type: String, required: true },
+    resettoken: { type: String, required: false },
+    permission: { type: String, required: true, default: 'customer' }
     // phonenumber: {type: String, required: true},
     // address: {type:String, required: true},
     // country :{type:String, required:true},
@@ -63,48 +67,25 @@ var UserSchema = new Schema({
     // city: {type:String, required: true},
     // zipcode: {type:String, required:true},
 
-    active: { type: Boolean, required: true, default: true },
-    temporarytoken: { type: String, required: true },
-    resettoken: { type: String, required: false },
-    permission: { type: String, required: true, default: 'customer' }
 });
 
 
-UserSchema.pre('save',function(next){
+UserSchema.pre('save', function (next) {
     var user = this;
-    if(user.password == null) return next();
+    if (user.password == null) return next();
     if (!user.isModified('password')) return next(); // If password was not changed or is new, ignore middleware
-    // bcrypt.genSalt(10, function(err, salt) {
-    //     bcrypt.hash("B4c0/\/", salt, function(err, hash) {
-    //         // Store hash in your password DB. 
-    //     });
-    // });
 
-    bcryptjs.genSalt(10,function(err,salt){
-        bcryptjs.hash(user.password,salt,function(err,hash){
-            if(err) return next(err);            
+    bcryptjs.genSalt(10, function (err, salt) {
+        bcryptjs.hash(user.password, salt, function (err, hash) {
+            if (err) return next(err);
             user.password = hash;
             next();
         });
     });
-    // var salt = bcryptjs.genSaltSync(10);
-    // var hash = bcryptjs.hashSync(user.password,salt);
-    // if(hash){
-    //     user.password = hash;
-    // }
-    // bcrypt.hash(user.password,null,null,function(err,hash){
-    //     if(err) return next(err);
-    //     user.password = hash;
-    //     next();
-    // });
 });
 
-UserSchema.methods.comparePassword = function(password) {
-    // return bcrypt.compareSync(password, this.password); // Returns true if password matches, false if doesn't
-    return bcryptjs.compare(password,this.password);
-    // bcryptjs.compareSync(password,this.password,function(err,res){
-    //     return res;
-    // });
+UserSchema.methods.comparePassword = function (password) {
+    return bcryptjs.compare(password, this.password);
 };
 
-module.exports = mongoose.model('User',UserSchema);
+module.exports = mongoose.model('User', UserSchema);

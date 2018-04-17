@@ -74,6 +74,9 @@ alamode.controller('regCtrl', function($http, $location, $timeout, User, $scope,
 
         User.registerMookie(regData).then(function(data){
             if(data.data.success){
+
+                // TODO:
+                // Send user an email saying they need to continue sign up frfr
                 app.username = regData.username;
                 Auth.login(app.regData);
                 app.loggedIn = true;

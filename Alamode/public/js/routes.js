@@ -6,6 +6,10 @@ var app = angular.module('appRoutes', ['ngRoute', 'angularCSS'])
         $routeProvider.when('/', {
             redirectTo: '/home'
         }).
+            when('/inlinereceipt', {
+                templateUrl: '../views/inlinereceipt.html',
+                css: '../css/ontheway.css'
+            }).
             when('/home', {
                 templateUrl: '../updatedFrontend/mookie.html',
                 authenticated: false,
