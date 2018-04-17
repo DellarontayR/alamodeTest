@@ -94,8 +94,9 @@ var app = angular.module('appRoutes', ['ngRoute', 'angularCSS'])
                 authenticated: false
             }).
             when('/about', {
-                templateUrl: '../mookiedoughfrontend/about.html',
-                authenticated: false
+                templateUrl: '../views/aboutus.html',
+                authenticated: false,
+                css: '../css/aboutus.css'
             })
             .when('/register', {
                 templateUrl: '../mookiedoughfrontend/new-reg.html',
