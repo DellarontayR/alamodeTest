@@ -1,35 +1,35 @@
 "use strict";
 
-angular.module('orderServices',[])
+angular.module('orderServices', [])
 
-.factory('orderService',function($http){
-    var orderServiceFactory = {};
+    .factory('orderService', function ($http) {
+        var orderServiceFactory = {};
 
-    orderServiceFactory.getCurrentOrders = function(){
-        return $http.post('/api/getcurrentOrders');
-    };
+        // Get current orders for management
+        orderServiceFactory.getCurrentOrders = function () {
+            return $http.post('/api/getcurrentOrders');
+        };
 
-    orderServiceFactory.getOrder = function(orderId){
-        return $http.post('/api/getOrder',orderId);
-    };
+        // Get order for management and customers
+        orderServiceFactory.getOrder = function (orderId) {
+            return $http.post('/api/getOrder', orderId);
+        };
 
-    orderServiceFactory.updateDriverLocation = function(driverLatLng){
-        return $http.post('/api/updateDriverLocation',driverLatLng);
-    };
+        // Update driver location for an order
+        orderServiceFactory.updateDriverLocation = function (driverLatLng) {
+            return $http.post('/api/updateDriverLocation', driverLatLng);
+        };
 
-    orderServiceFactory.updateDeliveryStatus = function(orderData){
-        return $http.post('/api/updateDeliveryStatus',orderData);
-    };
+        // Update the delivery status of an order
+        orderServiceFactory.updateDeliveryStatus = function (orderData) {
+            return $http.post('/api/updateDeliveryStatus', orderData);
+        };
+
+        // Get the old orders for the user
+        orderServiceFactory.getUserOrders = function(userData){
+            return $http.post('/api/getUserOrders',userData);
+        };
 
 
-
-    // stripeServiceFactory.checkout = function(checkoutData){
-    //     return $http.post('/api/checkout',checkoutData);
-    // };
-
-    // stripeServiceFactory.donate = function(donateData){
-    //     return $http.post('/api/donate',donateData);
-    // }
-
-    return orderServiceFactory;
-});
+        return orderServiceFactory;
+    });

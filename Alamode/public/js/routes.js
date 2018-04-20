@@ -6,10 +6,6 @@ var app = angular.module('appRoutes', ['ngRoute', 'angularCSS'])
         $routeProvider.when('/', {
             redirectTo: '/home'
         }).
-            when('/inlinereceipt', {
-                templateUrl: '../views/inlinereceipt.html',
-                css: '../css/ontheway.css'
-            }).
             when('/home', {
                 templateUrl: '../updatedFrontend/mookie.html',
                 authenticated: false,
@@ -124,7 +120,7 @@ var app = angular.module('appRoutes', ['ngRoute', 'angularCSS'])
             // Route: User Profile
             .when('/account', {
                 templateUrl: '../mookiedoughfrontend/account.html',
-                authenticated: false,
+                authenticated: true,
                 controller: 'ProfileController',
                 controllerAs: 'profile',
                 css: '../css/account.css'
@@ -239,9 +235,9 @@ var app = angular.module('appRoutes', ['ngRoute', 'angularCSS'])
 
             // Route: Activate Account Through E-mail
             .when('/activate/:token', {
-                templateUrl: '../../views/user/activate.html',
-                controller: 'emailCtrl',
-                controllerAs: 'email',
+                templateUrl: '../views/activate.html',
+                controller: 'activationCtrl',
+                controllerAs: 'activation',
                 authenticated: false
             })
 

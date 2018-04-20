@@ -49,6 +49,8 @@ module.exports = function (router) {
     });
     // >
 
+
+
     // twilioClient.messages.create({
     //     to: '9013649552',
     //     from: '6503341693',
@@ -82,7 +84,7 @@ module.exports = function (router) {
     });
 
     // cont.
-    var sendMail = function (to, subject, html) {
+    var sendMail = function (to, subject, html, callback) {
         var email = {
             from: 'Mookie Dough Staff, readus@mookiedough.com',
             to: to,
@@ -94,13 +96,18 @@ module.exports = function (router) {
                 //Log errors to db / send error to user
                 // Possibly a callback to handle the err from the function
                 console.log(err);
+
             }
             else {
+                callback(inf);
                 // email sent
             }
         });
     }
     // >
+    // sendMail('readus@mookiedough.com','test',veryTemp,function(data){
+    //     console.log(data);
+    // });
 
     // SiteVisit apis
     router.post('/getSiteVisitors', function (req, res) {
@@ -174,6 +181,23 @@ module.exports = function (router) {
         }
     });
 
+    // Get orders for a specific user
+    router.post('/getUserOrders', function (req, res) {
+        if (req.body.userId === null || req.body.userId === '') {
+            res.json({ success: false, message: 'Something went wrong. Our staff is currently trying to handle this issue.' });
+        }
+        else {
+            Order.find({ user: req.body.userId }).populate({ path: 'customerReceipt', populate: { path: 'customerCart', populate: { path: 'user' } } }).populate({ path: 'customerReceipt', populate: { path: 'customerCart', populate: { path: 'products' } } }).exec(function(err,orders){
+                if(err || !orders){
+                    res.json({success:false,message:'Something went wrong while trying to look up orders',err:err});
+                }
+                else{
+                    res.json({success:true,message:'Orders found successfully',orders:orders});
+                }
+            });
+        }
+    });
+
     // Get order currently for management possibly for user
     router.post('/getOrder', function (req, res) {
         if (req.body.orderId === null || req.body.orderId === '') {
@@ -220,27 +244,27 @@ module.exports = function (router) {
     // >
 
     // Update delivery status to Pending, Started, OnTheWay, and Completed
-    router.post('/updateDeliveryStatus',function(req,res){
-        if(req.body.orderId === null || req.body.orderId === '' || req.body.orderStatus === null || req.body.orderStatus === ''){
-            res.json({success:false,message:'Correct order id not presented'});
+    router.post('/updateDeliveryStatus', function (req, res) {
+        if (req.body.orderId === null || req.body.orderId === '' || req.body.orderStatus === null || req.body.orderStatus === '') {
+            res.json({ success: false, message: 'Correct order id not presented' });
         }
-        else{
-            Order.findById(req.body.orderId,function(err,order){
-                if(err || !order){
-                    res.json({success:false,message:'Could not find and update order',err:err});
+        else {
+            Order.findById(req.body.orderId, function (err, order) {
+                if (err || !order) {
+                    res.json({ success: false, message: 'Could not find and update order', err: err });
                 }
-                else{
+                else {
                     order.orderStatus = req.body.orderStatus;
-                    if(order.orderStatus === 'Completed'){
+                    if (order.orderStatus === 'Completed') {
                         order.orderCompleted = true;
                         order.orderCompeltedOn = Date.now();
                     }
-                    order.save(function(err,newOrder){
-                        if(err || !newOrder){
-                            res.json({success:false,message:'Could not update order status',err:err});
+                    order.save(function (err, newOrder) {
+                        if (err || !newOrder) {
+                            res.json({ success: false, message: 'Could not update order status', err: err });
                         }
-                        else{
-                            res.json({success:true,message:'Order updated successfully',order:newOrder});
+                        else {
+                            res.json({ success: true, message: 'Order updated successfully', order: newOrder });
                         }
                     })
                 }
@@ -368,6 +392,7 @@ module.exports = function (router) {
 
                                                                         var order = new Order();
                                                                         order.customerReceipt = newreceipt;
+                                                                        order.user = user._id;
                                                                         order.save(function (err, newOrder) {
                                                                             if (err || !newOrder) {
                                                                                 res.json({ success: false, message: 'Could not start new order', err: err });
@@ -554,8 +579,6 @@ module.exports = function (router) {
         });
     });
 
-
-
     router.get('/checkUserCart', function (req, res) {
         User.findById(req.body.userId).select().exec(function (err, user) {
             console.log(user.cart);
@@ -679,7 +702,7 @@ module.exports = function (router) {
                                 cart.products.push(req.body.product);
                                 cart.save(function (err, cart) {
                                     if (err || !cart) {
-                                        res.json({ success: false, message: 'There was an error trying to save new cart',err:err });
+                                        res.json({ success: false, message: 'There was an error trying to save new cart', err: err });
                                     }
                                     else {
                                         res.json({ success: true, message: 'Cart has been updated', cart: cart });
@@ -721,29 +744,29 @@ module.exports = function (router) {
     //     }
     // });
 
-    router.post('/updateUserCart',function(req,res){
-        if(req.body.cartProducts === null || req.body.cartId === null || req.body.cartId === ''){
-            res.json({success:false,message:'Cant get cart to update'});
+    router.post('/updateUserCart', function (req, res) {
+        if (req.body.cartProducts === null || req.body.cartId === null || req.body.cartId === '') {
+            res.json({ success: false, message: 'Cant get cart to update' });
         }
-        else{
-            Cart.findById(req.body.cartId).select().exec(function(err,cart){
-                if(err || !cart){
-                    res.json({success:false,message:'Error attempting to get cart',err:err});
+        else {
+            Cart.findById(req.body.cartId).select().exec(function (err, cart) {
+                if (err || !cart) {
+                    res.json({ success: false, message: 'Error attempting to get cart', err: err });
                 }
-                else{
+                else {
                     cart.products = [];
-                    req.body.cartProducts.forEach(function(product){
-                        for(var i = 0; i < product.qty; i++){
+                    req.body.cartProducts.forEach(function (product) {
+                        for (var i = 0; i < product.qty; i++) {
                             cart.products.push(product._id);
                         }
                     });
 
-                    cart.save(function(err,newCart){
-                        if(err || !cart){
-                            res.json({success:false,message:'There was an error while trying to save the cart',err});
+                    cart.save(function (err, newCart) {
+                        if (err || !cart) {
+                            res.json({ success: false, message: 'There was an error while trying to save the cart', err });
                         }
-                        else{
-                            res.json({success:true,message:'Cart successfully updated',cart:newCart});
+                        else {
+                            res.json({ success: true, message: 'Cart successfully updated', cart: newCart });
                         }
                     });
                 }
@@ -1007,9 +1030,9 @@ module.exports = function (router) {
                     else if (err) {
                         if (err.code == 11000) {
                             if (err.errmsg[65] == "u") {
-                                res.json({ success: false, message: 'That username is already taken' }); // Display error if username already taken
+                                res.json({ success: false, message: 'That username is already taken', err: err }); // Display error if username already taken
                             } else if (err.errmsg[65] == "e") {
-                                res.json({ success: false, message: 'That e-mail is already taken' }); // Display error if e-mail already taken
+                                res.json({ success: false, message: 'That e-mail is already taken', err: err }); // Display error if e-mail already taken
                             }
                             else {
                                 res.json({ success: false, message: 'An error occurred' });
@@ -1035,7 +1058,7 @@ module.exports = function (router) {
         user.email = req.body.email;
         user.password = req.body.password;
         user.username = req.body.username;
-        user.temporarytoken = jwt.sign({ username: user.username, email: user.email }, secret, { expiresIn: '24h' });
+        user.temporarytoken = jwt.sign({ username: user.username, email: user.email }, secret, { expiresIn: '3d' });
 
         if (req.body.username === null || req.body.username === '' || req.body.password === null || req.body.password === '' ||
             req.body.email === null || req.body.email === '') {
@@ -1060,9 +1083,9 @@ module.exports = function (router) {
                         if (err.code == 11000) {
                             console.log(err);
                             if (err.errmsg[65] == "u") {
-                                res.json({ success: false, message: 'That username is already taken' }); // Display error if username already taken
+                                res.json({ success: false, message: 'That username is already taken', err: err }); // Display error if username already taken
                             } else if (err.errmsg[65] == "e") {
-                                res.json({ success: false, message: 'That e-mail is already taken' }); // Display error if e-mail already taken
+                                res.json({ success: false, message: 'That e-mail is already taken', err: err }); // Display error if e-mail already taken
                             }
                             else {
                                 res.json({ success: false, message: 'An error occurred' });
@@ -1073,24 +1096,12 @@ module.exports = function (router) {
                     }
                 }
                 else {
+                    var subject = 'Mookie Dough Account Activation Link';
+                    var html = 'Hello<strong> ' + user.username + '</strong>, <br><br> Thanks for creating a Mookie Dough account! You can easily log in with the same account you just created and take advantage of Mookie Dough online ordering. Don\'t forget to add your payment method to get the most of your account. Enjoy our Mookie Dough online ordering experience and try some of our pouches; they are a great late night snack. Order before 7pm daily for on campus delivery at www.mookiedough.co Delivery Window for Mookie Dough Products is 9 - 11 pm Questions ? Email readus@mookiedough.com. We\'re here to help! - the Mookie Dough Boys <br> <br> Please click on the link below to complete your activation:<br><br><a href="https://www.mookiedough.co/activate/' + user.temporarytoken + '">https://www.mookiedough.co/activate/</a>';
+                    sendMail(user.email, subject, html, function (data) {
+                        console.log(data);
+                    });
 
-                    // var email = {
-                    //     from: 'álamode Staff, alamodetechnology@localhost.com',
-                    //     to: [user.email, 'alamodetechnology@gmail.com'],
-                    //     subject: 'Your Activation Link',
-                    //     text: 'Hello ' + user.name + ', thank you for registering at localhost.com. Please click on the following link to complete your activation: http://localhost:8080/activate/' + user.temporarytoken,
-                    //     html: 'Hello<strong> ' + user.name + '</strong>,<br><br>Thank you for registering at localhost.com. Please click on the link below to complete your activation:<br><br><a href="http://localhost:8080/activate/' + user.temporarytoken + '">http://localhost:8080/activate/</a>'
-                    // };
-                    // // Function to send e-mail to the user
-                    // client.sendMail(email, function (err, info) {
-                    //     if (err) {
-                    //         console.log(err); // If error with sending e-mail, log to console/terminal
-                    //     } else {
-                    //         console.log(info); // Log success message to console if sent
-                    //         console.log(user.email); // Display e-mail that it was sent to
-                    //     }
-                    // });
-                    
                     res.json({ success: true, message: 'Account registered! Please check your e-mail for activation link.' }); // Send success message back to controller/request
                     // Send email to user about how to successfully activate token
                     // Essentialy create a route /activate/:temporarytoken then find that token when that route is called and allow user to be
@@ -1101,94 +1112,34 @@ module.exports = function (router) {
             });
         }
     });
-
-
-    router.post('/mookie-login', function (req, res) {
-        var login = (req.body.email).toLowerCase();
-
-        User.findOne({ email: req.body.email }).select('email username password active').exec(function (err, user) {
+    // Route for user logins
+    router.post('/authenticate', function (req, res) {
+        var loginUser = (req.body.email).toLowerCase(); // Ensure username is checked in lowercase against database
+        User.findOne({ email: loginUser }).select('email username password active').exec(function (err, user) {
             if (err) {
-                if (err.errors != null) {
-                    if (err.errors.email) {
-                        res.json({ success: false, message: err.errors.email.message }); // Display error in validation (email)
-                    } else if (err.errors.password) {
-                        res.json({ success: false, message: err.errors.password.message }); // Display error in validation (password)
-                    }
-                }
-                else {
-                    // Check if duplication error exists
-                    res.json({ success: false, message: err });
-                }
-            }
-            else {
-                console.log(err);
-                console.log(user);
+                res.json({ success: false, message: 'Something went wrong. This error has been logged and will be addressed by our staff. We apologize for this inconvenience!' });
+            } else {
+                // Check if user is found in the database (based on username)           
                 if (!user) {
-                    res.json({ success: false, message: "Something went wrong, user login failed" });
-                }
-                else if (user) {
+                    res.json({ success: false, message: 'Username not found' }); // Username not found in database
+                } else if (user) {
+                    // Check if user does exist, then compare password provided by user
                     if (!req.body.password) {
-                        res.json({ success: false, message: 'No password provided' });
-                    }
-                    else {
-                        var validPassword = user.comparePassword(req.body.password);
+                        res.json({ success: false, message: 'No password provided' }); // Password was not provided
+                    } else {
+                        var validPassword = user.comparePassword(req.body.password); // Check if password matches password provided by user 
                         if (!validPassword) {
-                            res.json({ success: false, message: 'Incorrect email or password provided' });
-
-                        }
-                        else if (!user.active) {
-                            res.json({ success: false, message: 'Account is not yet activated. Please activate.' });
-                        }
-                        else {
-                            var token = jwt.sign({ username: user.username, email: user.email }, secret, { expiresIn: '7d' });
-                            res.json({ success: true, message: 'User authenticated!', token: token, user: user });
+                            res.json({ success: false, message: 'Could not authenticate password' }); // Password does not match password in database
+                        } else if (!user.active) {
+                            res.json({ success: false, message: 'Account is not yet activated. Please check your e-mail for activation link.', expired: true }); // Account is not activated 
+                        } else {
+                            var token = jwt.sign({ username: user.username, email: user.email }, secret, { expiresIn: '24h' }); // Logged in: Give user token
+                            res.json({ success: true, message: 'User authenticated!', token: token, user: user }); // Return token in JSON object to controller
                         }
                     }
                 }
             }
         });
-
-
-
-    });
-    // Route to register new users  
-    router.post('/users', function (req, res) {
-        var user = new User(); // Create new User object
-        user.username = req.body.username; // Save username from request to User object
-        user.password = req.body.password; // Save password from request to User object
-        user.email = req.body.email; // Save email from request to User object
-        user.name = req.body.name; // Save name from request to User object
-        user.temporarytoken = jwt.sign({ username: user.username, email: user.email }, secret, { expiresIn: '24h' }); // Create a token for activating account through e-mail
-
-        if (req.body.username === null || req.body.username === '' || req.body.password === null || req.body.password === '' || req.body.email === null || req.body.email === '' || req.body.name === null || req.body.name === '') {
-            res.json({ success: false, message: 'Ensure username, email, and password were provided' });
-        } else {
-            // Save new user to database
-            user.save(function (err) {
-                if (err) {
-                    res.json({ success: false, message: err });
-                } else {
-                    // Create e-mail object to send to user
-                    var email = {
-                        from: 'álamode Staff, alamodetechnology@localhost.com',
-                        to: [user.email, 'alamodetechnology@gmail.com'],
-                        subject: 'Your Activation Link',
-                        text: 'Hello ' + user.name + ', thank you for registering at localhost.com. Please click on the following link to complete your activation: http://localhost:8080/activate/' + user.temporarytoken,
-                        html: 'Hello<strong> ' + user.name + '</strong>,<br><br>Thank you for registering at localhost.com. Please click on the link below to complete your activation:<br><br><a href="http://localhost:8080/activate/' + user.temporarytoken + '">http://localhost:8080/activate/</a>'
-                    };
-                    // Function to send e-mail to the user
-                    client.sendMail(email, function (err, info) {
-                        if (err) {
-                            console.log(err); // If error with sending e-mail, log to console/terminal
-                        } else {
-                            console.log(info); // Log success message to console if sent
-                            console.log(user.email); // Display e-mail that it was sent to
-                        }
-                    });
-                    res.json({ success: true, message: 'Account registered! Please check your e-mail for activation link.' }); // Send success message back to controller/request
-                }
-            });
-        }
     });
 
     // Route to check if username chosen on registration page is taken
@@ -1221,35 +1172,7 @@ module.exports = function (router) {
         });
     });
 
-    // Route for user logins
-    router.post('/authenticate', function (req, res) {
-        var loginUser = (req.body.email).toLowerCase(); // Ensure username is checked in lowercase against database
-        User.findOne({ email: loginUser }).select('email username password active').exec(function (err, user) {
-            if (err) {
-                res.json({ success: false, message: 'Something went wrong. This error has been logged and will be addressed by our staff. We apologize for this inconvenience!' });
-            } else {
-                // Check if user is found in the database (based on username)           
-                if (!user) {
-                    res.json({ success: false, message: 'Username not found' }); // Username not found in database
-                } else if (user) {
-                    // Check if user does exist, then compare password provided by user
-                    if (!req.body.password) {
-                        res.json({ success: false, message: 'No password provided' }); // Password was not provided
-                    } else {
-                        var validPassword = user.comparePassword(req.body.password); // Check if password matches password provided by user 
-                        if (!validPassword) {
-                            res.json({ success: false, message: 'Could not authenticate password' }); // Password does not match password in database
-                        } else if (!user.active) {
-                            res.json({ success: false, message: 'Account is not yet activated. Please check your e-mail for activation link.', expired: true }); // Account is not activated 
-                        } else {
-                            var token = jwt.sign({ username: user.username, email: user.email }, secret, { expiresIn: '24h' }); // Logged in: Give user token
-                            res.json({ success: true, message: 'User authenticated!', token: token }); // Return token in JSON object to controller
-                        }
-                    }
-                }
-            }
-        });
-    });
+
 
     // Route to activate the user's account 
     router.put('/activate/:token', function (req, res) {
@@ -1270,19 +1193,13 @@ module.exports = function (router) {
                         // Mongoose Method to save user into the database
                         user.save(function (err) {
                             if (err) {
-                                console.log(err); // If unable to save user, log error info to console/terminal
+                                res.json({ success: false, message: 'Something went wrong. This error has been logged and will be addressed by our staff. We apologize for this inconvenience!', err: err });
                             } else {
                                 // If save succeeds, create e-mail object
-                                var email = {
-                                    from: 'Mookie Dough staff, readus@mookiedough.com',
-                                    to: user.email,
-                                    subject: 'Account Activated',
-                                    text: 'Hello ' + user.name + ', Your account has been successfully activated!',
-                                    html: 'Hello<strong> ' + user.name + '</strong>,<br><br>Your account has been successfully activated!'
-                                };
-                                // Send e-mail object to user
-                                client.sendMail(email, function (err, info) {
-                                    if (err) console.log(err); // If unable to send e-mail, log error info to console/terminal
+                                var subject = 'Mookie Dough Account Activated';
+                                var html = 'Hello<strong> ' + user.username + '</strong,<br><br>Your account has been successfully activated!';
+                                sendMail(user.email, subject, html, function (data) {
+                                    console.log(data);
                                 });
                                 res.json({ success: true, message: 'Account activated!' }); // Return success message to controller
                             }

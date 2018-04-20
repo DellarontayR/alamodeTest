@@ -87,7 +87,7 @@ alamode.controller('regCtrl', function($http, $location, $timeout, User, $scope,
                 $timeout(function(){
                     app.regMessage = false;
                     app.regMsg = "";
-                    $location.path('/account');
+                    $location.path('/register');
                 }, 2000);
             }
             else{

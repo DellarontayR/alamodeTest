@@ -8,7 +8,7 @@ angular.module('authServices', [])
 
     // Function to log the user in
     authFactory.login = function(loginData) {
-        return $http.post('/api/mookie-login', loginData).then(function(data) {
+        return $http.post('/api/authenticate', loginData).then(function(data) {
             if(data.data.success){
                 AuthToken.setToken(data.data.token); // Endpoint will return a token to set
                 return data;

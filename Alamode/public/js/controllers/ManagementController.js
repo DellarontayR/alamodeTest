@@ -156,7 +156,6 @@ alamode.controller('managementCtrl', function (User, orderService, $scope, $rout
 
         // Order Statuses
         // Pending, OnTheWay, Completed
-        // 
 
         var statusMap = new Map();
         statusMap.set('Pending','Your order is being Prepared');
@@ -172,8 +171,8 @@ alamode.controller('managementCtrl', function (User, orderService, $scope, $rout
                         var orderData = data.data.order;
                         order.order = orderData;
 
-                        order.order.customerReceipt.customerCart.total = order.order.customerReceipt.customerCart.subtotal + order.order.customerReceipt.customerCart.tax;
-                        order.order.customerReceipt.customerCart.total = order.order.customerReceipt.customerCart.total.toFixed(2);
+                        // order.order.customerReceipt.customerCart.total = order.order.customerReceipt.customerCart.subtotal + order.order.customerReceipt.customerCart.tax;
+                        // order.order.customerReceipt.customerCart.total = order.order.customerReceipt.customerCart.total.toFixed(2);
                         order.orderMessage = statusMap.get(order.order.orderStatus);
                         order.showMe = true;
 

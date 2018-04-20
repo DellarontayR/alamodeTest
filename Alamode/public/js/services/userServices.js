@@ -3,6 +3,11 @@ angular.module('userServices', [])
 
 .factory('User', function($http,$location) {
     var userFactory = {}; // Create the userFactory object
+    
+     // Activate user account with e-mail link
+     userFactory.activateAccount = function(token) {
+        return $http.put('/api/activate/' + token);
+    };
 
     userFactory.registerMookie = function(regData){
         // var uri = $location.protocol() + "://" + $location.host() + ":8080/api/registerMookie";
@@ -52,11 +57,6 @@ angular.module('userServices', [])
     // Check if e-mail is available at registration
     userFactory.checkEmail = function(regData) {
         return $http.post('/api/checkemail', regData);
-    };
-
-    // Activate user account with e-mail link
-    userFactory.activateAccount = function(token) {
-        return $http.put('/api/activate/' + token);
     };
 
     // Check credentials before re-sending activation link

@@ -101,11 +101,9 @@
 }
 
 .receipt {
-
-    background: #ff84a1;
+    /* background: #ff84a1; */
 	color: #3a3e59;
     font-family: 'Raleway', Arial, sans-serif;
-    
     max-width: 400px;
     margin: 5vh auto 0 auto;
     transition: .3s;

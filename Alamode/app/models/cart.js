@@ -14,7 +14,8 @@ var CartSchema = new Schema({
     oldCart: { type: Boolean, required: false, default: false },
     user: { type: Schema.ObjectId, ref: 'User', required: false },
     subtotal: { type: Number },
-    tax: { type: Number }
+    tax: { type: Number },
+    total:{type:Number}
 });
 
 var getCartTotal = function (products, callback) {
@@ -49,6 +50,7 @@ CartSchema.pre("save", function (next) {
         })
         self.subtotal = parseFloat(Math.round(totalPrice * 100) / 100).toFixed(2);
         self.tax = parseFloat(Math.round(self.subtotal * CATAX * 100) / 100).toFixed(2);
+        self.total = parseFloat(self.subtotal + self.tax).toFixed(2);
         next();
     }, function (err) {
         next(err);
