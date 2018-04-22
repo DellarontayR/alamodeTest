@@ -6,14 +6,8 @@ alamode.controller('CheckoutController', function ($scope, $location, User, Cart
     var card = false;
     checkoutCtrl.checkoutMessage = "";
     checkoutCtrl.chargeSuccessful = false;
-    console.log($scope.mookie.deliveryLocation);
-    console.log($scope.mookie.user.username);
-    console.log($scope.mookie.user.userEmail);
     console.log($scope.mookie.cart);
-    // When checkout is complete redie
 
-
-    // if ($scope.mookie.checkout) {
     checkoutCtrl.setupStripeCard = function () {
         var style = {
             base: {
@@ -60,6 +54,8 @@ alamode.controller('CheckoutController', function ($scope, $location, User, Cart
         });
     };
 
+    // Need to load cart object so that price can be seen before actual checkout and receipt/order creation
+
     checkoutCtrl.doCheckout = function (checkoutData) {
         var extraDetails = {
             name: checkoutData.name
@@ -79,6 +75,7 @@ alamode.controller('CheckoutController', function ($scope, $location, User, Cart
                     stripeData.cart = $scope.mookie.cart;
                     stripeData.price = $scope.mookie.cart.tax + $scope.mookie.cart.subtotal;
                     stripeData.price = stripeData.price*100;
+                    stripeData.userContactNumber = checkoutData.number;
                     stripeData.deliveryLocation = $scope.mookie.deliveryLocation;
                     stripeData.deliveryLatLng = $scope.mookie.deliveryLatLng;
                     stripeService.checkout(stripeData).then(function (data) {
@@ -97,8 +94,8 @@ alamode.controller('CheckoutController', function ($scope, $location, User, Cart
 
                                 checkoutCtrl.receipt = data.data.receipt;
 
-                                checkoutCtrl.receipt.customerCart.total = checkoutCtrl.receipt.customerCart.tax + checkoutCtrl.receipt.customerCart.subtotal;
-                                checkoutCtrl.receipt.customerCart.total = checkoutCtrl.receipt.customerCart.total.toFixed(2);
+                                // checkoutCtrl.receipt.customerCart.total = checkoutCtrl.receipt.customerCart.tax + checkoutCtrl.receipt.customerCart.subtotal;
+                                // checkoutCtrl.receipt.customerCart.total = checkoutCtrl.receipt.customerCart.total.toFixed(2);
 
                                 $('#order-input').toggleClass('hide-input');
                                 setTimeout(function () {

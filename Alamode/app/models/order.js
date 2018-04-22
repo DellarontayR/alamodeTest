@@ -12,7 +12,8 @@ var OrderSchema = new Schema({
     orderCompleted:{type:Boolean,required:true,default:false},
     orderStatus:{type:String,required:true,default:'Pending'},
     currentDriverLocation:{lat:{type:String,default:'37.4266083'},lng:{type:String,default:'-122.15756340000002'}},
-    user:{type:Schema.ObjectId,ref:'User'}
+    user:{type:Schema.ObjectId,ref:'User'},
+    userContactNumber:{type:Number}
 });
 
 module.exports = mongoose.model('Order', OrderSchema);

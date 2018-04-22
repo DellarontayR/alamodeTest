@@ -1,3 +1,4 @@
+"use strict";
 var express = require("express");
 var app = express();
 var port = process.env.PORT || 8080;
@@ -19,6 +20,10 @@ app.use(bodyParser.urlencoded({ extended: true }));
 app.use(express.static(__dirname + '/public'));
 app.use('/api', appRoutes);
 
+const publicPath = path.resolve(__dirname, "public"); 
+const mediaPath = path.join(publicPath, "/imgs/Media");
+
+app.use('/static',express.static(mediaPath));
 mongoose.Promise = global.Promise;
 
 /**

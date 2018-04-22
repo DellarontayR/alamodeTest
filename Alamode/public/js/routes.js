@@ -69,7 +69,8 @@ var app = angular.module('appRoutes', ['ngRoute', 'angularCSS'])
                 templateUrl: '../views/ontheway.html',
                 css: ['../css/ontheway.css', '../css/checkout.css'],
                 controller: 'CheckoutController',
-                controllerAs: 'cartCtrl'
+                controllerAs: 'checkoutCtrl',
+                authenticated: true
             }).
             when('/coterie', {
                 templateUrl: '../updatedFrontend/coterie.html',
