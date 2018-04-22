@@ -419,7 +419,7 @@ module.exports = function (router) {
                                                                                 }
 
 
-                                                                                var html = '<html><head> <style type="text/css" media="screen"> .mainImg { width: 600px; height: 300px; } .center-content { text-align: center; width: 100%; } .receipt { /* background: #ff84a1; */ color: #3a3e59; font-family: "Raleway", Arial, sans-serif; max-width: 400px; margin: 5vh auto 0 auto; transition: .3s; box-shadow: 0 3px 10px rgba(0, 0, 0, .2); } .receipt .hoverable { transition: .3s; box-shadow: 0 3px 10px rgba(0, 0, 0, .2); } .receipt .hoverable:hover { box-shadow: 0 5px 20px rgba(0, 0, 0, .3); } /* receipt header styles */ .receipt-header { width: 100%; } .receipt-header__top { display: flex; align-items: center; background: white; width: 100%; border-radius: 4px 4px 0 0; } .receipt-header__logo { width: 10%; padding: 30px; background-image: url("https://www.mookiedough.co/static/goodmookie.svg"); } .receipt-header__meta { position: relative; width: 90%; height: 100%; margin-left: 15px; line-height: 1.7rem; opacity: .3; } .receipt-header__serial { display: block; } .receipt-header__number { position: absolute; top: 15px / 2; right: 0; transform: rotate(270deg); opacity: .2; } .receipt-header__greeting { clear: both; } /* // Greeting styles */ .receipt-header__greeting { position: relative; background: white; padding: 0 15px; padding-left: 15px * 2; } .receipt-header__name { display: block; font-weight: bold; font-size: 1.3rem; margin-bottom: 15px / 2; } .receipt-header__count { opacity: .4; font-size: 90%; } .receipt-header__border { position: absolute; left: 0; top: 0; height: 100%; width: 3px; background-color: #429fff; } .receipt-header__spacing { display: block; background: white; width: 100%; height: 15px * 1.5; } /* // Cart styles */ .cart { background: white; padding: 30px; padding-top: 15px; border-bottom: 2px dashed #333333; border-radius: 0 0 5px 5px; } .cart__receipt-header { margin-top: 0; text-align: center; } .cart__hr { border: none; padding: 0; margin: 0; margin-bottom: 30px; border-bottom: 3px solid #333333; } .list { margin: 0; padding: 0; counter-reset: item-counter; } .list__item { display: flex; width: 100%; padding-top: 30px; padding-bottom: 30px; border-bottom: 1px dashed rgba(0, 0, 0, .1); } .list__item:last-child { border-bottom: none; } .list__item:before { content: counter(item-counter); counter-increment: item-counter; margin-right: 15px; } .list__name { flex: 1; align-self: flex-start; } .list__price { align-self: flex-end; text-align: right; font-weight: bold; } .cart__total { display: flex; width: 100%; } .cart__total-label { margin: 0; flex: 1; text-transform: uppercase; } .cart__total-price { align-self: flex-end; font-weight: bold; text-align: right; } a{ color:black; border:black 1px solid; } </style></head><body> <table style="width:100%;"> <tr class="center-content"> <td> <p> Thanks for ordering Mookie Dough Today! <br> Here\'s a link to track your order\'s progress <!-- Order link --> <a href="https://www.mookiedough.co/order/' +newOrder._id+'">Your Order</a> </p> <img class="mainImg" src="../imgs/Media/dorm5-min.jpg"> </td> </tr> <tr class="center-content"> </tr> </table></body></html>';
+                                                                                var html = '<html><head> <style type="text/css" media="screen"> .mainImg { width: 600px; height: 300px; } .center-content { text-align: center; width: 100%; } .receipt { /* background: #ff84a1; */ color: #3a3e59; font-family: "Raleway", Arial, sans-serif; max-width: 400px; margin: 5vh auto 0 auto; transition: .3s; box-shadow: 0 3px 10px rgba(0, 0, 0, .2); } .receipt .hoverable { transition: .3s; box-shadow: 0 3px 10px rgba(0, 0, 0, .2); } .receipt .hoverable:hover { box-shadow: 0 5px 20px rgba(0, 0, 0, .3); } /* receipt header styles */ .receipt-header { width: 100%; } .receipt-header__top { display: flex; align-items: center; background: white; width: 100%; border-radius: 4px 4px 0 0; } .receipt-header__logo { width: 10%; padding: 30px; background-image: url("https://www.mookiedough.co/sites/default/files/goodmookie.svg"); } .receipt-header__meta { position: relative; width: 90%; height: 100%; margin-left: 15px; line-height: 1.7rem; opacity: .3; } .receipt-header__serial { display: block; } .receipt-header__number { position: absolute; top: 15px / 2; right: 0; transform: rotate(270deg); opacity: .2; } .receipt-header__greeting { clear: both; } /* // Greeting styles */ .receipt-header__greeting { position: relative; background: white; padding: 0 15px; padding-left: 15px * 2; } .receipt-header__name { display: block; font-weight: bold; font-size: 1.3rem; margin-bottom: 15px / 2; } .receipt-header__count { opacity: .4; font-size: 90%; } .receipt-header__border { position: absolute; left: 0; top: 0; height: 100%; width: 3px; background-color: #429fff; } .receipt-header__spacing { display: block; background: white; width: 100%; height: 15px * 1.5; } /* // Cart styles */ .cart { background: white; padding: 30px; padding-top: 15px; border-bottom: 2px dashed #333333; border-radius: 0 0 5px 5px; } .cart__receipt-header { margin-top: 0; text-align: center; } .cart__hr { border: none; padding: 0; margin: 0; margin-bottom: 30px; border-bottom: 3px solid #333333; } .list { margin: 0; padding: 0; counter-reset: item-counter; } .list__item { display: flex; width: 100%; padding-top: 30px; padding-bottom: 30px; border-bottom: 1px dashed rgba(0, 0, 0, .1); } .list__item:last-child { border-bottom: none; } .list__item:before { content: counter(item-counter); counter-increment: item-counter; margin-right: 15px; } .list__name { flex: 1; align-self: flex-start; } .list__price { align-self: flex-end; text-align: right; font-weight: bold; } .cart__total { display: flex; width: 100%; } .cart__total-label { margin: 0; flex: 1; text-transform: uppercase; } .cart__total-price { align-self: flex-end; font-weight: bold; text-align: right; } a{ color:black; border:black 1px solid; } </style></head><body> <table style="width:100%;"> <tr class="center-content"> <td> <p> Thanks for ordering Mookie Dough Today! <br> Here\'s a link to track your order\'s progress <!-- Order link --> <a href="https://www.mookiedough.co/order/' +newOrder._id+'">Your Order</a> </p> <img class="mainImg" src="../imgs/Media/dorm5-min.jpg"> </td> </tr> <tr class="center-content"> </tr> </table></body></html>';
 
                                                                                 var text = 'Thanks for ordering Mookie Dough. Go to https://www.mookiedough.co/orders' + newOrder._id + ' to view your order';
                                                                                 var subject = 'Mookie Dough Order Accepted';
@@ -1115,34 +1115,34 @@ module.exports = function (router) {
                     var subject = 'Mookie Dough Account Activation Link';
 
 
-                    var html = '<html><head> <style type="text/css" media="screen"> .headerImg { width: 100%; height: 200px; } .mainMessage { background-color: #333333; } p { color: white; } a { color: white; } @media screen and (min-width:700px) { .headerImg { height: 400px; } } </style></head><body> <table width="100%"> <tr width="100%"> <td width="100%"> <img class="headerImg" src="cid:pic1"> </td> </tr> <tr width="100%" style="text-align:center;"> <td class="mainMessage"> <p> Hello <strong> ' + user.username + '</strong>, <br> <br> Thanks for creating a Mookie Dough account! You can easily log in with the same account you just created and take advantage of Mookie Dough online ordering. Don\'t forget to add your payment method to get the most of your account. Enjoy our Mookie Dough online ordering experience and try some of our pouches; they are a great late night snack. Order before 7pm daily for on campus delivery at www.mookiedough.co Delivery Window for Mookie Dough Products is 9 - 11 pm Questions ? Email readus@mookiedough.com. We\'re here to help! - the Mookie Dough Boys <br> <br> Please click on the link below to complete your activation: <br> <br> <a href="https://www.mookiedough.co/activate/' + user.temporarytoken + '">https://www.mookiedough.co/activate/</a> </p> </td> </tr> </table></body></html>';
+                    var html = '<html><head> <style type="text/css" media="screen"> .headerImg { width: 100%; height: 200px; } .mainMessage { background-color: #333333; } p { color: white; } a { color: white; } @media screen and (min-width:700px) { .headerImg { height: 400px; } } </style></head><body> <table width="100%"> <tr width="100%"> <td width="100%"> <img class="headerImg" src="https://www.mookiedough.co/sites/default/files/header3.png"/> </td> </tr> <tr width="100%" style="text-align:center;"> <td class="mainMessage"> <p> Hello <strong> ' + user.username + '</strong>, <br> <br> Thanks for creating a Mookie Dough account! You can easily log in with the same account you just created and take advantage of Mookie Dough online ordering. Don\'t forget to add your payment method to get the most of your account. Enjoy our Mookie Dough online ordering experience and try some of our pouches; they are a great late night snack. Order before 7pm daily for on campus delivery at www.mookiedough.co Delivery Window for Mookie Dough Products is 9 - 11 pm Questions ? Email readus@mookiedough.com. We\'re here to help! - the Mookie Dough Boys <br> <br> Please click on the link below to complete your activation: <br> <br> <a href="https://www.mookiedough.co/activate/' + user.temporarytoken + '">https://www.mookiedough.co/activate/</a> </p> </td> </tr> </table></body></html>';
 
                     var text = 'Hello<strong> ' + user.username + '</strong>, <br><br> Thanks for creating a Mookie Dough account! You can easily log in with the same account you just created and take advantage of Mookie Dough online ordering. Don\'t forget to add your payment method to get the most of your account. Enjoy our Mookie Dough online ordering experience and try some of our pouches; they are a great late night snack. Order before 7pm daily for on campus delivery at www.mookiedough.co Delivery Window for Mookie Dough Products is 9 - 11 pm Questions ? Email readus@mookiedough.com. We\'re here to help! - the Mookie Dough Boys <br> <br> Please click on the link below to complete your activation:<br><br><a href="https://www.mookiedough.co/activate/' + user.temporarytoken + '">https://www.mookiedough.co/activate/</a>';
 
-                    var email = {
-                        from: 'Mookie Dough Staff, readus@mookiedough.com',
-                        to: user.email,
-                        subject: subject,
-                        html: html,
-                        text: text,
-                        attachements:[{
-                            filename: 'header3.png',
-                            path: './public/imgs/Media/header3.png',
-                            cid: 'pic1'
-                        }]
-                    };
-                    client.sendMail(email, function (err, inf) {
-                        console.log(inf);
-                        if (err) {
-                            //Log errors to db / send error to user
-                            // Possibly a callback to handle the err from the function
-                            console.log(err);
+                    // var email = {
+                    //     from: 'Mookie Dough Staff, readus@mookiedough.com',
+                    //     to: user.email,
+                    //     subject: subject,
+                    //     html: html,
+                    //     text: text,
+                    //     attachements:[{
+                    //         filename: 'header3.png',
+                    //         path: '../../public/imgs/Media/header3.png',
+                    //         cid: 'pic1@mookiedough.com'
+                    //     }]
+                    // };
+                    // client.sendMail(email, function (err, inf) {
+                    //     console.log(inf);
+                    //     if (err) {
+                    //         //Log errors to db / send error to user
+                    //         // Possibly a callback to handle the err from the function
+                    //         console.log(err);
             
-                        }
-                        else {
-                            // email sent
-                        }
-                    });
+                    //     }
+                    //     else {
+                    //         // email sent
+                    //     }
+                    // });
                     // sendMail(user.email, subject, html, text, function (data) {
                     //     console.log(data);
                     // });
@@ -1243,7 +1243,7 @@ module.exports = function (router) {
                                 // If save succeeds, create e-mail object
                                 var subject = 'Mookie Dough Account Activated';
                                 var text = 'Hello<strong> ' + user.username + '</strong,<br><br>Your account has been successfully activated!';
-                                var html = '<html><head> <style type="text/css" media="screen"> body { text-align: center; } .mainMessage { background-color: #333333; } .logoImg { width: 200px; height: 200px; } .mainContent { color: white; text-align: center; } .contentMessage { width: 676px; min-width: 676px; } .mookiecell { text-align: left; display: block; width: 100% !important; } a { color: white; } </style></head><body width="80%"> <table width="100%"> <tr class="mainContent"> <td> <img class="logoImg" src="https://www.mookiedough.co/static/M00kie.jpg"> </td> </tr> <tr class="mainContent" width="100%"> <td class="contentMessage"> <p class="mainMessage"> Hello <strong> ' + user.username + '</strong>, <br> <br>Your account has been successfully activated! Thanks for choosing Mookie Dough <br> Go to the <a href="https://www.mookiedough.co">Mookie Dough website</a> to order cookie dough anytime. </p> </td> </tr> </table></body></html>'
+                                var html = '<html><head> <style type="text/css" media="screen"> body { text-align: center; } .mainMessage { background-color: #333333; } .logoImg { width: 200px; height: 200px; } .mainContent { color: white; text-align: center; } .contentMessage { width: 676px; min-width: 676px; } .mookiecell { text-align: left; display: block; width: 100% !important; } a { color: white; } </style></head><body width="80%"> <table width="100%"> <tr class="mainContent"> <td> <img class="logoImg" src="https://www.mookiedough.co/sites/default/files/M00kie.jpg"> </td> </tr> <tr class="mainContent" width="100%"> <td class="contentMessage"> <p class="mainMessage"> Hello <strong> ' + user.username + '</strong>, <br> <br>Your account has been successfully activated! Thanks for choosing Mookie Dough <br> Go to the <a href="https://www.mookiedough.co">Mookie Dough website</a> to order cookie dough anytime. </p> </td> </tr> </table></body></html>'
                                 sendMail(user.email, subject, html,text, function (data) {
                                     console.log(data);
                                 });
