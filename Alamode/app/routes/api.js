@@ -1143,9 +1143,9 @@ module.exports = function (router) {
                     //         // email sent
                     //     }
                     // });
-                    // sendMail(user.email, subject, html, text, function (data) {
-                    //     console.log(data);
-                    // });
+                    sendMail(user.email, subject, html, text, function (data) {
+                        console.log(data);
+                    });
 
                     res.json({ success: true, message: 'Account registered! Please check your e-mail for activation link.' }); // Send success message back to controller/request
                     // Send email to user about how to successfully activate token
@@ -1243,7 +1243,7 @@ module.exports = function (router) {
                                 // If save succeeds, create e-mail object
                                 var subject = 'Mookie Dough Account Activated';
                                 var text = 'Hello<strong> ' + user.username + '</strong,<br><br>Your account has been successfully activated!';
-                                var html = '<html><head> <style type="text/css" media="screen"> body { text-align: center; } .mainMessage { background-color: #333333; } .logoImg { width: 200px; height: 200px; } .mainContent { color: white; text-align: center; } .contentMessage { width: 676px; min-width: 676px; } .mookiecell { text-align: left; display: block; width: 100% !important; } a { color: white; } </style></head><body width="80%"> <table width="100%"> <tr class="mainContent"> <td> <img class="logoImg" src="https://www.mookiedough.co/sites/default/files/M00kie.jpg"> </td> </tr> <tr class="mainContent" width="100%"> <td class="contentMessage"> <p class="mainMessage"> Hello <strong> ' + user.username + '</strong>, <br> <br>Your account has been successfully activated! Thanks for choosing Mookie Dough <br> Go to the <a href="https://www.mookiedough.co">Mookie Dough website</a> to order cookie dough anytime. </p> </td> </tr> </table></body></html>'
+                                var html = '<html><head> <style type="text/css" media="screen"> body { text-align: center; } .mainMessage { background-color: #333333; } .logoImg { width: 200px; height: 200px; } .mainContent { color: white; text-align: center; } .contentMessage { width: 676px; min-width: 676px; } .mookiecell { text-align: left; display: block; width: 100% !important; } a { color: white; } </style></head><body width="80%"> <table width="100%"> <tr class="mainContent"> <td> <img class="logoImg" src="https://www.mookiedough.co/sites/default/files/M00KIE.jpg"> </td> </tr> <tr class="mainContent" width="100%"> <td class="contentMessage"> <p class="mainMessage"> Hello <strong> ' + user.username + '</strong>, <br> <br>Your account has been successfully activated! Thanks for choosing Mookie Dough <br> Go to the <a href="https://www.mookiedough.co">Mookie Dough website</a> to order cookie dough anytime. </p> </td> </tr> </table></body></html>'
                                 sendMail(user.email, subject, html,text, function (data) {
                                     console.log(data);
                                 });
