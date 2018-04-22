@@ -1115,12 +1115,37 @@ module.exports = function (router) {
                     var subject = 'Mookie Dough Account Activation Link';
 
 
-                    var html = '<html><head> <style type="text/css" media="screen"> .headerImg { width: 100%; height: 200px; } .mainMessage { background-color: #333333; } p { color: white; } a { color: white; } @media screen and (min-width:700px) { .headerImg { height: 400px; } } </style></head><body> <table width="100%"> <tr width="100%"> <td width="100%"> <img class="headerImg" src="https://www.mookiedough.co/static/header3.png"> </td> </tr> <tr width="100%" style="text-align:center;"> <td class="mainMessage"> <p> Hello <strong> ' + user.username + '</strong>, <br> <br> Thanks for creating a Mookie Dough account! You can easily log in with the same account you just created and take advantage of Mookie Dough online ordering. Don\'t forget to add your payment method to get the most of your account. Enjoy our Mookie Dough online ordering experience and try some of our pouches; they are a great late night snack. Order before 7pm daily for on campus delivery at www.mookiedough.co Delivery Window for Mookie Dough Products is 9 - 11 pm Questions ? Email readus@mookiedough.com. We\'re here to help! - the Mookie Dough Boys <br> <br> Please click on the link below to complete your activation: <br> <br> <a href="https://www.mookiedough.co/activate/' + user.temporarytoken + '">https://www.mookiedough.co/activate/</a> </p> </td> </tr> </table></body></html>';
+                    var html = '<html><head> <style type="text/css" media="screen"> .headerImg { width: 100%; height: 200px; } .mainMessage { background-color: #333333; } p { color: white; } a { color: white; } @media screen and (min-width:700px) { .headerImg { height: 400px; } } </style></head><body> <table width="100%"> <tr width="100%"> <td width="100%"> <img class="headerImg" src="cid:pic1"> </td> </tr> <tr width="100%" style="text-align:center;"> <td class="mainMessage"> <p> Hello <strong> ' + user.username + '</strong>, <br> <br> Thanks for creating a Mookie Dough account! You can easily log in with the same account you just created and take advantage of Mookie Dough online ordering. Don\'t forget to add your payment method to get the most of your account. Enjoy our Mookie Dough online ordering experience and try some of our pouches; they are a great late night snack. Order before 7pm daily for on campus delivery at www.mookiedough.co Delivery Window for Mookie Dough Products is 9 - 11 pm Questions ? Email readus@mookiedough.com. We\'re here to help! - the Mookie Dough Boys <br> <br> Please click on the link below to complete your activation: <br> <br> <a href="https://www.mookiedough.co/activate/' + user.temporarytoken + '">https://www.mookiedough.co/activate/</a> </p> </td> </tr> </table></body></html>';
 
                     var text = 'Hello<strong> ' + user.username + '</strong>, <br><br> Thanks for creating a Mookie Dough account! You can easily log in with the same account you just created and take advantage of Mookie Dough online ordering. Don\'t forget to add your payment method to get the most of your account. Enjoy our Mookie Dough online ordering experience and try some of our pouches; they are a great late night snack. Order before 7pm daily for on campus delivery at www.mookiedough.co Delivery Window for Mookie Dough Products is 9 - 11 pm Questions ? Email readus@mookiedough.com. We\'re here to help! - the Mookie Dough Boys <br> <br> Please click on the link below to complete your activation:<br><br><a href="https://www.mookiedough.co/activate/' + user.temporarytoken + '">https://www.mookiedough.co/activate/</a>';
-                    sendMail(user.email, subject, html, text, function (data) {
-                        console.log(data);
+
+                    var email = {
+                        from: 'Mookie Dough Staff, readus@mookiedough.com',
+                        to: user.email,
+                        subject: subject,
+                        html: html,
+                        text: text,
+                        attachements:[{
+                            filename: 'header3.png',
+                            path: './public/imgs/Media/header3.png',
+                            cid: 'pic1'
+                        }]
+                    };
+                    client.sendMail(email, function (err, inf) {
+                        console.log(inf);
+                        if (err) {
+                            //Log errors to db / send error to user
+                            // Possibly a callback to handle the err from the function
+                            console.log(err);
+            
+                        }
+                        else {
+                            // email sent
+                        }
                     });
+                    // sendMail(user.email, subject, html, text, function (data) {
+                    //     console.log(data);
+                    // });
 
                     res.json({ success: true, message: 'Account registered! Please check your e-mail for activation link.' }); // Send success message back to controller/request
                     // Send email to user about how to successfully activate token
