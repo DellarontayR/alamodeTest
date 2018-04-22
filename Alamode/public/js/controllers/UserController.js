@@ -87,7 +87,9 @@ alamode.controller('regCtrl', function($http, $location, $timeout, User, $scope,
                 $timeout(function(){
                     app.regMessage = false;
                     app.regMsg = "";
+                    $location.path('/home');
                     $location.path('/register');
+                    $scope.mookie.showModal('Please Check your email for an activation link','You must activate your account before signing in');
                 }, 2000);
             }
             else{
