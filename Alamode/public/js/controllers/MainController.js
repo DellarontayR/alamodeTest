@@ -467,6 +467,9 @@ alamode.controller('mainCtrl', function (Auth, $timeout, $location, $rootScope,
                 var userData = {};
                 userData.userEmail = data.data.email;
                 User.getUser(userData).then(function (data) {
+                    console.log(data);
+                    // dorothy
+                    // TODO
                     if (data.data.success) {
                         var retData = {};
                         retData.user = data.data.user;

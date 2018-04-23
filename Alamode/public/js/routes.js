@@ -42,6 +42,13 @@ var app = angular.module('appRoutes', ['ngRoute', 'angularCSS'])
                 authenticated: true,
                 permission: ['admin', 'moderator']
             }).
+            when('/management/manageInventory',{
+                templateUrl: '../views/manageInventory.html',
+                css: '../css/manageInventory.css',
+                controller: 'inventoryCtrl',
+                controllerAs: 'inventoryCtrl',
+                permission: ['admin','moderator']
+            }).
             when('/manageorders/:orderId', {
                 templateUrl: '../views/manageorders.html',
                 css: '../css/manageorders.css',

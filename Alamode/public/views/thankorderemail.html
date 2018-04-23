@@ -12,257 +12,32 @@
             width: 100%;
         }
 
-
-        .receipt {
-            /* background: #ff84a1; */
-            color: #3a3e59;
-            font-family: 'Raleway', Arial, sans-serif;
-            max-width: 400px;
-            margin: 5vh auto 0 auto;
-            transition: .3s;
-            box-shadow: 0 3px 10px rgba(0, 0, 0, .2);
-
-
-        }
-
-        .receipt .hoverable {
-            transition: .3s;
-            box-shadow: 0 3px 10px rgba(0, 0, 0, .2);
-        }
-
-        .receipt .hoverable:hover {
-            box-shadow: 0 5px 20px rgba(0, 0, 0, .3);
-
-        }
-
-        /* receipt header styles */
-
-        .receipt-header {
-            width: 100%;
-        }
-
-        .receipt-header__top {
-            display: flex;
-            align-items: center;
-            background: white;
-            width: 100%;
-            border-radius: 4px 4px 0 0;
-        }
-
-        .receipt-header__logo {
-            width: 10%;
-            padding: 30px;
-            background-image: url("../imgs/Media/goodmookie.svg");
-        }
-
-        .receipt-header__meta {
-            position: relative;
-            width: 90%;
-            height: 100%;
-            margin-left: 15px;
-            line-height: 1.7rem;
-            opacity: .3;
-        }
-
-        .receipt-header__serial {
-            display: block;
-        }
-
-        .receipt-header__number {
-            position: absolute;
-            top: 15px / 2;
-            right: 0;
-            transform: rotate(270deg);
-            opacity: .2;
-        }
-
-        .receipt-header__greeting {
-            clear: both;
-        }
-
-        /* // Greeting styles */
-
-        .receipt-header__greeting {
-            position: relative;
-            background: white;
-            padding: 0 15px;
-            padding-left: 15px * 2;
-        }
-
-        .receipt-header__name {
-            display: block;
-            font-weight: bold;
-            font-size: 1.3rem;
-            margin-bottom: 15px / 2;
-        }
-
-        .receipt-header__count {
-            opacity: .4;
-            font-size: 90%;
-        }
-
-        .receipt-header__border {
-            position: absolute;
-            left: 0;
-            top: 0;
-            height: 100%;
-            width: 3px;
-            background-color: #429fff;
-        }
-
-        .receipt-header__spacing {
-            display: block;
-            background: white;
-            width: 100%;
-            height: 15px * 1.5;
-        }
-
-        /* // Cart styles */
-
-        .cart {
-            background: white;
-            padding: 30px;
-            padding-top: 15px;
-            border-bottom: 2px dashed #333333;
-            border-radius: 0 0 5px 5px;
-        }
-
-        .cart__receipt-header {
-            margin-top: 0;
-            text-align: center;
-        }
-
-        .cart__hr {
-            border: none;
-            padding: 0;
-            margin: 0;
-            margin-bottom: 30px;
-            border-bottom: 3px solid #333333;
-        }
-
-        .list {
-            margin: 0;
-            padding: 0;
-            counter-reset: item-counter;
-        }
-
-        .list__item {
-            display: flex;
-            width: 100%;
-            padding-top: 30px;
-            padding-bottom: 30px;
-            border-bottom: 1px dashed rgba(0, 0, 0, .1);
-        }
-
-        .list__item:last-child {
-            border-bottom: none;
-        }
-
-        .list__item:before {
-            content: counter(item-counter);
-            counter-increment: item-counter;
-            margin-right: 15px;
-        }
-
-        .list__name {
-            flex: 1;
-            align-self: flex-start;
-        }
-
-        .list__price {
-            align-self: flex-end;
-            text-align: right;
-            font-weight: bold;
-        }
-
-        .cart__total {
-            display: flex;
-            width: 100%;
-        }
-
-        .cart__total-label {
-            margin: 0;
-            flex: 1;
-            text-transform: uppercase;
-        }
-
-        .cart__total-price {
-            align-self: flex-end;
-            font-weight: bold;
-            text-align: right;
-        }
-        a{
-            color:black;
-            border:black 1px solid;
+        a {
+            color: black;
+            border: black 1px solid;
         }
     </style>
 </head>
 
 <body>
     <table style="width:100%;">
-
         <tr class="center-content">
             <td>
                 <p>
                     Thanks for ordering Mookie Dough Today!
-                    <br>
-                    Here's a link to track your order's progress
+                    <br> Here's a link to track your order's progress
 
                     <!-- Order link -->
-                    <a href="https://www.mookiedough.co/order/">Your Order</a>
-                    
+                    <a href="https://www.mookiedough.co/orders/'+newOrder._id+''">Your Order</a>
+
                 </p>
-                <img class="mainImg" src="../imgs/Media/dorm5-min.jpg">
+                <img class="mainImg" src="https://www.mookiedough.co/sites/default/files/dorm5-min.jpg">
             </td>
         </tr>
 
         <tr class="center-content">
             <td>
-
-                <div class="receipt mookie-confirm">
-                    <div class="receipt-header">
-                        <div class="receipt-header__top">
-                            <div class="receipt-header__logo">
-                            </div>
-                            <div class="receipt-header__meta">
-                                <!-- 25.04.2016 -->
-                                <span class="receipt-header__date">{{checkoutCtrl.receipt.created | date:"MM/dd/yyyy 'at' h:mma"}}}</span>
-                                <span class="receipt-header__serial">Receipt Number: #{{checkoutCtrl.receipt.receiptNumber}} </span>
-                                <!-- <span class="receipt-header__number">{{checkoutCtrl.receipt.receiptNumber}}</span> -->
-                            </div>
-                        </div>
-                        <div class="receipt-header__greeting">
-                            <span class="receipt-header__name">Hi, {{checkoutCtrl.receipt.customerName}}</span>
-                            <span class="receipt-header__count">You've purchased {{checkoutCtrl.receipt.customerCart.products.length}} items in our store.</span>
-                            <span class="receipt-header__border"></span>
-                        </div>
-                        <div class="receipt-header__spacing"></div>
-                    </div>
-
-                    <section class="cart">
-                        <h2 class="cart__receipt-header">Cart:</h2>
-                        <ol class="list">
-                            <li class="list__item" ng-repeat="product in checkoutCtrl.receipt.customerCart.products">
-                                <span class="list__name">{{product.title}}</span>
-                                <span class="list__price">{{product.price}}</span>
-                            </li>
-                        </ol>
-                        <hr class="cart__hr" />
-                        <div class="cart__total">
-                            <h3 class="cart__total-label">Subtotal</h3>
-                            <span class="cart__total-price">{{checkoutCtrl.receipt.customerCart.subtotal}}</span>
-                        </div>
-                        <div class="cart__total">
-                            <h6 class="cart__total-label">Sales Tax</h6>
-                            <span class="cart__total-price">{{checkoutCtrl.receipt.customerCart.tax}}</span>
-                        </div>
-                        <div class="cart__total">
-                            <h3 class="cart__total-label">Total</h3>
-                            <span class="cart__total-price">{{checkoutCtrl.receipt.customerCart.total}}</span>
-                        </div>
-                    </section>
-                </div>
-
+                <img class="mainImg" src="https://www.mookiedough.co/sites/default/files/dorm5-min.jpg">
             </td>
         </tr>
     </table>

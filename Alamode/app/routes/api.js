@@ -30,6 +30,68 @@ var Schema = mongoose.Schema;
 
 module.exports = function (router) {
 
+    // Change Inventory
+    router.post('/updateInventory', function (req, res) {
+        var inventoryId = '5add7035622535b9562ab0cd';
+        if (req.body.itemName === null || req.body.itemName === '' || req.body.itemPrice === null || req.body.itemQty === null) {
+            res.json({ sucess: false, message: 'Correct inventory schema not sent' });
+        }
+        else {
+            Inventory.findById(inventoryId).exec(function (err, inventory) {
+                if (err || !inventory) {
+                    res.json({ success: false, message: 'Inventory was not found successfully', err: err, inventory: inventory });
+                }
+                else {
+                    var newInventoryItem = {};
+                    newInventoryItem.itemName = req.body.itemName;
+                    newInventoryItem.itemPrice = req.body.itemPrice;
+                    newInventoryItem.itemQty = req.body.itemQty;
+                    if(req.body.oldInventory === 'true'){
+                        newInventoryItem.oldInventory = true;
+                    }
+                    inventory.itemInventory.push(newInventoryItem);
+                    inventory.save(function (err, newInventory) {
+                        if (err || !newInventory) {
+                            res.json({ success: false, message: 'New inventory could not be saved', err: err, inventory: newInventory });
+                        }
+                        else {
+                            res.json({ success: true, message: 'Item added to inventory successfully', inventory: newInventory });
+                        }
+                    });
+                }
+            }, function (err) {
+                res.json({ success: false, message: 'There was some other error', err: err });
+            });
+        }
+    });
+
+    router.post('/getInventory',function(req,res){
+        var inventoryId = '5add7035622535b9562ab0cd';
+
+        Inventory.findById(inventoryId).exec(function(err,inventory){
+            if(err || !inventory){
+                res.json({success:false,message:'An error occured while trying to retrive inventory',err:err,inventory:inventory});
+            }
+            else{
+                res.json({success:true,message:'Inventory found successfully',inventory:inventory});
+            }
+        });
+    });
+    // Create Inventory
+    // var inventory = new Inventory();
+    // inventory.save(function(err,newInventory){
+    //     if(err || !newInventory){
+    //         console.log(err);
+    //         console.log(newInventory);
+    //     }
+    //     else{
+    //         console.log(newInventory);
+    //     }
+    // });
+
+
+
+
     // Create receipt counter
     // var counter = new ReceiptCounter();
     // counter.save(function(err,Counter){
@@ -419,7 +481,7 @@ module.exports = function (router) {
                                                                                 }
 
 
-                                                                                var html = '<html><head> <style type="text/css" media="screen"> .mainImg { width: 600px; height: 300px; } .center-content { text-align: center; width: 100%; } .receipt { /* background: #ff84a1; */ color: #3a3e59; font-family: "Raleway", Arial, sans-serif; max-width: 400px; margin: 5vh auto 0 auto; transition: .3s; box-shadow: 0 3px 10px rgba(0, 0, 0, .2); } .receipt .hoverable { transition: .3s; box-shadow: 0 3px 10px rgba(0, 0, 0, .2); } .receipt .hoverable:hover { box-shadow: 0 5px 20px rgba(0, 0, 0, .3); } /* receipt header styles */ .receipt-header { width: 100%; } .receipt-header__top { display: flex; align-items: center; background: white; width: 100%; border-radius: 4px 4px 0 0; } .receipt-header__logo { width: 10%; padding: 30px; background-image: url("https://www.mookiedough.co/sites/default/files/goodmookie.svg"); } .receipt-header__meta { position: relative; width: 90%; height: 100%; margin-left: 15px; line-height: 1.7rem; opacity: .3; } .receipt-header__serial { display: block; } .receipt-header__number { position: absolute; top: 15px / 2; right: 0; transform: rotate(270deg); opacity: .2; } .receipt-header__greeting { clear: both; } /* // Greeting styles */ .receipt-header__greeting { position: relative; background: white; padding: 0 15px; padding-left: 15px * 2; } .receipt-header__name { display: block; font-weight: bold; font-size: 1.3rem; margin-bottom: 15px / 2; } .receipt-header__count { opacity: .4; font-size: 90%; } .receipt-header__border { position: absolute; left: 0; top: 0; height: 100%; width: 3px; background-color: #429fff; } .receipt-header__spacing { display: block; background: white; width: 100%; height: 15px * 1.5; } /* // Cart styles */ .cart { background: white; padding: 30px; padding-top: 15px; border-bottom: 2px dashed #333333; border-radius: 0 0 5px 5px; } .cart__receipt-header { margin-top: 0; text-align: center; } .cart__hr { border: none; padding: 0; margin: 0; margin-bottom: 30px; border-bottom: 3px solid #333333; } .list { margin: 0; padding: 0; counter-reset: item-counter; } .list__item { display: flex; width: 100%; padding-top: 30px; padding-bottom: 30px; border-bottom: 1px dashed rgba(0, 0, 0, .1); } .list__item:last-child { border-bottom: none; } .list__item:before { content: counter(item-counter); counter-increment: item-counter; margin-right: 15px; } .list__name { flex: 1; align-self: flex-start; } .list__price { align-self: flex-end; text-align: right; font-weight: bold; } .cart__total { display: flex; width: 100%; } .cart__total-label { margin: 0; flex: 1; text-transform: uppercase; } .cart__total-price { align-self: flex-end; font-weight: bold; text-align: right; } a{ color:black; border:black 1px solid; } </style></head><body> <table style="width:100%;"> <tr class="center-content"> <td> <p> Thanks for ordering Mookie Dough Today! <br> Here\'s a link to track your order\'s progress <!-- Order link --> <a href="https://www.mookiedough.co/order/' +newOrder._id+'">Your Order</a> </p> <img class="mainImg" src="https://www.mookiedough.co/sites/default/files/dorm5-min.jpg"> </td> </tr> <tr class="center-content"> </tr> </table></body></html>';
+                                                                                var html = '<html><head> <style type="text/css" media="screen"> .mainImg { width: 600px; height: 300px; } .center-content { text-align: center; width: 100%; } a{ color:black; border:black 1px solid; } </style></head><body> <table style="width:100%;"> <tr class="center-content"> <td> <p> Thanks for ordering Mookie Dough Today! <br> Here\'s a link to track your order\'s progress <!-- Order link --> <a href="https://www.mookiedough.co/orders/' + newOrder._id + '">Your Order</a> </p>  </td> </tr> <tr class="center-content"><td><img class="mainImg" src="https://www.mookiedough.co/sites/default/files/dorm5-min.jpg"></td> </tr> </table></body></html>';
 
                                                                                 var text = 'Thanks for ordering Mookie Dough. Go to https://www.mookiedough.co/orders' + newOrder._id + ' to view your order';
                                                                                 var subject = 'Mookie Dough Order Accepted';
@@ -1137,7 +1199,7 @@ module.exports = function (router) {
                     //         //Log errors to db / send error to user
                     //         // Possibly a callback to handle the err from the function
                     //         console.log(err);
-            
+
                     //     }
                     //     else {
                     //         // email sent
@@ -1244,7 +1306,7 @@ module.exports = function (router) {
                                 var subject = 'Mookie Dough Account Activated';
                                 var text = 'Hello<strong> ' + user.username + '</strong,<br><br>Your account has been successfully activated!';
                                 var html = '<html><head> <style type="text/css" media="screen"> body { text-align: center; } .mainMessage { background-color: #333333; } .logoImg { width: 200px; height: 200px; } .mainContent { color: white; text-align: center; } .contentMessage { width: 676px; min-width: 676px; } .mookiecell { text-align: left; display: block; width: 100% !important; } a { color: white; } </style></head><body width="80%"> <table width="100%"> <tr class="mainContent"> <td> <img class="logoImg" src="https://www.mookiedough.co/sites/default/files/M00KIE.jpg"> </td> </tr> <tr class="mainContent" width="100%"> <td class="contentMessage"> <p class="mainMessage"> Hello <strong> ' + user.username + '</strong>, <br> <br>Your account has been successfully activated! Thanks for choosing Mookie Dough <br> Go to the <a href="https://www.mookiedough.co">Mookie Dough website</a> to order cookie dough anytime. </p> </td> </tr> </table></body></html>'
-                                sendMail(user.email, subject, html,text, function (data) {
+                                sendMail(user.email, subject, html, text, function (data) {
                                     console.log(data);
                                 });
                                 res.json({ success: true, message: 'Account activated!' }); // Return success message to controller

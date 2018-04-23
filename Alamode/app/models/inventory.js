@@ -11,7 +11,8 @@ var InventorySchema = new Schema({
                 itemName: { type: String, required: true },
                 itemPrice: { type: Number, required: true },
                 itemQty: { type: Number, required: true },
-                itemUpdatedDate: { type: Date, default: Date.now(), required: true }
+                itemUpdatedDate: { type: Date, default: Date.now(), required: true },
+                oldInventory:{type:Boolean,required:true,default:false}
         }]
 });
 

@@ -1,0 +1,107 @@
+'use strict';
+alamode.controller('inventoryCtrl', function ($scope, inventoryService) {
+    var inventoryCtrl = this;
+
+    // Inventory variables
+    inventoryCtrl.inventory = {};
+    inventoryCtrl.inventoryMap = {};
+    inventoryCtrl.inventoryMapZ = [];
+    inventoryCtrl.newItem = {};
+    inventoryCtrl.newItem.oldInventory = 'false';
+    inventoryCtrl.newItem.itemPrice = 2.99;
+    // >
+
+
+    // Get total inventory from searching and creating inventoryMap
+    inventoryCtrl.getTotals = function(){
+        // inventoryCtrl.inventory;
+
+        inventoryCtrl.inventoryMap = new Map();
+
+        inventoryCtrl.inventory.forEach(itemInventory => {
+                if(inventoryCtrl.inventoryMap.has(itemInventory.itemName)){
+                    inventoryCtrl.inventoryMap.set(itemInventory.itemName,inventoryCtrl.inventoryMap.get(itemInventory.itemName) + itemInventory.itemQty);
+                }
+                else{
+                    inventoryCtrl.inventoryMap.set(itemInventory.itemName,itemInventory.itemQty);
+                }
+        });
+        console.log(inventoryCtrl.inventoryMap);
+        var iterator1 = inventoryCtrl.inventoryMap[Symbol.iterator]();
+        for (let item of iterator1) {
+            inventoryCtrl.inventoryMapZ.push({name:item[0],qty:item[1]});
+            console.log(item);
+            // expected output: Array ["0", "foo"]
+            // expected output: Array [1, "bar"]
+          }
+
+      
+        // for (const [key, value] of inventoryCtrl.inventoryMap.entries()) {
+        //     if(key === null || key === '' || value ===null){
+
+        //     }
+        //     else{
+        //         inventoryCtrl.inventoryMapZ.push({name:key,qty:value});
+
+        //     }
+        //   }eiwsYUF'INl
+        inventoryCtrl.inventoryMap = inventoryCtrl.inventoryMap;//Array.from(inventoryCtrl.inventoryMap.entries());
+        console.log(inventoryCtrl.inventoryMapZ);
+
+    };
+    // 
+
+    // customize inventory for display
+    inventoryCtrl.customizeInventory = function () {
+        inventoryCtrl.inventory = inventoryCtrl.inventory.map(itemInventory => {
+        // inventoryCtrl.inventory.forEach(itemInventory => {
+            if (itemInventory.itemQty > 0 && !itemInventory.oldInventory) {
+                itemInventory.addInventory = true;
+            }
+            else if (itemInventory.itemQty < 0 && !itemInventory.oldInventory) {
+                itemInventory.removeInventory = true;
+            }
+            return itemInventory;
+        });
+        inventoryCtrl.getTotals();
+        console.log(inventoryCtrl.inventory);
+    };
+    // >
+
+    // Load inventory for display
+    inventoryCtrl.loadInventory = function () {
+        inventoryService.getInventory().then(function (data) {
+            console.log(data);
+            if (data.data.success) {
+                inventoryCtrl.inventory = data.data.inventory.itemInventory;
+                inventoryCtrl.customizeInventory();
+            }
+            else {
+
+            }
+        })
+    };
+    inventoryCtrl.loadInventory();
+    // >
+
+    // Update inventory
+    inventoryCtrl.updateInventory = function () {
+        if (inventoryCtrl.newItem.itemName && inventoryCtrl.newItem.itemPrice && inventoryCtrl.newItem.itemQty) {
+            inventoryService.updateInventory(inventoryCtrl.newItem).then(function (data) {
+                if (data.data.success) {
+                    inventoryCtrl.inventory = data.data.inventory.itemInventory;
+                    inventoryCtrl.customizeInventory();
+                }
+                else {
+
+                }
+            });
+
+        }
+        else {
+            console.log('No new item');
+
+        }
+    };
+    // >
+});
