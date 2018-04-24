@@ -25,6 +25,12 @@
 	} */
 }
 
+.switchText{
+	margin-top:10px;
+	margin-bottom:5px;
+	display:block;
+}
+
 
 .social-signup-btn>i {
 	display: block;

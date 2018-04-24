@@ -487,8 +487,6 @@ footer {
     text-align: center;
 } */
 
-
-
 /* Base class */
 
 .scroll-to-top-btn {
@@ -857,6 +855,11 @@ a.mobile-menu-toggle>i {
 .inlineButton {
 	width: auto;
 	display: inline-block;
+}
+
+.form-submit {
+	margin-top: 10px;
+	margin-bottom: 5px;
 }
 
 .flexvertical-align {
