@@ -419,7 +419,6 @@ alamode.controller('mainCtrl', function (Auth, $timeout, $location, $rootScope,
         (function () {
             Product.getCatalogProducts().then(function (data) {
                 if (data.data.success) {
-                    console.log(data.data.catalogProducts);
                     $scope.mookie.products = data.data.catalogProducts;
                     // return callback(data.data.catalogProducts);
                 }
@@ -460,47 +459,10 @@ alamode.controller('mainCtrl', function (Auth, $timeout, $location, $rootScope,
     };
     // >
 
-    // Get the User and populate cart at the same time
-    $scope.mookie.getUserAndCart = function (callback) {
-        Auth.getUser().then(function (data) {
-            if (data.data.success) {
-                var userData = {};
-                userData.userEmail = data.data.email;
-                User.getUser(userData).then(function (data) {
-                    console.log(data);
-                    // dorothy
-                    // TODO
-                    if (data.data.success) {
-                        var retData = {};
-                        retData.user = data.data.user;
-                        retData.cartId = data.data.user.cart;
-                        return callback(retData);
-                    }
-                    else {
-                        console.log('fail');
-                    }
-                });
-            }
-            else {
-                console.log('fail');
-            }
-        }, function (error) {
-            console.log(error);
-        });
-
-    };
-    // Usage of getUserAndCart
-    $scope.mookie.getUserAndCart(function (data) {
-        app.email = data.userEmail;
-        app.cartId = data.cartId;
-    });
-    // >
-
-
     // Get The User's current cart
     app.getCurrentCart = function (callback) {
         var userData = {};
-        userData.userEmail = app.email;
+        userData.userEmail = $scope.mookie.userEmail;
         // Email different things to user
 
         User.getUser(userData).then(function (data) {
@@ -528,13 +490,15 @@ alamode.controller('mainCtrl', function (Auth, $timeout, $location, $rootScope,
                     });
                 }
                 else {
-                    console.log(data);
-                    //Make messaging service for different errors users can git
+                    // User has no cart
+                    // Do nothing
+                    // console.log(data);
                 }
 
             }
             else {
-                console.log(data);
+                // console.log(data);
+                // Could not get user error
             }
         });
     };
@@ -570,9 +534,6 @@ alamode.controller('mainCtrl', function (Auth, $timeout, $location, $rootScope,
     app.checkUserState(function (userData) {
         $scope.mookie.user.username = userData.username;
         $scope.mookie.user.userEmail = userData.userEmail;
-        // abigail
-        app.username = userData.username;
-        app.email = userData.userEmail;
         app.getCurrentCart(function (cart) {
             var total = 0;
             var counter = cart.products.length;
@@ -593,11 +554,8 @@ alamode.controller('mainCtrl', function (Auth, $timeout, $location, $rootScope,
     app.mookieCheckSession = function () {
         var interval = $interval(function () {
             app.checkUserState(function (userData) {
-                app.username = userData.username;
-                app.email = userData.userEmail;
                 $scope.mookie.user.username = userData.username;
                 $scope.mookie.user.userEmail = userData.userEmail;
-
                 app.getCurrentCart(function (cart) {
                     var total = 0;
                     var count = 0;
@@ -610,7 +568,7 @@ alamode.controller('mainCtrl', function (Auth, $timeout, $location, $rootScope,
                 });
                 app.loadme = true;
             });
-        }, 15000);
+        }, 5000);
     };
     // Usage of mookieCheckSession
     app.mookieCheckSession();
@@ -730,48 +688,6 @@ alamode.controller('mainCtrl', function (Auth, $timeout, $location, $rootScope,
     //     $window.location = $window.location.protocol + '//' + $window.location.host + '/auth/google';
     // };
 
-    // Function that performs login
-    this.doLogin = function (loginData) {
-        app.loading = true; // Start bootstrap loading icon
-        app.errorMsg = false; // Clear errorMsg whenever user attempts a login
-        app.expired = false; // Clear expired whenever user attempts a login 
-        app.disabled = true; // Disable form on submission
-        $scope.alert = 'default'; // Set ng class
-
-        // Function that performs login
-        Auth.login(loginData).then(function (data) {
-            // Check if login was successful 
-            if (data.data.success) {
-                app.loading = false; // Stop bootstrap loading icon
-                $scope.alert = 'alert alert-success'; // Set ng class
-                app.successMsg = data.data.message + '...Redirecting'; // Create Success Message then redirect
-                // Redirect to home page after two milliseconds (2 seconds)
-                showModal();
-                $timeout(function () {
-                    $location.path('/'); // Redirect to home
-                    app.loginData = ''; // Clear login form
-                    app.successMsg = false; // CLear success message
-                    app.disabled = false; // Enable form on submission
-                    app.checkSession(); // Activate checking of session
-                }, 2000);
-            } else {
-                // Check if the user's account is expired
-
-                if (data.data.expired) {
-                    app.expired = true; // If expired, set variable to enable "Resend Link" on login page
-                    app.loading = false; // Stop bootstrap loading icon
-                    $scope.alert = 'alert alert-danger'; // Set ng class
-                    app.errorMsg = data.data.message; // Return error message to login page
-                } else {
-                    app.loading = false; // Stop bootstrap loading icon
-                    app.disabled = false; // Enable form
-                    $scope.alert = 'alert alert-danger'; // Set ng class
-                    app.errorMsg = data.data.message; // Return error message to login page
-                }
-            }
-        });
-    };
-
     // Function to logout the user
     app.logout = function () {
         Auth.logout(); // Logout user by removing jwt token
@@ -781,12 +697,12 @@ alamode.controller('mainCtrl', function (Auth, $timeout, $location, $rootScope,
             $location.path('/register');
         }, 2000);
     };
+
     $scope.mookie.logout = function () {
         Auth.logout(); // Logout user by removing jwt token
         $scope.mookie.loggedIn = false;
         // $scope.apply();
         $scope.mookie.loggedIn = false;
-        $location.path('/register');
         $timeout(function () {
             $scope.mookie.loggedIn = false;
             $location.path('/register');
