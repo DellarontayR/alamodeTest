@@ -10,6 +10,7 @@ var Order = require('../models/order');
 var Receipt = require('../models/receipt');
 var ReceiptCounter = require('../models/receiptcounter');
 var Inventory = require('../models/inventory');
+var DeliverySchedule = require('../models/deliveryschedule');
 
 // Libs
 var jwt = require('jsonwebtoken'); // Import JWT Package
@@ -30,6 +31,36 @@ var Schema = mongoose.Schema;
 
 module.exports = function (router) {
 
+    // Create delivery schedule
+
+    // id 5adf85eb04afbfbff4a7751b
+    // var schedule = new DeliverySchedule();
+    // schedule.startHour = 8;
+    // schedule.endHour = 19;
+    // schedule.save(function(err,newSchedule){
+    //     if(err|| !newSchedule){
+    //         console.log(err);
+    //     }
+    //     else{
+    //         console.log(newSchedule);
+    //     }
+    // });
+
+    // Returns whether or not delivery is currently available
+    router.post('/checkOrderingSchedule',function(req,res){
+        var scheduleId = '5adf85eb04afbfbff4a7751b';
+        DeliverySchedule.findById(scheduleId).exec(function(err,schedule){
+            if(err || !schedule){
+                res.json({success:false,message:'Could not today\'s schedule',err:err});
+            }
+            else{
+                res.json({success:true,message:'Schedule found',schedule:schedule});
+            }
+        });
+    });
+
+
+    // Handle Inventory
     // Remove an invenory Item
     router.post('/removeInventoryUpdate',function(req,res){
         var inventoryId = '5add7035622535b9562ab0cd';
@@ -57,7 +88,7 @@ module.exports = function (router) {
 
         }
     });
-
+    // >
     // Update a new Inventory record
     router.post('/updateInventory', function (req, res) {
         var inventoryId = '5add7035622535b9562ab0cd';
@@ -92,7 +123,8 @@ module.exports = function (router) {
             });
         }
     });
-
+    // >
+    // Get Inventory
     router.post('/getInventory',function(req,res){
         var inventoryId = '5add7035622535b9562ab0cd';
 
@@ -105,6 +137,7 @@ module.exports = function (router) {
             }
         });
     });
+    // >
     // Create Inventory
     // var inventory = new Inventory();
     // inventory.save(function(err,newInventory){
@@ -116,10 +149,9 @@ module.exports = function (router) {
     //         console.log(newInventory);
     //     }
     // });
+    // >
 
-
-
-
+    // Receipt Counter 
     // Create receipt counter
     // var counter = new ReceiptCounter();
     // counter.save(function(err,Counter){
@@ -131,6 +163,7 @@ module.exports = function (router) {
     //     }
     // });
     // >
+
     // Donation api endpoint
     router.post('/donate', function (req, res) {
         if (req.body.token == null || req.body.name == null || req.body.donationAmount == null) {
@@ -138,8 +171,6 @@ module.exports = function (router) {
         }
     });
     // >
-
-
 
     // twilioClient.messages.create({
     //     to: '9013649552',

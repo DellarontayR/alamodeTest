@@ -1,7 +1,7 @@
 'use strict';// Enable typescript
-
+console.log("Hello! :) Welcome Mookie Dough inspector. If you're a Mookie Dough advocate and would like to see more of it near you email readus@mookiedough.com <3");
 alamode.controller('mainCtrl', function (Auth, $timeout, $location, $rootScope,
-    $window, $interval, User, AuthToken, $scope, Cart, Product, MookieSubscription, ContactMessage) {
+    $window, $interval, User, AuthToken, $scope, Cart, Product, MookieSubscription, ContactMessage, scheduleService) {
     // $window.location.pathname
     var app = this;
 
@@ -77,75 +77,91 @@ alamode.controller('mainCtrl', function (Auth, $timeout, $location, $rootScope,
 
     // Adds an item to a user's cart, shuold be used as a model for errors for users
     $scope.mookie.addToCart = function (product, catalogProduct) {
-        Auth.getUser().then(function (data) {
-            if (data.data.email) {
-                // $scope.mookie.userEmail = data.data.email;
-                $scope.mookie.username = data.data.username;
-                var userData = {};
-                userData.userEmail = data.data.email;
-                User.getUser(userData).then(function (data) {
-                    if (data.data.success) {
-                        var cartData = {};
-                        cartData.price = product.price;
-                        cartData.description = product.description;
-                        cartData.title = product.title;
-                        cartData.imagePath = product.imagePath;
-                        cartData.qty = 1;
-                        cartData.userId = data.data.user._id;// replace with $scope.mookie.user._id
-                        cartData.product = catalogProduct;
-                        Cart.addItemToCart(cartData).then(function (data) {
-                            console.log(data);
-                            if (data.data.success) {
-                                var getCartData = {};
-                                getCartData.cartId = data.data.cart._id;
+        scheduleService.getOrderingSchedule().then(function (data) {
+            if (data.data.success) {
+                var schedule = data.data.schedule;
+                var currentTime = new Date();
+                var hours = currentTime.getHours();
+                if (hours > schedule.startHour && hours < schedule.endHour) {
+                    Auth.getUser().then(function (data) {
+                        if (data.data.email) {
+                            $scope.mookie.userEmail = data.data.email;
+                            $scope.mookie.username = data.data.username;
+                            var userData = {};
+                            userData.userEmail = data.data.email;
+                            User.getUser(userData).then(function (data) {
+                                if (data.data.success) {
+                                    var cartData = {};
+                                    cartData.price = product.price;
+                                    cartData.description = product.description;
+                                    cartData.title = product.title;
+                                    cartData.imagePath = product.imagePath;
+                                    cartData.qty = 1;
+                                    cartData.userId = data.data.user._id;// replace with $scope.mookie.user._id
+                                    cartData.product = catalogProduct;
+                                    Cart.addItemToCart(cartData).then(function (data) {
+                                        if (data.data.success) {
+                                            var getCartData = {};
+                                            getCartData.cartId = data.data.cart._id;
 
-                                $scope.mookie.updateCart(getCartData, function (moreData) {
-                                    $scope.mookie.cartItemCount = moreData.itemCount;
-                                });
+                                            $scope.mookie.updateCart(getCartData, function (moreData) {
+                                                $scope.mookie.cartItemCount = moreData.itemCount;
+                                            });
 
-                            }
-                            else {
-                                var title = "Item could not be added cart";
-                                var body = "Item could not be added to cart for some unknown reason.";
-                                $scope.mookie.showModal(title, body);
-                            }
-                        });
-                    }
-                    else {
-                        console.log(data);
-                        // if (Auth.isLoggedIn()) {
-                        //     Auth.logout();
-                        // }
+                                        }
+                                        else {
+                                            var title = "Item could not be added cart";
+                                            var body = "Item could not be added to cart for some unknown reason.";
+                                            $scope.mookie.showModal(title, body);
+                                        }
+                                    });
+                                }
+                                else {
+                                    var title = "We couldn't add the item to your cart.";
+                                    var body = "Item could not be added to unknown user cart. Please register new user";
+                                    $scope.mookie.showModal(title, body);
+                                }
+                            });
+
+                        }
+                        else {
+                            var title = "We couldn't add the item to your cart.";
+                            var body = "Item could not be added to unknown user cart. Please register or sign in user";
+                            $scope.mookie.showModal(title, body);
+                        }
+
+                    }, function (err) {
                         var title = "We couldn't add the item to your cart.";
-                        var body = "Item could not be added to unknown user cart. Please register new user";
+                        var body = "Item could not be added to unknown user cart. Please register or sign in user";
                         $scope.mookie.showModal(title, body);
-                    }
-                });
+                    }).catch(function (error) {
+                        console.log(error);
+                        var title = "Unknown Error occurred.";
+                        var body = "Please try again later.";
+                        $scope.mookie.showModal(title, body);
+                    });
 
+
+                }
+                else {
+                    // return false;
+                    var title = "Ordering is closed for now.";
+                    var body = "Mookie Dough hours will be from 8 am to 7pm Monday Through Sunday with deliveyr starting at 9pm.  ";
+                    $scope.mookie.showModal(title, body);
+                }
             }
             else {
-                // if (Auth.isLoggedIn()) {
-                //     Auth.logout();
-                // }
-                var title = "We couldn't add the item to your cart.";
-                var body = "Item could not be added to unknown user cart. Please register or sign in user";
+                // return false
+                var title = "Ordering is closed for now.";
+                var body = "Mookie Dough hours will be from 8 am to 7pm Monday Through Sunday with deliveyr starting at 9pm.  ";
                 $scope.mookie.showModal(title, body);
             }
-
-        }, function (err) {
-            // if (Auth.isLoggedIn()) {
-            //     Auth.logout();
-            // }
-
-            var title = "Local user token not found";
-            var body = "Item could not be added to unknown user cart. Please register or sign in user";
-            $scope.mookie.showModal(title, body);
-        }).catch(function (error) {
-            console.log(error);
-            var title = "Unknown Error occurred.";
-            var body = "Please try again later.";
-            $scope.mookie.showModal(title, body);
         });
+
+
+
+      
+
     };
     // >
 
@@ -163,7 +179,6 @@ alamode.controller('mainCtrl', function (Auth, $timeout, $location, $rootScope,
         })
     };
     // >
-
 
     //Used to reset contact information form after information is put in
     $scope.mookie.contactMes = {};
@@ -290,7 +305,7 @@ alamode.controller('mainCtrl', function (Auth, $timeout, $location, $rootScope,
     $scope.mookie.showModal = function (title, body) {
         $scope.mookie.modalTitle = title;
         $scope.mookie.modalBody = body;
-        $("#myModal").modal({ backdrop: "static" }); // Open modal        
+        $("#myModal").modal(); // Open modal        
     };
     // cont.
     $scope.mookie.showProductModal = function (product) {
@@ -300,10 +315,10 @@ alamode.controller('mainCtrl', function (Auth, $timeout, $location, $rootScope,
         $scope.mookie.modal.description = product.description;
         $scope.mookie.modal.price = product.price;
         $scope.mookie.modal.category = product.category;
-        $("#productModal").modal({ backdrop: "static" }); // Open modal        
+        $("#productModal").modal(); // Open modal        
     };
     $scope.mookie.showStripeModal = function () {
-        $("#stripeModal").modal({ backdrop: "static" });
+        $("#stripeModal").modal();
     };
     // >
 
