@@ -341,10 +341,10 @@ app.run(['$rootScope', 'Auth', '$location', 'User', 'Carousel', function ($rootS
                 }
             } else if (next.$$route.authenticated === false) {
                 // If authentication is not required, make sure is not logged in
-                if (Auth.isLoggedIn()) {
-                    event.preventDefault(); // If user is logged in, prevent accessing route
-                    $location.path('/home'); // Redirect to profile instead
-                }
+                // if (Auth.isLoggedIn()) {
+                //     event.preventDefault(); // If user is logged in, prevent accessing route
+                //     $location.path('/home'); // Redirect to profile instead
+                // }
 
             }
         }
