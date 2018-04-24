@@ -15,5 +15,10 @@ angular.module('inventoryServices',[])
     inventoryServiceFactory.getInventory = function(){
         return $http.post('/api/getInventory');
     };
+
+    inventoryServiceFactory.removeInventoryUpdate = function(itemData){
+        return $http.post('/api/removeInventoryUpdate',itemData);
+    };
+
     return inventoryServiceFactory;
 });

@@ -30,7 +30,35 @@ var Schema = mongoose.Schema;
 
 module.exports = function (router) {
 
-    // Change Inventory
+    // Remove an invenory Item
+    router.post('/removeInventoryUpdate',function(req,res){
+        var inventoryId = '5add7035622535b9562ab0cd';
+        if(req.body.itemId === null || req.body.itemId === ''){
+            res.json({success:false,message:'There was an error trying to remove the inventory update'});
+        }
+        else{
+            Inventory.findById(inventoryId).exec(function(err,inventory){
+                if(err || !inventory){
+                    res.json({success:false,message:'There was an error while trying to get the inventory'});
+                }
+                else{
+                    inventory.itemInventory.remove({_id:req.body.itemId});
+                    inventory.save(function(err,newInventory){
+                        if(err || !newInventory){
+                            res.json({success:false,message:'There was an error while trying to update inventory',err:err});
+                        }
+                        else{
+                            res.json({success:true,message:'Inventory Updated successfully',inventory:newInventory});
+                        }
+                    });
+
+                }
+            });
+
+        }
+    });
+
+    // Update a new Inventory record
     router.post('/updateInventory', function (req, res) {
         var inventoryId = '5add7035622535b9562ab0cd';
         if (req.body.itemName === null || req.body.itemName === '' || req.body.itemPrice === null || req.body.itemQty === null) {
@@ -1240,7 +1268,7 @@ module.exports = function (router) {
                         } else if (!user.active) {
                             res.json({ success: false, message: 'Account is not yet activated. Please check your e-mail for activation link.', expired: true }); // Account is not activated 
                         } else {
-                            var token = jwt.sign({ username: user.username, email: user.email }, secret, { expiresIn: '24h' }); // Logged in: Give user token
+                            var token = jwt.sign({ username: user.username, email: user.email }, secret, { expiresIn: '7d' }); // Logged in: Give user token
                             res.json({ success: true, message: 'User authenticated!', token: token, user: user }); // Return token in JSON object to controller
                         }
                     }
