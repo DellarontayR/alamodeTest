@@ -5,12 +5,14 @@ alamode.controller('inventoryCtrl', function ($scope, inventoryService) {
     // Inventory variables
     inventoryCtrl.inventory = {};
     inventoryCtrl.inventoryMap = {};
+    inventoryCtrl.currentNames = [];
     inventoryCtrl.inventoryMapZ = [];
     inventoryCtrl.newItem = {};
     inventoryCtrl.newItem.oldInventory = 'false';
     inventoryCtrl.newItem.itemPrice = 2.99;
     // >
 
+    // Remove inventory Update
     inventoryCtrl.removeInventoryUpdate = function (itemId) {
         var itemData = {};
         itemData.itemId = itemId;
@@ -27,14 +29,12 @@ alamode.controller('inventoryCtrl', function ($scope, inventoryService) {
             }
         });
     }
-
-
+    // >
 
     // Get total inventory from searching and creating inventoryMap
     inventoryCtrl.getTotals = function () {
-        // inventoryCtrl.inventory;
-
         inventoryCtrl.inventoryMap = new Map();
+        inventoryCtrl.currentNames = [];//Reset
 
         inventoryCtrl.inventory.forEach(itemInventory => {
             if (inventoryCtrl.inventoryMap.has(itemInventory.itemName)) {
@@ -44,10 +44,10 @@ alamode.controller('inventoryCtrl', function ($scope, inventoryService) {
                 inventoryCtrl.inventoryMap.set(itemInventory.itemName, itemInventory.itemQty);
             }
         });
-        console.log(inventoryCtrl.inventoryMap);
         var iterator1 = inventoryCtrl.inventoryMap[Symbol.iterator]();
         for (let item of iterator1) {
             inventoryCtrl.inventoryMapZ.push({ name: item[0], qty: item[1] });
+            inventoryCtrl.currentNames.push(item[0]);
         }
         inventoryCtrl.inventoryMap = inventoryCtrl.inventoryMap;//Array.from(inventoryCtrl.inventoryMap.entries());
     };
@@ -56,7 +56,6 @@ alamode.controller('inventoryCtrl', function ($scope, inventoryService) {
     // customize inventory for display
     inventoryCtrl.customizeInventory = function () {
         inventoryCtrl.inventory = inventoryCtrl.inventory.map(itemInventory => {
-            // inventoryCtrl.inventory.forEach(itemInventory => {
             if (itemInventory.itemQty > 0 && !itemInventory.oldInventory) {
                 itemInventory.addInventory = true;
             }
@@ -66,14 +65,12 @@ alamode.controller('inventoryCtrl', function ($scope, inventoryService) {
             return itemInventory;
         });
         inventoryCtrl.getTotals();
-        console.log(inventoryCtrl.inventory);
     };
     // >
 
     // Load inventory for display
     inventoryCtrl.loadInventory = function () {
         inventoryService.getInventory().then(function (data) {
-            console.log(data);
             if (data.data.success) {
                 inventoryCtrl.inventory = data.data.inventory.itemInventory;
                 inventoryCtrl.customizeInventory();

@@ -52,7 +52,7 @@
         <p>Old Inventory?</p>
     </row>
     <row>
-        <input type="text" placeholder="item Name" ng-model="inventoryCtrl.newItem.itemName">
+        <input type="text" placeholder="item Name" ng-model="inventoryCtrl.newItem.itemName" uib-typeahead="name as name for name in inventoryCtrl.currentNames " typeahead-show-hint="true" typeahead-min-length="0">
         <input type="text" placeholder="Item Price" ng-model="inventoryCtrl.newItem.itemPrice">
         <input type="text" placeholder="Item Quantity" ng-model="inventoryCtrl.newItem.itemQty">
         <input type="text" placeholder="Old Inventory?" ng-model="inventoryCtrl.newItem.oldInventory">
