@@ -1,5 +1,5 @@
 'use strict';
-alamode.controller('inventoryCtrl', function ($scope, inventoryService) {
+alamode.controller('inventoryCtrl', function ($scope, inventoryService,$timeout) {
     var inventoryCtrl = this;
 
     // Inventory variables
@@ -12,24 +12,7 @@ alamode.controller('inventoryCtrl', function ($scope, inventoryService) {
     inventoryCtrl.newItem.itemPrice = 2.99;
     // >
 
-    // Remove inventory Update
-    inventoryCtrl.removeInventoryUpdate = function (itemId) {
-        var itemData = {};
-        itemData.itemId = itemId;
-        inventoryService.removeInventoryUpdate(itemData).then(function (data) {
-            console.log(data);
-            if (data.data.success) {
-                // item removed successfully
 
-            }
-            else {
-                // item not removed successfully
-
-
-            }
-        });
-    }
-    // >
 
     // Get total inventory from searching and creating inventoryMap
     inventoryCtrl.getTotals = function () {
@@ -50,8 +33,11 @@ alamode.controller('inventoryCtrl', function ($scope, inventoryService) {
             inventoryCtrl.currentNames.push(item[0]);
         }
         inventoryCtrl.inventoryMap = inventoryCtrl.inventoryMap;//Array.from(inventoryCtrl.inventoryMap.entries());
+        $timeout(function() {
+            $scope.$apply();
+        }, 0);
     };
-    // 
+    // >
 
     // customize inventory for display
     inventoryCtrl.customizeInventory = function () {
@@ -102,5 +88,22 @@ alamode.controller('inventoryCtrl', function ($scope, inventoryService) {
 
         }
     };
+    // >
+
+    // Remove inventory Update
+    inventoryCtrl.removeInventoryUpdate = function (itemId) {
+        var itemData = {};
+        itemData.itemId = itemId;
+        inventoryService.removeInventoryUpdate(itemData).then(function (data) {
+            console.log(data);
+            if (data.data.success) {
+                // item removed successfully
+                inventoryCtrl.loadInventory();
+            }
+            else {
+                // item not removed successfully
+            }
+        });
+    }
     // >
 });
