@@ -530,9 +530,7 @@ alamode.controller('mainCtrl', function (Auth, $timeout, $location, $rootScope,
                 userData.userEmail = data.data.email;
                 userData.username = data.data.username;
                 // Check if the returned user is undefined (expired)
-                console.log('before undefine');
                 if (data.data.username === undefined) {
-                    console.log('in undefine');
                     console.log(data.data.username);
                     Auth.logout(); // Log the user out
                     $scope.mookie.loggedIn = false; // Set session to false
