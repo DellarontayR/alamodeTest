@@ -408,7 +408,7 @@ module.exports = function (router) {
                     //         console.log(err);
                     //     });
                     // }
-                    
+
                     order.save(function (err, newOrder) {
                         if (err || !newOrder) {
                             res.json({ success: false, message: 'Could not update order status', err: err });
@@ -1196,7 +1196,7 @@ module.exports = function (router) {
                                 res.json({ success: false, message: 'That e-mail is already taken', err: err }); // Display error if e-mail already taken
                             }
                             else {
-                                res.json({ success: false, message: 'An error occurred' });
+                                res.json({ success: false, message: 'An error occurred' ,err:err});
                             }
                         } else {
                             res.json({ success: false, message: err }); // Display any other error
@@ -1250,10 +1250,10 @@ module.exports = function (router) {
                                     res.json({ success: false, message: 'That e-mail is already taken', err: err }); // Display error if e-mail already taken
                                 }
                                 else {
-                                    res.json({ success: false, message: 'An error occurred' });
+                                    res.json({ success: false, message: 'An error occurred',err:err });
                                 }
                             } else {
-                                res.json({ success: false, message: err }); // Display any other error
+                                res.json({ success: false, message: err,err:err }); // Display any other error
                             }
                         }
                     }
