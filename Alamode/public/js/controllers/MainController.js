@@ -4,6 +4,7 @@ alamode.controller('mainCtrl', function (Auth, $timeout, $location, $rootScope,
     $window, $interval, User, AuthToken, $scope, Cart, Product, MookieSubscription, ContactMessage, scheduleService) {
     // $window.location.pathname
     var app = this;
+    app.checkingSession = false;
 
     // Definitely Used Mookie Scope vars
     $scope.mookie = {};
@@ -66,6 +67,7 @@ alamode.controller('mainCtrl', function (Auth, $timeout, $location, $rootScope,
                 cartData.cart = data.data.cart;
                 cartData.itemCount = itemCount;
                 $scope.mookie.cartItemCount = itemCount;
+                $scope.mookie.cart = data.data.cart;
                 return callback(cartData);
             }
             else {
@@ -85,8 +87,8 @@ alamode.controller('mainCtrl', function (Auth, $timeout, $location, $rootScope,
                 if (hours > schedule.startHour && hours < schedule.endHour) {
                     Auth.getUser().then(function (data) {
                         if (data.data.email) {
-                            $scope.mookie.userEmail = data.data.email;
-                            $scope.mookie.username = data.data.username;
+                            $scope.mookie.user.userEmail = data.data.email;
+                            $scope.mookie.user.username = data.data.username;
                             var userData = {};
                             userData.userEmail = data.data.email;
                             User.getUser(userData).then(function (data) {
@@ -103,7 +105,6 @@ alamode.controller('mainCtrl', function (Auth, $timeout, $location, $rootScope,
                                         if (data.data.success) {
                                             var getCartData = {};
                                             getCartData.cartId = data.data.cart._id;
-
                                             $scope.mookie.updateCart(getCartData, function (moreData) {
                                                 $scope.mookie.cartItemCount = moreData.itemCount;
                                             });
@@ -198,99 +199,6 @@ alamode.controller('mainCtrl', function (Auth, $timeout, $location, $rootScope,
             }
         });
     };
-    // >
-
-    // Get a user's email and username from authtoken
-    $scope.mookie.getEmailAndUsername = function (callback) {
-        if (Auth.isLoggedIn()) {
-            Auth.getUser().then(function (data) {
-                var userData = {};
-                userData.userEmail = data.data.email;
-                userData.username = data.data.username;
-                if (data.data.username === undefined) {
-                    Auth.logout();//Check against database to make sure this is a real user and not a deleted one
-                }
-                else {
-                    return callback(userData);
-                }
-            }, function (err) {
-                if (err) {
-
-                }
-                else {
-
-                }
-            });
-        }
-    };
-    // >
-
-    // Mookie get user session should be consolidated into one function currently in multiple
-    $scope.mookie.getUserSession = function () {
-        $scope.mookie.getEmailAndUsername(function (userData) {
-            User.getUser(userData).then(function (data) {
-                if (data.data.success) {
-                    if (data.data.user.cart != null && data.data.user.cart) {
-                        var cartData = {};
-                        cartData.cartId = data.data.user.cart;
-                        Cart.getCart(cartData).then(function (data) {
-                            if (data.data.success) {
-
-                            }
-                        });
-                    }
-                }
-                else {
-
-                }
-            });
-        });
-    };
-    // >
-
-    // Get user's current user
-    $scope.mookie.getCurrentCart = function (callback) {
-        $scope.mookie.getEmailAndUsername(function (userData) {
-            User.getUser(userData).then(function (data) {
-                if (data.data.success) {
-                    if (data.data.user.cart != null && data.data.user.cart) {
-                        var cartData = {};
-                        cartData.cartId = data.data.user.cart;
-                        // $scope.mookie.cart.id =data.data.user.cart;
-                        Cart.getCart(cartData).then(function (data) {
-                            if (data.data.success) {
-                                var itemCount = 0;
-                                var cart = data.data.cart;
-                                (function () {
-                                    cart.products.forEach(function (cartProduct) {
-                                        itemCount += cartProduct.qty;
-                                    })
-                                })();//Self invoking
-                                var cartData = {};
-                                cartData.cart = cart;
-                                cartData.itemCount = itemCount;
-                                return callback(cartData);
-                            }
-                            else {
-                                console.log('Could not get cart from server');
-                            }
-                        });
-                    }
-                }
-                else {
-                    //no success whatsoever getting user 
-                    console.log('Could not get user information from the seerver');
-                }
-            });
-
-        });
-    };
-    // >
-
-    //Call when maincontroller is loaded to get current cart information//Also possible to get user information here
-    $scope.mookie.getCurrentCart(function (cartData) {
-        $scope.mookie.cartItemCount = cartData.itemCount;
-    });
     // >
 
     //Modal functions
@@ -477,7 +385,8 @@ alamode.controller('mainCtrl', function (Auth, $timeout, $location, $rootScope,
     // Get The User's current cart
     app.getCurrentCart = function (callback) {
         var userData = {};
-        userData.userEmail = $scope.mookie.userEmail;
+        userData.userEmail = $scope.mookie.user.userEmail;
+        console.log(userData);
         // Email different things to user
 
         User.getUser(userData).then(function (data) {
@@ -488,9 +397,14 @@ alamode.controller('mainCtrl', function (Auth, $timeout, $location, $rootScope,
                     Cart.getCart(cartData).then(function (data) {
                         if (data.data.success) {
                             console.log(data.data);
+                            var total = 0;
+                            var count =0;
+                            data.data.cart.products.forEach(function (product) {
+                                total += product.price;
+                                count++;
+                            })
+                            $scope.mookie.cartItemCount = count;
                             $scope.mookie.cart = data.data.cart;
-                            $scope.mookie.cart.total = $scope.mookie.cart.subtotal + $scope.mookie.cart.tax;
-                            $scope.mookie.cart.total = $scope.mookie.cart.total.toFixed(2);
                             return callback($scope.mookie.cart);
 
                         } else {
@@ -501,7 +415,6 @@ alamode.controller('mainCtrl', function (Auth, $timeout, $location, $rootScope,
                                 console.log(data);
                             }
                         }
-
                     });
                 }
                 else {
@@ -545,24 +458,27 @@ alamode.controller('mainCtrl', function (Auth, $timeout, $location, $rootScope,
             });
         }
     };
-    // Usage of checkUserState
-    app.checkUserState(function (userData) {
-        $scope.mookie.user.username = userData.username;
-        $scope.mookie.user.userEmail = userData.userEmail;
-        app.getCurrentCart(function (cart) {
-            var total = 0;
-            var counter = cart.products.length;
-            cart.products.forEach(function (product) {
-                // product.price
-                total += product.price;
-                counter -= 1;
-                if (counter === 0) {
-                    $scope.mookie.total = Math.round(total);
-                }
-            });
-        });
-        app.loadme = true;
-    });
+    
+    // Usage of checkUserState when main doc loads
+    // app.checkUserState(function (userData) {
+    //     $scope.mookie.user.username = userData.username;
+    //     $scope.mookie.user.userEmail = userData.userEmail;
+    //     app.getCurrentCart(function (cart) {
+    //         var total = 0;
+    //         var counter = cart.products.length;
+    //         cart.products.forEach(function (product) {
+    //             var total = 0;
+    //             var count = 0;
+    //             cart.products.forEach(function (product) {
+    //                 total += product.price;
+    //                 count++;
+    //             })
+    //             $scope.mookie.cartItemCount = count;
+    //             $scope.mookeie.cart = cart;           
+    //         });
+    //     });
+    //     app.loadme = true;
+    // });
     // >
 
     // Setup interval to check user session every 15 seconds
@@ -579,13 +495,15 @@ alamode.controller('mainCtrl', function (Auth, $timeout, $location, $rootScope,
                         count++;
                     })
                     $scope.mookie.cartItemCount = count;
-                    $scope.mookie.total = Math.round(total);
+                    $scope.mookie.cart = cart;
                 });
                 app.loadme = true;
             });
         }, 5000);
     };
-    // Usage of mookieCheckSession
+    // >
+
+    // Call when main controller loads
     app.mookieCheckSession();
     // >
 
@@ -619,8 +537,10 @@ alamode.controller('mainCtrl', function (Auth, $timeout, $location, $rootScope,
                         // showModal(1); // Open bootstrap modal and let user decide what to do
                         $interval.cancel(interval); // Stop interval
                     }
+                    // Check Mookie Session
+                    app.mookieCheckSession();
                 }
-            }, 30000);
+            }, 5000);
         }
     };
 

@@ -18,7 +18,7 @@ var secret = 'zm!_0@0hu_7&ii-@j&0wpm3t%ojnvmjx6j0!1*&j@x51&mdzk@'; // Create cus
 var nodemailer = require('nodemailer'); // Import Nodemailer Package
 var xoauth2 = require('xoauth2');
 var twilio = require('twilio');
-var twilioClient = new twilio('ACa327b445a29e04cd8235115c07c15d24', '16fa92229aa2f8a5b309a67cbb75bb5d');
+var twilioClient = new twilio('ACf3ae9f0709c19efe2b96fd5ba3d3c854', '7ca3bc06e1cbc968d80c1bc44fda2212');
 var emailValidator = require("email-validator");
 
 
@@ -176,7 +176,7 @@ module.exports = function (router) {
 
     // twilioClient.messages.create({
     //     to: '9013649552',
-    //     from: '6503341693',
+    //     from: '6502514237',
     //     body: 'Ahoy from Twilio!'
     // },function(err){
     //     console.log('error');
@@ -384,9 +384,29 @@ module.exports = function (router) {
                 }
                 else {
                     order.orderStatus = req.body.orderStatus;
-                    if (order.orderStatus === 'Completed') {
+                    if(order.orderStatus === 'OnTheWay'){
+                        twilioClient.messages.create({
+                            to: order.userContactNumber,
+                            from: '6502514237',
+                            body: 'Hello ' + newOrder.customerReceipt.customerCart.user.username + ', The Doughboys are on our are way with your cookie to ' +
+                                newOrder.customerAddress + ''
+                        }, function (err) {
+                            console.log('error');
+                            console.log(err);
+                        });
+                        
+                    }
+                    else if (order.orderStatus === 'Completed') {
                         order.orderCompleted = true;
                         order.orderCompeltedOn = Date.now();
+                        twilioClient.messages.create({
+                            to: order.userContactNumber,
+                            from: '6502514237',
+                            body: 'Hello ' + newOrder.customerReceipt.customerCart.user.username + ', Thanks for ordering with Mookie Dough :) ' 
+                        }, function (err) {
+                            console.log('error');
+                            console.log(err);
+                        });
                     }
                     order.save(function (err, newOrder) {
                         if (err || !newOrder) {
@@ -528,11 +548,12 @@ module.exports = function (router) {
                                                                                 res.json({ success: false, message: 'Could not start new order', err: err });
                                                                             }
                                                                             else {
-                                                                                // Should be used to allow text communication for admins
+                                                                                // Should be used to allow text communication for admins 6502514237
+                                                                                var doughboys = ['9013649552','6308815799','3162090923'];
                                                                                 if (false) {
                                                                                     twilioClient.messages.create({
-                                                                                        to: '9013649552',
-                                                                                        from: '6503341693',
+                                                                                        to: doughboys,
+                                                                                        from: '6502514237',
                                                                                         body: 'New order:\ncustomerName: ' + newOrder.customerReceipt.customerCart.user.username + 'Address: ' +
                                                                                             newOrder.customerAddress + ''
                                                                                     }, function (err) {

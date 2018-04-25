@@ -107,8 +107,7 @@ alamode.controller('CartController', function ($scope, $location, User, Cart, Au
             // Handle Receipt display
             app.subTotal = cart.subtotal;
             app.tax = cart.tax;
-            app.total = app.tax + app.subTotal;
-            app.total = app.total.toFixed(2);
+            app.total = cart.total;
             // >
         });
     });
