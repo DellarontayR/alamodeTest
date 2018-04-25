@@ -7,10 +7,12 @@ alamode.controller('ProfileController', function ($scope, $location, User, order
     profileCtrl.orderHistory = [{}];
     // TODO: Change to get Orders instead of Carts
 
-    $scope.mookie.getEmailAndUsername(function (userData) {
-        profileCtrl.username = userData.username;
-        profileCtrl.userEmail = userData.userEmail;
+        profileCtrl.username = $scope.mookie.user.username;
+        profileCtrl.userEmail = $scope.mookie.user.userEmail;
 
+        var userData = {};
+        userData.username = profileCtrl.username;
+        userData.userEmail = profileCtrl.userEmail;
         User.getUser(userData).then(function (data) {
             if (data.data.success) {
                 var userData = {};
@@ -31,5 +33,4 @@ alamode.controller('ProfileController', function ($scope, $location, User, order
                 // Should present user error
             }
         });
-    });
 });

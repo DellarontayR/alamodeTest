@@ -384,30 +384,30 @@ module.exports = function (router) {
                 }
                 else {
                     order.orderStatus = req.body.orderStatus;
-                    if(order.orderStatus === 'OnTheWay'){
-                        twilioClient.messages.create({
-                            to: order.userContactNumber,
-                            from: '6502514237',
-                            body: 'Hello ' + newOrder.customerReceipt.customerCart.user.username + ', The Doughboys are on our are way with your cookie to ' +
-                                newOrder.customerAddress + ''
-                        }, function (err) {
-                            console.log('error');
-                            console.log(err);
-                        });
+                    // if(order.orderStatus === 'OnTheWay'){
+                    //     twilioClient.messages.create({
+                    //         to: order.userContactNumber,
+                    //         from: '6502514237',
+                    //         body: 'Hello ' + order.customerReceipt.customerCart.user.username + ', The Doughboys are on our are way with your cookie to ' +
+                    //             order.customerAddress + ''
+                    //     }, function (err) {
+                    //         console.log('error');
+                    //         console.log(err);
+                    //     });
                         
-                    }
-                    else if (order.orderStatus === 'Completed') {
-                        order.orderCompleted = true;
-                        order.orderCompeltedOn = Date.now();
-                        twilioClient.messages.create({
-                            to: order.userContactNumber,
-                            from: '6502514237',
-                            body: 'Hello ' + newOrder.customerReceipt.customerCart.user.username + ', Thanks for ordering with Mookie Dough :) ' 
-                        }, function (err) {
-                            console.log('error');
-                            console.log(err);
-                        });
-                    }
+                    // }
+                    // else if (order.orderStatus === 'Completed') {
+                    //     order.orderCompleted = true;
+                    //     order.orderCompeltedOn = Date.now();
+                    //     twilioClient.messages.create({
+                    //         to: order.userContactNumber,
+                    //         from: '6502514237',
+                    //         body: 'Hello ' + order.customerReceipt.customerCart.user.username + ', Thanks for ordering with Mookie Dough :) ' 
+                    //     }, function (err) {
+                    //         console.log('error');
+                    //         console.log(err);
+                    //     });
+                    // }
                     order.save(function (err, newOrder) {
                         if (err || !newOrder) {
                             res.json({ success: false, message: 'Could not update order status', err: err });
