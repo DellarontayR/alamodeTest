@@ -65,53 +65,51 @@ alamode.controller('CheckoutController', function ($scope, $location, User, Cart
         //Ate least make sure checkoutCtrl.checkoutData.name and $scope.mookie.total != null
         stripe.createToken(card, extraDetails).then(function (result) {
             if (result.token) {
-                $scope.mookie.getEmailAndUsername(function (userData) {
-                    var stripeData = {};
-                    stripeData.token = result.token.id;
-                    stripeData.name = checkoutData.name;
-                    // stripeData.price = $scope.mookie.total * 100;
-                    stripeData.userEmail = userData.userEmail;
-                    stripeData.user = $scope.mookie.user;
-                    stripeData.cart = $scope.mookie.cart;
-                    stripeData.price = $scope.mookie.cart.tax + $scope.mookie.cart.subtotal;
-                    stripeData.price = stripeData.price*100;
-                    stripeData.userContactNumber = checkoutData.number;
-                    stripeData.deliveryLocation = $scope.mookie.deliveryLocation;
-                    stripeData.deliveryLatLng = $scope.mookie.deliveryLatLng;
-                    stripeService.checkout(stripeData).then(function (data) {
-                        console.log(data);
-                        checkoutCtrl.checkoutMessage = data.data.message;
-                        if (data.data.success) {// Abigail
-                            checkoutCtrl.checkoutMessage = "Charge successful";
-                            $scope.mookie.deliveryLocationChanged = false;
-                            $scope.mookie.deliveryInProgress = true;
-                            $scope.mookie.showStripeModal();
+                var stripeData = {};
+                stripeData.token = result.token.id;
+                stripeData.name = checkoutData.name;
+                // stripeData.price = $scope.mookie.total * 100;
+                stripeData.userEmail = $scope.mookie.user.userEmail;
+                stripeData.user = $scope.mookie.user;
+                stripeData.cart = $scope.mookie.cart;
+                // stripeData.price = $scope.mookie.cart.tax + $scope.mookie.cart.subtotal;
+                stripeData.price = $scope.mookie.cart.total * 100;
+                stripeData.userContactNumber = checkoutData.number;
+                stripeData.deliveryLocation = $scope.mookie.deliveryLocation;
+                stripeData.deliveryLatLng = $scope.mookie.deliveryLatLng;
+                stripeService.checkout(stripeData).then(function (data) {
+                    console.log(data);
+                    checkoutCtrl.checkoutMessage = data.data.message;
+                    if (data.data.success) {// Abigail
+                        checkoutCtrl.checkoutMessage = "Charge successful";
+                        $scope.mookie.deliveryLocationChanged = false;
+                        $scope.mookie.deliveryInProgress = true;
+                        $scope.mookie.showStripeModal();
+                        setTimeout(function () {
+                            // Reset session cart
+                            $scope.mookie.cart = {};
+                            $scope.mookie.cartItemCount = false;
+                            // >
+
+                            checkoutCtrl.receipt = data.data.receipt;
+
+                            // checkoutCtrl.receipt.customerCart.total = checkoutCtrl.receipt.customerCart.tax + checkoutCtrl.receipt.customerCart.subtotal;
+                            // checkoutCtrl.receipt.customerCart.total = checkoutCtrl.receipt.customerCart.total.toFixed(2);
+
+                            $('#order-input').toggleClass('hide-input');
                             setTimeout(function () {
-                                // Reset session cart
-                                $scope.mookie.cart = {};
-                                $scope.mookie.cartItemCount = false;
-                                // >
+                                $scope.mookie.hideStripeModal();
+                                $location.path('/orders/' + data.data.order._id);
+                            }, 500)
 
-                                checkoutCtrl.receipt = data.data.receipt;
+                        }, 500);
 
-                                // checkoutCtrl.receipt.customerCart.total = checkoutCtrl.receipt.customerCart.tax + checkoutCtrl.receipt.customerCart.subtotal;
-                                // checkoutCtrl.receipt.customerCart.total = checkoutCtrl.receipt.customerCart.total.toFixed(2);
-
-                                $('#order-input').toggleClass('hide-input');
-                                setTimeout(function () {
-                                    $scope.mookie.hideStripeModal();
-                                    $location.path('/orders/' + data.data.order._id);
-                                }, 500)
-
-                            }, 500);
-
-                        }
-                        else {
-                            checkoutCtrl.checkoutMessage = 'Charge not successful';
-                        }
-                    }, function (err) {
-                        console.log(err);
-                    });
+                    }
+                    else {
+                        checkoutCtrl.checkoutMessage = 'Charge not successful';
+                    }
+                }, function (err) {
+                    console.log(err);
                 });
             }
             else {

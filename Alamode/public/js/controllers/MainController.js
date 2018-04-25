@@ -161,7 +161,7 @@ alamode.controller('mainCtrl', function (Auth, $timeout, $location, $rootScope,
 
 
 
-      
+
 
     };
     // >
@@ -386,7 +386,7 @@ alamode.controller('mainCtrl', function (Auth, $timeout, $location, $rootScope,
     app.getCurrentCart = function (callback) {
         var userData = {};
         userData.userEmail = $scope.mookie.user.userEmail;
-        console.log(userData);
+        // console.log(userData);
         // Email different things to user
 
         User.getUser(userData).then(function (data) {
@@ -396,9 +396,9 @@ alamode.controller('mainCtrl', function (Auth, $timeout, $location, $rootScope,
                     cartData.cartId = data.data.user.cart;
                     Cart.getCart(cartData).then(function (data) {
                         if (data.data.success) {
-                            console.log(data.data);
+                            // console.log(data.data);
                             var total = 0;
-                            var count =0;
+                            var count = 0;
                             data.data.cart.products.forEach(function (product) {
                                 total += product.price;
                                 count++;
@@ -458,48 +458,24 @@ alamode.controller('mainCtrl', function (Auth, $timeout, $location, $rootScope,
             });
         }
     };
-    
-    // Usage of checkUserState when main doc loads
-    // app.checkUserState(function (userData) {
-    //     $scope.mookie.user.username = userData.username;
-    //     $scope.mookie.user.userEmail = userData.userEmail;
-    //     app.getCurrentCart(function (cart) {
-    //         var total = 0;
-    //         var counter = cart.products.length;
-    //         cart.products.forEach(function (product) {
-    //             var total = 0;
-    //             var count = 0;
-    //             cart.products.forEach(function (product) {
-    //                 total += product.price;
-    //                 count++;
-    //             })
-    //             $scope.mookie.cartItemCount = count;
-    //             $scope.mookeie.cart = cart;           
-    //         });
-    //     });
-    //     app.loadme = true;
-    // });
-    // >
 
     // Setup interval to check user session every 15 seconds
     app.mookieCheckSession = function () {
-        var interval = $interval(function () {
-            app.checkUserState(function (userData) {
-                $scope.mookie.user.username = userData.username;
-                $scope.mookie.user.userEmail = userData.userEmail;
-                app.getCurrentCart(function (cart) {
-                    var total = 0;
-                    var count = 0;
-                    cart.products.forEach(function (product) {
-                        total += product.price;
-                        count++;
-                    })
-                    $scope.mookie.cartItemCount = count;
-                    $scope.mookie.cart = cart;
-                });
-                app.loadme = true;
+        app.checkUserState(function (userData) {
+            $scope.mookie.user.username = userData.username;
+            $scope.mookie.user.userEmail = userData.userEmail;
+            app.getCurrentCart(function (cart) {
+                var total = 0;
+                var count = 0;
+                cart.products.forEach(function (product) {
+                    total += product.price;
+                    count++;
+                })
+                $scope.mookie.cartItemCount = count;
+                $scope.mookie.cart = cart;
             });
-        }, 5000);
+            app.loadme = true;
+        });
     };
     // >
 
@@ -540,7 +516,7 @@ alamode.controller('mainCtrl', function (Auth, $timeout, $location, $rootScope,
                     // Check Mookie Session
                     app.mookieCheckSession();
                 }
-            }, 5000);
+            }, 10000);
         }
     };
 
