@@ -62,14 +62,6 @@ alamode.directive('userMaps', function ($q) {
 
                 google.maps.event.trigger(map, "resize");
             };
-            scope.resetBounds = function () {
-                setBounds([leesMarker,userMarker]);
-                map.setZoom(13);
-            };
-
-
-            google.maps.event.addDomListener(window, 'load', scope.resetBounds);
-
             scope.$watch('receipt', function (value) {
                 if (value && value !== undefined) {
                     scope.setupOnOrder();
