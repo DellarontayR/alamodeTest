@@ -566,7 +566,7 @@ module.exports = function (router) {
 
                                                                                 var html = '<html><head> <style type="text/css" media="screen"> .mainImg { width: 600px; height: 300px; } .center-content { text-align: center; width: 100%; } a{ color:black; border:black 1px solid; } </style></head><body> <table style="width:100%;"> <tr class="center-content"> <td> <p> Thanks for ordering Mookie Dough Today! <br> Here\'s a link to track your order\'s progress <!-- Order link --> <a href="https://www.mookiedough.co/orders/' + newOrder._id + '">Your Order</a> </p>  </td> </tr> <tr class="center-content"><td><img class="mainImg" src="https://www.mookiedough.co/sites/default/files/dorm5-min.jpg"></td> </tr> </table></body></html>';
 
-                                                                                var text = 'Thanks for ordering Mookie Dough. Go to https://www.mookiedough.co/orders' + newOrder._id + ' to view your order';
+                                                                                var text = 'Thanks for ordering Mookie Dough. Go to https://www.mookiedough.co/orders/' + newOrder._id + ' to view your order';
                                                                                 var subject = 'Mookie Dough Order Accepted';
                                                                                 sendMail(user.email, subject, html, text, function (data) {
                                                                                     console.log(data);
