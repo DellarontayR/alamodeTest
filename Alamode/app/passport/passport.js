@@ -17,17 +17,20 @@ module.exports = function (app, passport) {
 
     //Serilize users once logged in
     passport.serializeUser(function (user, done) {
+        console.log(user);
         if (user.error) {
             token = 'unconfirmed/error';
         }
         else {
             token = jwt.sign({ username: user.username, email: user.email }, secret, { expiresIn: '7d' });
         }
-        done(null, user.id); // Return user object
+        done(null, user._id); // Return user object
     });
 
     passport.deserializeUser(function (id, done) {
+        console.log('deserialize used');
         User.findById(id, function (err, user) {
+            console.log(user);
             done(err, user);
         });
     });

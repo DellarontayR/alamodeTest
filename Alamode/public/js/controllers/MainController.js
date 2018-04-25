@@ -447,11 +447,19 @@ alamode.controller('mainCtrl', function (Auth, $timeout, $location, $rootScope,
                     console.log(data.data.username);
                     Auth.logout(); // Log the user out
                     $scope.mookie.loggedIn = false; // Set session to false
-                    $location.path('/'); // Redirect to home page
+                    $location.path('/register'); // Redirect to home page
                     app.loadme = true; // Allow loading of page
                 }
                 else {
-                    return callback(userData);
+                    User.getUser(userData).then(function (data) {
+                        if(data.data.success){
+                            userData.success = false;
+                        }
+                        else{
+                            userData.success = true;
+                        }
+                        return callback(userData);
+                    });
                 }
             }, function (error) {
                 console.log(error);
@@ -462,19 +470,26 @@ alamode.controller('mainCtrl', function (Auth, $timeout, $location, $rootScope,
     // Setup interval to check user session every 15 seconds
     app.mookieCheckSession = function () {
         app.checkUserState(function (userData) {
-            $scope.mookie.user.username = userData.username;
-            $scope.mookie.user.userEmail = userData.userEmail;
-            app.getCurrentCart(function (cart) {
-                var total = 0;
-                var count = 0;
-                cart.products.forEach(function (product) {
-                    total += product.price;
-                    count++;
-                })
-                $scope.mookie.cartItemCount = count;
-                $scope.mookie.cart = cart;
-            });
-            app.loadme = true;
+            if(userData.success){
+                $scope.mookie.user.username = userData.username;
+                $scope.mookie.user.userEmail = userData.userEmail;
+                app.getCurrentCart(function (cart) {
+                    var total = 0;
+                    var count = 0;
+                    cart.products.forEach(function (product) {
+                        total += product.price;
+                        count++;
+                    })
+                    $scope.mookie.cartItemCount = count;
+                    $scope.mookie.cart = cart;
+                });
+                app.loadme = true;
+            }
+            else{
+                Auth.logout(); // Log the user out
+                $scope.mookie.loggedIn = false; // Set session to false
+                $location.path('/register'); // Redirect to home page
+            }  
         });
     };
     // >

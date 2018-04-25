@@ -1,6 +1,6 @@
 'use strict';
 
-alamode.controller('ProfileController', function ($scope, $location, User, orderService) {
+alamode.controller('ProfileController', function ($scope, $location, User, orderService,Auth) {
     var profileCtrl = this;
     profileCtrl.carts = false;
     profileCtrl.cartHistory = [{}];//tracking number, date purchased,order status, total
@@ -29,8 +29,10 @@ alamode.controller('ProfileController', function ($scope, $location, User, order
                 });
             }
             else {
-                // Couldn't get order history successfuly because of error
-                // Should present user error
+                // Couldn't get user redirect from page
+                Auth.logout(); // Log the user out
+                $scope.mookie.loggedIn = false; // Set session to false
+                $location.path('/register'); // Redirect to home page
             }
         });
 });
