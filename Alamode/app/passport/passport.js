@@ -17,15 +17,11 @@ module.exports = function (app, passport) {
 
     //Serilize users once logged in
     passport.serializeUser(function (user, done) {
-        if (user.active) {
-            if (user.error) {
-                token = 'unconfirmed/error';
-            }
-            else {
-                token = jwt.sign({ username: user.username, email: user.email }, secret, { expiresIn: '7d' });
-            }
-        } else {
-            token = 'inactive/error';//If account not active, provide invalid token for use in redirecting later
+        if (user.error) {
+            token = 'unconfirmed/error';
+        }
+        else {
+            token = jwt.sign({ username: user.username, email: user.email }, secret, { expiresIn: '7d' });
         }
         done(null, user.id); // Return user object
     });
@@ -114,7 +110,7 @@ module.exports = function (app, passport) {
                         }
 
                         if (newUser && newUser != null) {
-                            sendRegEmail(newUser.email,newUser.username,newUser.temporarytoken);
+                            sendRegEmail(newUser.email, newUser.username, newUser.temporarytoken);
                             done(null, newUser);
                         } else {
                             return done(err);
@@ -163,7 +159,7 @@ module.exports = function (app, passport) {
                                 }
 
                                 if (newUser && newUser != null) {
-                                    sendRegEmail(newUser.email,newUser.username,newUser.temporarytoken);
+                                    sendRegEmail(newUser.email, newUser.username, newUser.temporarytoken);
                                     done(null, newUser);
                                 }
                                 else {
@@ -209,7 +205,7 @@ module.exports = function (app, passport) {
                         }
 
                         if (newUser && newUser != null) {
-                            sendRegEmail(newUser.email,newUser.username,newUser.temporarytoken);
+                            sendRegEmail(newUser.email, newUser.username, newUser.temporarytoken);
                             done(null, newUser);
                         }
                         else {

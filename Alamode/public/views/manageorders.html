@@ -7,6 +7,7 @@
     <div class="order-message-container">
         <p class="order-message pending">Mookie Dough Delivery</p>
         <p class="order-message">Customer {{orderContainer.distanceFromUser}} Miles and {{orderContainer.timeFromUser}} Minutes from driver</p>
+        <p class="order-message">Customer Contact Number: {{orderContainer.order.userContactNumber}}</p>
 
         <div>
             <button ng-show="orderContainer.order.orderStatus === 'Pending'" class="primary" ng-click="orderContainer.updateDeliveryStatus('OnTheWay')">
