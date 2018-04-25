@@ -8,25 +8,25 @@ jQuery(document).ready(function ($) {
 	'use strict';
 
 	var $insta = $('#insta');
-	var getInstaHeight = function(event){
-		if(event.origin.indexOf('http://localhost:8081') ||event.origin.indexOf('https://www.mookiedough.co')){
+	var getInstaHeight = function (event) {
+		if (event.origin.indexOf('http://localhost:8081') || event.origin.indexOf('https://www.mookiedough.co')) {
 			var eventData = JSON.parse(event.data);
-			if(eventData.type === "lightwidget_widget_size"){
-				$('#insta').css({height:eventData.size});
-				window.removeEventListener("message", getInstaHeight, false);	
+			if (eventData.type === "lightwidget_widget_size") {
+				$('#insta').css({ height: eventData.size });
+				window.removeEventListener("message", getInstaHeight, false);
 			}
 		}
-		else{
+		else {
 			return;
 		}
 	}
 
-	var resizeInsta = function(){
-		window.addEventListener('message',getInstaHeight);
-		document.getElementById('insta').contentWindow.postMessage('','*');
+	var resizeInsta = function () {
+		window.addEventListener('message', getInstaHeight);
+		document.getElementById('insta').contentWindow.postMessage('', '*');
 	};
 
-	document.getElementById('insta').onload = function(){
+	document.getElementById('insta').onload = function () {
 		resizeInsta();
 	};
 
@@ -642,8 +642,8 @@ jQuery(document).ready(function ($) {
 	// 	didScroll = true;
 	// });
 
-	$(window).on('scroll',function(e){
-		didScroll= true;
+	$(window).on('scroll', function (e) {
+		didScroll = true;
 	});
 
 	setInterval(function () {
