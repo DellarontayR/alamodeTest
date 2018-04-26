@@ -948,32 +948,15 @@ module.exports = function (router) {
                     res.json({ success: false, message: 'There was an error trying to find the cart', err: err });
                 }
                 else {
-                    cart.products.forEach(function (product) {
-
-                        if (product == req.body.productId) {
-                            console.log('Before product splice///////////////////////////////////');
-
-                            cart.products.splice(cart.products.indexOf(product), 1);
-                            cart.save(function (err, cart) {
-
-                                if (err) {
-                                    res.json({ success: false, message: 'There was an error trying to save cart', err: err });
-                                }
-                                else {
-                                    res.json({ success: true, message: 'Cart updated successfully', cart: cart });
-                                }
-                            });
+                    cart.products.remove({_id:req.body.productId});
+                    cart.save(function (err, cart) {
+                        if (err) {
+                            res.json({ success: false, message: 'There was an error trying to save cart', err: err });
+                        }
+                        else {
+                            res.json({ success: true, message: 'Cart updated successfully', cart: cart });
                         }
                     });
-                    // cart.products.findByIdAndRemove(req.body.productId,function(err,oldProduct){
-                    //     if(err){
-                    //         res.json({success:false,message:'Was not able to remove item from cart'});
-                    //     }
-                    //     else{
-                    //         res.json({success:true,message:'Was able to remove product',product:oldProduct});
-
-                    //     }
-                    // })
                 }
             });
         }

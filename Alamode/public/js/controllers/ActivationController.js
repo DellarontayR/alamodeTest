@@ -7,7 +7,7 @@ alamode.controller('activationCtrl', function ($scope, $location, User,$routePar
         if(data.data.success){
             app.messageBody.message = 'Account Successfully Activated';
             $timeout(function () {
-                $location.path('/register');
+                $location.path('/account');
             }, 2000);
         }
         else{
