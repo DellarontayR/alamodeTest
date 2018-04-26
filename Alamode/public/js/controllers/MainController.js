@@ -435,13 +435,15 @@ alamode.controller('mainCtrl', function (Auth, $timeout, $location, $rootScope,
     // Check if user's session has expired upon opening page for the first time
     //For all intents and purposes getemailAndUsername
     //Check to see if user
-    app.checkUserState = function (callback) {
+    $scope.mookie.checkUserState = function (callback) {
         if (Auth.isLoggedIn()) {
             $scope.mookie.loggedIn = true;
             Auth.getUser().then(function (data) {
                 var userData = {};
                 userData.userEmail = data.data.email;
                 userData.username = data.data.username;
+                $scope.mookie.user.username = data.data.username;
+                $scope.mookie.user.userEmail = data.data.userEmail;
                 // Check if the returned user is undefined (expired)
                 if (data.data.username === undefined) {
                     console.log(data.data.username);
@@ -453,10 +455,10 @@ alamode.controller('mainCtrl', function (Auth, $timeout, $location, $rootScope,
                 else {
                     User.getUser(userData).then(function (data) {
                         if(data.data.success){
-                            userData.success = false;
+                            userData.success = true;
                         }
                         else{
-                            userData.success = true;
+                            userData.success = false;
                         }
                         return callback(userData);
                     });
@@ -469,7 +471,7 @@ alamode.controller('mainCtrl', function (Auth, $timeout, $location, $rootScope,
 
     // Setup interval to check user session every 15 seconds
     app.mookieCheckSession = function () {
-        app.checkUserState(function (userData) {
+        $scope.mookie.checkUserState(function (userData) {
             if(userData.success){
                 $scope.mookie.user.username = userData.username;
                 $scope.mookie.user.userEmail = userData.userEmail;

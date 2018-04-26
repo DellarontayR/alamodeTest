@@ -1124,7 +1124,7 @@ module.exports = function (router) {
     router.post('/getUser', function (req, res) {
         User.findOne({ email: req.body.userEmail }).select().exec(function (err, user) {
             if (err || !user) {
-                res.json({ success: false, message: err });
+                res.json({ success: false, message: 'There was another error',err:err });
             }
             else {
                 if (!user) {
