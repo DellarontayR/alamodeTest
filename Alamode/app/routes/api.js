@@ -1302,8 +1302,6 @@ module.exports = function (router) {
                         var validPassword = user.comparePassword(req.body.password); // Check if password matches password provided by user 
                         if (!validPassword) {
                             res.json({ success: false, message: 'Could not authenticate password' }); // Password does not match password in database
-                        } else if (!user.active) {
-                            res.json({ success: false, message: 'Account is not yet activated. Please check your e-mail for activation link.', expired: true }); // Account is not activated 
                         } else if(user.password === null){
                             res.json({success:false,message:'This email is connected to a social media account'});
                         }

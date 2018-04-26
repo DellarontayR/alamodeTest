@@ -101,21 +101,27 @@ alamode.controller('mainCtrl', function (Auth, $timeout, $location, $rootScope,
                                     cartData.qty = 1;
                                     cartData.userId = data.data.user._id;// replace with $scope.mookie.user._id
                                     cartData.product = catalogProduct;
-                                    Cart.addItemToCart(cartData).then(function (data) {
-                                        if (data.data.success) {
-                                            var getCartData = {};
-                                            getCartData.cartId = data.data.cart._id;
-                                            $scope.mookie.updateCart(getCartData, function (moreData) {
-                                                $scope.mookie.cartItemCount = moreData.itemCount;
-                                            });
-
-                                        }
-                                        else {
-                                            var title = "Item could not be added cart";
-                                            var body = "Item could not be added to cart for some unknown reason.";
-                                            $scope.mookie.showModal(title, body);
-                                        }
-                                    });
+                                    if(data.data.user.active){
+                                        Cart.addItemToCart(cartData).then(function (data) {
+                                            if (data.data.success) {
+                                                var getCartData = {};
+                                                getCartData.cartId = data.data.cart._id;
+                                                $scope.mookie.updateCart(getCartData, function (moreData) {
+                                                    $scope.mookie.cartItemCount = moreData.itemCount;
+                                                });
+    
+                                            }
+                                            else {
+                                                var title = "Item could not be added cart";
+                                                var body = "Item could not be added to cart for some unknown reason.";
+                                                $scope.mookie.showModal(title, body);
+                                            }
+                                        });
+                                    }
+                                    else{
+                                        $scope.mookie.showModal('Account is not yet activated','Please go to your email and activate your account before ordering');
+                                    }
+                                
                                 }
                                 else {
                                     var title = "We couldn't add the item to your cart.";
