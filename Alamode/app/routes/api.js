@@ -1304,7 +1304,10 @@ module.exports = function (router) {
                             res.json({ success: false, message: 'Could not authenticate password' }); // Password does not match password in database
                         } else if (!user.active) {
                             res.json({ success: false, message: 'Account is not yet activated. Please check your e-mail for activation link.', expired: true }); // Account is not activated 
-                        } else {
+                        } else if(user.password === null){
+                            res.json({success:false,message:'This email is connected to a social media account'});
+                        }
+                        else {
                             var token = jwt.sign({ username: user.username, email: user.email }, secret, { expiresIn: '7d' }); // Logged in: Give user token
                             res.json({ success: true, message: 'User authenticated!', token: token, user: user }); // Return token in JSON object to controller
                         }

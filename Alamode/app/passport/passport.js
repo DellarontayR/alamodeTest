@@ -24,7 +24,7 @@ module.exports = function (app, passport) {
         else {
             token = jwt.sign({ username: user.username, email: user.email }, secret, { expiresIn: '7d' });
         }
-        done(null, user._id); // Return user object
+        done(null, user.id); // Return user object
     });
 
     passport.deserializeUser(function (id, done) {
@@ -90,7 +90,7 @@ module.exports = function (app, passport) {
     passport.use(new FacebookStrategy({
         clientID: '1755938197781526',
         clientSecret: '540366e787f708849a05cdc15040f50e',
-        callbackURL: 'https://www.mookiedough.co/auth/facebook/callback',
+        callbackURL: 'http://localhost:8081/auth/facebook/callback',
         profileFields: ['id', 'displayName', 'photos', 'email']
     },
         function (accessToken, refreshToken, profile, done) {
@@ -107,6 +107,7 @@ module.exports = function (app, passport) {
                     newUser.socialToken = accessToken;
                     newUser.username = profile._json.name;
                     newUser.temporarytoken = jwt.sign({ username: newUser.username, email: newUser.email }, secret, { expiresIn: '7d' });
+                    newUser.password = null;
                     newUser.save(function (err, newUser) {
                         if (err) {
                             return done(err);
@@ -156,6 +157,7 @@ module.exports = function (app, passport) {
                             newUser.socialToken = token;
                             newUser.username = profile._json.name;
                             newUser.temporarytoken = jwt.sign({ username: newUser.username, email: newUser.email }, secret, { expiresIn: '7d' });
+                            newUser.password = null;
                             newUser.save(function (err, newUser) {
                                 if (err) {
                                     return done(err);
@@ -202,6 +204,7 @@ module.exports = function (app, passport) {
                     newUser.socialToken = accessToken;
                     newUser.username = profile._json.displayName;
                     newUser.temporarytoken = jwt.sign({ username: newUser.username, email: newUser.email }, secret, { expiresIn: '7d' });
+                    newUser.password = null;
                     newUser.save(function (err, newUser) {
                         if (err) {
                             return done(err);
