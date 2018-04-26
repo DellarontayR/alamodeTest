@@ -209,7 +209,7 @@ alamode.controller('regCtrl', function($http, $location, $timeout, User, $scope,
     }
      else {
         Auth.socialMedia($routeParams.token); // If no error, set the token
-        $location.path('/'); // Redirect to home page
+        $location.path('/account'); // Redirect to home page
     }
 })
 
@@ -233,7 +233,7 @@ alamode.controller('regCtrl', function($http, $location, $timeout, User, $scope,
         app.errorMsg = 'Your twitter account is either inactive or does not have an e-mail address attached to it.'; // If error, display custom message
     } else {
         Auth.socialMedia($routeParams.token); // If no error, set the token
-        $location.path('/'); // Redirect to home page
+        $location.path('/account'); // Redirect to home page
     }
 })
 
@@ -257,7 +257,7 @@ alamode.controller('regCtrl', function($http, $location, $timeout, User, $scope,
         //Register user using 
     } else if ($window.location.pathname == '/google/login') {
         Auth.socialMedia($routeParams.token); // If no error, set the token
-        $location.path('/'); // Redirect to home page
+        $location.path('/account'); // Redirect to home page
     }
 })
 

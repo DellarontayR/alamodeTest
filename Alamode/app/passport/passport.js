@@ -226,19 +226,19 @@ module.exports = function (app, passport) {
     // Google Routes
     app.get('/auth/google', passport.authenticate('google', { scope: ['https://www.googleapis.com/auth/plus.login', 'profile', 'email'] }));
     app.get('/auth/google/callback', passport.authenticate('google', { failureRedirect: '/home' }), function (req, res) {
-        res.redirect('/register' + token);
+        res.redirect('/google/' + token);
     });
 
     // Twitter Routes
     app.get('/auth/twitter', passport.authenticate('twitter', { scope: 'email' }));
     app.get('/auth/twitter/callback', passport.authenticate('twitter', { failureRedirect: '/home' }), function (req, res) {
-        res.redirect('/register' );
+        res.redirect('/twitter/' + token);
     });
 
     //Facebbok Routes
     app.get('/auth/facebook', passport.authenticate('facebook', { scope: 'email' }));
     app.get('/auth/facebook/callback', passport.authenticate('facebook', { failureRedirect: '/home' }), function (req, res) {
-        res.redirect('/register');
+        res.redirect('/facebook/' + token);
     });
 
     return passport;
