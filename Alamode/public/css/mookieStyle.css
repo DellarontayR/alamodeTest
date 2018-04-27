@@ -860,3 +860,14 @@ a.mobile-menu-toggle>i {
 	left: 0;
 	right: 0;
 }
+
+@media screen and (max-width:400px){
+	#logo{
+		left:-40px;
+	}
+}
+@media screen and (max-width:340px){
+	#logo{
+		left:-80px;
+	}
+}
