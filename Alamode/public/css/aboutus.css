@@ -24,6 +24,7 @@ h1 {
 .aboutText {
     max-width: 700px;
     min-height: 200px;
+    margin-bottom:10px;
     padding: 0;
     color: whitesmoke;
     font-family: OpenSans;
@@ -34,4 +35,32 @@ h1 {
 
 p{
     margin:auto;
+}
+
+.founder{
+    width: 100%;
+    max-width: 380px;
+    margin: 0 auto 30px auto;
+    text-align: center;
+}
+
+.founderImg{
+    width:100%;
+}
+
+.founderName{
+    font-size: 16px;
+    font-weight: normal;
+    margin-bottom: 6px;
+    color:white;
+}
+
+.founderPosition{
+    color: #999;
+    font-size: 14px;
+    font-weight: normal;
+}
+
+.founderCol{
+    margin-bottom:10px;
 }

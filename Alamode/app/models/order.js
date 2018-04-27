@@ -13,7 +13,8 @@ var OrderSchema = new Schema({
     orderStatus:{type:String,required:true,default:'Pending'},
     currentDriverLocation:{lat:{type:String,default:'37.4266083'},lng:{type:String,default:'-122.15756340000002'}},
     user:{type:Schema.ObjectId,ref:'User'},
-    userContactNumber:{type:Number}
+    userContactNumber:{type:Number},
+    orderMessage:{type:String}
 });
 
 module.exports = mongoose.model('Order', OrderSchema);
