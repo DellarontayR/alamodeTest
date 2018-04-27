@@ -153,14 +153,14 @@ alamode.controller('mainCtrl', function (Auth, $timeout, $location, $rootScope,
                 else {
                     // return false;
                     var title = "Ordering is closed for now.";
-                    var body = "Mookie Dough hours will be from 8 am to 7pm Monday Through Sunday with deliveyr starting at 9pm.  ";
+                    var body = "Mookie Dough hours will be from 8 am to 7pm Monday Through Sunday with delivery starting at 9pm.  ";
                     $scope.mookie.showModal(title, body);
                 }
             }
             else {
                 // return false
                 var title = "Ordering is closed for now.";
-                var body = "Mookie Dough hours will be from 8 am to 7pm Monday Through Sunday with deliveyr starting at 9pm.  ";
+                var body = "Mookie Dough hours will be from 8 am to 7pm Monday Through Sunday with delivery starting at 9pm.  ";
                 $scope.mookie.showModal(title, body);
             }
         });

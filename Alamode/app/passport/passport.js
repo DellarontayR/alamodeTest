@@ -90,7 +90,7 @@ module.exports = function (app, passport) {
     passport.use(new FacebookStrategy({
         clientID: '1755938197781526',
         clientSecret: '540366e787f708849a05cdc15040f50e',
-        callbackURL: 'http://localhost:8081/auth/facebook/callback',
+        callbackURL: 'https://www.mookiedough.co/8081/auth/facebook/callback',
         // callbackURL: 'https://www.mookiedough.co/auth/facebook/callback',
         profileFields: ['id', 'displayName', 'photos', 'email']
     },
