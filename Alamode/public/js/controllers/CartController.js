@@ -1,5 +1,5 @@
 'use strict';
-var stripe = Stripe('pk_test_EPjnzpxnrgvUiGWsYrJjqN5t');
+var stripe = Stripe('pk_live_Ic6zEI8pzoofTRtAleNB1q0v');
 var elements = stripe.elements();
 
 alamode.controller('CartController', function ($scope, $location, User, Cart, Auth, Product, stripeService, $window) {

@@ -22,7 +22,8 @@ var twilioClient = new twilio('ACf3ae9f0709c19efe2b96fd5ba3d3c854', '7ca3bc06e1c
 var emailValidator = require("email-validator");
 
 
-var stripe = require('stripe')('sk_test_N3kcDk7Gi6QdJewLusdBT2Tc');
+// var stripe = require('stripe')('sk_test_N3kcDk7Gi6QdJewLusdBT2Tc');
+var stripe = require('stripe')('sk_live_HjpnyFCfOWIhcOIBiOhdwu7h');
 //google maps api key AIzaSyDaah9NRImsLSSwF3KhofpShgf9tt26lDA
 //The actual google maps api key AIzaSyBPVL49OMjEcc82nQlsobcNmr9j9ZBDTHE
 // nodemailer is secure from here along with stripe and other apis
