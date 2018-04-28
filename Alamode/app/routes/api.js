@@ -590,92 +590,91 @@ module.exports = function (router) {
             res.json({ success: false, message: "Please try checkout again at a later time" });
         }
         else {
-            // The first thing I do is create a charge that can't be right
-            // Should do more checking and improve functionality, to make everything else not just a callback
-            stripe.charges.create({
-                amount: req.body.price,
-                currency: "usd",
-                description: "Mookie Dough LLC Payment",
-                source: req.body.token // obtained with Stripe.js
-            }, function (err, charge) {
-                console.log(charge);
+            User.findOne({ email: req.body.userEmail }).select().exec(function (err, user) {
                 if (err) {
-                    res.json({ success: false, message: 'There was an error with our stripe api', err: err });
+                    res.json({ success: false, message: 'There was an error trying to change user cart during checkout', err: err });
                 }
                 else {
-                    if (!charge) {
-                        res.json({ success: false, message: 'Something went wrong when connecting to our stripe charges api' });
+                    if (!user) {
+                        res.json({ success: false, message: 'There is no user with that email' });
                     }
                     else {
-                        User.findOne({ email: req.body.userEmail }).select().exec(function (err, user) {
+                        Cart.findOneAndUpdate({ _id: user.cart }, { $set: { oldCart: true, user: user._id, checkoutDate: Date.now() } }).populate('products').exec(function (err, cart) {
                             if (err) {
-                                res.json({ success: false, message: 'There was an error trying to change user cart during checkout', err: err });
+                                res.json({ success: false, message: 'There was an error trying update old user cart', err: err });
                             }
                             else {
-                                if (!user) {
-                                    res.json({ success: false, message: 'There is no user with that email' });
+                                if (!cart) {
+                                    res.json({ success: false, message: 'There was an error trying to find old user cart' });
                                 }
                                 else {
-                                    Cart.findOneAndUpdate({ _id: user.cart }, { $set: { oldCart: true, user: user._id, checkoutDate: Date.now() } }).populate('products').exec(function (err, cart) {
-                                        if (err) {
-                                            res.json({ success: false, message: 'There was an error trying update old user cart', err: err });
-                                        }
-                                        else {
-                                            if (!cart) {
-                                                res.json({ success: false, message: 'There was an error trying to find old user cart' });
-                                            }
-                                            else {
-                                                checkInventory(cart.products).then(function (inventoryFilled) {
-                                                    if (inventoryFilled) {
-                                                        // Abigail
-                                                        var receipt = new Receipt();
-                                                        receipt.customerName = req.body.user.username;
-                                                        receipt.customerAddress = req.body.deliveryLocation;
-                                                        receipt.customerCart = req.body.cart._id;
-                                                        receipt.geometryAddress = req.body.deliveryLatLng;
+                                    checkInventory(cart.products).then(function (inventoryFilled) {
+                                        if (inventoryFilled) {
+                                            // Abigail
+                                            var receipt = new Receipt();
+                                            receipt.customerName = req.body.user.username;
+                                            receipt.customerAddress = req.body.deliveryLocation;
+                                            receipt.customerCart = req.body.cart._id;
+                                            receipt.geometryAddress = req.body.deliveryLatLng;
 
-                                                        receipt.save(function (err, newReceipt) {
-                                                            if (err || !newReceipt) {
-                                                                res.json({ success: false, message: 'Could not generate receipt', err: err });
+                                            receipt.save(function (err, newReceipt) {
+                                                if (err || !newReceipt) {
+                                                    res.json({ success: false, message: 'Could not generate receipt', err: err });
+                                                }
+                                                Receipt.populate(newReceipt, {
+                                                    path: "customerCart", populate: { path: 'products', model: 'Product' }
+                                                }, function (err, newreceipt) {
+                                                    if (err || !newreceipt) {
+                                                        res.json({ success: false, message: 'Could not generate receipt', err: err });
+                                                    }
+                                                    else {
+                                                        var order = new Order();
+                                                        order.customerReceipt = newreceipt;
+                                                        order.user = user._id;
+                                                        order.userContactNumber = req.body.userContactNumber;
+                                                        order.save(function (err, newOrder) {
+                                                            if (err || !newOrder) {
+                                                                res.json({ success: false, message: 'Could not start new order', err: err });
                                                             }
-                                                            Receipt.populate(newReceipt, {
-                                                                path: "customerCart", populate: { path: 'products', model: 'Product' }
-                                                            }, function (err, newreceipt) {
-                                                                if (err || !newreceipt) {
-                                                                    res.json({ success: false, message: 'Could not generate receipt', err: err });
+                                                            else {
+                                                                // Should be used to allow text communication for admins 6502514237
+                                                                var doughboys = ['9013649552', '6308815799', '3162090923'];
+                                                                if (false) {
+                                                                    twilioClient.messages.create({
+                                                                        to: doughboys,
+                                                                        from: '6502514237',
+                                                                        body: 'New order:\ncustomerName: ' + newOrder.customerReceipt.customerCart.user.username + 'Address: ' +
+                                                                            newOrder.customerAddress + ''
+                                                                    }, function (err) {
+                                                                        console.log('error');
+                                                                        console.log(err);
+                                                                    });
                                                                 }
-                                                                else {
-                                                                    var order = new Order();
-                                                                    order.customerReceipt = newreceipt;
-                                                                    order.user = user._id;
-                                                                    order.userContactNumber = req.body.userContactNumber;
-                                                                    order.save(function (err, newOrder) {
-                                                                        if (err || !newOrder) {
-                                                                            res.json({ success: false, message: 'Could not start new order', err: err });
-                                                                        }
-                                                                        else {
-                                                                            // Should be used to allow text communication for admins 6502514237
-                                                                            var doughboys = ['9013649552', '6308815799', '3162090923'];
-                                                                            if (false) {
-                                                                                twilioClient.messages.create({
-                                                                                    to: doughboys,
-                                                                                    from: '6502514237',
-                                                                                    body: 'New order:\ncustomerName: ' + newOrder.customerReceipt.customerCart.user.username + 'Address: ' +
-                                                                                        newOrder.customerAddress + ''
-                                                                                }, function (err) {
-                                                                                    console.log('error');
-                                                                                    console.log(err);
-                                                                                });
+                                                                updateInventory(cart.products).then(function (value) {
+                                                                    console.log('update inventory');
+                                                                    console.log(value);
+                                                                    //Provide telmetry for when inventory fails
+                                                                });
+                                                                // user.cart = null;
+                                                                user.save(function (err, user) {
+                                                                    if (err || !user) {
+                                                                        res.json({ success: false, message: 'There was an error trying to send your email', err: err });
+                                                                    }
+                                                                    else {
+                                                                        stripe.charges.create({
+                                                                            amount: req.body.price,
+                                                                            currency: "usd",
+                                                                            description: "Mookie Dough LLC Payment",
+                                                                            source: req.body.token // obtained with Stripe.js
+                                                                        }, function (err, charge) {
+                                                                            console.log(charge);
+                                                                            if (err) {
+                                                                                res.json({ success: false, message: 'There was an error with our stripe api', err: err });
                                                                             }
-                                                                            updateInventory(cart.products).then(function (value) {
-                                                                                console.log('update inventory');
-                                                                                console.log(value);
-                                                                                //Provide telmetry for when inventory fails
-                                                                            });
-                                                                            // user.cart = null;
-                                                                            user.save(function (err, user) {
-                                                                                if (err || !user) {
-                                                                                    res.json({ success: false, message: 'There was an error trying to send your email', err: err });
+                                                                            else {
+                                                                                if (!charge) {
+                                                                                    // Do more backtracking for order here
+                                                                                    res.json({ success: false, message: 'Something went wrong when connecting to our stripe charges api' });
                                                                                 }
                                                                                 else {
                                                                                     var html = '<html><head> <style type="text/css" media="screen"> .mainImg { width: 600px; height: 300px; } .center-content { text-align: center; width: 100%; } a{ color:black; border:black 1px solid; } </style></head><body> <table style="width:100%;"> <tr class="center-content"> <td> <p> Thanks for ordering Mookie Dough Today! <br> Here\'s a link to track your order\'s progress <!-- Order link --> <a href="https://www.mookiedough.co/orders/' + newOrder._id + '">Your Order</a> </p>  </td> </tr> <tr class="center-content"><td><img class="mainImg" src="https://www.mookiedough.co/sites/default/files/dorm5-min.jpg"></td> </tr> </table></body></html>';
@@ -687,23 +686,22 @@ module.exports = function (router) {
                                                                                     });
                                                                                     res.json({ success: true, message: 'Charge completed successfully', charge: charge, receipt: newreceipt, order: newOrder });
                                                                                 }
-                                                                            });
-                                                                        }
-                                                                    });
-                                                                }
-                                                            });
-                                                        }, function (err) {
-                                                            res.json({ success: false, message: 'There was another errror trying to save receipt', err: err });
+                                                                            }
+                                                                        });
+
+                                                                    }
+                                                                });
+                                                            }
                                                         });
                                                     }
-                                                    else {
-                                                        res.json({ success: false, message: 'Sorry some items in your cart are out of stock, please remove them and start again' });
-
-                                                    }
                                                 });
+                                            }, function (err) {
+                                                res.json({ success: false, message: 'There was another errror trying to save receipt', err: err });
+                                            });
+                                        }
+                                        else {
+                                            res.json({ success: false, message: 'Sorry some items in your cart are out of stock, please remove them and start again' });
 
-
-                                            }
                                         }
                                     });
 
@@ -711,10 +709,10 @@ module.exports = function (router) {
                                 }
                             }
                         });
-                        // user findone
                     }
                 }
             });
+
         }
     });
     // >
