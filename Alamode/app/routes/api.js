@@ -655,7 +655,7 @@ module.exports = function (router) {
                                                                     console.log(value);
                                                                     //Provide telmetry for when inventory fails
                                                                 });
-                                                                // user.cart = null;
+                                                                user.cart = null;
                                                                 user.save(function (err, user) {
                                                                     if (err || !user) {
                                                                         res.json({ success: false, message: 'There was an error trying to send your email', err: err });
