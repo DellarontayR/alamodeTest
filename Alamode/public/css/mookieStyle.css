@@ -863,11 +863,7 @@ a.mobile-menu-toggle>i {
 
 @media screen and (max-width:400px){
 	#logo{
-		left:-40px;
-	}
-}
-@media screen and (max-width:340px){
-	#logo{
-		left:-80px;
+		position:relative;
+		float:left;
 	}
 }

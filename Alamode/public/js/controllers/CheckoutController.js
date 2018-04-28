@@ -6,7 +6,6 @@ alamode.controller('CheckoutController', function ($scope, $location, User, Cart
     var card = false;
     checkoutCtrl.checkoutMessage = "";
     checkoutCtrl.chargeSuccessful = false;
-    console.log($scope.mookie.cart);
 
     checkoutCtrl.setupStripeCard = function () {
         var style = {

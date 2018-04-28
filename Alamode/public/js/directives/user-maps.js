@@ -67,6 +67,11 @@ alamode.directive('userMaps', function ($q) {
                     scope.setupOnOrder();
                 }
             });
+            scope.$watch('mookie.user.username',function(value){
+                if(value && value !== undefined){
+                    scope.setupOnOrder();
+                }
+            });
         }
     }
 });

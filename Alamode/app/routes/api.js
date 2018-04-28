@@ -65,7 +65,7 @@ module.exports = function (router) {
     // Handle Inventory
     // Remove an invenory Item
     router.post('/removeInventoryUpdate', function (req, res) {
-        var inventoryId = '5add7035622535b9562ab0cd';
+        var inventoryId = '5ae3d64ef729f01ce2a747b5';
         if (req.body.itemId === null || req.body.itemId === '') {
             res.json({ success: false, message: 'There was an error trying to remove the inventory update' });
         }
@@ -93,7 +93,7 @@ module.exports = function (router) {
     // >
     // Update a new Inventory record
     router.post('/updateInventory', function (req, res) {
-        var inventoryId = '5add7035622535b9562ab0cd';
+        var inventoryId = '5ae3d64ef729f01ce2a747b5';
         if (req.body.itemName === null || req.body.itemName === '' || req.body.itemPrice === null || req.body.itemQty === null) {
             res.json({ sucess: false, message: 'Correct inventory schema not sent' });
         }
@@ -128,7 +128,7 @@ module.exports = function (router) {
     // >
     // Get Inventory
     router.post('/getInventory', function (req, res) {
-        var inventoryId = '5add7035622535b9562ab0cd';
+        var inventoryId = '5ae3d64ef729f01ce2a747b5';
 
         Inventory.findById(inventoryId).exec(function (err, inventory) {
             if (err || !inventory) {
@@ -394,7 +394,7 @@ module.exports = function (router) {
                     //         console.log('error');
                     //         console.log(err);
                     //     });
-                        
+
                     // }
                     // else if (order.orderStatus === 'Completed') {
                     //     order.orderCompleted = true;
@@ -456,14 +456,128 @@ module.exports = function (router) {
                     });
 
                 });
-
-
             }
 
         }, function (err) {
             res.json({ success: false, message: 'There was an error trying to populate all orders', err: err });
         });
     });
+    // >
+
+
+    // Update inventory
+    var updateInventory = function (cartProducts) {
+        return new Promise(function (resolve, reject) {
+            // Product Id Map
+            var productMap = new Map();
+            cartProducts.forEach(element => {
+                if (productMap.has(element._id)) {
+                    productMap.set(element._id, productMap.get(element._id) + 1);
+                }
+                else {
+                    productMap.set(element._id, 1);
+                }
+            });
+            var inventoryId = '5ae3d64ef729f01ce2a747b5';
+            Inventory.findById(inventoryId).exec(function (err, inventory) {
+                if (err || !inventory) {
+                    resolve(false);
+                }
+                else {
+                    var inventoryItems = [];
+
+                    var productIdMap = new Map();
+                    productIdMap.set("5ac3ca60f3ac611f582f031e", "og mookie");
+                    productIdMap.set("5ac3ca60f3ac611f582f031b", "funfetti");
+                    productIdMap.set("5ac3ca60f3ac611f582f031c", "oreo");
+                    productIdMap.set("5ac3ca60f3ac611f582f031a", "Red velvet");
+                    productIdMap.set("5ac3ca60f3ac611f582f031d", "Dark chocolate");
+                    // >
+
+                    for (var key of productMap.keys()) {
+                        console.log(key);
+                        var newInventoryItem = {};
+                        newInventoryItem.itemName = productIdMap.get(key.toString());
+                        console.log('key');
+                        console.log(newInventoryItem.itemName);
+                        console.log(productIdMap.get(key.toString()));
+                        newInventoryItem.itemPrice = 2.99;
+                        newInventoryItem.itemQty = -productMap.get(key);
+                        inventoryItems.push(newInventoryItem);
+                    }
+                    // Inventory.update({ 'items.id': 2 }, {
+                    //     '$set': {
+                    //         'items.$.name': 'updated item2',
+                    //         'items.$.value': 'two updated'
+                    //     }
+                    // }, function (err) { });
+                    // for (var item of inventoryItems) {
+                    //     inventory.itemInventory.push(item);
+                    // }
+                    Inventory.update(
+                        { "_id": inventory._id },
+                        { "$push": { "itemInventory": { "$each": inventoryItems } } },
+                        function (err, callback) {
+                            console.log(err);
+                            resolve(true);
+                        }
+                    );
+                    // inventory.save(function (err, newInventory) {
+                    //     console.log(err);
+                    //     if (err || !newInventory) {
+                    //         resolve(false);
+                    //     }
+                    //     else {
+                    //         resolve(true);
+                    //     }
+                    // });
+                }
+            }, function (err) {
+                resolve(false);
+            });
+
+        });
+    };
+    // >
+
+    // Check Inventory before user order goes through
+    var checkInventory = function (cartProducts) {
+        return new Promise(function (resolve, reject) {
+            var productMap = new Map();
+            cartProducts.forEach(element => {
+                if (productMap.has(element._id)) {
+                    productMap.set(element._id, productMap.get(element._id) + 1);
+                }
+                else {
+                    productMap.set(element._id, 1);
+                }
+            });
+
+            var inventoryId = '5ae3d64ef729f01ce2a747b5';
+            Inventory.findById(inventoryId).exec(function (err, inventory) {
+                if (err || !inventory) {
+                    resolve(false);
+                }
+                else {
+                    var inventoryItems = [];
+                    var inventoryMap = new Map();
+                    inventory.totals.forEach(total => {
+                        inventoryMap.set(total.itemName, total.itemQtyTotal);
+                    });
+                    for (var item of inventory.itemInventory) {
+                        if (productMap.has(item.itemId)) {
+                            if (productMap.get(item.itemId) < inventoryMap.get(item.itemName)) {
+                                resolve(false);
+                            }
+                        }
+                    }
+                    resolve(true);
+                }
+            }, function (err) {
+                resolve(false);
+            });
+        });
+    };
 
     // Checks out a user's cart based on the cart's generated stripe token and user's information
     //TODO: There needs to be a way to start an active delivery order that can be tracked that
@@ -476,6 +590,8 @@ module.exports = function (router) {
             res.json({ success: false, message: "Please try checkout again at a later time" });
         }
         else {
+            // The first thing I do is create a charge that can't be right
+            // Should do more checking and improve functionality, to make everything else not just a callback
             stripe.charges.create({
                 amount: req.body.price,
                 currency: "usd",
@@ -500,100 +616,102 @@ module.exports = function (router) {
                                     res.json({ success: false, message: 'There is no user with that email' });
                                 }
                                 else {
-                                    var cartData = {};
-                                    cartData.cartId = user.cart;
-                                    user.cart = null;
-                                    user.save(function (err, user) {
+                                    Cart.findOneAndUpdate({ _id: user.cart }, { $set: { oldCart: true, user: user._id, checkoutDate: Date.now() } }).populate('products').exec(function (err, cart) {
                                         if (err) {
-                                            res.json({ success: false, message: 'There was an error trying to delete the userCart', err: err });
+                                            res.json({ success: false, message: 'There was an error trying update old user cart', err: err });
                                         }
                                         else {
-                                            if (!user) {
-                                                res.json({ success: false, message: 'There was an error' });
+                                            if (!cart) {
+                                                res.json({ success: false, message: 'There was an error trying to find old user cart' });
                                             }
                                             else {
-                                                Cart.findOneAndUpdate({ _id: cartData.cartId }, { $set: { oldCart: true, user: user._id, checkoutDate: Date.now() } }).populate('products').exec(function (err, cart) {
-                                                    if (err) {
-                                                        res.json({ success: false, message: 'There was an error trying update old user cart', err: err });
-                                                    }
-                                                    else {
-                                                        if (!cart) {
-                                                            res.json({ success: false, message: 'There was an error trying to find old user cart' });
-                                                        }
-                                                        else {// Abigail
-                                                            // start devliery process for management users
-                                                            var receipt = new Receipt();
-                                                            receipt.customerName = req.body.user.username;
-                                                            receipt.customerAddress = req.body.deliveryLocation;
-                                                            receipt.customerCart = req.body.cart._id;
-                                                            receipt.geometryAddress = req.body.deliveryLatLng;
+                                                checkInventory(cart.products).then(function (inventoryFilled) {
+                                                    if (inventoryFilled) {
+                                                        // Abigail
+                                                        var receipt = new Receipt();
+                                                        receipt.customerName = req.body.user.username;
+                                                        receipt.customerAddress = req.body.deliveryLocation;
+                                                        receipt.customerCart = req.body.cart._id;
+                                                        receipt.geometryAddress = req.body.deliveryLatLng;
 
-                                                            receipt.save(function (err, newReceipt) {
-                                                                if (err || !newReceipt) {
+                                                        receipt.save(function (err, newReceipt) {
+                                                            if (err || !newReceipt) {
+                                                                res.json({ success: false, message: 'Could not generate receipt', err: err });
+                                                            }
+                                                            Receipt.populate(newReceipt, {
+                                                                path: "customerCart", populate: { path: 'products', model: 'Product' }
+                                                            }, function (err, newreceipt) {
+                                                                if (err || !newreceipt) {
                                                                     res.json({ success: false, message: 'Could not generate receipt', err: err });
                                                                 }
-                                                                Receipt.populate(newReceipt, {
-                                                                    path: "customerCart", populate: { path: 'products', model: 'Product' }
-                                                                }, function (err, newreceipt) {
-                                                                    if (err || !newreceipt) {
-                                                                        res.json({ success: false, message: 'Could not generate receipt', err: err });
-                                                                    }
-                                                                    else {
-
-                                                                        var order = new Order();
-                                                                        order.customerReceipt = newreceipt;
-                                                                        order.user = user._id;
-                                                                        order.userContactNumber = req.body.userContactNumber;
-                                                                        order.save(function (err, newOrder) {
-                                                                            if (err || !newOrder) {
-                                                                                res.json({ success: false, message: 'Could not start new order', err: err });
-                                                                            }
-                                                                            else {
-                                                                                // Should be used to allow text communication for admins 6502514237
-                                                                                var doughboys = ['9013649552','6308815799','3162090923'];
-                                                                                if (false) {
-                                                                                    twilioClient.messages.create({
-                                                                                        to: doughboys,
-                                                                                        from: '6502514237',
-                                                                                        body: 'New order:\ncustomerName: ' + newOrder.customerReceipt.customerCart.user.username + 'Address: ' +
-                                                                                            newOrder.customerAddress + ''
-                                                                                    }, function (err) {
-                                                                                        console.log('error');
-                                                                                        console.log(err);
-                                                                                    });
-                                                                                }
-
-
-                                                                                var html = '<html><head> <style type="text/css" media="screen"> .mainImg { width: 600px; height: 300px; } .center-content { text-align: center; width: 100%; } a{ color:black; border:black 1px solid; } </style></head><body> <table style="width:100%;"> <tr class="center-content"> <td> <p> Thanks for ordering Mookie Dough Today! <br> Here\'s a link to track your order\'s progress <!-- Order link --> <a href="https://www.mookiedough.co/orders/' + newOrder._id + '">Your Order</a> </p>  </td> </tr> <tr class="center-content"><td><img class="mainImg" src="https://www.mookiedough.co/sites/default/files/dorm5-min.jpg"></td> </tr> </table></body></html>';
-
-                                                                                var text = 'Thanks for ordering Mookie Dough. Go to https://www.mookiedough.co/orders/' + newOrder._id + ' to view your order';
-                                                                                var subject = 'Mookie Dough Order Accepted';
-                                                                                sendMail(user.email, subject, html, text, function (data) {
-                                                                                    console.log(data);
+                                                                else {
+                                                                    var order = new Order();
+                                                                    order.customerReceipt = newreceipt;
+                                                                    order.user = user._id;
+                                                                    order.userContactNumber = req.body.userContactNumber;
+                                                                    order.save(function (err, newOrder) {
+                                                                        if (err || !newOrder) {
+                                                                            res.json({ success: false, message: 'Could not start new order', err: err });
+                                                                        }
+                                                                        else {
+                                                                            // Should be used to allow text communication for admins 6502514237
+                                                                            var doughboys = ['9013649552', '6308815799', '3162090923'];
+                                                                            if (false) {
+                                                                                twilioClient.messages.create({
+                                                                                    to: doughboys,
+                                                                                    from: '6502514237',
+                                                                                    body: 'New order:\ncustomerName: ' + newOrder.customerReceipt.customerCart.user.username + 'Address: ' +
+                                                                                        newOrder.customerAddress + ''
+                                                                                }, function (err) {
+                                                                                    console.log('error');
+                                                                                    console.log(err);
                                                                                 });
-                                                                                res.json({ success: true, message: 'Charge completed successfully', charge: charge, receipt: newreceipt, order: newOrder });
-
                                                                             }
-                                                                        });
-                                                                        // Once charge is completed successful and the user has been given "and emailed" a receipt create an order that will be pending and update it to configure to the receipt 
+                                                                            updateInventory(cart.products).then(function (value) {
+                                                                                console.log('update inventory');
+                                                                                console.log(value);
+                                                                                //Provide telmetry for when inventory fails
+                                                                            });
+                                                                            // user.cart = null;
+                                                                            user.save(function (err, user) {
+                                                                                if (err || !user) {
+                                                                                    res.json({ success: false, message: 'There was an error trying to send your email', err: err });
+                                                                                }
+                                                                                else {
+                                                                                    var html = '<html><head> <style type="text/css" media="screen"> .mainImg { width: 600px; height: 300px; } .center-content { text-align: center; width: 100%; } a{ color:black; border:black 1px solid; } </style></head><body> <table style="width:100%;"> <tr class="center-content"> <td> <p> Thanks for ordering Mookie Dough Today! <br> Here\'s a link to track your order\'s progress <!-- Order link --> <a href="https://www.mookiedough.co/orders/' + newOrder._id + '">Your Order</a> </p>  </td> </tr> <tr class="center-content"><td><img class="mainImg" src="https://www.mookiedough.co/sites/default/files/dorm5-min.jpg"></td> </tr> </table></body></html>';
 
-
-                                                                    }
+                                                                                    var text = 'Thanks for ordering Mookie Dough. Go to https://www.mookiedough.co/orders/' + newOrder._id + ' to view your order';
+                                                                                    var subject = 'Mookie Dough Order Accepted';
+                                                                                    sendMail(user.email, subject, html, text, function (data) {
+                                                                                        console.log(data);
+                                                                                    });
+                                                                                    res.json({ success: true, message: 'Charge completed successfully', charge: charge, receipt: newreceipt, order: newOrder });
+                                                                                }
+                                                                            });
+                                                                        }
+                                                                    });
                                                                 }
-                                                                );
-                                                            }, function (err) {
-                                                                res.json({ success: false, message: 'There was another errror trying to save receipt', err: err });
                                                             });
+                                                        }, function (err) {
+                                                            res.json({ success: false, message: 'There was another errror trying to save receipt', err: err });
+                                                        });
+                                                    }
+                                                    else {
+                                                        res.json({ success: false, message: 'Sorry some items in your cart are out of stock, please remove them and start again' });
 
-                                                        }
                                                     }
                                                 });
+
+
                                             }
                                         }
                                     });
+
+
                                 }
                             }
                         });
+                        // user findone
                     }
                 }
             });
@@ -948,7 +1066,7 @@ module.exports = function (router) {
                     res.json({ success: false, message: 'There was an error trying to find the cart', err: err });
                 }
                 else {
-                    cart.products.remove({_id:req.body.productId});
+                    cart.products.remove({ _id: req.body.productId });
                     cart.save(function (err, cart) {
                         if (err) {
                             res.json({ success: false, message: 'There was an error trying to save cart', err: err });
@@ -1107,7 +1225,7 @@ module.exports = function (router) {
     router.post('/getUser', function (req, res) {
         User.findOne({ email: req.body.userEmail }).select().exec(function (err, user) {
             if (err || !user) {
-                res.json({ success: false, message: 'There was another error',err:err });
+                res.json({ success: false, message: 'There was another error', err: err });
             }
             else {
                 if (!user) {
@@ -1179,7 +1297,7 @@ module.exports = function (router) {
                                 res.json({ success: false, message: 'That e-mail is already taken', err: err }); // Display error if e-mail already taken
                             }
                             else {
-                                res.json({ success: false, message: 'An error occurred' ,err:err});
+                                res.json({ success: false, message: 'An error occurred', err: err });
                             }
                         } else {
                             res.json({ success: false, message: err }); // Display any other error
@@ -1233,10 +1351,10 @@ module.exports = function (router) {
                                     res.json({ success: false, message: 'That e-mail is already taken', err: err }); // Display error if e-mail already taken
                                 }
                                 else {
-                                    res.json({ success: false, message: 'An error occurred',err:err });
+                                    res.json({ success: false, message: 'An error occurred', err: err });
                                 }
                             } else {
-                                res.json({ success: false, message: err,err:err }); // Display any other error
+                                res.json({ success: false, message: err, err: err }); // Display any other error
                             }
                         }
                     }
@@ -1285,8 +1403,8 @@ module.exports = function (router) {
                         var validPassword = user.comparePassword(req.body.password); // Check if password matches password provided by user 
                         if (!validPassword) {
                             res.json({ success: false, message: 'Could not authenticate password' }); // Password does not match password in database
-                        } else if(user.password === null){
-                            res.json({success:false,message:'This email is connected to a social media account'});
+                        } else if (user.password === null) {
+                            res.json({ success: false, message: 'This email is connected to a social media account' });
                         }
                         else {
                             var token = jwt.sign({ username: user.username, email: user.email }, secret, { expiresIn: '7d' }); // Logged in: Give user token

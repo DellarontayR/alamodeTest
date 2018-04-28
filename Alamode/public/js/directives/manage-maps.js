@@ -92,7 +92,13 @@ alamode.directive('manageMaps', function ($q) {
 
             scope.$watch('receipt', function (value) {
                 if (value && value !== undefined) {
-                    scope.setupOnOrder()
+                    scope.setupOnOrder();
+                }
+            });
+
+            scope.$watch('mookie.user.username',function(value){
+                if(value && value !== undefined){
+                    scope.setupOnOrder();
                 }
             });
         }
