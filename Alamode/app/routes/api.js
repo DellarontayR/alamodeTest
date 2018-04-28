@@ -60,12 +60,26 @@ module.exports = function (router) {
             }
         });
     });
+    // Inventory Id
+    var inventoryId = '5ae3d64ef729f01ce2a747b5';
+
+
+    // router.post('/getInventoryTotals',function(req,res){
+    //     Inventory.findById(inventoryId).exec(function(err,inventory){
+    //         if(err ||!inventory){
+    //             // Abyy
+    //             res.json({success:false,message:'There was an error trying to get the inventory',err:err});
+    //         }
+    //         else{
+    //             res.json()
+    //         }
+    //     });
+    // });
 
 
     // Handle Inventory
     // Remove an invenory Item
     router.post('/removeInventoryUpdate', function (req, res) {
-        var inventoryId = '5ae3d64ef729f01ce2a747b5';
         if (req.body.itemId === null || req.body.itemId === '') {
             res.json({ success: false, message: 'There was an error trying to remove the inventory update' });
         }
@@ -91,9 +105,10 @@ module.exports = function (router) {
         }
     });
     // >
+
     // Update a new Inventory record
     router.post('/updateInventory', function (req, res) {
-        var inventoryId = '5ae3d64ef729f01ce2a747b5';
+        // var inventoryId = '5ae3d64ef729f01ce2a747b5';
         if (req.body.itemName === null || req.body.itemName === '' || req.body.itemPrice === null || req.body.itemQty === null) {
             res.json({ sucess: false, message: 'Correct inventory schema not sent' });
         }
@@ -128,8 +143,7 @@ module.exports = function (router) {
     // >
     // Get Inventory
     router.post('/getInventory', function (req, res) {
-        var inventoryId = '5ae3d64ef729f01ce2a747b5';
-
+        // var inventoryId = '5ae3d64ef729f01ce2a747b5';
         Inventory.findById(inventoryId).exec(function (err, inventory) {
             if (err || !inventory) {
                 res.json({ success: false, message: 'An error occured while trying to retrive inventory', err: err, inventory: inventory });

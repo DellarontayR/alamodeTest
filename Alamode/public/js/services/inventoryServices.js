@@ -20,5 +20,10 @@ angular.module('inventoryServices',[])
         return $http.post('/api/removeInventoryUpdate',itemData);
     };
 
+    // Get totals to let user know if product is in stock
+    // inventoryServiceFactory.getInventoryTotals = function(){
+    //     return $http.post('/api/getInventoryTotals');
+    // };
+
     return inventoryServiceFactory;
 });

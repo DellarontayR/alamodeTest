@@ -18,7 +18,8 @@ var InventorySchema = new Schema({
         }],
         totals: [{
                 itemName: { type: String, required: true },
-                itemQtyTotal: { type: Number, required: true }
+                itemQtyTotal: { type: Number, required: true },
+                itemId:{}
         }]
 });
 

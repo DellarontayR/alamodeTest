@@ -221,6 +221,7 @@ alamode.controller('regCtrl', function($http, $location, $timeout, User, $scope,
     app.expired = false; // Clear expired on page load
     app.disabled = true; // On page load, remove disable lock from form
     // Check if callback was successful         
+    
     if ($window.location.pathname == '/twittererror') {
         $scope.alert = 'alert alert-danger'; // Set class for message
         app.errorMsg = 'Twitter e-mail not found in database.'; // If error, display custom message

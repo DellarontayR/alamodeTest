@@ -783,3 +783,20 @@ footer .copy-right {
 .shop-now-button{
   color:white;
 }
+
+.inStock{
+	position: absolute;
+	left:0;
+	top:0;
+	font-size:24px;
+	color:Green;
+	z-index:10;
+}
+.notInStock{
+	position: absolute;
+	left:0;
+	top:0;
+	font-size:24px;
+	color:Red;
+	z-index:10;
+}

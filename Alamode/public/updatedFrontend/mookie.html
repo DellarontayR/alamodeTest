@@ -1,9 +1,11 @@
 <div id="mainWrapper" class="container">
 
-	<h1 style="text-align:center;font-family:\" Lato\ "" class="logo-style">Mookie Dough Delivery Coming soon</h1>
+	<h1 style="text-align:center;font-family:\" Lato\"" class="logo-style">Mookie Dough Delivery Coming soon</h1>
 	<section class="row">
 		<div class="product-card col-xs-12 col-sm-6 col-md-4 col-lg-3 product-shadow" ng-repeat="catalogProduct in mookie.products">
 			<figure class="snip1418">
+				<p ng-class="{inStock: catalogProduct.inStock == 'In Stock', notInStock: catalogProduct.inStock == 'Not In Stock'}">{{catalogProduct.inStock}}</p>
+
 				<!-- <img ng-click="mookie.showProductModal(catalogProduct)" ng-src="{{catalogProduct.imagePath}}" alt="sample85" /> -->
 				<img class="mookie-product-img" ng-src="{{catalogProduct.imagePath}}" alt="sample85" />
 
