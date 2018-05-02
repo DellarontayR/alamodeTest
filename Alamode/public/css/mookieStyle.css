@@ -272,7 +272,6 @@ product {
 	padding: 4px;
 }
 
-
 .main-navigation>.menu li>a {
 	display: block;
 	color: #606060;
@@ -281,9 +280,10 @@ product {
 	text-transform: uppercase;
 	text-decoration: none;
 }
+
 .main-navigation {
-	display:block;
-	z-index:10;
+	display: block;
+	z-index: 10;
 	position: fixed;
 	width: 100%;
 	height: calc(100% - 80px);
@@ -298,24 +298,29 @@ product {
 	-o-transition: visibility 0.3s, opacity 0.3s;
 	transition: visibility 0.3s, opacity 0.3s;
 }
+
 .main-navigation>.menu {
 	display: none;
-	color:black;
-	list-style:none;
-	margin:0;
+	color: black;
+	list-style: none;
+	margin: 0;
 	padding: 20px 0;
 }
+
 .main-navigation>.menu>li {
 	display: block;
 }
+
 .main-navigation>.menu>li>a {
 	line-height: 1.5;
 	padding: 12px 15px;
 }
+
 .main-navigation.open {
 	visibility: visible;
 	opacity: 1;
 }
+
 .main-navigation.open>.menu {
 	display: block;
 	-webkit-animation: slideUpLong 0.5s;
@@ -323,11 +328,9 @@ product {
 	animation: slideUpLong 0.5s;
 }
 
-
 /* Main Navigation Mobile */
 
 @media screen and (max-width: 1070px) {
-
 	/* .tools {
 		line-height: 76px;
 	} */
@@ -461,7 +464,7 @@ footer {
 	padding-top: 10px;
 	background-color: #333333;
 	color: #ffffff;
-	height: 100%;
+	/* height: 100%; */
 }
 
 /* .footer{
@@ -528,8 +531,6 @@ header {
 .nav-up {
 	top: -80px;
 }
-
-
 
 /* Form control inputs */
 
@@ -669,7 +670,7 @@ header {
 
 a.mobile-menu-toggle {
 	/* display: none; */
-	display:inline-flex;
+	display: inline-flex;
 	color: #333333;
 }
 
@@ -853,7 +854,7 @@ a.mobile-menu-toggle>i {
 	margin-bottom: 10px;
 }
 
-#logo{
+#logo {
 	position: absolute;
 	margin-left: auto;
 	margin-right: auto;
@@ -861,9 +862,24 @@ a.mobile-menu-toggle>i {
 	right: 0;
 }
 
-@media screen and (max-width:400px){
-	#logo{
-		position:relative;
-		float:left;
+@media screen and (max-width:400px) {
+	#logo {
+		position: relative;
+		float: left;
 	}
+}
+
+#main-footer {
+	background: #333333;
+	color: white;
+	padding: 6rem 0;
+	/* font-size: 0.8rem; */
+}
+
+#main-footer h6 {
+	color: #718FA9;
+}
+
+#main-footer a {
+	color: #6C6F73;
 }

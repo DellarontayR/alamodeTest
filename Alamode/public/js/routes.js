@@ -6,12 +6,19 @@ var app = angular.module('appRoutes', ['ngRoute', 'angularCSS'])
         $routeProvider.when('/', {
             redirectTo: '/home'
         }).
-            when('/home', {
-                templateUrl: '../updatedFrontend/mookie.html',
+            when('/home',{
+                templateUrl: '../views/home.html',
                 authenticated: false,
                 controller: 'HomeController',
                 controllerAs: 'home',
                 css: ['../css/home.css']
+            }).
+            when('/menu', {
+                templateUrl: '../updatedFrontend/mookie.html',
+                authenticated: false,
+                controller: 'HomeController',
+                controllerAs: 'home',
+                css: ['../css/menu.css']
             })
             .when('/orderComplete', {
                 templateUrl: '../views/ordercomplete.html',

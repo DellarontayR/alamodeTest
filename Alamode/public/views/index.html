@@ -204,6 +204,16 @@
     <nav class="main-navigation text-center">
       <ul class="menu">
         <li>
+          <a href="/home">
+            <span>Home</span>
+          </a>
+        </li>
+        <li>
+          <a href="/menu">
+            <span>menu</span>
+          </a>
+        </li>
+        <li>
           <a href="/thesecret">
             <span>the secret</span>
           </a>
@@ -274,61 +284,89 @@
   </div>
   </div>
 
-  <!--  -->
-  <!-- Footer -->
-  <footer class="footer text-center" style="padding-top:10px">
-    <div class="column">
-      <h3 class="widget-title">
-        Subscribe
-        <small>to receive latest offers and discounts from Mookie Dough</small>
-      </h3>
-      <form class="subscribe-form" novalidate>
-        <input type="email" name="EMAIL" placeholder="Your e-mail" ng-model="subEmail">
-        <div style="position: absolute; left: -5000px;" aria-hidden="true">
-          <input type="text" name="" tabindex="-1" value="">
+  <!-- New footer -->
+  <footer id="main-footer">
+    <div class="container">
+      <div class="row">
+        <div class="col-md-6">
+          &copy; 2018 all rights reserved. Mookie Dough LLC</p>
+          <br>
+          <p ng-if="mookie.numberOfSiteVisitors > 0"> Site has been accessed {{mookie.numberOfSiteVisitors}} times.</p>
+          <br>
+          <h3 class="widget-title">
+            <small>Subscribe to the Mookie Dough email list</small>
+          </h3>
+          <form class="subscribe-form" novalidate>
+            <input type="email" name="EMAIL" placeholder="Your e-mail" ng-model="subEmail">
+            <div style="position: absolute; left: -5000px;" aria-hidden="true">
+              <input type="text" name="" tabindex="-1" value="">
+            </div>
+            <button type="submit" ng-click="main.addSubscription(subEmail)">
+              <i class="material-icons send"></i>
+            </button>
+            <p ng-show="main.subMessage"> {{main.subMessage}}</p>
+          </form>
+
         </div>
-        <button type="submit" ng-click="main.addSubscription(subEmail)">
-          <i class="material-icons send"></i>
-        </button>
-        <p ng-show="main.subMessage"> {{main.subMessage}}</p>
-      </form>
-    </div>
-    <!-- .column -->
-
-
-    <div class="column">
-      <p class="text-sm">Need support? Call
-        <span class="text-primary">1 (650) 555-9999</span>
-      </p>
-      <div class="social-bar text-center space-bottom">
-        <a href="https://www.facebook.com/mookiedough/" class="sb-facebook column" data-toggle="tooltip" data-placement="top" title="Facebook">
-          <i class="socicon-facebook ssb-facebook"></i>
-        </a>
-        <a href="https://twitter.com/_Mookie_Dough" class="sb-twitter column" data-toggle="tooltip" data-placement="top" title="Twitter">
-          <i class="socicon-twitter ssb-twitter"></i>
-        </a>
-        <a href="https://instagram.com/_mookie_dough" class="sb-instagram column" data-toggle="tooltip" data-placement="top" title=""
-          data-original-title="Instagram">
-          <i class="socicon-instagram ssb-instagram"></i>
-        </a>
-
-      </div>
-      <!-- .social-bar -->
-      <p ng-if="mookie.numberOfSiteVisitors > 0"> Site has been accessed {{mookie.numberOfSiteVisitors}} times.</p>
-      <p class="copyright">
-        <img src="https://res.cloudinary.com/de8cuyd0n/image/upload/v1520412543/E-commerce%20landing%20page/icons/copy-right-img_1x.png"
-          alt="&copy"> 2018 all rights reserved. Mookie Dough LLC</p>
-
-      <div class="column">
-        <div class="scroll-to-top-btn">
-          <i class="material-icons trending_flat"></i>
+        <div class="col-md-2">
+          <h6>Important Links</h6>
+          <ul class="list-unstyled">
+            <li>
+              <a href="/about">About us</a>
+            </li>
+            <li>
+              <a href="/menu">Menu</a>
+            </li>
+            <li>
+              <a href="/thesecret">Social Media</a>
+            </li>
+            <li>
+              <a href="/register">Sign in</a>
+            </li>
+          </ul>
         </div>
+        <div class="col-md-2">
+          <h6>Our team</h6>
+          <ul class="list-unstyled">
+            <li>
+              <a href="https://www.linkedin.com/in/abempah/">Bempah</a>
+            </li>
+            <li>
+              <a href="https://www.linkedin.com/in/akim-richards-a8303610a/">Akim</a>
+            </li>
+            <li>
+              <a href="https://www.linkedin.com/in/dellarontay/">Dellarontay</a>
+            </li>
+            <li>
+              <a href="https://www.linkedin.com/in/oluwaseyi-olaleye-a523b210a/">Oluwaseyi</a>
+            </li>
+          </ul>
+        </div>
+        <!-- <div class="col-md-2">
+          <h6>Our things</h6>
+          <ul class="list-unstyled">
+            <li>
+              <a href="">Jobs</a>
+            </li>
+            <li>
+              <a href="">Contact</a>
+            </li>
+            <li>
+              <a href="">FAQ</a>
+            </li>
+          </ul>
+        </div> -->
       </div>
-
     </div>
-    <!-- .column -->
   </footer>
-  <!-- .footer -->
+
+  <!--  -->
+  <!-- <div class="column">
+    <div class="scroll-to-top-btn">
+      <i class="material-icons trending_flat"></i>
+    </div>
+  </div> -->
+
   </div>
   <!-- Older bootstrap and jquery script CDNs-->
   <!-- JavaScript (jQuery) libraries, plugins and custom scripts -->

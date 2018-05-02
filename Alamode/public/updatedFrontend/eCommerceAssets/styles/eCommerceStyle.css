@@ -76,7 +76,7 @@ footer div a {
 	color: rgba(146, 146, 146, 1.00);
 	display: block;
 	text-decoration: none;
-	text-align: center;
+	/* text-align: center; */
 }
 
 /* Container for links in footer */
