@@ -1,4 +1,6 @@
 'use strict';// Enable typescript
+
+
 console.log("Hello! :) Welcome Mookie Dough inspector. If you're a Mookie Dough advocate and would like to see more of it near you email readus@mookiedough.com <3");
 alamode.controller('mainCtrl', function (Auth, $timeout, $location, $rootScope,
     $window, $interval, User, AuthToken, $scope, Cart, Product, MookieSubscription, ContactMessage, scheduleService, inventoryService) {
@@ -342,12 +344,50 @@ alamode.controller('mainCtrl', function (Auth, $timeout, $location, $rootScope,
     // >
 
 
+    function getBase64(file) {
+        return new Promise(function (resolve, reject) {
+
+            var reader = new FileReader();
+            reader.onload = function () {
+                resolve(reader.result)
+                // console.log(reader.result);
+            };
+            reader.onerror = function (error) {
+                reject('Error');
+                // console.log('Error: ', error);
+            };
+            reader.readAsDataURL(file);
+        });
+    }
+
+    $scope.mookie.clickIt = function () {
+        var $inputButton = $('#test-button');
+
+        var file = document.getElementById('testInput').files[0];
+        console.log(file);
+        // console.log(getBase64(file));
+        getBase64(file).then(function(data){
+            if(data === 'Error'){
+                console.log('Error');
+            }
+            else{
+                data = data.replace('base64,','charset=utf-8;base64,');
+                // data = data.replace('DNG','png');
+
+                $scope.mookie.testImage = data;
+                document.getElementById("testImage").setAttribute('src',"http://localhost:8081/imgs/Media/efc18e_nugo.dng");
+            }
+        });
+    };
+
+
+    // Item Name map
     var itemNameMap = new Map();
-    itemNameMap.set("og mookie","og mookie");
-    itemNameMap.set("og mookie's confetti party","funfetti");
-    itemNameMap.set("cookies n creme","oreo");
-    itemNameMap.set("aunty vicky's red velvet","Red velvet");
-    itemNameMap.set("dark chocolate mocha","Dark chocolate");
+    itemNameMap.set("og mookie", "og mookie");
+    itemNameMap.set("og mookie's confetti party", "funfetti");
+    itemNameMap.set("cookies n creme", "oreo");
+    itemNameMap.set("aunty vicky's red velvet", "Red velvet");
+    itemNameMap.set("dark chocolate mocha", "Dark chocolate");
 
 
     // Get products from server to produce on home page in mookie scope
@@ -362,31 +402,34 @@ alamode.controller('mainCtrl', function (Auth, $timeout, $location, $rootScope,
                             var inventory = data.data.inventory;
                             var totals = inventory.totals;
                             var totalMap = new Map();
-                            totals.forEach(total=>{
-                                totalMap.set(total.itemName,total.itemQtyTotal);
+                            totals.forEach(total => {
+                                totalMap.set(total.itemName, total.itemQtyTotal);
                             });
 
-                            $scope.mookie.products.forEach(function(product){
-                                if(itemNameMap.has(product.title)){
-                                    if(totalMap.get(itemNameMap.get(product.title))){
+                            $scope.mookie.products.forEach(function (product) {
+                                if (itemNameMap.has(product.title)) {
+                                    if (totalMap.get(itemNameMap.get(product.title))) {
                                         product.inStock = "In Stock"
                                     }
-                                    else{
+                                    else {
                                         product.inStock = "Not In Stock";
                                     }
                                 }
                             });
                             callback($scope.mookie.products);
                         }
-                    },function(err){
+                    }, function (err) {
                         callback($scope.mookie.products);
                     });
                 }
             })
         })();
     };
+    var handleProduct = function (products) {
+        console.log(products);
+    };
 
-    $scope.mookie.getProductsFromServer();
+    $scope.mookie.getProductsFromServer(handleProduct);
     // >
 
     // Get Subscribers for Management

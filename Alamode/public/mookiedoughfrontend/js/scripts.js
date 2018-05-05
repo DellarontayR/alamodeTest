@@ -7,6 +7,98 @@
 jQuery(document).ready(function ($) {
 	'use strict';
 
+	var byteArrayToBase64 = function(byteArr){
+		var base64s = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/";
+		var encOut = "";
+		var bits;
+		var i = 0;
+		
+		while(byteArr.length >= i+3){
+			bits = (byteArr[i++] & 0xff) << 16 | (byteArr[i++] & 0xff) << 8 | byteArr[i++] & 0xff;
+			encOut += base64s.charAt((bits & 0x00fc0000) >> 18) + base64s.charAt((bits & 0x0003f000) >> 12) + base64s.charAt((bits & 0x00000fc0) >> 6) + base64s.charAt((bits & 0x0000003f));
+		}
+		if(byteArr.length-i > 0 && byteArr.length-i < 3){
+			var dual = Boolean(byteArr.length - i - 1);
+			bits = ((byteArr[i++] & 0xff) << 16) | (dual ? (byteArr[i] & 0xff) << 8 : 0);
+			encOut += base64s.charAt((bits & 0x00fc0000) >> 18) + base64s.charAt((bits & 0x0003f000) >> 12) + (dual ? base64s.charAt((bits & 0x00000fc0) >> 6) : '=') + '=';
+		}
+		
+		return encOut;
+	};
+		
+	var base64ToByteArray = function(encStr){
+		var base64s = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/";
+		var decOut = new air.ByteArray();  
+		var bits;
+		
+		for(var i = 0, j = 0; i<encStr.length; i += 4, j += 3){
+			bits = (base64s.indexOf(encStr.charAt(i)) & 0xff) <<18 | (base64s.indexOf(encStr.charAt(i +1)) & 0xff) <<12 | (base64s.indexOf(encStr.charAt(i +2)) & 0xff) << 6 | base64s.indexOf(encStr.charAt(i +3)) & 0xff;
+			decOut[j+0] = ((bits & 0xff0000) >> 16);
+			if(i+4 != encStr.length || encStr.charCodeAt(encStr.length - 2) != 61){
+				decOut[j+1] = ((bits & 0xff00) >> 8);
+			}
+			if(i+4 != encStr.length || encStr.charCodeAt(encStr.length - 1) != 61){
+				decOut[j+2] = (bits & 0xff);
+			}
+		}
+		
+		return decOut;
+	};
+
+	var readFile = function(inputfile){
+        var file = new File(inputfile);
+        var bytes = new ByteArray();
+        if (file.exists) {
+            var stream = new air.FileStream();
+            stream.open(file, air.FileMode.READ);
+            bytes.endian = air.Endian.LITTLE_ENDIAN;
+            stream.readBytes(bytes, 0, file.size);
+            stream.close();
+        }
+        
+        return bytes;
+	};
+
+	function getBase64(file) {
+		var reader = new FileReader();
+		reader.readAsDataURL(file);
+		reader.onload = function () {
+		  console.log(reader.result);
+		};
+		reader.onerror = function (error) {
+		  console.log('Error: ', error);
+		};
+	 }
+	 
+	//  var file = "http://localhost:8081/imgs/Media/efc18e_nugo.dng"
+	//  getBase64(file); // prints the base64 string
+	// document.getElementById("testImage").src = "../imgs/Media/efc18e_nugo.dng";
+
+
+	// function LoadFile() {
+	// 	var oFrame = document.getElementById("frmFile");
+	// 	var strRawContents = oFrame.contentWindow.document.body.childNodes[0].innerHTML;
+	// 	console.log(strRawContents);
+	// 	while (strRawContents.indexOf("\r") >= 0)
+	// 		strRawContents = strRawContents.replace("\r", "");
+	// 	var arrLines = strRawContents.split("\n");
+	// 	alert("File " + oFrame.src + " has " + arrLines.length + " lines");
+	// 	for (var i = 0; i < arrLines.length; i++) {
+	// 		var curLine = arrLines[i];
+	// 		alert("Line #" + (i + 1) + " is: '" + curLine + "'");
+	// 	}
+	// }
+	var $inputButton = $('#test-button');
+
+	$inputButton.on('click',function(e){
+		console.log('here');
+		e.preventDefault();
+		// var file = document.getElementById('testInput').files[0];
+		// console.log(file);
+		// console.log(getBase64(file));
+
+	});
+
 	var $insta = $('#insta');
 	var getInstaHeight = function (event) {
 		if (event.origin.indexOf('http://localhost:8081') || event.origin.indexOf('https://www.mookiedough.co')) {
@@ -79,20 +171,21 @@ jQuery(document).ready(function ($) {
 
 
 	// Page Transitions
-	if ($('.page-preloading').length) {
-		$('a:not([href^="#"])').on('click', function (e) {
-			if ($(this).attr('class') !== 'video-popup-btn' && $(this).attr('class') !== 'gallery-item' && $(this).attr('class') !== 'ajax-post-link' && $(this).attr('class') !== 'read-more ajax-post-link') {
-				console.log($(this).attr('class'));
-				e.preventDefault();
-				var linkUrl = $(this).attr('href');
-				$('.page-preloading').addClass('link-clicked');
-				setTimeout(function () {
-					window.open(linkUrl, '_self');
-				}, 550);
-			}
-		});
-	}
+	// if ($('.page-preloading').length) {
+	// 	$('a:not([href^="#"])').on('click', function (e) {
+	// 		if ($(this).attr('class') !== 'video-popup-btn' && $(this).attr('class') !== 'gallery-item' && $(this).attr('class') !== 'ajax-post-link' && $(this).attr('class') !== 'read-more ajax-post-link') {
+	// 			console.log($(this).attr('class'));
+	// 			e.preventDefault();
+	// 			var linkUrl = $(this).attr('href');
+	// 			$('.page-preloading').addClass('link-clicked');
+	// 			setTimeout(function () {
+	// 				window.open(linkUrl, '_self');
+	// 			}, 550);
+	// 		}
+	// 	});
+	// }
 
+	
 
 	// Animated Scroll to Top Button
 	//------------------------------------------------------------------------------
@@ -384,18 +477,18 @@ jQuery(document).ready(function ($) {
 	}
 
 	// Open Post
-	function openPost(postUrl) {
+	// function openPost(postUrl) {
 
-		$('body').addClass('blog-post-open');
-		postBackdrop.addClass('active');
-		postContainer.addClass('open');
-		postPreloader.addClass('active');
+	// 	$('body').addClass('blog-post-open');
+	// 	postBackdrop.addClass('active');
+	// 	postContainer.addClass('open');
+	// 	postPreloader.addClass('active');
 
-		setTimeout(function () {
-			postPreloader.removeClass('active');
-			getData(postUrl);
-		}, 100);
-	}
+	// 	setTimeout(function () {
+	// 		postPreloader.removeClass('active');
+	// 		getData(postUrl);
+	// 	}, 100);
+	// }
 
 	// Close Post
 	function closePost() {
