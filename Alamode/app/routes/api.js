@@ -11,8 +11,7 @@ var Receipt = require('../models/receipt');
 var ReceiptCounter = require('../models/receiptcounter');
 var Inventory = require('../models/inventory');
 var DeliverySchedule = require('../models/deliveryschedule');
-
-
+// >
 
 // Libs
 var jwt = require('jsonwebtoken'); // Import JWT Package
@@ -23,8 +22,14 @@ var twilio = require('twilio');
 var twilioClient = new twilio('ACf3ae9f0709c19efe2b96fd5ba3d3c854', '7ca3bc06e1cbc968d80c1bc44fda2212');
 var emailValidator = require("email-validator");
 
-
 var stripe = require('stripe')('sk_test_N3kcDk7Gi6QdJewLusdBT2Tc');
+// >
+
+// Test libs
+// var Tiff = require('tiff.js');
+// Tiff.initialize({TOTAL_MEMORY: 500000000});
+// var fs = require('fs');
+// >
 
 //google maps api key AIzaSyDaah9NRImsLSSwF3KhofpShgf9tt26lDA
 //The actual google maps api key AIzaSyBPVL49OMjEcc82nQlsobcNmr9j9ZBDTHE
@@ -35,6 +40,35 @@ mongoose.Promise = global.Promise;
 var Schema = mongoose.Schema;
 
 module.exports = function (router) {
+
+    // Testing 
+    // var filename = './efc18e_nugo.dng';
+
+    // var formData = {
+    //     filename: filename,
+    //     file: fs.createReadStream(filename)
+    // };
+
+    // router.post('/photo',function(req,res){
+    //     res.pipe(fs.createWriteStream('./efc18e_nugo.dng'));
+    // });
+    // // var req = request.post({url: 'http://myvendorsapi/Upload_PDF', formData: formData})
+    // // req.pipe(fs.createWriteStream('OUTPUT FILE NAME'))
+
+    // var input = fs.readFileSync(filename);
+    // var image = new Tiff({ buffer: input });
+    // console.log(filename + ': width = ' + image.width() + ', height = ' + image.height());
+
+    // var canvas = image.toCanvas();
+    // document.body.append(canvas);
+    // res.send(canvas);
+
+
+
+
+    // >
+
+
 
     // Create delivery schedule
 

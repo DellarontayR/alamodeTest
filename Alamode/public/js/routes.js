@@ -5,8 +5,11 @@ var app = angular.module('appRoutes', ['ngRoute', 'angularCSS'])
     .config(function ($routeProvider, $locationProvider) {
         $routeProvider.when('/', {
             redirectTo: '/home'
-        }).
-            when('/home',{
+        })
+            .when('/imageTest', {
+                authenticated:false
+            }).
+            when('/home', {
                 templateUrl: '../views/home.html',
                 authenticated: false,
                 controller: 'HomeController',
@@ -49,12 +52,12 @@ var app = angular.module('appRoutes', ['ngRoute', 'angularCSS'])
                 authenticated: true,
                 permission: ['admin', 'moderator']
             }).
-            when('/management/manageInventory',{
+            when('/management/manageInventory', {
                 templateUrl: '../views/manageInventory.html',
                 css: '../css/manageInventory.css',
                 controller: 'inventoryCtrl',
                 controllerAs: 'inventoryCtrl',
-                permission: ['admin','moderator']
+                permission: ['admin', 'moderator']
             }).
             when('/manageorders/:orderId', {
                 templateUrl: '../views/manageorders.html',

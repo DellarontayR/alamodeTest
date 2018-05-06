@@ -14,18 +14,27 @@ var passport = require('passport');
 var social = require('./app/passport/passport.js')(app, passport);
 var child_process = require('child_process');
 
+
 app.use(morgan('dev'));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(express.static(__dirname + '/public'));
 app.use('/api', appRoutes);
 
-const publicPath = path.resolve(__dirname, "public"); 
+const publicPath = path.resolve(__dirname, "public");
 const mediaPath = path.join(publicPath, "/imgs/Media");
 
-app.use('/sites/default/files',express.static(mediaPath));
+app.use('/sites/default/files', express.static(mediaPath));
 mongoose.Promise = global.Promise;
 
+
+// Test apis
+
+
+var Tiff = require('tiff.js');
+var fs = require('fs');
+
+// >
 /**
  * Connection to mongodb database on port: 27107
  */
@@ -44,6 +53,10 @@ app.get('*', function (req, res) {
     res.sendFile(path.join(__dirname + '/public/views/index.html'));
 });
 
+app.get('/imageTest', function (req, res) {
+
+});
+
 /**
  * Server starts listening for requests and provide public html files and apis to public users
  */
@@ -53,4 +66,18 @@ app.listen(port, function () {
 );
 
 module.exports = app;
+
+
+// var buf = fs.readFileSync('./efc18e_nugo.dng');
+
+// var dcraw = require('dcraw');
+// //  = dcraw(buf, { verbose: true, identify: true });
+//  var some = dcraw(buf, { verbose: true, identify: true });
+// console.log(some);
+//  var tiffFile = dcraw(buf, { T: true,  E: true});
+
+
+// fs.writeFileSync('example.tiff', tiffFile);
+
+
 

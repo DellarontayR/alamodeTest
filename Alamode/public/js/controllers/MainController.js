@@ -1,5 +1,9 @@
 'use strict';// Enable typescript
-
+var Tiff = require('Tiff');
+console.log(Tiff);
+console.log(Tiff.Tiff);
+Tiff = Tiff.Tiff.Tiff;
+// Tiff.initialize({TOTAL_MEMORY: 500000000});
 
 console.log("Hello! :) Welcome Mookie Dough inspector. If you're a Mookie Dough advocate and would like to see more of it near you email readus@mookiedough.com <3");
 alamode.controller('mainCtrl', function (Auth, $timeout, $location, $rootScope,
@@ -366,19 +370,36 @@ alamode.controller('mainCtrl', function (Auth, $timeout, $location, $rootScope,
         var file = document.getElementById('testInput').files[0];
         console.log(file);
         // console.log(getBase64(file));
-        getBase64(file).then(function(data){
-            if(data === 'Error'){
+        getBase64(file).then(function (data) {
+            if (data === 'Error') {
                 console.log('Error');
             }
-            else{
-                data = data.replace('base64,','charset=utf-8;base64,');
+            else {
+                // data = data.replace('base64,','charset=utf-8;base64,');
                 // data = data.replace('DNG','png');
 
                 $scope.mookie.testImage = data;
-                document.getElementById("testImage").setAttribute('src',"http://localhost:8081/imgs/Media/efc18e_nugo.dng");
+                document.getElementById("testImage").setAttribute('src', '../../imgs/Media/example.tiff');
             }
         });
     };
+
+    var xhr = new XMLHttpRequest();
+    xhr.responseType = 'arraybuffer';
+    // xhr.open('GET', "http://localhost:8081/sites/default/files/example.tiff");
+    xhr.open('GET', "http://localhost:8081/sites/default/files/efc18e_nugo.dng");
+
+    xhr.onload = function (e) {
+        var tiff = new Tiff({ buffer: xhr.response });
+        var canvas = tiff.toCanvas();
+        // canvas.width = '100%';
+        // canvas.height = '800px';
+        console.log(canvas);
+        console.log(tiff);
+        document.getElementById('imageTestMax').append(canvas);
+        console.log('idk what I\' doing at allllll');
+    };
+    xhr.send();
 
 
     // Item Name map
