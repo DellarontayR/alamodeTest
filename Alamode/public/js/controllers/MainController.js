@@ -1,8 +1,10 @@
 'use strict';// Enable typescript
-var Tiff = require('Tiff');
-console.log(Tiff);
-console.log(Tiff.Tiff);
-Tiff = Tiff.Tiff.Tiff;
+var requireLibs = require('Tiff');
+
+console.log(requireLibs);
+var Tiff = requireLibs.Tiff.Tiff;
+var fs = requireLibs.Tiff.fs;
+var dcraw = requireLibs.Tiff.dcraw;
 // Tiff.initialize({TOTAL_MEMORY: 500000000});
 
 console.log("Hello! :) Welcome Mookie Dough inspector. If you're a Mookie Dough advocate and would like to see more of it near you email readus@mookiedough.com <3");
@@ -368,6 +370,7 @@ alamode.controller('mainCtrl', function (Auth, $timeout, $location, $rootScope,
         var $inputButton = $('#test-button');
 
         var file = document.getElementById('testInput').files[0];
+        // dcraw
         console.log(file);
         // console.log(getBase64(file));
         getBase64(file).then(function (data) {
@@ -378,18 +381,35 @@ alamode.controller('mainCtrl', function (Auth, $timeout, $location, $rootScope,
                 // data = data.replace('base64,','charset=utf-8;base64,');
                 // data = data.replace('DNG','png');
 
+                // var some = dcraw(data, { verbose: true, identify: true });
+                // console.log(some);
+                // var tiffFile = dcraw(data, { T: true, E: true });
+                // console.log(tiffFile);
+                // fs.writeFileSync('../../imgs/Media/NewExample.tiff', tiffFile);
+
                 $scope.mookie.testImage = data;
-                document.getElementById("testImage").setAttribute('src', '../../imgs/Media/example.tiff');
+                document.getElementById("testImage").setAttribute('src', '../../imgs/Media/NewExample.tiff');
             }
         });
     };
 
+    console.log(fs);
+    // var buf = fs.readFileSync('../../imgs/Media/efc18e_nugo.dng');
+
+    //  = dcraw(buf, { verbose: true, identify: true });
+
+
     var xhr = new XMLHttpRequest();
     xhr.responseType = 'arraybuffer';
-    // xhr.open('GET', "http://localhost:8081/sites/default/files/example.tiff");
-    xhr.open('GET', "http://localhost:8081/sites/default/files/efc18e_nugo.dng");
+    xhr.open('GET', "http://localhost:8081/sites/default/files/d80.TIFF");
+    // xhr.open('GET', "http://localhost:8081/sites/default/files/efc18e_nugo.dng");
+    // xhr.open('GET', "http://localhost:8081/sites/default/files/MARBLES.TIF");
+
+    // xhr.open('GET', "http://localhost:8081/sites/default/files/d80.tiff");
+
 
     xhr.onload = function (e) {
+        // console.log(xhr.response);
         var tiff = new Tiff({ buffer: xhr.response });
         var canvas = tiff.toCanvas();
         // canvas.width = '100%';

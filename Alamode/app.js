@@ -33,7 +33,7 @@ mongoose.Promise = global.Promise;
 
 var Tiff = require('tiff.js');
 var fs = require('fs');
-
+var dcraw = require('dcraw');
 // >
 /**
  * Connection to mongodb database on port: 27107
@@ -67,6 +67,7 @@ app.listen(port, function () {
 
 module.exports = app;
 
+// console.log(UTIF);
 
 // var buf = fs.readFileSync('./efc18e_nugo.dng');
 
@@ -78,6 +79,14 @@ module.exports = app;
 
 
 // fs.writeFileSync('example.tiff', tiffFile);
+// var buf = fs.readFileSync('./efc18e_nugo.dng');
+
+// var some = dcraw(buf, { verbose: true, identify: true });
+// console.log(some);
+// var one =1;
+// var tiffFile = dcraw(buf, { T: true,use16BitMode:true });
+// // console.log(tiffFile);
+// fs.writeFileSync('NewExample.tiff', tiffFile);
 
 
 
