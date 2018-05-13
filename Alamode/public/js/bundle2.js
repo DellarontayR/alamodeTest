@@ -74,7 +74,7 @@ Entity.prototype.encode = function encode(data, enc, /* internal */ reporter) {
   return this._getEncoder(enc).encode(data, reporter);
 };
 
-},{"../asn1":2,"inherits":100,"vm":154}],4:[function(require,module,exports){
+},{"../asn1":2,"inherits":100,"vm":157}],4:[function(require,module,exports){
 var inherits = require('inherits');
 var Reporter = require('../base').Reporter;
 var Buffer = require('buffer').Buffer;
@@ -22326,6 +22326,605 @@ function config (name) {
 
 }).call(this,typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
 },{}],154:[function(require,module,exports){
+arguments[4][100][0].apply(exports,arguments)
+},{"dup":100}],155:[function(require,module,exports){
+module.exports = function isBuffer(arg) {
+  return arg && typeof arg === 'object'
+    && typeof arg.copy === 'function'
+    && typeof arg.fill === 'function'
+    && typeof arg.readUInt8 === 'function';
+}
+},{}],156:[function(require,module,exports){
+(function (process,global){
+// Copyright Joyent, Inc. and other Node contributors.
+//
+// Permission is hereby granted, free of charge, to any person obtaining a
+// copy of this software and associated documentation files (the
+// "Software"), to deal in the Software without restriction, including
+// without limitation the rights to use, copy, modify, merge, publish,
+// distribute, sublicense, and/or sell copies of the Software, and to permit
+// persons to whom the Software is furnished to do so, subject to the
+// following conditions:
+//
+// The above copyright notice and this permission notice shall be included
+// in all copies or substantial portions of the Software.
+//
+// THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS
+// OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
+// MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN
+// NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM,
+// DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR
+// OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE
+// USE OR OTHER DEALINGS IN THE SOFTWARE.
+
+var formatRegExp = /%[sdj%]/g;
+exports.format = function(f) {
+  if (!isString(f)) {
+    var objects = [];
+    for (var i = 0; i < arguments.length; i++) {
+      objects.push(inspect(arguments[i]));
+    }
+    return objects.join(' ');
+  }
+
+  var i = 1;
+  var args = arguments;
+  var len = args.length;
+  var str = String(f).replace(formatRegExp, function(x) {
+    if (x === '%%') return '%';
+    if (i >= len) return x;
+    switch (x) {
+      case '%s': return String(args[i++]);
+      case '%d': return Number(args[i++]);
+      case '%j':
+        try {
+          return JSON.stringify(args[i++]);
+        } catch (_) {
+          return '[Circular]';
+        }
+      default:
+        return x;
+    }
+  });
+  for (var x = args[i]; i < len; x = args[++i]) {
+    if (isNull(x) || !isObject(x)) {
+      str += ' ' + x;
+    } else {
+      str += ' ' + inspect(x);
+    }
+  }
+  return str;
+};
+
+
+// Mark that a method should not be used.
+// Returns a modified function which warns once by default.
+// If --no-deprecation is set, then it is a no-op.
+exports.deprecate = function(fn, msg) {
+  // Allow for deprecating things in the process of starting up.
+  if (isUndefined(global.process)) {
+    return function() {
+      return exports.deprecate(fn, msg).apply(this, arguments);
+    };
+  }
+
+  if (process.noDeprecation === true) {
+    return fn;
+  }
+
+  var warned = false;
+  function deprecated() {
+    if (!warned) {
+      if (process.throwDeprecation) {
+        throw new Error(msg);
+      } else if (process.traceDeprecation) {
+        console.trace(msg);
+      } else {
+        console.error(msg);
+      }
+      warned = true;
+    }
+    return fn.apply(this, arguments);
+  }
+
+  return deprecated;
+};
+
+
+var debugs = {};
+var debugEnviron;
+exports.debuglog = function(set) {
+  if (isUndefined(debugEnviron))
+    debugEnviron = process.env.NODE_DEBUG || '';
+  set = set.toUpperCase();
+  if (!debugs[set]) {
+    if (new RegExp('\\b' + set + '\\b', 'i').test(debugEnviron)) {
+      var pid = process.pid;
+      debugs[set] = function() {
+        var msg = exports.format.apply(exports, arguments);
+        console.error('%s %d: %s', set, pid, msg);
+      };
+    } else {
+      debugs[set] = function() {};
+    }
+  }
+  return debugs[set];
+};
+
+
+/**
+ * Echos the value of a value. Trys to print the value out
+ * in the best way possible given the different types.
+ *
+ * @param {Object} obj The object to print out.
+ * @param {Object} opts Optional options object that alters the output.
+ */
+/* legacy: obj, showHidden, depth, colors*/
+function inspect(obj, opts) {
+  // default options
+  var ctx = {
+    seen: [],
+    stylize: stylizeNoColor
+  };
+  // legacy...
+  if (arguments.length >= 3) ctx.depth = arguments[2];
+  if (arguments.length >= 4) ctx.colors = arguments[3];
+  if (isBoolean(opts)) {
+    // legacy...
+    ctx.showHidden = opts;
+  } else if (opts) {
+    // got an "options" object
+    exports._extend(ctx, opts);
+  }
+  // set default options
+  if (isUndefined(ctx.showHidden)) ctx.showHidden = false;
+  if (isUndefined(ctx.depth)) ctx.depth = 2;
+  if (isUndefined(ctx.colors)) ctx.colors = false;
+  if (isUndefined(ctx.customInspect)) ctx.customInspect = true;
+  if (ctx.colors) ctx.stylize = stylizeWithColor;
+  return formatValue(ctx, obj, ctx.depth);
+}
+exports.inspect = inspect;
+
+
+// http://en.wikipedia.org/wiki/ANSI_escape_code#graphics
+inspect.colors = {
+  'bold' : [1, 22],
+  'italic' : [3, 23],
+  'underline' : [4, 24],
+  'inverse' : [7, 27],
+  'white' : [37, 39],
+  'grey' : [90, 39],
+  'black' : [30, 39],
+  'blue' : [34, 39],
+  'cyan' : [36, 39],
+  'green' : [32, 39],
+  'magenta' : [35, 39],
+  'red' : [31, 39],
+  'yellow' : [33, 39]
+};
+
+// Don't use 'blue' not visible on cmd.exe
+inspect.styles = {
+  'special': 'cyan',
+  'number': 'yellow',
+  'boolean': 'yellow',
+  'undefined': 'grey',
+  'null': 'bold',
+  'string': 'green',
+  'date': 'magenta',
+  // "name": intentionally not styling
+  'regexp': 'red'
+};
+
+
+function stylizeWithColor(str, styleType) {
+  var style = inspect.styles[styleType];
+
+  if (style) {
+    return '\u001b[' + inspect.colors[style][0] + 'm' + str +
+           '\u001b[' + inspect.colors[style][1] + 'm';
+  } else {
+    return str;
+  }
+}
+
+
+function stylizeNoColor(str, styleType) {
+  return str;
+}
+
+
+function arrayToHash(array) {
+  var hash = {};
+
+  array.forEach(function(val, idx) {
+    hash[val] = true;
+  });
+
+  return hash;
+}
+
+
+function formatValue(ctx, value, recurseTimes) {
+  // Provide a hook for user-specified inspect functions.
+  // Check that value is an object with an inspect function on it
+  if (ctx.customInspect &&
+      value &&
+      isFunction(value.inspect) &&
+      // Filter out the util module, it's inspect function is special
+      value.inspect !== exports.inspect &&
+      // Also filter out any prototype objects using the circular check.
+      !(value.constructor && value.constructor.prototype === value)) {
+    var ret = value.inspect(recurseTimes, ctx);
+    if (!isString(ret)) {
+      ret = formatValue(ctx, ret, recurseTimes);
+    }
+    return ret;
+  }
+
+  // Primitive types cannot have properties
+  var primitive = formatPrimitive(ctx, value);
+  if (primitive) {
+    return primitive;
+  }
+
+  // Look up the keys of the object.
+  var keys = Object.keys(value);
+  var visibleKeys = arrayToHash(keys);
+
+  if (ctx.showHidden) {
+    keys = Object.getOwnPropertyNames(value);
+  }
+
+  // IE doesn't make error fields non-enumerable
+  // http://msdn.microsoft.com/en-us/library/ie/dww52sbt(v=vs.94).aspx
+  if (isError(value)
+      && (keys.indexOf('message') >= 0 || keys.indexOf('description') >= 0)) {
+    return formatError(value);
+  }
+
+  // Some type of object without properties can be shortcutted.
+  if (keys.length === 0) {
+    if (isFunction(value)) {
+      var name = value.name ? ': ' + value.name : '';
+      return ctx.stylize('[Function' + name + ']', 'special');
+    }
+    if (isRegExp(value)) {
+      return ctx.stylize(RegExp.prototype.toString.call(value), 'regexp');
+    }
+    if (isDate(value)) {
+      return ctx.stylize(Date.prototype.toString.call(value), 'date');
+    }
+    if (isError(value)) {
+      return formatError(value);
+    }
+  }
+
+  var base = '', array = false, braces = ['{', '}'];
+
+  // Make Array say that they are Array
+  if (isArray(value)) {
+    array = true;
+    braces = ['[', ']'];
+  }
+
+  // Make functions say that they are functions
+  if (isFunction(value)) {
+    var n = value.name ? ': ' + value.name : '';
+    base = ' [Function' + n + ']';
+  }
+
+  // Make RegExps say that they are RegExps
+  if (isRegExp(value)) {
+    base = ' ' + RegExp.prototype.toString.call(value);
+  }
+
+  // Make dates with properties first say the date
+  if (isDate(value)) {
+    base = ' ' + Date.prototype.toUTCString.call(value);
+  }
+
+  // Make error with message first say the error
+  if (isError(value)) {
+    base = ' ' + formatError(value);
+  }
+
+  if (keys.length === 0 && (!array || value.length == 0)) {
+    return braces[0] + base + braces[1];
+  }
+
+  if (recurseTimes < 0) {
+    if (isRegExp(value)) {
+      return ctx.stylize(RegExp.prototype.toString.call(value), 'regexp');
+    } else {
+      return ctx.stylize('[Object]', 'special');
+    }
+  }
+
+  ctx.seen.push(value);
+
+  var output;
+  if (array) {
+    output = formatArray(ctx, value, recurseTimes, visibleKeys, keys);
+  } else {
+    output = keys.map(function(key) {
+      return formatProperty(ctx, value, recurseTimes, visibleKeys, key, array);
+    });
+  }
+
+  ctx.seen.pop();
+
+  return reduceToSingleString(output, base, braces);
+}
+
+
+function formatPrimitive(ctx, value) {
+  if (isUndefined(value))
+    return ctx.stylize('undefined', 'undefined');
+  if (isString(value)) {
+    var simple = '\'' + JSON.stringify(value).replace(/^"|"$/g, '')
+                                             .replace(/'/g, "\\'")
+                                             .replace(/\\"/g, '"') + '\'';
+    return ctx.stylize(simple, 'string');
+  }
+  if (isNumber(value))
+    return ctx.stylize('' + value, 'number');
+  if (isBoolean(value))
+    return ctx.stylize('' + value, 'boolean');
+  // For some reason typeof null is "object", so special case here.
+  if (isNull(value))
+    return ctx.stylize('null', 'null');
+}
+
+
+function formatError(value) {
+  return '[' + Error.prototype.toString.call(value) + ']';
+}
+
+
+function formatArray(ctx, value, recurseTimes, visibleKeys, keys) {
+  var output = [];
+  for (var i = 0, l = value.length; i < l; ++i) {
+    if (hasOwnProperty(value, String(i))) {
+      output.push(formatProperty(ctx, value, recurseTimes, visibleKeys,
+          String(i), true));
+    } else {
+      output.push('');
+    }
+  }
+  keys.forEach(function(key) {
+    if (!key.match(/^\d+$/)) {
+      output.push(formatProperty(ctx, value, recurseTimes, visibleKeys,
+          key, true));
+    }
+  });
+  return output;
+}
+
+
+function formatProperty(ctx, value, recurseTimes, visibleKeys, key, array) {
+  var name, str, desc;
+  desc = Object.getOwnPropertyDescriptor(value, key) || { value: value[key] };
+  if (desc.get) {
+    if (desc.set) {
+      str = ctx.stylize('[Getter/Setter]', 'special');
+    } else {
+      str = ctx.stylize('[Getter]', 'special');
+    }
+  } else {
+    if (desc.set) {
+      str = ctx.stylize('[Setter]', 'special');
+    }
+  }
+  if (!hasOwnProperty(visibleKeys, key)) {
+    name = '[' + key + ']';
+  }
+  if (!str) {
+    if (ctx.seen.indexOf(desc.value) < 0) {
+      if (isNull(recurseTimes)) {
+        str = formatValue(ctx, desc.value, null);
+      } else {
+        str = formatValue(ctx, desc.value, recurseTimes - 1);
+      }
+      if (str.indexOf('\n') > -1) {
+        if (array) {
+          str = str.split('\n').map(function(line) {
+            return '  ' + line;
+          }).join('\n').substr(2);
+        } else {
+          str = '\n' + str.split('\n').map(function(line) {
+            return '   ' + line;
+          }).join('\n');
+        }
+      }
+    } else {
+      str = ctx.stylize('[Circular]', 'special');
+    }
+  }
+  if (isUndefined(name)) {
+    if (array && key.match(/^\d+$/)) {
+      return str;
+    }
+    name = JSON.stringify('' + key);
+    if (name.match(/^"([a-zA-Z_][a-zA-Z_0-9]*)"$/)) {
+      name = name.substr(1, name.length - 2);
+      name = ctx.stylize(name, 'name');
+    } else {
+      name = name.replace(/'/g, "\\'")
+                 .replace(/\\"/g, '"')
+                 .replace(/(^"|"$)/g, "'");
+      name = ctx.stylize(name, 'string');
+    }
+  }
+
+  return name + ': ' + str;
+}
+
+
+function reduceToSingleString(output, base, braces) {
+  var numLinesEst = 0;
+  var length = output.reduce(function(prev, cur) {
+    numLinesEst++;
+    if (cur.indexOf('\n') >= 0) numLinesEst++;
+    return prev + cur.replace(/\u001b\[\d\d?m/g, '').length + 1;
+  }, 0);
+
+  if (length > 60) {
+    return braces[0] +
+           (base === '' ? '' : base + '\n ') +
+           ' ' +
+           output.join(',\n  ') +
+           ' ' +
+           braces[1];
+  }
+
+  return braces[0] + base + ' ' + output.join(', ') + ' ' + braces[1];
+}
+
+
+// NOTE: These type checking functions intentionally don't use `instanceof`
+// because it is fragile and can be easily faked with `Object.create()`.
+function isArray(ar) {
+  return Array.isArray(ar);
+}
+exports.isArray = isArray;
+
+function isBoolean(arg) {
+  return typeof arg === 'boolean';
+}
+exports.isBoolean = isBoolean;
+
+function isNull(arg) {
+  return arg === null;
+}
+exports.isNull = isNull;
+
+function isNullOrUndefined(arg) {
+  return arg == null;
+}
+exports.isNullOrUndefined = isNullOrUndefined;
+
+function isNumber(arg) {
+  return typeof arg === 'number';
+}
+exports.isNumber = isNumber;
+
+function isString(arg) {
+  return typeof arg === 'string';
+}
+exports.isString = isString;
+
+function isSymbol(arg) {
+  return typeof arg === 'symbol';
+}
+exports.isSymbol = isSymbol;
+
+function isUndefined(arg) {
+  return arg === void 0;
+}
+exports.isUndefined = isUndefined;
+
+function isRegExp(re) {
+  return isObject(re) && objectToString(re) === '[object RegExp]';
+}
+exports.isRegExp = isRegExp;
+
+function isObject(arg) {
+  return typeof arg === 'object' && arg !== null;
+}
+exports.isObject = isObject;
+
+function isDate(d) {
+  return isObject(d) && objectToString(d) === '[object Date]';
+}
+exports.isDate = isDate;
+
+function isError(e) {
+  return isObject(e) &&
+      (objectToString(e) === '[object Error]' || e instanceof Error);
+}
+exports.isError = isError;
+
+function isFunction(arg) {
+  return typeof arg === 'function';
+}
+exports.isFunction = isFunction;
+
+function isPrimitive(arg) {
+  return arg === null ||
+         typeof arg === 'boolean' ||
+         typeof arg === 'number' ||
+         typeof arg === 'string' ||
+         typeof arg === 'symbol' ||  // ES6 symbol
+         typeof arg === 'undefined';
+}
+exports.isPrimitive = isPrimitive;
+
+exports.isBuffer = require('./support/isBuffer');
+
+function objectToString(o) {
+  return Object.prototype.toString.call(o);
+}
+
+
+function pad(n) {
+  return n < 10 ? '0' + n.toString(10) : n.toString(10);
+}
+
+
+var months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep',
+              'Oct', 'Nov', 'Dec'];
+
+// 26 Feb 16:19:34
+function timestamp() {
+  var d = new Date();
+  var time = [pad(d.getHours()),
+              pad(d.getMinutes()),
+              pad(d.getSeconds())].join(':');
+  return [d.getDate(), months[d.getMonth()], time].join(' ');
+}
+
+
+// log is just a thin wrapper to console.log that prepends a timestamp
+exports.log = function() {
+  console.log('%s - %s', timestamp(), exports.format.apply(exports, arguments));
+};
+
+
+/**
+ * Inherit the prototype methods from one constructor into another.
+ *
+ * The Function.prototype.inherits from lang.js rewritten as a standalone
+ * function (not on Function.prototype). NOTE: If this file is to be loaded
+ * during bootstrapping this function needs to be rewritten using some native
+ * functions as prototype setup using normal JavaScript does not work as
+ * expected during bootstrapping (see mirror.js in r114903).
+ *
+ * @param {function} ctor Constructor function which needs to inherit the
+ *     prototype.
+ * @param {function} superCtor Constructor function to inherit prototype from.
+ */
+exports.inherits = require('inherits');
+
+exports._extend = function(origin, add) {
+  // Don't do anything if add isn't an object
+  if (!add || !isObject(add)) return origin;
+
+  var keys = Object.keys(add);
+  var i = keys.length;
+  while (i--) {
+    origin[keys[i]] = add[keys[i]];
+  }
+  return origin;
+};
+
+function hasOwnProperty(obj, prop) {
+  return Object.prototype.hasOwnProperty.call(obj, prop);
+}
+
+}).call(this,require('_process'),typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
+},{"./support/isBuffer":155,"_process":119,"inherits":154}],157:[function(require,module,exports){
 var indexOf = function (xs, item) {
     if (xs.indexOf) return xs.indexOf(item);
     else for (var i = 0; i < xs.length; i++) {
@@ -22472,7 +23071,900 @@ exports.createContext = Script.createContext = function (context) {
     return copy;
 };
 
-},{}],155:[function(require,module,exports){
+},{}],158:[function(require,module,exports){
+'use strict';
+
+Object.defineProperty(exports, '__esModule', { value: true });
+
+function _interopDefault (ex) { return (ex && (typeof ex === 'object') && 'default' in ex) ? ex['default'] : ex; }
+
+var IOBuffer = _interopDefault(require('iobuffer'));
+
+const tagsById = {
+    // Baseline tags
+    0x00FE: 'NewSubfileType',
+    0x00FF: 'SubfileType',
+    0x0100: 'ImageWidth',
+    0x0101: 'ImageLength',
+    0x0102: 'BitsPerSample',
+    0x0103: 'Compression',
+    0x0106: 'PhotometricInterpretation',
+    0x0107: 'Threshholding',
+    0x0108: 'CellWidth',
+    0x0109: 'CellLength',
+    0x010A: 'FillOrder',
+    0x010E: 'ImageDescription',
+    0x010F: 'Make',
+    0x0110: 'Model',
+    0x0111: 'StripOffsets',
+    0x0112: 'Orientation',
+    0x0115: 'SamplesPerPixel',
+    0x0116: 'RowsPerStrip',
+    0x0117: 'StripByteCounts',
+    0x0118: 'MinSampleValue',
+    0x0119: 'MaxSampleValue',
+    0x011A: 'XResolution',
+    0x011B: 'YResolution',
+    0x011C: 'PlanarConfiguration',
+    0x0120: 'FreeOffsets',
+    0x0121: 'FreeByteCounts',
+    0x0122: 'GrayResponseUnit',
+    0x0123: 'GrayResponseCurve',
+    0x0128: 'ResolutionUnit',
+    0x0131: 'Software',
+    0x0132: 'DateTime',
+    0x013B: 'Artist',
+    0x013C: 'HostComputer',
+    0x0140: 'ColorMap',
+    0x0152: 'ExtraSamples',
+    0x8298: 'Copyright',
+
+    // Extension tags
+    0x010D: 'DocumentName',
+    0x011D: 'PageName',
+    0x011E: 'XPosition',
+    0x011F: 'YPosition',
+    0x0124: 'T4Options',
+    0x0125: 'T6Options',
+    0x0129: 'PageNumber',
+    0x012D: 'TransferFunction',
+    0x013D: 'Predictor',
+    0x013E: 'WhitePoint',
+    0x013F: 'PrimaryChromaticities',
+    0x0141: 'HalftoneHints',
+    0x0142: 'TileWidth',
+    0x0143: 'TileLength',
+    0x0144: 'TileOffsets',
+    0x0145: 'TileByteCounts',
+    0x0146: 'BadFaxLines',
+    0x0147: 'CleanFaxData',
+    0x0148: 'ConsecutiveBadFaxLines',
+    0x014A: 'SubIFDs',
+    0x014C: 'InkSet',
+    0x014D: 'InkNames',
+    0x014E: 'NumberOfInks',
+    0x0150: 'DotRange',
+    0x0151: 'TargetPrinter',
+    0x0153: 'SampleFormat',
+    0x0154: 'SMinSampleValue',
+    0x0155: 'SMaxSampleValue',
+    0x0156: 'TransferRange',
+    0x0157: 'ClipPath',
+    0x0158: 'XClipPathUnits',
+    0x0159: 'YClipPathUnits',
+    0x015A: 'Indexed',
+    0x015B: 'JPEGTables',
+    0x015F: 'OPIProxy',
+    0x0190: 'GlobalParametersIFD',
+    0x0191: 'ProfileType',
+    0x0192: 'FaxProfile',
+    0x0193: 'CodingMethods',
+    0x0194: 'VersionYear',
+    0x0195: 'ModeNumber',
+    0x01B1: 'Decode',
+    0x01B2: 'DefaultImageColor',
+    0x0200: 'JPEGProc',
+    0x0201: 'JPEGInterchangeFormat',
+    0x0202: 'JPEGInterchangeFormatLength',
+    0x0203: 'JPEGRestartInterval',
+    0x0205: 'JPEGLosslessPredictors',
+    0x0206: 'JPEGPointTransforms',
+    0x0207: 'JPEGQTables',
+    0x0208: 'JPEGDCTables',
+    0x0209: 'JPEGACTables',
+    0x0211: 'YCbCrCoefficients',
+    0x0212: 'YCbCrSubSampling',
+    0x0213: 'YCbCrPositioning',
+    0x0214: 'ReferenceBlackWhite',
+    0x022F: 'StripRowCounts',
+    0x02BC: 'XMP',
+    0x800D: 'ImageID',
+    0x87AC: 'ImageLayer',
+
+    // Private tags
+    0x80A4: 'WangAnnotatio',
+    0x82A5: 'MDFileTag',
+    0x82A6: 'MDScalePixel',
+    0x82A7: 'MDColorTable',
+    0x82A8: 'MDLabName',
+    0x82A9: 'MDSampleInfo',
+    0x82AA: 'MDPrepDate',
+    0x82AB: 'MDPrepTime',
+    0x82AC: 'MDFileUnits',
+    0x830E: 'ModelPixelScaleTag',
+    0x83BB: 'IPTC',
+    0x847E: 'INGRPacketDataTag',
+    0x847F: 'INGRFlagRegisters',
+    0x8480: 'IrasBTransformationMatrix',
+    0x8482: 'ModelTiepointTag',
+    0x85D8: 'ModelTransformationTag',
+    0x8649: 'Photoshop',
+    0x8769: 'ExifIFD',
+    0x8773: 'ICCProfile',
+    0x87AF: 'GeoKeyDirectoryTag',
+    0x87B0: 'GeoDoubleParamsTag',
+    0x87B1: 'GeoAsciiParamsTag',
+    0x8825: 'GPSIFD',
+    0x885C: 'HylaFAXFaxRecvParams',
+    0x885D: 'HylaFAXFaxSubAddress',
+    0x885E: 'HylaFAXFaxRecvTime',
+    0x935C: 'ImageSourceData',
+    0xA005: 'InteroperabilityIFD',
+    0xA480: 'GDAL_METADATA',
+    0xA481: 'GDAL_NODATA',
+    0xC427: 'OceScanjobDescription',
+    0xC428: 'OceApplicationSelector',
+    0xC429: 'OceIdentificationNumber',
+    0xC42A: 'OceImageLogicCharacteristics',
+    0xC612: 'DNGVersion',
+    0xC613: 'DNGBackwardVersion',
+    0xC614: 'UniqueCameraModel',
+    0xC615: 'LocalizedCameraModel',
+    0xC616: 'CFAPlaneColor',
+    0xC617: 'CFALayout',
+    0xC618: 'LinearizationTable',
+    0xC619: 'BlackLevelRepeatDim',
+    0xC61A: 'BlackLevel',
+    0xC61B: 'BlackLevelDeltaH',
+    0xC61C: 'BlackLevelDeltaV',
+    0xC61D: 'WhiteLevel',
+    0xC61E: 'DefaultScale',
+    0xC61F: 'DefaultCropOrigin',
+    0xC620: 'DefaultCropSize',
+    0xC621: 'ColorMatrix1',
+    0xC622: 'ColorMatrix2',
+    0xC623: 'CameraCalibration1',
+    0xC624: 'CameraCalibration2',
+    0xC625: 'ReductionMatrix1',
+    0xC626: 'ReductionMatrix2',
+    0xC627: 'AnalogBalance',
+    0xC628: 'AsShotNeutral',
+    0xC629: 'AsShotWhiteXY',
+    0xC62A: 'BaselineExposure',
+    0xC62B: 'BaselineNoise',
+    0xC62C: 'BaselineSharpness',
+    0xC62D: 'BayerGreenSplit',
+    0xC62E: 'LinearResponseLimit',
+    0xC62F: 'CameraSerialNumber',
+    0xC630: 'LensInfo',
+    0xC631: 'ChromaBlurRadius',
+    0xC632: 'AntiAliasStrength',
+    0xC634: 'DNGPrivateData',
+    0xC635: 'MakerNoteSafety',
+    0xC65A: 'CalibrationIlluminant1',
+    0xC65B: 'CalibrationIlluminant2',
+    0xC65C: 'BestQualityScale',
+    0xC660: 'AliasLayerMetadata'
+};
+
+const tagsByName = {};
+for (var i in tagsById) {
+    tagsByName[tagsById[i]] = i;
+}
+
+
+
+
+var standard = Object.freeze({
+	tagsById: tagsById,
+	tagsByName: tagsByName
+});
+
+const tagsById$1 = {
+    0x829A: 'ExposureTime',
+    0x829D: 'FNumber',
+    0x8822: 'ExposureProgram',
+    0x8824: 'SpectralSensitivity',
+    0x8827: 'ISOSpeedRatings',
+    0x8828: 'OECF',
+    0x8830: 'SensitivityType',
+    0x8831: 'StandardOutputSensitivity',
+    0x8832: 'RecommendedExposureIndex',
+    0x8833: 'ISOSpeed',
+    0x8834: 'ISOSpeedLatitudeyyy',
+    0x8835: 'ISOSpeedLatitudezzz',
+    0x9000: 'ExifVersion',
+    0x9003: 'DateTimeOriginal',
+    0x9004: 'DateTimeDigitized',
+    0x9101: 'ComponentsConfiguration',
+    0x9102: 'CompressedBitsPerPixel',
+    0x9201: 'ShutterSpeedValue',
+    0x9202: 'ApertureValue',
+    0x9203: 'BrightnessValue',
+    0x9204: 'ExposureBiasValue',
+    0x9205: 'MaxApertureValue',
+    0x9206: 'SubjectDistance',
+    0x9207: 'MeteringMode',
+    0x9208: 'LightSource',
+    0x9209: 'Flash',
+    0x920A: 'FocalLength',
+    0x9214: 'SubjectArea',
+    0x927C: 'MakerNote',
+    0x9286: 'UserComment',
+    0x9290: 'SubsecTime',
+    0x9291: 'SubsecTimeOriginal',
+    0x9292: 'SubsecTimeDigitized',
+    0xA000: 'FlashpixVersion',
+    0xA001: 'ColorSpace',
+    0xA002: 'PixelXDimension',
+    0xA003: 'PixelYDimension',
+    0xA004: 'RelatedSoundFile',
+    0xA20B: 'FlashEnergy',
+    0xA20C: 'SpatialFrequencyResponse',
+    0xA20E: 'FocalPlaneXResolution',
+    0xA20F: 'FocalPlaneYResolution',
+    0xA210: 'FocalPlaneResolutionUnit',
+    0xA214: 'SubjectLocation',
+    0xA215: 'ExposureIndex',
+    0xA217: 'SensingMethod',
+    0xA300: 'FileSource',
+    0xA301: 'SceneType',
+    0xA302: 'CFAPattern',
+    0xA401: 'CustomRendered',
+    0xA402: 'ExposureMode',
+    0xA403:	'WhiteBalance',
+    0xA404:	'DigitalZoomRatio',
+    0xA405:	'FocalLengthIn35mmFilm',
+    0xA406:	'SceneCaptureType',
+    0xA407:	'GainControl',
+    0xA408:	'Contrast',
+    0xA409:	'Saturation',
+    0xA40A:	'Sharpness',
+    0xA40B:	'DeviceSettingDescription',
+    0xA40C:	'SubjectDistanceRange',
+    0xA420:	'ImageUniqueID',
+    0xA430: 'CameraOwnerName',
+    0xA431: 'BodySerialNumber',
+    0xA432: 'LensSpecification',
+    0xA433: 'LensMake',
+    0xA434: 'LensModel',
+    0xA435: 'LensSerialNumber',
+    0xA500: 'Gamma'
+};
+
+const tagsByName$1 = {};
+for (var i$1 in tagsById$1) {
+    tagsByName$1[tagsById$1[i$1]] = i$1;
+}
+
+
+
+
+var exif = Object.freeze({
+	tagsById: tagsById$1,
+	tagsByName: tagsByName$1
+});
+
+const tagsById$2 = {
+    0x0000: 'GPSVersionID',
+    0x0001: 'GPSLatitudeRef',
+    0x0002: 'GPSLatitude',
+    0x0003: 'GPSLongitudeRef',
+    0x0004: 'GPSLongitude',
+    0x0005: 'GPSAltitudeRef',
+    0x0006: 'GPSAltitude',
+    0x0007: 'GPSTimeStamp',
+    0x0008: 'GPSSatellites',
+    0x0009: 'GPSStatus',
+    0x000A: 'GPSMeasureMode',
+    0x000B: 'GPSDOP',
+    0x000C: 'GPSSpeedRef',
+    0x000D: 'GPSSpeed',
+    0x000E: 'GPSTrackRef',
+    0x000F: 'GPSTrack',
+    0x0010: 'GPSImgDirectionRef',
+    0x0011: 'GPSImgDirection',
+    0x0012: 'GPSMapDatum',
+    0x0013: 'GPSDestLatitudeRef',
+    0x0014: 'GPSDestLatitude',
+    0x0015: 'GPSDestLongitudeRef',
+    0x0016: 'GPSDestLongitude',
+    0x0017: 'GPSDestBearingRef',
+    0x0018: 'GPSDestBearing',
+    0x0019: 'GPSDestDistanceRef',
+    0x001A: 'GPSDestDistance',
+    0x001B: 'GPSProcessingMethod',
+    0x001C: 'GPSAreaInformation',
+    0x001D: 'GPSDateStamp',
+    0x001E: 'GPSDifferential',
+    0x001F: 'GPSHPositioningError'
+};
+
+const tagsByName$2 = {};
+for (var i$2 in tagsById$2) {
+    tagsByName$2[tagsById$2[i$2]] = i$2;
+}
+
+
+
+
+var gps = Object.freeze({
+	tagsById: tagsById$2,
+	tagsByName: tagsByName$2
+});
+
+const tags = {
+    standard,
+    exif,
+    gps
+};
+
+class IFD {
+    constructor(kind) {
+        if (!kind) {
+            throw new Error('missing kind');
+        }
+        this.data = null;
+        this.fields = new Map();
+        this.kind = kind;
+        this._map = null;
+    }
+
+    get(tag) {
+        if (typeof tag === 'number') {
+            return this.fields.get(tag);
+        } else if (typeof tag === 'string') {
+            return this.fields.get(tags[this.kind].tagsByName[tag]);
+        } else {
+            throw new Error('expected a number or string');
+        }
+    }
+
+    get map() {
+        if (!this._map) {
+            this._map = {};
+            const taglist = tags[this.kind].tagsById;
+            for (var key of this.fields.keys()) {
+                if (taglist[key]) {
+                    this._map[taglist[key]] = this.fields.get(key);
+                }
+            }
+        }
+        return this._map;
+    }
+}
+
+const dateTimeRegex = /^(\d{4}):(\d{2}):(\d{2}) (\d{2}):(\d{2}):(\d{2})$/;
+
+class TiffIfd extends IFD {
+    constructor() {
+        super('standard');
+    }
+
+    // Custom fields
+    get size() {
+        return this.width * this.height;
+    }
+    get width() {
+        return this.imageWidth;
+    }
+    get height() {
+        return this.imageLength;
+    }
+    get components() {
+        return this.samplesPerPixel;
+    }
+    get date() {
+        var date = new Date();
+        var result = dateTimeRegex.exec(this.dateTime);
+        date.setFullYear(result[1], result[2] - 1, result[3]);
+        date.setHours(result[4], result[5], result[6]);
+        return date;
+    }
+
+    // IFD fields
+    get newSubfileType() {
+        return this.get(254);
+    }
+    get imageWidth() {
+        return this.get(256);
+    }
+    get imageLength() {
+        return this.get(257);
+    }
+    get bitsPerSample() {
+        return this.get(258);
+    }
+    get compression() {
+        return this.get(259) || 1;
+    }
+    get type() {
+        return this.get(262);
+    }
+    get fillOrder() {
+        return this.get(266) || 1;
+    }
+    get documentName() {
+        return this.get(269);
+    }
+    get imageDescription() {
+        return this.get(270);
+    }
+    get stripOffsets() {
+        return alwaysArray(this.get(273));
+    }
+    get orientation() {
+        return this.get(274);
+    }
+    get samplesPerPixel() {
+        return this.get(277);
+    }
+    get rowsPerStrip() {
+        return this.get(278);
+    }
+    get stripByteCounts() {
+        return alwaysArray(this.get(279));
+    }
+    get minSampleValue() {
+        return this.get(280) || 0;
+    }
+    get maxSampleValue() {
+        return this.get(281) || Math.pow(2, this.bitsPerSample) - 1;
+    }
+    get xResolution() {
+        return this.get(282);
+    }
+    get yResolution() {
+        return this.get(283);
+    }
+    get planarConfiguration() {
+        return this.get(284) || 1;
+    }
+    get resolutionUnit() {
+        return this.get(296) || 2;
+    }
+    get dateTime() {
+        return this.get(306);
+    }
+    get predictor() {
+        return this.get(317) || 1;
+    }
+    get sampleFormat() {
+        return this.get(339) || 1;
+    }
+    get sMinSampleValue() {
+        return this.get(340) || this.minSampleValue;
+    }
+    get sMaxSampleValue() {
+        return this.get(341) || this.maxSampleValue;
+    }
+}
+
+function alwaysArray(value) {
+    if (typeof value === 'number') return [value];
+    return value;
+}
+
+var types = new Map([
+    [1, [1, readByte]], // BYTE
+    [2, [1, readASCII]], // ASCII
+    [3, [2, readShort]], // SHORT
+    [4, [4, readLong]], // LONG
+    [5, [8, readRational]], // RATIONAL
+    [6, [1, readSByte]], // SBYTE
+    [7, [1, readByte]], // UNDEFINED
+    [8, [2, readSShort]], // SSHORT
+    [9, [4, readSLong]], // SLONG
+    [10, [8, readSRational]], // SRATIONAL
+    [11, [4, readFloat]], // FLOAT
+    [12, [8, readDouble]] // DOUBLE
+]);
+
+function getByteLength(type, count) {
+    return types.get(type)[0] * count;
+}
+
+function readData(decoder, type, count) {
+    return types.get(type)[1](decoder, count);
+}
+
+function readByte(decoder, count) {
+    if (count === 1) return decoder.readUint8();
+    var array = new Uint8Array(count);
+    for (var i = 0; i < count; i++) {
+        array[i] = decoder.readUint8();
+    }
+    return array;
+}
+
+function readASCII(decoder, count) {
+    var strings = [];
+    var currentString = '';
+    for (var i = 0; i < count; i++) {
+        var char = String.fromCharCode(decoder.readUint8());
+        if (char === '\0') {
+            strings.push(currentString);
+            currentString = '';
+        } else {
+            currentString += char;
+        }
+    }
+    if (strings.length === 1) {
+        return strings[0];
+    } else {
+        return strings;
+    }
+}
+
+function readShort(decoder, count) {
+    if (count === 1) return decoder.readUint16();
+    var array = new Uint16Array(count);
+    for (var i = 0; i < count; i++) {
+        array[i] = decoder.readUint16();
+    }
+    return array;
+}
+
+function readLong(decoder, count) {
+    if (count === 1) return decoder.readUint32();
+    var array = new Uint32Array(count);
+    for (var i = 0; i < count; i++) {
+        array[i] = decoder.readUint32();
+    }
+    return array;
+}
+
+function readRational(decoder, count) {
+    if (count === 1) {
+        return decoder.readUint32() / decoder.readUint32();
+    }
+    var rationals = new Array(count);
+    for (var i = 0; i < count; i++) {
+        rationals[i] = decoder.readUint32() / decoder.readUint32();
+    }
+    return rationals;
+}
+
+function readSByte(decoder, count) {
+    if (count === 1) return decoder.readInt8();
+    var array = new Int8Array(count);
+    for (var i = 0; i < count; i++) {
+        array[i] = decoder.readInt8();
+    }
+    return array;
+}
+
+function readSShort(decoder, count) {
+    if (count === 1) return decoder.readInt16();
+    var array = new Int16Array(count);
+    for (var i = 0; i < count; i++) {
+        array[i] = decoder.readInt16();
+    }
+    return array;
+}
+
+function readSLong(decoder, count) {
+    if (count === 1) return decoder.readInt32();
+    var array = new Int32Array(count);
+    for (var i = 0; i < count; i++) {
+        array[i] = decoder.readInt32();
+    }
+    return array;
+}
+
+function readSRational(decoder, count) {
+    if (count === 1) {
+        return decoder.readInt32() / decoder.readInt32();
+    }
+    var rationals = new Array(count);
+    for (var i = 0; i < count; i++) {
+        rationals[i] = decoder.readInt32() / decoder.readInt32();
+    }
+    return rationals;
+}
+
+function readFloat(decoder, count) {
+    if (count === 1) return decoder.readFloat32();
+    var array = new Float32Array(count);
+    for (var i = 0; i < count; i++) {
+        array[i] = decoder.readFloat32();
+    }
+    return array;
+}
+
+function readDouble(decoder, count) {
+    if (count === 1) return decoder.readFloat64();
+    var array = new Float64Array(count);
+    for (var i = 0; i < count; i++) {
+        array[i] = decoder.readFloat64();
+    }
+    return array;
+}
+
+const defaultOptions = {
+    ignoreImageData: false,
+    onlyFirst: false
+};
+
+class TIFFDecoder extends IOBuffer {
+    constructor(data, options) {
+        super(data, options);
+        this._nextIFD = 0;
+    }
+
+    get isMultiPage() {
+        let c = 0;
+        this.decodeHeader();
+        while (this._nextIFD) {
+            c++;
+            this.decodeIFD({ignoreImageData: true});
+            if (c === 2) {
+                return true;
+            }
+        }
+        if (c === 1) {
+            return false;
+        }
+        throw unsupported('ifdCount', c);
+    }
+
+    get pageCount() {
+        let c = 0;
+        this.decodeHeader();
+        while (this._nextIFD) {
+            c++;
+            this.decodeIFD({ignoreImageData: true});
+        }
+        if (c > 0) {
+            return c;
+        }
+        throw unsupported('ifdCount', c);
+    }
+
+    decode(options) {
+        options = Object.assign({}, defaultOptions, options);
+        const result = [];
+        this.decodeHeader();
+        while (this._nextIFD) {
+            result.push(this.decodeIFD(options));
+            if (options.onlyFirst) {
+                return result[0];
+            }
+        }
+        return result;
+    }
+
+    decodeHeader() {
+        // Byte offset
+        const value = this.readUint16();
+        if (value === 0x4949) {
+            this.setLittleEndian();
+        } else if (value === 0x4D4D) {
+            this.setBigEndian();
+        } else {
+            throw new Error('invalid byte order: 0x' + value.toString(16));
+        }
+
+        // Magic number
+        if (this.readUint16() !== 42) {
+            throw new Error('not a TIFF file');
+        }
+
+        // Offset of the first IFD
+        this._nextIFD = this.readUint32();
+    }
+
+    decodeIFD(options) {
+        this.seek(this._nextIFD);
+
+        var ifd;
+        if (!options.kind) {
+            ifd = new TiffIfd();
+        } else {
+            ifd = new IFD(options.kind);
+        }
+
+        const numEntries = this.readUint16();
+        for (var i = 0; i < numEntries; i++) {
+            this.decodeIFDEntry(ifd);
+        }
+        if (!options.ignoreImageData) {
+            this.decodeImageData(ifd);
+        }
+        this._nextIFD = this.readUint32();
+        return ifd;
+    }
+
+    decodeIFDEntry(ifd) {
+        const offset = this.offset;
+        const tag = this.readUint16();
+        const type = this.readUint16();
+        const numValues = this.readUint32();
+
+        if (type < 1 || type > 12) {
+            this.skip(4); // unknown type, skip this value
+            return;
+        }
+
+        const valueByteLength = getByteLength(type, numValues);
+        if (valueByteLength > 4) {
+            this.seek(this.readUint32());
+        }
+
+        const value = readData(this, type, numValues);
+        ifd.fields.set(tag, value);
+
+        // Read sub-IFDs
+        if (tag === 0x8769 || tag === 0x8825) {
+            let currentOffset = this.offset;
+            let kind;
+            if (tag === 0x8769) {
+                kind = 'exif';
+            } else if (tag === 0x8825) {
+                kind = 'gps';
+            }
+            this._nextIFD = value;
+            ifd[kind] = this.decodeIFD({
+                kind,
+                ignoreImageData: true
+            });
+            this.offset = currentOffset;
+        }
+
+        // go to the next entry
+        this.seek(offset);
+        this.skip(12);
+    }
+
+    decodeImageData(ifd) {
+        const orientation = ifd.orientation;
+        if (orientation && orientation !== 1) {
+            throw unsupported('orientation', orientation);
+        }
+        switch (ifd.type) {
+            case 1: // BlackIsZero
+            case 2: // RGB
+                this.readStripData(ifd);
+                break;
+            default:
+                throw unsupported('image type', ifd.type);
+        }
+    }
+
+    readStripData(ifd) {
+        const width = ifd.width;
+        const height = ifd.height;
+
+        const bitDepth = validateBitDepth(ifd.bitsPerSample);
+        const sampleFormat = ifd.sampleFormat;
+        const size = width * height;
+        const data = getDataArray(size, 1, bitDepth, sampleFormat);
+
+        const compression = ifd.compression;
+        const rowsPerStrip = ifd.rowsPerStrip;
+        const maxPixels = rowsPerStrip * width;
+        const stripOffsets = ifd.stripOffsets;
+        const stripByteCounts = ifd.stripByteCounts;
+
+        var remainingPixels = size;
+        var pixel = 0;
+        for (var i = 0; i < stripOffsets.length; i++) {
+            var stripData = new DataView(this.buffer, stripOffsets[i], stripByteCounts[i]);
+
+            // Last strip can be smaller
+            var length = remainingPixels > maxPixels ? maxPixels : remainingPixels;
+            remainingPixels -= length;
+
+            switch (compression) {
+                case 1: // No compression
+                    pixel = this.fillUncompressed(bitDepth, sampleFormat, data, stripData, pixel, length);
+                    break;
+                case 5: // LZW
+                    throw unsupported('lzw');
+                case 2: // CCITT Group 3 1-Dimensional Modified Huffman run length encoding
+                case 32773: // PackBits compression
+                    throw unsupported('Compression', compression);
+                default:
+                    throw new Error('invalid compression: ' + compression);
+            }
+        }
+
+        ifd.data = data;
+    }
+
+    fillUncompressed(bitDepth, sampleFormat, data, stripData, pixel, length) {
+        if (bitDepth === 8) {
+            return fill8bit(data, stripData, pixel, length);
+        } else if (bitDepth === 16) {
+            return fill16bit(data, stripData, pixel, length, this.isLittleEndian());
+        } else if (bitDepth === 32 && sampleFormat === 3) {
+            return fillFloat32(data, stripData, pixel, length, this.isLittleEndian());
+        } else {
+            throw unsupported('bitDepth', bitDepth);
+        }
+    }
+}
+
+function getDataArray(size, channels, bitDepth, sampleFormat) {
+    if (bitDepth === 8) {
+        return new Uint8Array(size * channels);
+    } else if (bitDepth === 16) {
+        return new Uint16Array(size * channels);
+    } else if (bitDepth === 32 && sampleFormat === 3) {
+        return new Float32Array(size * channels);
+    } else {
+        throw unsupported('bit depth / sample format', bitDepth + ' / ' + sampleFormat);
+    }
+}
+
+function fill8bit(dataTo, dataFrom, index, length) {
+    for (var i = 0; i < length; i++) {
+        dataTo[index++] = dataFrom.getUint8(i);
+    }
+    return index;
+}
+
+function fill16bit(dataTo, dataFrom, index, length, littleEndian) {
+    for (var i = 0; i < length * 2; i += 2) {
+        dataTo[index++] = dataFrom.getUint16(i, littleEndian);
+    }
+    return index;
+}
+
+function fillFloat32(dataTo, dataFrom, index, length, littleEndian) {
+    for (var i = 0; i < length * 4; i += 4) {
+        dataTo[index++] = dataFrom.getFloat32(i, littleEndian);
+    }
+    return index;
+}
+
+function unsupported(type, value) {
+    return new Error('Unsupported ' + type + ': ' + value);
+}
+
+function validateBitDepth(bitDepth) {
+    if (bitDepth.length) {
+        const bitDepthArray = bitDepth;
+        bitDepth = bitDepthArray[0];
+        for (var i = 0; i < bitDepthArray.length; i++) {
+            if (bitDepthArray[i] !== bitDepth) {
+                throw unsupported('bit depth', bitDepthArray);
+            }
+        }
+    }
+    return bitDepth;
+}
+
+function decodeTIFF(data, options = {}) {
+    const decoder = new TIFFDecoder(data, options);
+    return decoder.decode(options);
+}
+
+function isMultiPage(data) {
+    const decoder = new TIFFDecoder(data);
+    return decoder.isMultiPage;
+}
+
+function pageCount(data) {
+    const decoder = new TIFFDecoder(data);
+    return decoder.pageCount;
+}
+
+exports.decode = decodeTIFF;
+exports.isMultiPage = isMultiPage;
+exports.pageCount = pageCount;
+
+},{"iobuffer":177}],159:[function(require,module,exports){
 (function (process){
 
 ;(function(){
@@ -23144,7 +24636,7 @@ UTIF._copyTile = function(tb, tw, th, b, w, h, xoff, yoff)
 })();
 
 }).call(this,require('_process'))
-},{"_process":119,"jpgjs":173,"pako":156}],156:[function(require,module,exports){
+},{"_process":119,"jpgjs":178,"pako":160}],160:[function(require,module,exports){
 // Top level file is just a mixin of submodules & constants
 'use strict';
 
@@ -23160,7 +24652,7 @@ assign(pako, deflate, inflate, constants);
 
 module.exports = pako;
 
-},{"./lib/deflate":157,"./lib/inflate":158,"./lib/utils/common":159,"./lib/zlib/constants":162}],157:[function(require,module,exports){
+},{"./lib/deflate":161,"./lib/inflate":162,"./lib/utils/common":163,"./lib/zlib/constants":166}],161:[function(require,module,exports){
 'use strict';
 
 
@@ -23562,7 +25054,7 @@ exports.deflate = deflate;
 exports.deflateRaw = deflateRaw;
 exports.gzip = gzip;
 
-},{"./utils/common":159,"./utils/strings":160,"./zlib/deflate":164,"./zlib/messages":169,"./zlib/zstream":171}],158:[function(require,module,exports){
+},{"./utils/common":163,"./utils/strings":164,"./zlib/deflate":168,"./zlib/messages":173,"./zlib/zstream":175}],162:[function(require,module,exports){
 'use strict';
 
 
@@ -23982,7 +25474,7 @@ exports.inflate = inflate;
 exports.inflateRaw = inflateRaw;
 exports.ungzip  = inflate;
 
-},{"./utils/common":159,"./utils/strings":160,"./zlib/constants":162,"./zlib/gzheader":165,"./zlib/inflate":167,"./zlib/messages":169,"./zlib/zstream":171}],159:[function(require,module,exports){
+},{"./utils/common":163,"./utils/strings":164,"./zlib/constants":166,"./zlib/gzheader":169,"./zlib/inflate":171,"./zlib/messages":173,"./zlib/zstream":175}],163:[function(require,module,exports){
 'use strict';
 
 
@@ -24089,7 +25581,7 @@ exports.setTyped = function (on) {
 
 exports.setTyped(TYPED_OK);
 
-},{}],160:[function(require,module,exports){
+},{}],164:[function(require,module,exports){
 // String encode/decode helpers
 'use strict';
 
@@ -24276,7 +25768,7 @@ exports.utf8border = function (buf, max) {
   return (pos + _utf8len[buf[pos]] > max) ? pos : max;
 };
 
-},{"./common":159}],161:[function(require,module,exports){
+},{"./common":163}],165:[function(require,module,exports){
 'use strict';
 
 // Note: adler32 takes 12% for level 0 and 2% for level 6.
@@ -24329,7 +25821,7 @@ function adler32(adler, buf, len, pos) {
 
 module.exports = adler32;
 
-},{}],162:[function(require,module,exports){
+},{}],166:[function(require,module,exports){
 'use strict';
 
 // (C) 1995-2013 Jean-loup Gailly and Mark Adler
@@ -24399,7 +25891,7 @@ module.exports = {
   //Z_NULL:                 null // Use -1 or null inline, depending on var type
 };
 
-},{}],163:[function(require,module,exports){
+},{}],167:[function(require,module,exports){
 'use strict';
 
 // Note: we can't get significant speed boost here.
@@ -24460,7 +25952,7 @@ function crc32(crc, buf, len, pos) {
 
 module.exports = crc32;
 
-},{}],164:[function(require,module,exports){
+},{}],168:[function(require,module,exports){
 'use strict';
 
 // (C) 1995-2013 Jean-loup Gailly and Mark Adler
@@ -26336,7 +27828,7 @@ exports.deflatePrime = deflatePrime;
 exports.deflateTune = deflateTune;
 */
 
-},{"../utils/common":159,"./adler32":161,"./crc32":163,"./messages":169,"./trees":170}],165:[function(require,module,exports){
+},{"../utils/common":163,"./adler32":165,"./crc32":167,"./messages":173,"./trees":174}],169:[function(require,module,exports){
 'use strict';
 
 // (C) 1995-2013 Jean-loup Gailly and Mark Adler
@@ -26396,7 +27888,7 @@ function GZheader() {
 
 module.exports = GZheader;
 
-},{}],166:[function(require,module,exports){
+},{}],170:[function(require,module,exports){
 'use strict';
 
 // (C) 1995-2013 Jean-loup Gailly and Mark Adler
@@ -26743,7 +28235,7 @@ module.exports = function inflate_fast(strm, start) {
   return;
 };
 
-},{}],167:[function(require,module,exports){
+},{}],171:[function(require,module,exports){
 'use strict';
 
 // (C) 1995-2013 Jean-loup Gailly and Mark Adler
@@ -28301,7 +29793,7 @@ exports.inflateSyncPoint = inflateSyncPoint;
 exports.inflateUndermine = inflateUndermine;
 */
 
-},{"../utils/common":159,"./adler32":161,"./crc32":163,"./inffast":166,"./inftrees":168}],168:[function(require,module,exports){
+},{"../utils/common":163,"./adler32":165,"./crc32":167,"./inffast":170,"./inftrees":172}],172:[function(require,module,exports){
 'use strict';
 
 // (C) 1995-2013 Jean-loup Gailly and Mark Adler
@@ -28646,7 +30138,7 @@ module.exports = function inflate_table(type, lens, lens_index, codes, table, ta
   return 0;
 };
 
-},{"../utils/common":159}],169:[function(require,module,exports){
+},{"../utils/common":163}],173:[function(require,module,exports){
 'use strict';
 
 // (C) 1995-2013 Jean-loup Gailly and Mark Adler
@@ -28680,7 +30172,7 @@ module.exports = {
   '-6':   'incompatible version' /* Z_VERSION_ERROR (-6) */
 };
 
-},{}],170:[function(require,module,exports){
+},{}],174:[function(require,module,exports){
 'use strict';
 
 // (C) 1995-2013 Jean-loup Gailly and Mark Adler
@@ -29902,7 +31394,7 @@ exports._tr_flush_block  = _tr_flush_block;
 exports._tr_tally = _tr_tally;
 exports._tr_align = _tr_align;
 
-},{"../utils/common":159}],171:[function(require,module,exports){
+},{"../utils/common":163}],175:[function(require,module,exports){
 'use strict';
 
 // (C) 1995-2013 Jean-loup Gailly and Mark Adler
@@ -29951,7 +31443,7 @@ function ZStream() {
 
 module.exports = ZStream;
 
-},{}],172:[function(require,module,exports){
+},{}],176:[function(require,module,exports){
 (function (process,Buffer){
 var dcraw = function(dcraw) {
   dcraw = dcraw || {};
@@ -29986,7 +31478,551 @@ if (typeof module === "object" && module.exports) {
 if (dcraw) { const em_module = dcraw; dcraw = function() { return em_module().dcraw.apply(this, arguments); }; if (typeof module === "object" && module.exports) { module.exports = dcraw; } }
 
 }).call(this,require('_process'),require("buffer").Buffer)
-},{"_process":119,"buffer":48,"crypto":56,"fs":1,"path":112}],173:[function(require,module,exports){
+},{"_process":119,"buffer":48,"crypto":56,"fs":1,"path":112}],177:[function(require,module,exports){
+(function (Buffer){
+'use strict';
+
+const utf8 = require('utf8');
+
+const defaultByteLength = 1024 * 8;
+const charArray = [];
+
+/**
+ * IOBuffer
+ * @constructor
+ * @param {undefined|number|ArrayBuffer|TypedArray|IOBuffer|Buffer} data - The data to construct the IOBuffer with.
+ *
+ * If it's a number, it will initialize the buffer with the number as the buffer's length<br>
+ * If it's undefined, it will initialize the buffer with a default length of 8 Kb<br>
+ * If its an ArrayBuffer, a TypedArray, an IOBuffer instance,
+ * or a Node.js Buffer, it will create a view over the underlying ArrayBuffer.
+ * @param {object} [options]
+ * @param {number} [options.offset=0] - Ignore the first n bytes of the ArrayBuffer
+ * @property {ArrayBuffer} buffer - Reference to the internal ArrayBuffer object
+ * @property {number} length - Byte length of the internal ArrayBuffer
+ * @property {number} offset - The current offset of the buffer's pointer
+ * @property {number} byteLength - Byte length of the internal ArrayBuffer
+ * @property {number} byteOffset - Byte offset of the internal ArrayBuffer
+ */
+class IOBuffer {
+    constructor(data, options) {
+        options = options || {};
+        var dataIsGiven = false;
+        if (data === undefined) {
+            data = defaultByteLength;
+        }
+        if (typeof data === 'number') {
+            data = new ArrayBuffer(data);
+        } else {
+            dataIsGiven = true;
+            this._lastWrittenByte = data.byteLength;
+        }
+
+        const offset = options.offset ? options.offset >>> 0 : 0;
+        let byteLength = data.byteLength - offset;
+        let dvOffset = offset;
+        if (data.buffer) {
+            if (data.byteLength !== data.buffer.byteLength) {
+                dvOffset = data.byteOffset + offset;
+            }
+            data = data.buffer;
+        }
+        if (dataIsGiven) {
+            this._lastWrittenByte = byteLength;
+        } else {
+            this._lastWrittenByte = 0;
+        }
+        this.buffer = data;
+        this.length = byteLength;
+        this.byteLength = byteLength;
+        this.byteOffset = dvOffset;
+        this.offset = 0;
+        this.littleEndian = true;
+        this._data = new DataView(this.buffer, dvOffset, byteLength);
+        this._mark = 0;
+        this._marks = [];
+    }
+
+    /**
+     * Checks if the memory allocated to the buffer is sufficient to store more bytes after the offset
+     * @param {number} [byteLength=1] The needed memory in bytes
+     * @return {boolean} Returns true if there is sufficient space and false otherwise
+     */
+    available(byteLength) {
+        if (byteLength === undefined) byteLength = 1;
+        return (this.offset + byteLength) <= this.length;
+    }
+
+    /**
+     * Check if little-endian mode is used for reading and writing multi-byte values
+     * @return {boolean} Returns true if little-endian mode is used, false otherwise
+     */
+    isLittleEndian() {
+        return this.littleEndian;
+    }
+
+    /**
+     * Set little-endian mode for reading and writing multi-byte values
+     * @return {IOBuffer}
+     */
+    setLittleEndian() {
+        this.littleEndian = true;
+        return this;
+    }
+
+    /**
+     * Check if big-endian mode is used for reading and writing multi-byte values
+     * @return {boolean} Returns true if big-endian mode is used, false otherwise
+     */
+    isBigEndian() {
+        return !this.littleEndian;
+    }
+
+    /**
+     * Switches to big-endian mode for reading and writing multi-byte values
+     * @return {IOBuffer}
+     */
+    setBigEndian() {
+        this.littleEndian = false;
+        return this;
+    }
+
+    /**
+     * Move the pointer n bytes forward
+     * @param {number} n
+     * @return {IOBuffer}
+     */
+    skip(n) {
+        if (n === undefined) n = 1;
+        this.offset += n;
+        return this;
+    }
+
+    /**
+     * Move the pointer to the given offset
+     * @param {number} offset
+     * @return {IOBuffer}
+     */
+    seek(offset) {
+        this.offset = offset;
+        return this;
+    }
+
+    /**
+     * Store the current pointer offset.
+     * @see {@link IOBuffer#reset}
+     * @return {IOBuffer}
+     */
+    mark() {
+        this._mark = this.offset;
+        return this;
+    }
+
+    /**
+     * Move the pointer back to the last pointer offset set by mark
+     * @see {@link IOBuffer#mark}
+     * @return {IOBuffer}
+     */
+    reset() {
+        this.offset = this._mark;
+        return this;
+    }
+
+    /**
+     * Push the current pointer offset to the mark stack
+     * @see {@link IOBuffer#popMark}
+     * @return {IOBuffer}
+     */
+    pushMark() {
+        this._marks.push(this.offset);
+        return this;
+    }
+
+    /**
+     * Pop the last pointer offset from the mark stack, and set the current pointer offset to the popped value
+     * @see {@link IOBuffer#pushMark}
+     * @return {IOBuffer}
+     */
+    popMark() {
+        const offset = this._marks.pop();
+        if (offset === undefined) throw new Error('Mark stack empty');
+        this.seek(offset);
+        return this;
+    }
+
+    /**
+     * Move the pointer offset back to 0
+     * @return {IOBuffer}
+     */
+    rewind() {
+        this.offset = 0;
+        return this;
+    }
+
+    /**
+     * Make sure the buffer has sufficient memory to write a given byteLength at the current pointer offset
+     * If the buffer's memory is insufficient, this method will create a new buffer (a copy) with a length
+     * that is twice (byteLength + current offset)
+     * @param {number} [byteLength = 1]
+     * @return {IOBuffer}
+     */
+    ensureAvailable(byteLength) {
+        if (byteLength === undefined) byteLength = 1;
+        if (!this.available(byteLength)) {
+            const lengthNeeded = this.offset + byteLength;
+            const newLength = lengthNeeded * 2;
+            const newArray = new Uint8Array(newLength);
+            newArray.set(new Uint8Array(this.buffer));
+            this.buffer = newArray.buffer;
+            this.length = this.byteLength = newLength;
+            this._data = new DataView(this.buffer);
+        }
+        return this;
+    }
+
+    /**
+     * Read a byte and return false if the byte's value is 0, or true otherwise
+     * Moves pointer forward
+     * @return {boolean}
+     */
+    readBoolean() {
+        return this.readUint8() !== 0;
+    }
+
+    /**
+     * Read a signed 8-bit integer and move pointer forward
+     * @return {number}
+     */
+    readInt8() {
+        return this._data.getInt8(this.offset++);
+    }
+
+    /**
+     * Read an unsigned 8-bit integer and move pointer forward
+     * @return {number}
+     */
+    readUint8() {
+        return this._data.getUint8(this.offset++);
+    }
+
+    /**
+     * Alias for {@link IOBuffer#readUint8}
+     * @return {number}
+     */
+    readByte() {
+        return this.readUint8();
+    }
+
+    /**
+     * Read n bytes and move pointer forward.
+     * @param {number} n
+     * @return {Uint8Array}
+     */
+    readBytes(n) {
+        if (n === undefined) n = 1;
+        var bytes = new Uint8Array(n);
+        for (var i = 0; i < n; i++) {
+            bytes[i] = this.readByte();
+        }
+        return bytes;
+    }
+
+    /**
+     * Read a 16-bit signed integer and move pointer forward
+     * @return {number}
+     */
+    readInt16() {
+        var value = this._data.getInt16(this.offset, this.littleEndian);
+        this.offset += 2;
+        return value;
+    }
+
+    /**
+     * Read a 16-bit unsigned integer and move pointer forward
+     * @return {number}
+     */
+    readUint16() {
+        var value = this._data.getUint16(this.offset, this.littleEndian);
+        this.offset += 2;
+        return value;
+    }
+
+    /**
+     * Read a 32-bit signed integer and move pointer forward
+     * @return {number}
+     */
+    readInt32() {
+        var value = this._data.getInt32(this.offset, this.littleEndian);
+        this.offset += 4;
+        return value;
+    }
+
+    /**
+     * Read a 32-bit unsigned integer and move pointer forward
+     * @return {number}
+     */
+    readUint32() {
+        var value = this._data.getUint32(this.offset, this.littleEndian);
+        this.offset += 4;
+        return value;
+    }
+
+    /**
+     * Read a 32-bit floating number and move pointer forward
+     * @return {number}
+     */
+    readFloat32() {
+        var value = this._data.getFloat32(this.offset, this.littleEndian);
+        this.offset += 4;
+        return value;
+    }
+
+    /**
+     * Read a 64-bit floating number and move pointer forward
+     * @return {number}
+     */
+    readFloat64() {
+        var value = this._data.getFloat64(this.offset, this.littleEndian);
+        this.offset += 8;
+        return value;
+    }
+
+    /**
+     * Read 1-byte ascii character and move pointer forward
+     * @return {string}
+     */
+    readChar() {
+        return String.fromCharCode(this.readInt8());
+    }
+
+    /**
+     * Read n 1-byte ascii characters and move pointer forward
+     * @param {number} n
+     * @return {string}
+     */
+    readChars(n) {
+        if (n === undefined) n = 1;
+        charArray.length = n;
+        for (var i = 0; i < n; i++) {
+            charArray[i] = this.readChar();
+        }
+        return charArray.join('');
+    }
+
+    /**
+     * Read the next n bytes, return a UTF-8 decoded string and move pointer forward
+     * @param {number} n
+     * @return {string}
+     */
+    readUtf8(n) {
+        if (n === undefined) n = 1;
+        const bString = this.readChars(n);
+        return utf8.decode(bString);
+    }
+
+    /**
+     * Write 0xff if the passed value is truthy, 0x00 otherwise
+     * @param {any} value
+     * @return {IOBuffer}
+     */
+    writeBoolean(value) {
+        this.writeUint8(value ? 0xff : 0x00);
+        return this;
+    }
+
+    /**
+     * Write value as an 8-bit signed integer
+     * @param {number} value
+     * @return {IOBuffer}
+     */
+    writeInt8(value) {
+        this.ensureAvailable(1);
+        this._data.setInt8(this.offset++, value);
+        this._updateLastWrittenByte();
+        return this;
+    }
+
+    /**
+     * Write value as a 8-bit unsigned integer
+     * @param {number} value
+     * @return {IOBuffer}
+     */
+    writeUint8(value) {
+        this.ensureAvailable(1);
+        this._data.setUint8(this.offset++, value);
+        this._updateLastWrittenByte();
+        return this;
+    }
+
+    /**
+     * An alias for {@link IOBuffer#writeUint8}
+     * @param {number} value
+     * @return {IOBuffer}
+     */
+    writeByte(value) {
+        return this.writeUint8(value);
+    }
+
+    /**
+     * Write bytes
+     * @param {Array|Uint8Array} bytes
+     * @return {IOBuffer}
+     */
+    writeBytes(bytes) {
+        this.ensureAvailable(bytes.length);
+        for (var i = 0; i < bytes.length; i++) {
+            this._data.setUint8(this.offset++, bytes[i]);
+        }
+        this._updateLastWrittenByte();
+        return this;
+    }
+
+    /**
+     * Write value as an 16-bit signed integer
+     * @param {number} value
+     * @return {IOBuffer}
+     */
+    writeInt16(value) {
+        this.ensureAvailable(2);
+        this._data.setInt16(this.offset, value, this.littleEndian);
+        this.offset += 2;
+        this._updateLastWrittenByte();
+        return this;
+    }
+
+    /**
+     * Write value as a 16-bit unsigned integer
+     * @param {number} value
+     * @return {IOBuffer}
+     */
+    writeUint16(value) {
+        this.ensureAvailable(2);
+        this._data.setUint16(this.offset, value, this.littleEndian);
+        this.offset += 2;
+        this._updateLastWrittenByte();
+        return this;
+    }
+
+    /**
+     * Write a 32-bit signed integer at the current pointer offset
+     * @param {number} value
+     * @return {IOBuffer}
+     */
+    writeInt32(value) {
+        this.ensureAvailable(4);
+        this._data.setInt32(this.offset, value, this.littleEndian);
+        this.offset += 4;
+        this._updateLastWrittenByte();
+        return this;
+    }
+
+    /**
+     * Write a 32-bit unsigned integer at the current pointer offset
+     * @param {number} value - The value to set
+     * @return {IOBuffer}
+     */
+    writeUint32(value) {
+        this.ensureAvailable(4);
+        this._data.setUint32(this.offset, value, this.littleEndian);
+        this.offset += 4;
+        this._updateLastWrittenByte();
+        return this;
+    }
+
+    /**
+     * Write a 32-bit floating number at the current pointer offset
+     * @param {number} value - The value to set
+     * @return {IOBuffer}
+     */
+    writeFloat32(value) {
+        this.ensureAvailable(4);
+        this._data.setFloat32(this.offset, value, this.littleEndian);
+        this.offset += 4;
+        this._updateLastWrittenByte();
+        return this;
+    }
+
+    /**
+     * Write a 64-bit floating number at the current pointer offset
+     * @param {number} value
+     * @return {IOBuffer}
+     */
+    writeFloat64(value) {
+        this.ensureAvailable(8);
+        this._data.setFloat64(this.offset, value, this.littleEndian);
+        this.offset += 8;
+        this._updateLastWrittenByte();
+        return this;
+    }
+
+    /**
+     * Write the charCode of the passed string's first character to the current pointer offset
+     * @param {string} str - The character to set
+     * @return {IOBuffer}
+     */
+    writeChar(str) {
+        return this.writeUint8(str.charCodeAt(0));
+    }
+
+    /**
+     * Write the charCodes of the passed string's characters to the current pointer offset
+     * @param {string} str
+     * @return {IOBuffer}
+     */
+    writeChars(str) {
+        for (var i = 0; i < str.length; i++) {
+            this.writeUint8(str.charCodeAt(i));
+        }
+        return this;
+    }
+
+    /**
+     * UTF-8 encode and write the passed string to the current pointer offset
+     * @param {string} str
+     * @return {IOBuffer}
+     */
+    writeUtf8(str) {
+        const bString = utf8.encode(str);
+        return this.writeChars(bString);
+    }
+
+    /**
+     * Export a Uint8Array view of the internal buffer.
+     * The view starts at the byte offset and its length
+     * is calculated to stop at the last written byte or the original length.
+     * @return {Uint8Array}
+     */
+    toArray() {
+        return new Uint8Array(this.buffer, this.byteOffset, this._lastWrittenByte);
+    }
+
+    /**
+     * Same as {@link IOBuffer#toArray} but returns a Buffer if possible. Otherwise returns a Uint8Array.
+     * @return {Buffer|Uint8Array}
+     */
+    getBuffer() {
+        if (typeof Buffer !== 'undefined') {
+            return Buffer.from(this.toArray());
+        } else {
+            return this.toArray();
+        }
+    }
+
+    /**
+     * Update the last written byte offset
+     * @private
+     */
+    _updateLastWrittenByte() {
+        if (this.offset > this._lastWrittenByte) {
+            this._lastWrittenByte = this.offset;
+        }
+    }
+}
+
+module.exports = IOBuffer;
+
+}).call(this,require("buffer").Buffer)
+},{"buffer":48,"utf8":183}],178:[function(require,module,exports){
 /**
  * @license
  * Copyright 2015 Mozilla Foundation
@@ -34267,7 +36303,457 @@ var JpegDecoder = PDFJS.JpegImage;
 var JpxDecoder = PDFJS.JpxImage;
 
 var Jbig2Decoder = PDFJS.Jbig2Image;
-},{}],174:[function(require,module,exports){
+},{}],179:[function(require,module,exports){
+'use strict';
+
+module.exports = {
+  DEFAULT_INITIAL_SIZE: (8 * 1024),
+  DEFAULT_INCREMENT_AMOUNT: (8 * 1024),
+  DEFAULT_FREQUENCY: 1,
+  DEFAULT_CHUNK_SIZE: 1024
+};
+
+},{}],180:[function(require,module,exports){
+(function (Buffer){
+'use strict';
+
+var stream = require('stream');
+var constants = require('./constants');
+var util = require('util');
+
+var ReadableStreamBuffer = module.exports = function(opts) {
+  var that = this;
+  opts = opts || {};
+
+  stream.Readable.call(this, opts);
+
+  this.stopped = false;
+
+  var frequency = opts.hasOwnProperty('frequency') ? opts.frequency : constants.DEFAULT_FREQUENCY;
+  var chunkSize = opts.chunkSize || constants.DEFAULT_CHUNK_SIZE;
+  var initialSize = opts.initialSize || constants.DEFAULT_INITIAL_SIZE;
+  var incrementAmount = opts.incrementAmount || constants.DEFAULT_INCREMENT_AMOUNT;
+
+  var size = 0;
+  var buffer = new Buffer(initialSize);
+
+  var sendData = function() {
+    var amount = Math.min(chunkSize, size);
+    var sendMore = false;
+
+    if (amount > 0) {
+      var chunk = null;
+      chunk = new Buffer(amount);
+      buffer.copy(chunk, 0, 0, amount);
+
+      sendMore = that.push(chunk) !== false;
+
+      buffer.copy(buffer, 0, amount, size);
+      size -= amount;
+    }
+
+    if(size === 0 && that.stopped) {
+      that.push(null);
+    }
+
+    if (sendMore) {
+      sendData.timeout = setTimeout(sendData, frequency);
+    }
+    else {
+      sendData.timeout = null;
+    }
+  };
+
+  this.stop = function() {
+    if (this.stopped) {
+      throw new Error('stop() called on already stopped ReadableStreamBuffer');
+    }
+    this.stopped = true;
+
+    if (size === 0) {
+      this.push(null);
+    }
+  };
+
+  this.size = function() {
+    return size;
+  };
+
+  this.maxSize = function() {
+    return buffer.length;
+  };
+
+  var increaseBufferIfNecessary = function(incomingDataSize) {
+    if((buffer.length - size) < incomingDataSize) {
+      var factor = Math.ceil((incomingDataSize - (buffer.length - size)) / incrementAmount);
+
+      var newBuffer = new Buffer(buffer.length + (incrementAmount * factor));
+      buffer.copy(newBuffer, 0, 0, size);
+      buffer = newBuffer;
+    }
+  };
+
+  this.put = function(data, encoding) {
+    if (that.stopped) {
+      throw new Error('Tried to write data to a stopped ReadableStreamBuffer');
+    }
+
+    if(Buffer.isBuffer(data)) {
+      increaseBufferIfNecessary(data.length);
+      data.copy(buffer, size, 0);
+      size += data.length;
+    }
+    else {
+      data = data + '';
+      var dataSizeInBytes = Buffer.byteLength(data);
+      increaseBufferIfNecessary(dataSizeInBytes);
+      buffer.write(data, size, encoding || 'utf8');
+      size += dataSizeInBytes;
+    }
+  };
+
+  this._read = function() {
+    if (!sendData.timeout) {
+      sendData.timeout = setTimeout(sendData, frequency);
+    }
+  };
+};
+
+util.inherits(ReadableStreamBuffer, stream.Readable);
+
+}).call(this,require("buffer").Buffer)
+},{"./constants":179,"buffer":48,"stream":151,"util":156}],181:[function(require,module,exports){
+'use strict';
+
+module.exports = require('./constants');
+module.exports.ReadableStreamBuffer = require('./readable_streambuffer');
+module.exports.WritableStreamBuffer = require('./writable_streambuffer');
+
+},{"./constants":179,"./readable_streambuffer":180,"./writable_streambuffer":182}],182:[function(require,module,exports){
+(function (Buffer){
+'use strict';
+
+var util = require('util');
+var stream = require('stream');
+var constants = require('./constants');
+
+var WritableStreamBuffer = module.exports = function(opts) {
+  opts = opts || {};
+  opts.decodeStrings = true;
+
+  stream.Writable.call(this, opts);
+
+  var initialSize = opts.initialSize || constants.DEFAULT_INITIAL_SIZE;
+  var incrementAmount = opts.incrementAmount || constants.DEFAULT_INCREMENT_AMOUNT;
+
+  var buffer = new Buffer(initialSize);
+  var size = 0;
+
+  this.size = function() {
+    return size;
+  };
+
+  this.maxSize = function() {
+    return buffer.length;
+  };
+
+  this.getContents = function(length) {
+    if(!size) return false;
+
+    var data = new Buffer(Math.min(length || size, size));
+    buffer.copy(data, 0, 0, data.length);
+
+    if(data.length < size)
+      buffer.copy(buffer, 0, data.length);
+
+    size -= data.length;
+
+    return data;
+  };
+
+  this.getContentsAsString = function(encoding, length) {
+    if(!size) return false;
+
+    var data = buffer.toString(encoding || 'utf8', 0, Math.min(length || size, size));
+    var dataLength = Buffer.byteLength(data);
+
+    if(dataLength < size)
+      buffer.copy(buffer, 0, dataLength);
+
+    size -= dataLength;
+    return data;
+  };
+
+  var increaseBufferIfNecessary = function(incomingDataSize) {
+    if((buffer.length - size) < incomingDataSize) {
+      var factor = Math.ceil((incomingDataSize - (buffer.length - size)) / incrementAmount);
+
+      var newBuffer = new Buffer(buffer.length + (incrementAmount * factor));
+      buffer.copy(newBuffer, 0, 0, size);
+      buffer = newBuffer;
+    }
+  };
+
+  this._write = function(chunk, encoding, callback) {
+    increaseBufferIfNecessary(chunk.length);
+    chunk.copy(buffer, size, 0);
+    size += chunk.length;
+    callback();
+  };
+};
+
+util.inherits(WritableStreamBuffer, stream.Writable);
+
+}).call(this,require("buffer").Buffer)
+},{"./constants":179,"buffer":48,"stream":151,"util":156}],183:[function(require,module,exports){
+(function (global){
+/*! https://mths.be/utf8js v2.1.2 by @mathias */
+;(function(root) {
+
+	// Detect free variables `exports`
+	var freeExports = typeof exports == 'object' && exports;
+
+	// Detect free variable `module`
+	var freeModule = typeof module == 'object' && module &&
+		module.exports == freeExports && module;
+
+	// Detect free variable `global`, from Node.js or Browserified code,
+	// and use it as `root`
+	var freeGlobal = typeof global == 'object' && global;
+	if (freeGlobal.global === freeGlobal || freeGlobal.window === freeGlobal) {
+		root = freeGlobal;
+	}
+
+	/*--------------------------------------------------------------------------*/
+
+	var stringFromCharCode = String.fromCharCode;
+
+	// Taken from https://mths.be/punycode
+	function ucs2decode(string) {
+		var output = [];
+		var counter = 0;
+		var length = string.length;
+		var value;
+		var extra;
+		while (counter < length) {
+			value = string.charCodeAt(counter++);
+			if (value >= 0xD800 && value <= 0xDBFF && counter < length) {
+				// high surrogate, and there is a next character
+				extra = string.charCodeAt(counter++);
+				if ((extra & 0xFC00) == 0xDC00) { // low surrogate
+					output.push(((value & 0x3FF) << 10) + (extra & 0x3FF) + 0x10000);
+				} else {
+					// unmatched surrogate; only append this code unit, in case the next
+					// code unit is the high surrogate of a surrogate pair
+					output.push(value);
+					counter--;
+				}
+			} else {
+				output.push(value);
+			}
+		}
+		return output;
+	}
+
+	// Taken from https://mths.be/punycode
+	function ucs2encode(array) {
+		var length = array.length;
+		var index = -1;
+		var value;
+		var output = '';
+		while (++index < length) {
+			value = array[index];
+			if (value > 0xFFFF) {
+				value -= 0x10000;
+				output += stringFromCharCode(value >>> 10 & 0x3FF | 0xD800);
+				value = 0xDC00 | value & 0x3FF;
+			}
+			output += stringFromCharCode(value);
+		}
+		return output;
+	}
+
+	function checkScalarValue(codePoint) {
+		if (codePoint >= 0xD800 && codePoint <= 0xDFFF) {
+			throw Error(
+				'Lone surrogate U+' + codePoint.toString(16).toUpperCase() +
+				' is not a scalar value'
+			);
+		}
+	}
+	/*--------------------------------------------------------------------------*/
+
+	function createByte(codePoint, shift) {
+		return stringFromCharCode(((codePoint >> shift) & 0x3F) | 0x80);
+	}
+
+	function encodeCodePoint(codePoint) {
+		if ((codePoint & 0xFFFFFF80) == 0) { // 1-byte sequence
+			return stringFromCharCode(codePoint);
+		}
+		var symbol = '';
+		if ((codePoint & 0xFFFFF800) == 0) { // 2-byte sequence
+			symbol = stringFromCharCode(((codePoint >> 6) & 0x1F) | 0xC0);
+		}
+		else if ((codePoint & 0xFFFF0000) == 0) { // 3-byte sequence
+			checkScalarValue(codePoint);
+			symbol = stringFromCharCode(((codePoint >> 12) & 0x0F) | 0xE0);
+			symbol += createByte(codePoint, 6);
+		}
+		else if ((codePoint & 0xFFE00000) == 0) { // 4-byte sequence
+			symbol = stringFromCharCode(((codePoint >> 18) & 0x07) | 0xF0);
+			symbol += createByte(codePoint, 12);
+			symbol += createByte(codePoint, 6);
+		}
+		symbol += stringFromCharCode((codePoint & 0x3F) | 0x80);
+		return symbol;
+	}
+
+	function utf8encode(string) {
+		var codePoints = ucs2decode(string);
+		var length = codePoints.length;
+		var index = -1;
+		var codePoint;
+		var byteString = '';
+		while (++index < length) {
+			codePoint = codePoints[index];
+			byteString += encodeCodePoint(codePoint);
+		}
+		return byteString;
+	}
+
+	/*--------------------------------------------------------------------------*/
+
+	function readContinuationByte() {
+		if (byteIndex >= byteCount) {
+			throw Error('Invalid byte index');
+		}
+
+		var continuationByte = byteArray[byteIndex] & 0xFF;
+		byteIndex++;
+
+		if ((continuationByte & 0xC0) == 0x80) {
+			return continuationByte & 0x3F;
+		}
+
+		// If we end up here, it’s not a continuation byte
+		throw Error('Invalid continuation byte');
+	}
+
+	function decodeSymbol() {
+		var byte1;
+		var byte2;
+		var byte3;
+		var byte4;
+		var codePoint;
+
+		if (byteIndex > byteCount) {
+			throw Error('Invalid byte index');
+		}
+
+		if (byteIndex == byteCount) {
+			return false;
+		}
+
+		// Read first byte
+		byte1 = byteArray[byteIndex] & 0xFF;
+		byteIndex++;
+
+		// 1-byte sequence (no continuation bytes)
+		if ((byte1 & 0x80) == 0) {
+			return byte1;
+		}
+
+		// 2-byte sequence
+		if ((byte1 & 0xE0) == 0xC0) {
+			byte2 = readContinuationByte();
+			codePoint = ((byte1 & 0x1F) << 6) | byte2;
+			if (codePoint >= 0x80) {
+				return codePoint;
+			} else {
+				throw Error('Invalid continuation byte');
+			}
+		}
+
+		// 3-byte sequence (may include unpaired surrogates)
+		if ((byte1 & 0xF0) == 0xE0) {
+			byte2 = readContinuationByte();
+			byte3 = readContinuationByte();
+			codePoint = ((byte1 & 0x0F) << 12) | (byte2 << 6) | byte3;
+			if (codePoint >= 0x0800) {
+				checkScalarValue(codePoint);
+				return codePoint;
+			} else {
+				throw Error('Invalid continuation byte');
+			}
+		}
+
+		// 4-byte sequence
+		if ((byte1 & 0xF8) == 0xF0) {
+			byte2 = readContinuationByte();
+			byte3 = readContinuationByte();
+			byte4 = readContinuationByte();
+			codePoint = ((byte1 & 0x07) << 0x12) | (byte2 << 0x0C) |
+				(byte3 << 0x06) | byte4;
+			if (codePoint >= 0x010000 && codePoint <= 0x10FFFF) {
+				return codePoint;
+			}
+		}
+
+		throw Error('Invalid UTF-8 detected');
+	}
+
+	var byteArray;
+	var byteCount;
+	var byteIndex;
+	function utf8decode(byteString) {
+		byteArray = ucs2decode(byteString);
+		byteCount = byteArray.length;
+		byteIndex = 0;
+		var codePoints = [];
+		var tmp;
+		while ((tmp = decodeSymbol()) !== false) {
+			codePoints.push(tmp);
+		}
+		return ucs2encode(codePoints);
+	}
+
+	/*--------------------------------------------------------------------------*/
+
+	var utf8 = {
+		'version': '2.1.2',
+		'encode': utf8encode,
+		'decode': utf8decode
+	};
+
+	// Some AMD build optimizers, like r.js, check for specific condition patterns
+	// like the following:
+	if (
+		typeof define == 'function' &&
+		typeof define.amd == 'object' &&
+		define.amd
+	) {
+		define(function() {
+			return utf8;
+		});
+	}	else if (freeExports && !freeExports.nodeType) {
+		if (freeModule) { // in Node.js or RingoJS v0.8.0+
+			freeModule.exports = utf8;
+		} else { // in Narwhal or RingoJS v0.7.0-
+			var object = {};
+			var hasOwnProperty = object.hasOwnProperty;
+			for (var key in utf8) {
+				hasOwnProperty.call(utf8, key) && (freeExports[key] = utf8[key]);
+			}
+		}
+	} else { // in Rhino or a web browser
+		root.utf8 = utf8;
+	}
+
+}(this));
+
+}).call(this,typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
+},{}],184:[function(require,module,exports){
 (function (process,Buffer,__dirname){
 /**
    @license
@@ -34705,15 +37191,18 @@ else if (typeof importScripts === 'function') {
 }
 
 }).call(this,require('_process'),require("buffer").Buffer,"/public/js/controllers")
-},{"_process":119,"buffer":48,"crypto":56,"fs":1,"path":112}],"Tiff":[function(require,module,exports){
+},{"_process":119,"buffer":48,"crypto":56,"fs":1,"path":112}],"MookieBundle":[function(require,module,exports){
 var Tiff = require('./tiff.js');
 Tiff.initialize({TOTAL_MEMORY: 300000000});
 var fs = require('fs');
 var dcraw = require('dcraw');
 var UTIF = require('UTIF');
+var newTiff = require('Tiff');
+var streamBuffers = require('stream-buffers');
 
-exports.Tiff = {Tiff:Tiff,fs:fs,dcraw:dcraw,UTIF:UTIF};
-},{"./tiff.js":174,"UTIF":155,"dcraw":172,"fs":1}],"duplexer":[function(require,module,exports){
+
+exports.export = {Tiff:Tiff,fs:fs,dcraw:dcraw,UTIF:UTIF,newTiff:newTiff,streamBuffers:streamBuffers};
+},{"./tiff.js":184,"Tiff":158,"UTIF":159,"dcraw":176,"fs":1,"stream-buffers":181}],"duplexer":[function(require,module,exports){
 var Stream = require("stream")
 var writeMethods = ["write", "end", "destroy"]
 var readMethods = ["resume", "pause"]

@@ -885,6 +885,6 @@ a.mobile-menu-toggle>i {
 }
 
 .imageTestMax canvas{
-	max-height:1100px;
-	width:auto;
+	height:auto;
+	width:100%;
 }

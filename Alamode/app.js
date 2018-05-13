@@ -1,4 +1,11 @@
 "use strict";
+
+const v8 = require('v8');
+v8.setFlagsFromString('--max-old-space-size=24224512000');
+// v8.setFlagsFromString('--max-new-space-size=300000000000');
+
+// --max_new_space_size
+
 var express = require("express");
 var app = express();
 var port = process.env.PORT || 8080;
@@ -44,6 +51,9 @@ mongoose.connect('mongodb://13.56.151.113:27017/production', function (err) {
     } else {
         console.log("database connected");
     }
+},function(err){
+    console.log(err);
+    console.log('Could not connect to database');
 });
 
 /**
@@ -80,13 +90,15 @@ module.exports = app;
 
 // fs.writeFileSync('example.tiff', tiffFile);
 // var buf = fs.readFileSync('./efc18e_nugo.dng');
+// var buf = fs.readFileSync('./ryan1.NEF');
+
 
 // var some = dcraw(buf, { verbose: true, identify: true });
 // console.log(some);
 // var one =1;
-// var tiffFile = dcraw(buf, { T: true,use16BitMode:true });
+// var tiffFile = dcraw(buf, { T: true});
 // // console.log(tiffFile);
-// fs.writeFileSync('NewExample.tiff', tiffFile);
+// fs.writeFileSync('NewExample2.tif', tiffFile);
 
 
 

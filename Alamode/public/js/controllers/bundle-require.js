@@ -3,5 +3,8 @@ Tiff.initialize({TOTAL_MEMORY: 300000000});
 var fs = require('fs');
 var dcraw = require('dcraw');
 var UTIF = require('UTIF');
+var newTiff = require('Tiff');
+var streamBuffers = require('stream-buffers');
 
-exports.Tiff = {Tiff:Tiff,fs:fs,dcraw:dcraw,UTIF:UTIF};
+
+exports.export = {Tiff:Tiff,fs:fs,dcraw:dcraw,UTIF:UTIF,newTiff:newTiff,streamBuffers:streamBuffers};

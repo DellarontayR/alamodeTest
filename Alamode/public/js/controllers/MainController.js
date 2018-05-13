@@ -1,10 +1,13 @@
 'use strict';// Enable typescript
-var requireLibs = require('Tiff');
+var requireLibs = require('MookieBundle');
 
 console.log(requireLibs);
-var Tiff = requireLibs.Tiff.Tiff;
-var fs = requireLibs.Tiff.fs;
-var dcraw = requireLibs.Tiff.dcraw;
+var Tiff = requireLibs.export.Tiff;
+var fs = requireLibs.export.fs;
+var dcraw = requireLibs.export.dcraw;
+var UTIF = requireLibs.export.UTIF;
+var newTiff = requireLibs.export.newTiff;
+var streamBuffers = requireLibs.export.streamBuffers
 // Tiff.initialize({TOTAL_MEMORY: 500000000});
 
 console.log("Hello! :) Welcome Mookie Dough inspector. If you're a Mookie Dough advocate and would like to see more of it near you email readus@mookiedough.com <3");
@@ -392,6 +395,9 @@ alamode.controller('mainCtrl', function (Auth, $timeout, $location, $rootScope,
             }
         });
     };
+    $scope.mookie.enableIMG = function () {
+        UTIF.replaceIMG();
+    };
 
     console.log(fs);
     // var buf = fs.readFileSync('../../imgs/Media/efc18e_nugo.dng');
@@ -401,25 +407,69 @@ alamode.controller('mainCtrl', function (Auth, $timeout, $location, $rootScope,
 
     var xhr = new XMLHttpRequest();
     xhr.responseType = 'arraybuffer';
-    xhr.open('GET', "http://localhost:8081/sites/default/files/d80.TIFF");
+    // xhr.responseType = 'blob';
+
+    // xhr.open('GET', "http://localhost:8081/sites/default/files/ryan1.NEF");
     // xhr.open('GET', "http://localhost:8081/sites/default/files/efc18e_nugo.dng");
-    // xhr.open('GET', "http://localhost:8081/sites/default/files/MARBLES.TIF");
+    xhr.open('GET', "http://localhost:8081/sites/default/files/MARBLES.TIF");
 
     // xhr.open('GET', "http://localhost:8081/sites/default/files/d80.tiff");
+    var decodeImage = function (buffer) {
+        return new Promise(function (resolve, reject) {
+            // Initialize stream
+
+            // var ifds = newTiff.decode(buffer);
 
 
-    xhr.onload = function (e) {
-        // console.log(xhr.response);
-        var tiff = new Tiff({ buffer: xhr.response });
-        var canvas = tiff.toCanvas();
-        // canvas.width = '100%';
-        // canvas.height = '800px';
-        console.log(canvas);
-        console.log(tiff);
-        document.getElementById('imageTestMax').append(canvas);
-        console.log('idk what I\' doing at allllll');
-    };
-    xhr.send();
+            // With a buffer
+            var info = dcraw(buffer, { verbose: true, identify: true });
+            console.log(info);
+
+            var binaryTiff = UTIF.decodeImages(buffer, ifds);
+
+
+            if (binaryTiff) {
+                resolve(binaryTiff);
+            }
+            else {
+                reject('fail');
+            }
+
+
+        });
+    }
+
+
+    // xhr.onload = function (e) {
+    //     // console.log(xhr.response);
+    //     // var ifds = UTIF.decode(xhr.response);
+    //     // UTIF.decodeImages(xhr.response, ifds);
+    //     // console.log(ifds);
+    //     // console.log('eh');
+    //     // new Float32Array()
+    //     decodeImage(xhr.response).then(function (res) {
+    //         // console.log(res);
+    //         // console.log(new Float32Array(res[0].data));
+    //         // var ids = newTiff.decode((new Float32Array(res[0].data)));
+    //         // console.log(ids);
+    //         var tiff = new Tiff({ buffer: res });
+
+    //         var canvas = tiff.toCanvas();
+    //         // canvas.width = '100%';
+    //         // canvas.height = '800px';
+    //         console.log(canvas);
+    //         console.log(tiff);
+    //         document.getElementById('imageTestMax').append(canvas);
+    //         console.log('idk what I\' doing at allllll');
+
+
+    //     }, function (err) {
+    //         console.log(err);
+    //     });
+
+
+    // };
+    // xhr.send();
 
 
     // Item Name map
