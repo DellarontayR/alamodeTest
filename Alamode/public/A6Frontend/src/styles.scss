@@ -1,0 +1,14 @@
+/* You can add global styles to this file, and also import other style files */
+
+// Use for IMPORTING styles
+@import '~bootstrap/scss/bootstrap-reboot';
+@import '~bootstrap/scss/bootstrap-grid';
+@import 'assets/fontawesome-free-5.0.3/svg-with-js/css/fa-svg-with-js.css';
+
+//   <link href="../libs/fontawesome-free-5.0.3/svg-with-js/css/fa-svg-with-js.css" rel="stylesheet">
+
+
+.list-unstyled {
+    padding-left: 0;
+    list-style: none;
+}
