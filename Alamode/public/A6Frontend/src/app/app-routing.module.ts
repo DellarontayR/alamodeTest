@@ -1,5 +1,6 @@
 import { NgModule } from '@angular/core';
-import { Routes, RouterModule } from '@angular/router';
+import { Routes, RouterModule, Router, ActivatedRoute, NavigationStart } from '@angular/router';
+
 
 import { MookieHeaderComponent } from './components/mookie-header/mookie-header.component';
 import { MookieFooterComponent } from './components/mookie-footer/mookie-footer.component';
@@ -9,15 +10,19 @@ import { MookieSocialComponent } from './components/mookie-social/mookie-social.
 
 
 
+
 const routes: Routes = [
   { path: '', redirectTo: '/home', pathMatch: 'full' },
-  {path:'home',component:MookieHomeComponent},
-  {path:"**", component:MookiePagenotfoundComponent},
-  {path: 'thesecret',component:MookieSocialComponent}
+  { path: 'home', component: MookieHomeComponent },
+  { path: 'thesecret', component: MookieSocialComponent },
+  { path: "**", component: MookiePagenotfoundComponent }
 ];
 
 @NgModule({
   imports: [RouterModule.forRoot(routes)],
   exports: [RouterModule]
 })
-export class AppRoutingModule { }
+export class AppRoutingModule {
+
+}
+
