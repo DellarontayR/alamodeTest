@@ -12,6 +12,9 @@ import { MookiePagenotfoundComponent } from './components/mookie-pagenotfound/mo
 import { MookieSocialComponent } from './components/mookie-social/mookie-social.component';
 import {AuthService} from './services/auth.service';
 
+import * as $ from 'jquery';
+import { MookieRegisterComponent } from './components/mookie-register/mookie-register.component';
+
 @NgModule({
   declarations: [
     AppComponent,
@@ -19,8 +22,8 @@ import {AuthService} from './services/auth.service';
     MookieFooterComponent,
     MookieHomeComponent,
     MookiePagenotfoundComponent,
-    MookieSocialComponent
-  ],
+    MookieSocialComponent,
+    MookieRegisterComponent  ],
   imports: [
     BrowserModule,
     HttpClientModule,

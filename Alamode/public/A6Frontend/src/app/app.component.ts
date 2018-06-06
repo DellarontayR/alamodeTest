@@ -15,9 +15,10 @@ import { UserService } from './services/user.service';
 
 import { IUser } from './interfaces/user';
 import { ILooseObject } from './interfaces/looseObject';
-import { $ } from 'protractor';
 import { ProductService } from './services/product.service';
 import { InventoryService } from './services/inventory.service';
+
+import * as $ from 'jquery';
 
 
 
@@ -30,16 +31,9 @@ import { InventoryService } from './services/inventory.service';
 export class AppComponent implements OnInit {
     title = 'app';
 
-    constructor(private authService: AuthService, private router: Router, private cartService: CartService, shared: SharedService, userService: UserService, product: ProductService) {
-        router.events
-            .pipe(filter(event => event instanceof NavigationStart)
-            ).subscribe((route: ActivatedRoute) => {
-                console.log(route);
-            });
-
-    }
     // Item Name map
     itemNameMap = new Map();
+    private checkUser$ = interval(30000);
 
     ngOnInit() {
         this.checkIp();
@@ -223,28 +217,28 @@ export class AppComponent implements OnInit {
         });
     }
 
-    // Modal Functions
-    hideModal = function () {
-        jQuery("#myModal").modal('hide');
-    };
-    // cont.
-    hideStripeMOdal = function () {
-        jQuery("#stripeModal").modal('hide');
-        ;
-    }
-    //  cont.
-    showModal = function (title, body) {
-        // modalTitle,modalBody
-        jQuery("#myModal").modal();
-    }
-    // cont.
-    showProductModal = function (product) {
-        // Product Modal
-    }
-    // cont.
-    showStripeModal = function () {
-        jQuery("#stripeModal").modal();
-    }
+    // // Modal Functions
+    // hideModal = function () {
+    //     jQuery("#myModal").modal('hide');
+    // };
+    // // cont.
+    // hideStripeMOdal = function () {
+    //     jQuery("#stripeModal").modal('hide');
+    //     ;
+    // }
+    // //  cont.
+    // showModal = function (title, body) {
+    //     // modalTitle,modalBody
+    //     jQuery("#myModal").modal();
+    // }
+    // // cont.
+    // showProductModal = function (product) {
+    //     // Product Modal
+    // }
+    // // cont.
+    // showStripeModal = function () {
+    //     jQuery("#stripeModal").modal();
+    // }
     // >
 
     //     // Attempt to provide slides at home page
@@ -437,32 +431,54 @@ export class AppComponent implements OnInit {
         }
     }
 
-    //     // Setup interval to check user session every 15 seconds
-
+    // Setup interval to check user session every 15 seconds
+    // Function to run an interval that checks if the user's token has expired
     checkSession = function () {
         this.checkUserState(function (userData) {
             if (userData.success) {
                 // Run interval ever 30000 milliseconds (30 seconds) 
-                interval(30000).subscribe(event=>{
+                this.checkUser$.subscribe(event => {
+                    console.log('in subscribe');
                     let mWindow = this.windowRef.nativeWindow();
                     let token = mWindow.localStorage.getItem('token');
-                    if(token === null){
-                        
+                    if (token === null) {
+                        // Cancel interval somehow
+                        console.log('espcaing interval');
+                        this.checkUser$.unsubscribe();
+
                     }
-                    this.shared.addMinUser(userData.userEmail, userData.username);
-                    this.shared.updateSharedVar('checkingSession', true);
-                    this.getCurrentCart(function (cart) {
-                        let total = 0;
-                        let count = 0;
-                        cart.products.forEach(function (product) {
-                            total += product.price;
-                            count++;
+                    else {
+                        let parseJwt = function (token) {
+                            let base64Url = token.split('.')[1];
+                            let base64 = base64Url.replace('-', '+').replace('_', '/');
+                            return JSON.parse(mWindow.atob(base64));
+                        }
+                        let expireTime = parseJwt(token);
+                        let timeStamp = Math.floor(Date.now() / 1000);
+                        let timeCheck = expireTime.exp - timeStamp;
+                        if (timeCheck <= 1800) {
+                            console.log('espcaing interval');
+                            this.checkUser$.unsubscribe();
+                            // Cancel interval
+                        }
+                        console.log('still in');
+                        this.shared.addMinUser(userData.userEmail, userData.username);
+                        this.shared.updateSharedVar('checkingSession', true);
+                        this.getCurrentCart(function (cart) {
+                            let total = 0;
+                            let count = 0;
+                            cart.products.forEach(function (product) {
+                                total += product.price;
+                                count++;
+                            });
+                            this.shared.updateSharedVar('cartItemCount', count);
+                            this.shared.updateSharedVar('cart', cart);
+
                         });
-                        this.shared.updateSharedVar('cartItemCount', count);
-                        this.shared.updateSharedVar('cart', cart);
-    
-                    });
-                });      
+
+                    }
+
+                });
                 // loadme true
             }
             else {
@@ -479,190 +495,98 @@ export class AppComponent implements OnInit {
     //     app.mookieCheckSession();
     //     // >
 
+
+    constructor(private authService: AuthService, private router: Router, private cartService: CartService, private shared: SharedService, userService: UserService, product: ProductService) {
+
+        // Toggle Mobile Menu
+        //------------------------------------------------------------------------------
+        var menuToggle = $('.mobile-menu-toggle'),
+            mobileMenu = $('.main-navigation');
+        menuToggle.on('click', function () {
+            $(this).toggleClass('active');
+            mobileMenu.toggleClass('open');
+            $('body').toggleClass('no-scroll-body');
+        });
+
+
+        var $insta = $('#insta');
+        var getInstaHeight = function (event) {
+            if (event.origin.indexOf('http://localhost:8081') || event.origin.indexOf('https://www.mookiedough.co')) {
+                var eventData = JSON.parse(event.data);
+                if (eventData.type === "lightwidget_widget_size") {
+                    $('#insta').css({ height: eventData.size });
+                    window.removeEventListener("message", getInstaHeight, false);
+                }
+            }
+            else {
+                return;
+            }
+        }
+
+        var resizeInsta = function () {
+            window.addEventListener('message', getInstaHeight);
+            // document.getElementById('insta').contentWindow.postMessage('', '*');
+        };
+
+        // document.getElementById('insta').onload = function () {
+        //     resizeInsta();
+        // };
+
+        router.events
+            .pipe(filter(event => event instanceof NavigationStart)
+            ).subscribe((route: ActivatedRoute) => {
+                //     // Will run code every time a route changes
+                console.log(route);
+                if (shared.getSharedVar('checkingSession')) this.checkSession();
+                console.log(shared.getSharedVar('checkingSession'));
+                if (this.authService.isLoggedIn()) {
+                    this.authService.getUser().subscribe(data => {
+                        if (data.username === undefined) {
+                            shared.updateSharedVar('loggedIn', false);
+                            this.authService.logout();
+                            this.router.navigate(['/home']);
+                            console.log('user logged out after username found to be undefined');
+                        }
+                        else {
+                            shared.updateSharedVar('loggedIn', true);
+                            userService.getPermission().subscribe(data => {
+                                if (data.permission === 'amdin') {
+                                    shared.updateSharedVar('admin', true);
+                                }
+                                else {
+                                    shared.updateSharedVar('admin', false);
+                                }
+                            });
+                        }
+                    })
+                }
+                //         if ($location.hash() == '_=_') $location.hash(null); // Check if facebook hash is added to URL
+
+            });
+
+    };
+    //     // // Function to redirect users to facebook authentication page
+
+    facebook = function () {
+        this.router.navigate(['/auth/facebook']);
+    }
+    //     // // Function to redirect users to twitter authentication page        
+
+    twitter = function () {
+        this.router.navigate(['/auth/twitter']);
+    }
+    //     // // Function to redirect users to google authentication page
+
+    google = function () {
+        this.router.navigate(['/auth/google']);
+    }
+
+    logout = function () {
+        this.auth.logout();
+        this.shared.updateSharedVar('loggedIn', false);
+        this.route.navigate(['/register']);
+    };
+
+
+
 }
-
-
-
-
-// alamode.controller('mainCtrl', function (Auth, $timeout, $location, $rootScope,
-//     $window, $interval, User, AuthToken, $scope, Cart, Product, MookieSubscription, ContactMessage, scheduleService, inventoryService) {
-//     // $window.location.pathname
-
-
-
-
-//     // Function to run an interval that checks if the user's token has expired
-//     app.checkSession = function () {
-//         // Only run check if user is logged in
-//         if (Auth.isLoggedIn()) {
-//             $scope.mookie.loggedIn = true;
-
-//             app.checkingSession = true; // Use variable to keep track if the interval is already running
-//             // Run interval ever 30000 milliseconds (30 seconds) 
-//             var interval = $interval(function () {
-//                 var token = $window.localStorage.getItem('token'); // Retrieve the user's token from the client local storage
-//                 // Ensure token is not null (will normally not occur if interval and token expiration is setup properly)
-//                 if (token === null) {
-//                     $interval.cancel(interval); // Cancel interval if token is null
-//                 } else {
-//                     // Parse JSON Web Token using AngularJS for timestamp conversion
-//                     self.parseJwt = function (token) {
-//                         var base64Url = token.split('.')[1];
-//                         var base64 = base64Url.replace('-', '+').replace('_', '/');
-//                         return JSON.parse($window.atob(base64));
-//                     };
-//                     var expireTime = self.parseJwt(token); // Save parsed token into variable
-//                     var timeStamp = Math.floor(Date.now() / 1000); // Get current datetime timestamp
-//                     var timeCheck = expireTime.exp - timeStamp; // Subtract to get remaining time of token
-//                     // Check if token has less than 30 minutes till expiration
-//                     if (timeCheck <= 1800) {
-//                         // showModal(1); // Open bootstrap modal and let user decide what to do
-//                         $interval.cancel(interval); // Stop interval
-//                     }
-//                     // Check Mookie Session
-//                     app.mookieCheckSession();
-//                 }
-//             }, 10000);
-//         }
-//     };
-
-//     app.checkSession(); // Ensure check is ran check, even if user refreshes
-
-//     // Check if user is on checkout
-//     $rootScope.$on('$routeChangeSuccess', function () {
-//         if ($window.location.pathname === '/checkout') {
-//             $scope.mookie.checkout = true;
-//         } else {
-//             $scope.mookie.checkout = false;
-//         }
-
-//         if ($window.location.pathname === '/about' || $window.location.pathname === '/' || $window.location.pathname === '/home') {
-//             $scope.mookie.about = true; // Set home page div
-//         } else {
-//             $scope.mookie.about = false; // Clear home page div
-//         }
-//     });
-//     // >
-
-//     // Will run code every time a route changes
-//     $rootScope.$on('$routeChangeStart', function (event, next, current) {
-//         if (!app.checkingSession) app.checkSession();
-//         // Check if user is logged in
-//         if (Auth.isLoggedIn()) {
-//             // Custom function to retrieve user data
-//             Auth.getUser().then(function (data) {
-//                 if (data.data.username === undefined) {
-//                     console.log('username invalid');
-//                     $scope.mookie.loggedIn = false;  // Variable to deactivate ng-show on index
-//                     Auth.logout();
-//                     $scope.mookie.loggedIn = false;
-//                     $location.path('/');
-//                 } else {
-//                     $scope.mookie.loggedIn = true; // Variable to activate ng-show on index
-//                     app.username = data.data.username; // Get the user name for use in index
-//                     app.checkLoginStatus = data.data.username;
-//                     // app.useremail = data.data.email; // Get the user e-mail for use in index
-//                     User.getPermission().then(function (data) {
-//                         if (data.data.permission === 'admin' || data.data.permission === 'moderator') {
-//                             $scope.mookie.admin = true;
-
-//                             app.authorized = true; // Set user's current permission to allow management
-//                             app.permission = 'admin';
-//                             app.loadme = true; // Show main HTML now that data is obtained in AngularJS
-//                         } else {
-//                             $scope.mookie.admin = false;
-
-//                             app.authorized = false;
-//                             app.loadme = true; // Show main HTML now that data is obtained in AngularJS
-//                         }
-//                     });
-//                 }
-//             }, function (error) {
-//                 console.log(error);
-//             });
-//         } else {
-//             app.username = ''; // Clear username
-//             app.loadme = true; // Show main HTML now that data is obtained in AngularJS
-//         }
-//         if ($location.hash() == '_=_') $location.hash(null); // Check if facebook hash is added to URL
-//     });
-
-//     // // Function to redirect users to facebook authentication page
-//     // this.facebook = function () {
-//     //     app.disabled = true;
-//     //     $window.location = $window.location.protocol + '//' + $window.location.host + '/auth/facebook';
-//     // };
-
-//     // // Function to redirect users to twitter authentication page        
-//     // this.twitter = function () {
-//     //     app.disabled = true;
-//     //     $window.location = $window.location.protocol + '//' + $window.location.host + '/auth/twitter';
-//     // };
-
-//     // // Function to redirect users to google authentication page
-//     // this.google = function () {
-//     //     app.disabled = true;
-//     //     $window.location = $window.location.protocol + '//' + $window.location.host + '/auth/google';
-//     // };
-
-//     // Function to logout the user
-//     app.logout = function () {
-//         Auth.logout(); // Logout user by removing jwt token
-//         $scope.mookie.loggedIn = false;
-//         $timeout(function () {
-//             $scope.mookie.loggedIn = false;
-//             $location.path('/register');
-//         }, 2000);
-//     };
-
-//     $scope.mookie.logout = function () {
-//         Auth.logout(); // Logout user by removing jwt token
-//         $scope.mookie.loggedIn = false;
-//         // $scope.apply();
-//         $scope.mookie.loggedIn = false;
-//         $timeout(function () {
-//             $scope.mookie.loggedIn = false;
-//             $location.path('/register');
-//         }, 2000);
-//     };
-
-// });
-
-
-
-// Finished with Main Controller
-
-
-// Below is Guard
-
-
-
-// down vote
-// accepted
-// You can create a guard. Let's take this example:
-
-// import {Injectable} from '@angular/core';
-// import {CanActivate, Router, ActivatedRouteSnapshot, RouterStateSnapshot} from '@angular/router';
-// import {UserService} from '../auth';
-
-// @Injectable()
-// export class RoleGuard implements CanActivate {
-//   constructor(private userService:UserService, private router:Router) {
-//   }
-
-//   canActivate(next:ActivatedRouteSnapshot, state:RouterStateSnapshot) {
-//     if (this.userService.hasRole('ROLE_ADMIN')) {
-//       return true;
-//     }
-//     this.router.navigate(['some-other-route']);
-//     return false;
-//   }
-// }
-// Then you add it to your routing:
-
-//     path: 'pathToAdminRoute',
-//     component: SomeComponent,
-//     canActivate: [RoleGuard]
-
-// Different Stuff
-// >

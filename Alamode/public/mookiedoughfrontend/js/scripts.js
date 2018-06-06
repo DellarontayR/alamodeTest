@@ -255,7 +255,6 @@ jQuery(document).ready(function ($) {
 		$('body').toggleClass('no-scroll-body');
 	});
 
-
 	// Toggle Submenu
 	//------------------------------------------------------------------------------
 	var $hasSubmenu = $('.menu-item-has-children > a');

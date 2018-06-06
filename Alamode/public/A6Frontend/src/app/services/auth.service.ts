@@ -77,6 +77,7 @@ export class AuthService {
 
   getToken = function () {
     const windowRef = this.windowRef.nativeWindow();
+    console.log(windowRef.localStorage.getItem('token'));
     return windowRef.localStorage.getItem('token');
   }
 
@@ -86,6 +87,8 @@ export class AuthService {
 
   hasPermission = function(permission){
     // 
+    const windowRef = this.windowRef.nativeWindow();
+
 
   }
 
