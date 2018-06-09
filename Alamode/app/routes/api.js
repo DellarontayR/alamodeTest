@@ -1436,6 +1436,7 @@ module.exports = function (router) {
     });
     // Route for user logins
     router.post('/authenticate', function (req, res) {
+        console.log(req.body);
         var loginUser = (req.body.email).toLowerCase(); // Ensure username is checked in lowercase against database
         User.findOne({ email: loginUser }).select('email username password active').exec(function (err, user) {
             if (err) {

@@ -138,14 +138,6 @@ a.mobile-menu-toggle.active .menu {
 	color: black
 }
 
-a.mobile-menu-toggle.active .cross {
-	color: black;
-	display: inline-flex;
-}
-
-a.mobile-menu-toggle .cross {
-	display: none;
-}
 
 a.mobile-menu-toggle>i {
 	position: relative;
@@ -193,4 +185,21 @@ a.mobile-menu-toggle>i {
 
 .mookieIcon:hover {
 	color: #333333;
+}
+.text-center {
+    text-align: center;
+}
+
+a.mobile-menu-toggle.active .cross {
+	color: black;
+	display: inline-flex;
+}
+
+a.mobile-menu-toggle .cross {
+	display: none;
+}
+
+.displayed{
+    color: black;
+	display: inline-flex;
 }

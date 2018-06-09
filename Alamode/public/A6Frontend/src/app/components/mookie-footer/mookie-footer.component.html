@@ -5,9 +5,9 @@
       <div class="col-md-6">
         <p>&copy; 2018 all rights reserved. Mookie Dough LLC</p>
         <br>
-        <p ng-if="mookie.numberOfSiteVisitors > 0"> Site has been accessed {{mookie.numberOfSiteVisitors}} times.</p>
+        <p *ngIf="numberOfSiteVisitors > 0"> Site has been accessed {{numberOfSiteVisitors}} times.</p>
         <br>
-        <h3 class="widget-title">
+        <!-- <h3 class="widget-title">
           <small>Subscribe to the Mookie Dough email list</small>
         </h3>
         <form class="subscribe-form" novalidate>
@@ -18,8 +18,7 @@
           <button type="submit" ng-click="main.addSubscription(subEmail)">
             <i class="fas fa-paper-plane"></i>
           </button>
-          <!-- <p ng-show="main.subMessage"> {{main.subMessage}}</p> -->
-        </form>
+        </form> -->
 
       </div>
       <div class="col-md-2">

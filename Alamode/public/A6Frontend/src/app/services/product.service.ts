@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { HttpClient, HttpErrorResponse, HttpEvent, HttpHandler, HttpInterceptor, HttpRequest, HttpResponse } from '@angular/common/http';
 
 import { Observable, throwError } from 'rxjs';
-import { catchError, retry } from 'rxjs/operators';
+import { catchError, retry, map } from 'rxjs/operators';
 
 import { WindowRefService } from './window-ref.service';
 
@@ -32,33 +32,52 @@ export class ProductService {
   };
 
   seedProduct = function (productData) {
-    return this.http.post('/api/seedProduct', productData);
+    return this.http.post('/api/seedProduct', productData).pipe(map(res => {
+      console.log(res);
+      return res;
+    }), catchError(err => this.handleError(err)));
   }
 
   updateProductQty = function (productData) {
-    return this.http.post('/api/updateProductQty', productData);
+    return this.http.post('/api/updateProductQty', productData).pipe(map(res => {
+      console.log(res);
+      return res;
+    }), catchError(err => this.handleError(err)));
   };
 
   deleteProduct = function (productData) {
-    return this.http.post('/api/deleteProduct', productData);
+    return this.http.post('/api/deleteProduct', productData).pipe(map(res => {
+      console.log(res);
+      return res;
+    }), catchError(err => this.handleError(err)));
   };
 
   getProduct = function (productId) {
-    return this.http.get('/api/getProduct', productId);
+    return this.http.get('/api/getProduct', productId).pipe(map(res => {
+      console.log(res);
+      return res;
+    }), catchError(err => this.handleError(err)));
   };
 
-  getCatalogProducts = function () {
-    return this.http.post('/api/getCatalogProducts');
+  getCatalogProducts = function () : Observable<any>{
+    return this.http.post('/api/getCatalogProducts').pipe(map(res => {
+      console.log(res);
+      return res;
+    }), catchError(err => this.handleError(err)));
   };
 
   getProductCategory = function (categoryData) {
-    return this.http.post('/api/getProductCategory', categoryData);
+    return this.http.post('/api/getProductCategory', categoryData).pipe(map(res => {
+      console.log(res);
+      return res;
+    }), catchError(err => this.handleError(err)));
   };
 
 
   addProductToCatalog = function (product) {
-    return this.http.post('/api/addProductToCatalog', product);
+    return this.http.post('/api/addProductToCatalog', product).pipe(map(res => {
+      console.log(res);
+      return res;
+    }), catchError(err => this.handleError(err)));
   };
-
-
 }

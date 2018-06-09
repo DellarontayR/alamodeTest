@@ -8,6 +8,8 @@ import { MookieHomeComponent } from './components/mookie-home/mookie-home.compon
 import { MookiePagenotfoundComponent } from './components/mookie-pagenotfound/mookie-pagenotfound.component';
 import { MookieSocialComponent } from './components/mookie-social/mookie-social.component';
 import { MookieRegisterComponent } from './components/mookie-register/mookie-register.component';
+import { MookieMenuComponent } from './components/mookie-menu/mookie-menu.component';
+import { MookieAboutComponent } from './components/mookie-about/mookie-about.component';
 
 
 
@@ -15,6 +17,8 @@ import { MookieRegisterComponent } from './components/mookie-register/mookie-reg
 const routes: Routes = [
   { path: '', redirectTo: '/home', pathMatch: 'full' },
   { path: 'home', component: MookieHomeComponent },
+  { path: 'menu', component: MookieMenuComponent },
+  {path:'about', component: MookieAboutComponent},
   { path: 'thesecret', component: MookieSocialComponent },
   { path: 'register', component: MookieRegisterComponent },
   { path: "**", component: MookiePagenotfoundComponent }

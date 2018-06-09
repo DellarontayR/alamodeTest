@@ -9,7 +9,15 @@ export class MookieHeaderComponent implements OnInit {
 
   constructor() { }
 
+  menuToggleOpen: Boolean = false;
+
   ngOnInit() {
+
+  }
+
+  openMenuToggle = function(){
+    this.menuToggleOpen = !this.menuToggleOpen;
+    // if(this.menuToggleOpen) 
   }
 
 }

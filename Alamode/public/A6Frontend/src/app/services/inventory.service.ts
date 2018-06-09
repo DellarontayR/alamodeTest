@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { HttpClient, HttpErrorResponse, HttpEvent, HttpHandler, HttpInterceptor, HttpRequest, HttpResponse } from '@angular/common/http';
 
 import { Observable, throwError } from 'rxjs';
-import { catchError, retry } from 'rxjs/operators';
+import { catchError, retry, map } from 'rxjs/operators';
 import { WindowRefService } from './window-ref.service';
 
 @Injectable({
@@ -32,17 +32,17 @@ export class InventoryService {
 
   // Update Inventory 
   updateInventory = function (inventoryData) {
-    return this.http.post('/api/updateInventory', inventoryData).pipe(catchError(this.handleError('error')));
+    return this.http.post('/api/updateInventory', inventoryData).pipe(map(res => { console.log(res); return res; }), catchError(err => this.handleError(err)));
   };
 
   // Get inventory to laod in frontend
   getInventory = function () {
-    return this.http.post('/api/getInventory').pipe(catchError(this.handleError('error')));
+    return this.http.post('/api/getInventory').pipe(map(res => { console.log(res); return res; }), catchError(err => this.handleError(err)));
   };
 
   // Remove an inventory update
   removeInventoryUpdate = function (itemData) {
-    return this.http.post('/api/removeInventoryUpdate', itemData).pipe(catchError(this.handleError('error')));
+    return this.http.post('/api/removeInventoryUpdate', itemData).pipe(map(res => { console.log(res); return res; }), catchError(err => this.handleError(err)));
   };
 
   // Get totals to let user know if product is in stock

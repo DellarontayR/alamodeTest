@@ -29,7 +29,7 @@ import * as $ from 'jquery';
     styleUrls: ['./app.component.scss']
 })
 export class AppComponent implements OnInit {
-    title = 'app';
+    title = 'Mookie Dough';
 
     // Item Name map
     itemNameMap = new Map();
@@ -76,7 +76,7 @@ export class AppComponent implements OnInit {
     loggedIn = false;
     deliveryLatLng = {};
     deliveryLocation = null;
-    numberOfSiteVisitors = 0;
+    numberOfSiteVisitors: Number = 0;
     user = {};
     // >
 
@@ -89,13 +89,7 @@ export class AppComponent implements OnInit {
         ipData.ipAddress = ipAddress;
         //   AuthService.checkVisitor(ipData)
         this.authService.checkVisitor(ipData).subscribe(data => {
-            // Data objects returned from subscribed don't require an extra .data to get information
-            if (data.success) {
-                // Telemetry
-            }
-            else {
-                // Telemetry
-            }
+            console.log(data);
         });
     }
 
@@ -439,13 +433,12 @@ export class AppComponent implements OnInit {
                 // Run interval ever 30000 milliseconds (30 seconds) 
                 this.checkUser$.subscribe(event => {
                     console.log('in subscribe');
-                    let mWindow = this.windowRef.nativeWindow();
+                    let mWindow = this.windowRef.nativeWindow;
                     let token = mWindow.localStorage.getItem('token');
                     if (token === null) {
                         // Cancel interval somehow
                         console.log('espcaing interval');
                         this.checkUser$.unsubscribe();
-
                     }
                     else {
                         let parseJwt = function (token) {

@@ -1,3 +1,88 @@
-<p>
-  mookie-register works!
-</p>
+<!-- Page Wrapper -->
+<div class="page-wrapper text-center">
+  <!-- Content -->
+  <section class="container padding-top-3x padding-bottom-2x">
+    <!-- TODO Change ng-show/hide to *ngIf -->
+    <h1 *ngIf="!loggedIn">User Account</h1>
+
+    <div class="row match-my-cols">
+
+      <div class="col-md-4 col-md-offset-3 padding-bottom" *ngIf="chooseLogin">
+        <h3>Login</h3>
+        <form method="post" class="login-form" (ngSubmit)="mookieLogin(loginData)">
+          <input type="email" class="form-control" placeholder="Email" required [(ngModel)]="loginData.email" name="loginEmail">
+          <input type="password" class="form-control" placeholder="Password" required [(ngModel)]="loginData.password" name="loginPassword">
+          <div class="form-footer row">
+            <div class="rememberme">
+              <label class="checkbox">
+                <input type="checkbox" checked> Remember me
+              </label>
+            </div>
+            <div class="form-submit">
+              <button type="submit" class="btn btn-primary btn-block waves-effect waves-light inlineButton">Login</button>
+            </div>
+          </div>
+          <div class="form-element help-block" *ngIf="loginMessage">
+            <p> {{loginMsg}}</p>
+          </div>
+        </form>
+        <!-- .login-form -->
+        <p class="text-danger switchText aButton" *ngIf="chooseLogin" (click)="switchToReg()">Sign up?</p>
+      </div>
+      <!-- .col-md-4 -->
+
+
+      <div class="col-md-4 col-md-offset-3 padding-bottom" *ngIf="chooseReg">
+        <h3>Register</h3>
+        <div class="inner">
+          <form method="post" class="login-form" (ngSubmit)="registerMookie(regData)">
+            <input type="text" class="form-control" placeholder="Name" required [(ngModel)]="regData.username" name="regUsername">
+            <input type="email" class="form-control" placeholder="E-mail" required [(ngModel)]="regData.email" name="regEmail">
+            <input type="password" class="form-control" placeholder="Password" required [(ngModel)]="regData.password" name="regEmail">
+            <div class="form-footer row">
+              <div class="rememberme"></div>
+              <div class="form-submit">
+                <button type="submit" class="btn btn-primary btn-block waves-effect waves-light inlineButton">Sign up</button>
+              </div>
+            </div>
+            <div class="form-element help-block" *ngIf="regMessage">
+              <p> {{regMsg}}</p>
+            </div>
+          </form>
+          <!-- .login-form -->
+        </div>
+        <!-- .inner -->
+        <p class="text-success switchText aButton" *ngIf="chooseReg" (click)="switchToLogin()">Login?</p>
+      </div>
+      <!-- .col-md-4.col-md-offset-1 -->
+
+      <!-- Social media login links -->
+      <div class="col-md-3 padding-top-2x sethalf" *ngIf="chooseLogin">
+        <a href="/auth/facebook" target="_" class="social-signup-btn ssb-facebook">
+          <i class="fab fa-facebook-f"></i>
+          <span>Login with Facebook</span>
+        </a>
+        <a href="/auth/google" target="_" class="social-signup-btn ssb-google">
+          <i class="fab fa-google"></i>
+          <span>Login with Google+</span>
+        </a>
+      </div>
+      <!-- .col-md-3 -->
+      <div class="col-md-3 padding-top-2x sethalf" *ngIf="chooseReg">
+        <a href="/auth/facebook" target="_" class="social-signup-btn ssb-facebook">
+          <i class="fab fa-facebook-f"></i>
+          <span>Signup with Facebook</span>
+        </a>
+        <a href="/auth/google" target="_" class="social-signup-btn ssb-google">
+          <i class="fab fa-google"></i>
+          <span>Signup with Google+</span>
+        </a>
+      </div>
+      <!-- .col-md-3 -->
+
+    </div>
+    <!-- .row -->
+  </section>
+  <!-- .container -->
+</div>
+<!-- .page-wrapper -->

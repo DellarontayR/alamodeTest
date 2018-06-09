@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { HttpClient, HttpErrorResponse, HttpEvent, HttpHandler, HttpInterceptor, HttpRequest, HttpResponse } from '@angular/common/http';
 
 import { Observable, throwError } from 'rxjs';
-import { catchError, retry } from 'rxjs/operators';
+import { catchError, retry, map } from 'rxjs/operators';
 // import 'rxjs/add/operator/map';
 // import 'rxjs/add/operator/catch';
 // import 'rxjs/add/observable/throw';
@@ -38,8 +38,11 @@ export class AuthService {
 
   authenticate = '/api/authenticate';
     
-  login = function () {
-    return this.http.post(this.authenticate).pipe(catchError(this.handleError('error')))
+  login = function (loginData) {
+    return this.http.post(this.authenticate,loginData).pipe(map(res=>{
+      console.log(res);
+      return res;
+    }),catchError(err => this.handleError(err)));
   }
 
   isLoggedIn = function () {
@@ -57,15 +60,18 @@ export class AuthService {
 
   getUser = function () {
     if (this.isLoggedIn()) {
-      return this.http.post('/api/me').pipe(catchError(this.handleError('error')));
+      return this.http.post('/api/me').pipe(map(res=>{
+        console.log(res);
+        return res;
+      }),catchError(err => this.handleError(err)));
     }
     else {
-      return Promise.reject(new Error('No token provided')).then(res => { console.log(res) }, err => { console.log(err) });
+      return Promise.reject(new Error('No token provided')).then(res => { console.log(res); }, err => { console.log(err) });
     }
   }
 
   setToken = function (token) {
-    const windowRef = this.windowRef.nativeWindow();
+    const windowRef = this.windowRef.nativeWindow;
 
     if (token) {
       windowRef.localStorage.setItem('token', token);
@@ -76,7 +82,7 @@ export class AuthService {
   }
 
   getToken = function () {
-    const windowRef = this.windowRef.nativeWindow();
+    const windowRef = this.windowRef.nativeWindow;
     console.log(windowRef.localStorage.getItem('token'));
     return windowRef.localStorage.getItem('token');
   }
@@ -85,48 +91,64 @@ export class AuthService {
     this.setToken();
   }
 
-  hasPermission = function(permission){
-    // 
-    const windowRef = this.windowRef.nativeWindow();
-
-
-  }
-
   // Schedule Service
   getOreringSchdule = function(){
-    return this.http.post('/api/checkOrderingSchedule').pipe(catchError(this.handleError('error')));
+    return this.http.post('/api/checkOrderingSchedule').pipe(map(res=>{
+      console.log(res);
+      return res;
+    }),catchError(err => this.handleError(err)));
   }
 
   // Subscription
   addSubscription = function (subData) {
-    return this.http.post('/api/addSubscription', subData).pipe(catchError(this.handleError('error')));
+    return this.http.post('/api/addSubscription', subData).pipe(map(res=>{
+      console.log(res);
+      return res;
+    }),catchError(err => this.handleError(err)));
   }
   getSubscribers = function(){
-    return this.http.get('/api/getSubscribers').pipe(catchError(this.handleError('error')));
+    return this.http.get('/api/getSubscribers').pipe(map(res=>{
+      console.log(res);
+      return res;
+    }),catchError(err => this.handleError(err)));
 };
 
   // Contact Message
   addContactMessage = function (contactData) {
-    return this.http.post('/api/addContactMessage', contactData).pipe(catchError(this.handleError('error')));
+    return this.http.post('/api/addContactMessage', contactData).pipe(map(res=>{
+      console.log(res);
+      return res;
+    }),catchError(err => this.handleError(err)));
   }
   getContactMessages = function(){
-    return this.http.get('/api/getContactMessages').pipe(catchError(this.handleError('error')));
+    return this.http.get('/api/getContactMessages').pipe(map(res=>{
+      console.log(res);
+      return res;
+    }),catchError(err => this.handleError(err)));
 };
 
 
   // Visitor
   checkVisitor = function (ipData) {
-    return this.http.post('/api/checkVisitor', ipData).pipe(catchError(err => this.handleError(err)));
+    return this.http.post('/api/checkVisitor', ipData).pipe(map(res=>{
+      console.log(res);
+      return res;
+    }),catchError(err => this.handleError(err)));
   }
   // IP
   getIp = function (data) {
-    return this.http.post('https://ipinfo.io/?format=jsonp/').pipe(catchError(this.handleError('error')));
+    return this.http.post('https://ipinfo.io/?format=jsonp/').pipe(map(res=>{
+      console.log(res);
+      return res;
+
+    }),catchError(err => this.handleError(err)));
   }
   getSiteVisitors = function () {
-    return this.http.post('/api/getSiteVisitors').pipe(catchError(this.handleError('error')));
+    return this.http.post('/api/getSiteVisitors').pipe(map(res=>{
+      console.log(res);
+      return res;
+    }),catchError(err => this.handleError(err)));
   }
-
-
 
 }
 

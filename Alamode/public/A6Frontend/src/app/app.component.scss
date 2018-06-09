@@ -385,52 +385,6 @@ header {
 	top: -80px;
 }
 
-/* Form control inputs */
-
-.form-control {
-	display: block;
-	width: 100%;
-	line-height: 1.5;
-	height: 48px;
-	font-size: 14px;
-	color: #606060;
-	text-transform: none;
-	border: 2px solid #ededed;
-	border-radius: 5px;
-	background-color: #fff;
-	padding: 0 16px;
-	margin-bottom: 24px;
-	-webkit-appearance: none;
-	-moz-appearance: none;
-	-o-appearance: none;
-	appearance: none;
-	-webkit-transition: all 0.3s;
-	-o-transition: all 0.3s;
-	transition: all 0.3s;
-}
-
-.form-control:focus {
-	border-color: #77cde3;
-	outline: none;
-}
-
-.form-control::-moz-placeholder {
-	color: #606060;
-	opacity: 1;
-}
-
-.form-control:-ms-input-placeholder {
-	color: #606060;
-}
-
-.form-control::-webkit-input-placeholder {
-	color: #606060;
-}
-
-.form-control.placeholder {
-	color: #606060;
-}
-
 .ssb-facebook {
 	background-color: #3b5998;
 	color: white;
@@ -532,10 +486,7 @@ header {
 	position: relative;
 }
 
-.inlineButton {
-	width: auto;
-	display: inline-block;
-}
+
 
 .form-submit {
 	margin-top: 10px;
