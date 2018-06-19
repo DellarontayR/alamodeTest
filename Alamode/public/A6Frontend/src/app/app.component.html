@@ -3,14 +3,18 @@
 <body>
 
   <!-- Mookie Header -->
-  <app-mookie-header></app-mookie-header>
+  <app-mookie-header *ngIf="showBody"></app-mookie-header>
 
   <!-- Main Angular view where routes will be rendered-->
   <!-- <div class="main-view" ng-show="main.loadme" ng-view></div> -->
-  <router-outlet></router-outlet>
+  <router-outlet *ngIf="showBody" class="animated fadeIn fadeOut" ></router-outlet>
 
   <!-- Mookie footer -->
-  <app-mookie-footer></app-mookie-footer>
+  <app-mookie-footer *ngIf="showBody"></app-mookie-footer>
 
-<!-- <script src="../mookiedoughfrontend/js/scripts.js"></script> -->
+  <app-mookie-preloader class="full" *ngIf="!showBody"></app-mookie-preloader>
+
+  <!-- Stripe elements  -->
+  <script src="https://js.stripe.com/v3/"></script>
+  <!-- <script src="../mookiedoughfrontend/js/scripts.js"></script> -->
 </body>

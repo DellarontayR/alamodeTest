@@ -103,3 +103,24 @@ img {
     align-items: center;
   }
 }
+
+.centerH{
+  background-color: #333333; /* for visualization purposes */
+  text-align: center;
+}
+.carousel-img{
+  max-height:400px;
+}
+.mookieC{
+  // display:inline-block;
+  margin-left:auto;
+  margin-right:auto;
+  padding-top:10px
+}
+.carousel-caption{
+  position: static !important;
+  color: white !important;
+  h3{
+    color:white !important;
+  }
+}

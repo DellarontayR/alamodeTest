@@ -1272,6 +1272,7 @@ module.exports = function (router) {
 
     // User api Endpoint
     router.post('/getUser', function (req, res) {
+        console.log(req.body);
         User.findOne({ email: req.body.userEmail }).select().exec(function (err, user) {
             if (err || !user) {
                 res.json({ success: false, message: 'There was another error', err: err });
@@ -1837,6 +1838,13 @@ module.exports = function (router) {
     // Route to get the currently logged in user    
     router.post('/me', function (req, res) {
         res.send(req.decoded); // Return the token acquired from middleware
+    });
+
+    // Check if user has a database field
+    router.post('/checkUserDB',function(req,res){
+        if(req.decoded.email){
+
+        }
     });
 
     // Route to provide the user with a new token to renew session

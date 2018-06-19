@@ -43,9 +43,8 @@ export class MookieSocialComponent implements OnInit {
       let twit = this.renderer.selectRootElement('#twit');
       let js = this.renderer.createElement("script");
       let ht = this.renderer.createElement("a");
-      // ht.class="twitter-timeline";
       ht.setAttribute('class','twitter-timeline');
-      ht.setAttribute('href',"https://twitter.com/_Mookie_Dough?ref_src=twsrc%5Etfw");// ="https://twitter.com/_Mookie_Dough?ref_src=twsrc%5Etfw";
+      ht.setAttribute('href',"https://twitter.com/_Mookie_Dough?ref_src=twsrc%5Etfw");
       js.src = 'https://platform.twitter.com/widgets.js';
       js.async = true;
       this.renderer.appendChild(twit, js);
@@ -55,19 +54,6 @@ export class MookieSocialComponent implements OnInit {
       $('#twit').append(js);
       window.removeEventListener("message", resizeTwit, false);
 
-    };
-
-    document.getElementById('twit').onload = function () {
-      console.log('here');
-      // window.addEventListener('message', resizeTwit);
-
-      //  .appendChild(js);
-    };
-   
-  }
-
-  nada = function(){
-    console.log('interesting');
+    };   
   };
-
 }

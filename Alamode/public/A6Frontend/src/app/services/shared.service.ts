@@ -18,7 +18,7 @@ export class SharedService {
   deliveryLocationChanged = false;
   deliveryLocation = null;
   numberOfSiteVisitors = 0;
-  user = {};
+  user = {userEmail:'',username:''};
   contactMes = {};
 
   updateSharedVar = function (varId, data) {
@@ -129,5 +129,9 @@ export class SharedService {
         // Telemetry for error
       }
     }
-  }
+  };
+
+  getSharedVars = function(){
+    return {checkingSession:this.checkingSession,cart:this.cart,cartItemCount:this.cartItemCount,admin:this.admin,products:this.products,loggedIn:this.loggedIn,deliveryLatLng:this.deliveryLatLng,deliveryLocationChanged:this.deliveryLocationChanged,deliveryLocation:this.deliveryLocation,numberOfSiteVisitors:this.numberofSitVisitors,user:this.user,contactMes:this.contactMes};
+  };
 }

@@ -169,3 +169,21 @@
     color:blue;
     text-decoration: none;
 }
+
+
+.row.match-my-cols {
+	overflow: hidden;
+}
+
+.row.match-my-cols [class*="col-"].sethalf {
+	transform: translate(0, 15%);
+	/* 
+    margin-bottom: -99999px;
+    padding-bottom: 99999px; */
+}
+
+@media screen and (max-width: 990px) {
+	.row.match-my-cols [class*="col-"].sethalf {
+		// transform: none;
+	}
+}

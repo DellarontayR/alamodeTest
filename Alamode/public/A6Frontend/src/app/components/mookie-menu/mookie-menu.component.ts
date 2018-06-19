@@ -3,6 +3,10 @@ import { ProductService } from '../../services/product.service';
 import { SharedService } from '../../services/shared.service';
 import { Observable } from 'rxjs';
 import { InventoryService } from '../../services/inventory.service';
+import { ILooseObject } from '../../interfaces/looseObject';
+import { CartService } from '../../services/cart.service';
+import { UserService } from '../../services/user.service';
+import { AuthService } from '../../services/auth.service';
 
 
 @Component({
@@ -12,11 +16,11 @@ import { InventoryService } from '../../services/inventory.service';
 })
 export class MookieMenuComponent implements OnInit {
 
-  constructor(private productService: ProductService, private shared: SharedService, private inventoryService: InventoryService) { }
+  constructor(private productService: ProductService, private shared: SharedService, private inventoryService: InventoryService, private cartService: CartService, private userService: UserService, private authService: AuthService) { }
 
   products;
 
-  itemNameMap:any;
+  itemNameMap: any;
 
   // Authentication I
 
@@ -30,13 +34,14 @@ export class MookieMenuComponent implements OnInit {
 
     this.getProductsFromServer();
   }
-  
+
   handleProduct = function (products) {
     console.log(products);
   };
 
   // Will have to put add to product
 
+  // 
   getProductsFromServer = function () {
     this.productService.getCatalogProducts().subscribe(data => {
       if (data.success) {
@@ -49,7 +54,7 @@ export class MookieMenuComponent implements OnInit {
             inventory.totals.forEach(total => {
               totalMap.set(total.itemName, total.itemQtyTotal);
             });
-            this.products.forEach( (product)=> {
+            this.products.forEach((product) => {
               if (this.itemNameMap.has(product.title)) {
                 if (totalMap.get(this.itemNameMap.get(product.title))) {
                   product.inStock = "In Stock";
@@ -65,5 +70,88 @@ export class MookieMenuComponent implements OnInit {
       }
     });
   };
+
+  // Updates the cart after adding an item to the cart
+  updateCart = function (getCartData, callback) {
+    this.cartService.getCart(getCartData).subscribe(data => {
+      console.log(data);
+      if (data.success) {
+        let itemCount = 0;
+        data.cart.products.forEach(function (cartProduct) {
+          itemCount++;
+        });
+        var cartData = data.cart;
+        cartData.itemCount = itemCount;
+        // Find Way to set scope variables
+        this.shared.updateSharedVar("cartItemCount", itemCount);
+        this.shared.updateSharedVar("cart", cartData);
+        return callback(data);
+      }
+      else {
+        // Err
+
+      }
+    });
+  };
+
+  // Add Product to user cart
+  // TODO
+  // Add message for non active user's to active their accounts
+
+  addToCart = function (product, catalogProduct) {
+    this.authService.getOrderingSchedule().subscribe(data => {
+      console.log(data);
+      if (data.success) {
+        let schedule = data.schedule;
+        let currentTime = new Date();
+        let hours = currentTime.getHours();
+        if (hours > schedule.startHour && hours < schedule.endHour) {
+          this.authService.getUser().subscribe(tokenData => {
+            if (tokenData.email) {
+              this.shared.updateSharedVar('user', { userEmail: tokenData.email, username: tokenData.usernmae });
+              let userData = { userEmail: tokenData.email };
+              this.userService.getUser(userData).subscribe(data => {
+                if (data.success) {
+                  let cartData: ILooseObject = {};
+                  cartData.qty = 1;
+                  cartData.description = product.description;
+                  cartData.price = product.price;
+                  cartData.title = product.title;
+                  cartData.imagePath = product.imagePath;
+                  cartData.userId = data.user._id;
+                  cartData.product = catalogProduct;
+                  if (data.user.active) {
+                    this.cartService.addItemToCart(cartData).subscribe(resData => {
+                      console.log(resData);
+                      if (resData.success) {
+                        let getCartData = { cartId: resData.cart._id };
+                        this.updateCart(getCartData, moreData => {
+                          console.log(moreData);
+                          this.shared.updateSharedVar('cartItemCount', moreData.itemCount);
+                        });
+                      }
+                      else {
+                        // Show Error
+                        // User might need to activate account
+
+                      }
+                    })
+                  }
+
+                }
+              });
+            }
+
+          });
+        }
+
+      }
+      else {
+        // Show Error
+        // var title = "Ordering is closed for now.";
+        //                 var body = "Mookie Dough hours will be from 8 am to 7pm Monday Through Sunday with delivery starting at 9pm.  ";
+      }
+    });
+  }
 
 }

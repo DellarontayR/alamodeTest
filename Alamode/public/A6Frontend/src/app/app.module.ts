@@ -1,6 +1,6 @@
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
-import { HttpClientModule } from '@angular/common/http';
+import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 
 
 import { AppRoutingModule } from './app-routing.module';
@@ -10,13 +10,20 @@ import { MookieFooterComponent } from './components/mookie-footer/mookie-footer.
 import { MookieHomeComponent } from './components/mookie-home/mookie-home.component';
 import { MookiePagenotfoundComponent } from './components/mookie-pagenotfound/mookie-pagenotfound.component';
 import { MookieSocialComponent } from './components/mookie-social/mookie-social.component';
-import {AuthService} from './services/auth.service';
+import { AuthService } from './services/auth.service';
 
 import * as $ from 'jquery';
 import { MookieRegisterComponent } from './components/mookie-register/mookie-register.component';
 import { FormsModule } from '@angular/forms';
 import { MookieMenuComponent } from './components/mookie-menu/mookie-menu.component';
 import { MookieAboutComponent } from './components/mookie-about/mookie-about.component';
+import { MookieCheckoutComponent } from './components/mookie-checkout/mookie-checkout.component';
+import { MookieCartComponent } from './components/mookie-cart/mookie-cart.component';
+
+import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
+import { MookiePreloaderComponent } from './components/mookie-preloader/mookie-preloader.component';
+import { MookieAccountComponent } from './components/mookie-account/mookie-account.component';
+
 
 
 @NgModule({
@@ -29,14 +36,19 @@ import { MookieAboutComponent } from './components/mookie-about/mookie-about.com
     MookieSocialComponent,
     MookieRegisterComponent,
     MookieMenuComponent,
-    MookieAboutComponent  ],
+    MookieAboutComponent,
+    MookieCheckoutComponent,
+    MookieCartComponent,
+    MookiePreloaderComponent,
+    MookieAccountComponent],
   imports: [
     BrowserModule,
     HttpClientModule,
     AppRoutingModule,
-    FormsModule
+    FormsModule,
+    NgbModule.forRoot(),
   ],
-  providers: [AuthService],
+  providers: [AuthService, {provide:HTTP_INTERCEPTORS,useClass:AppComponent,multi:true}],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

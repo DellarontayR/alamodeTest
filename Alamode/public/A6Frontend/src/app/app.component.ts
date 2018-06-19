@@ -19,6 +19,7 @@ import { ProductService } from './services/product.service';
 import { InventoryService } from './services/inventory.service';
 
 import * as $ from 'jquery';
+import { WindowRefService } from './services/window-ref.service';
 
 
 
@@ -33,25 +34,63 @@ export class AppComponent implements OnInit {
 
     // Item Name map
     itemNameMap = new Map();
-    private checkUser$ = interval(30000);
+    private showBody: Boolean = false;
+    private checkUser$ = interval(3000);
 
     ngOnInit() {
+        this.checkUser$ = interval(30000);
+        this.showBody = false;
         this.checkIp();
-        // this.resetProducts();
-
-
         this.itemNameMap.set("og mookie", "og mookie");
         this.itemNameMap.set("og mookie's confetti party", "funfetti");
         this.itemNameMap.set("cookies n creme", "oreo");
         this.itemNameMap.set("aunty vicky's red velvet", "Red velvet");
         this.itemNameMap.set("dark chocolate mocha", "Dark chocolate");
+        // try get session vars
+        // update share
+        this.router.events
+            .pipe(filter(event => event instanceof NavigationStart)
+            ).subscribe((route: ActivatedRoute) => {
+                //     // Will run code every time a route changes
+                console.log(route);
+                if (!this.shared.getSharedVar('checkingSession')) this.checkSession();
+                console.log(this.shared.getSharedVar('checkingSession'));
+                if (this.authService.isLoggedIn()) {
+                    this.authService.getUser().subscribe(data => {
+                        console.log(data);
+                        if (data.username === undefined) {
+                            this.shared.updateSharedVar('loggedIn', false);
+                            this.authService.logout();
+                            this.router.navigate(['/home']);
+                            console.log('user logged out after username found to be undefined');
+                        }
+                        else {
+                            this.shared.updateSharedVar('loggedIn', true);
+                            this.userService.getPermission().subscribe(data => {
+                                if (data.permission === 'amdin') {
+                                    this.shared.updateSharedVar('admin', true);
+                                }
+                                else {
+                                    this.shared.updateSharedVar('admin', false);
+                                }
+                            });
+                        }
+                    })
+                }
+                setTimeout(()=>{
+                    this.showBody = true;
+                    // Display page from preloader in one and half seconds
+                },1500);
+                //         if ($location.hash() == '_=_') $location.hash(null); // Check if facebook hash is added to URL
+
+            });
 
     }
 
     // Authentication Interceptor that should add jsonwebtoken to header
     public currToken = '';
     intercept(req: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
-        this.authService.getToken().subscribe(token => { this.currToken = token; console.log(this.currToken) });
+        this.currToken = this.authService.getToken();
         console.log(req);
         console.log('This is the request from intercept');
         if (this.currToken) {
@@ -82,7 +121,6 @@ export class AppComponent implements OnInit {
 
 
     // Session Functions
-
     // Checks to see if visitor has visitor's ip address has visited our site before
     checkVisitor = function (ipAddress) {
         const ipData = { ipAddress: '' };
@@ -91,103 +129,25 @@ export class AppComponent implements OnInit {
         this.authService.checkVisitor(ipData).subscribe(data => {
             console.log(data);
         });
-    }
+    };
 
     // Use Auth's acess to 3rd party api to get user's ip address
     checkIp = function () {
         this.authService.getIp().subscribe(data => {
             console.log(data);
             this.checkVisitor(data.ip);
-
         });
-    }
-
-    // Updates the cart after adding an item to the cart
-    updateCart = function (getCartData, callback) {
-        this.cartService.subscribe(data => {
-            console.log(data);
-            if (data.success) {
-                let itemCount = 0;
-                data.cart.products.forEach(function (cartProduct) {
-                    itemCount++;
-                });
-                var cartData = data.cart;
-                cartData.itemCount = itemCount;
-                // Find Way to set scope variables
-                this.shared.updateSharedVar("cartItemCount", itemCount);
-                this.shared.updateSharedVar("cart", cartData);
-                return callback(data);
+    };
 
 
-            }
-            else {
-                // Err
-
-            }
-        });
-    }
 
 
-    addToCart = function (product, catalogProduct) {
-        this.authService.getOrderingSchedule().subscribe(data => {
-            console.log(data);
-            if (data.success) {
-                let schedule = data.schedule;
-                let currentTime = new Date();
-                let hours = currentTime.getHours();
-                if (hours > schedule.startHour && hours < schedule.endHour) {
-                    this.auth.getUser().subscribe(tokenData => {
-                        if (tokenData.email) {
-                            this.shared.updateSharedVar('user', { userEmail: data.email, username: data.usernmae });
-                            let userData = { userEmail: data.email };
-                            this.user.getUser(userData).subscribe(data => {
-                                if (data.success) {
-                                    let cartData: ILooseObject = {};
-                                    cartData.qty = 1;
-                                    cartData.description = product.description;
-                                    cartData.price = product.price;
-                                    cartData.title = product.title;
-                                    cartData.imagePath = product.imagePath;
-                                    cartData.userId = data.user._id;
-                                    cartData.product = catalogProduct;
-                                    if (data.user.active) {
-                                        this.cart.addItemToCart(cartData).subscribe(resData => {
-                                            console.log(resData);
-                                            if (resData.success) {
-                                                let getCartData = { cartId: resData.cart._id };
-                                                this.updateCart(getCartData, moreData => {
-                                                    console.log(moreData);
-                                                    this.shared.updateSharedVar('cartItemCount', moreData.itemCount);
-                                                });
-                                            }
-                                            else {
-                                                // Show Error
-
-                                            }
-                                        })
-                                    }
-
-                                }
-                            });
-                        }
-
-                    });
-                }
-
-            }
-            else {
-                // Show Error
-                // var title = "Ordering is closed for now.";
-                //                 var body = "Mookie Dough hours will be from 8 am to 7pm Monday Through Sunday with delivery starting at 9pm.  ";
-            }
-        });
-    }
 
     // updateCart
     // Adds a email subscription to be added for our newsletters and special announcements
     addSubscription = function (subEmail) {
         let subData = { subEmail: subEmail };
-        this.auth.addSubscription(subData).subscribe(data => {
+        this.authService.addSubscription(subData).subscribe(data => {
             // Add time out and subscriptions message
             // TODO
         });
@@ -195,7 +155,7 @@ export class AppComponent implements OnInit {
 
     //Used to reset contact information form after information is put in
     addContactMessage = function (contactData) {
-        this.auth.addContactMessage(contactData).subscribe(data => {
+        this.authService.addContactMessage(contactData).subscribe(data => {
 
             if (data.success) {
                 this.shared.updateSharedVar('contactMes', {});
@@ -243,7 +203,7 @@ export class AppComponent implements OnInit {
 
     //Add a product to product catalog in database
     addProductToDB = function (productData) {
-        this.product.seedProduct(productData).subscribe(data => {
+        this.productService.seedProduct(productData).subscribe(data => {
             if (data.success) {
                 // Telemetry
                 // TODO
@@ -254,7 +214,7 @@ export class AppComponent implements OnInit {
     // Run to check the database and see if the products are currently there
     resetProducts = function () {
         // loadme?
-        this.product.getCatalogProducts().subscribe(data => {
+        this.productService.getCatalogProducts().subscribe(data => {
             if (data.success) {
                 // laodme
             }
@@ -284,9 +244,9 @@ export class AppComponent implements OnInit {
     // Get products from server to produce on home page in mookie scope
     getProductsFromServer = function (callback) {
         (function () {
-            this.product.getCatalogProducts().subscribe(data => {
+            this.productService.getCatalogProducts().subscribe(data => {
                 this.shared.updateSharedVar('products', data.catalogProducts);
-                this.getInventory().subscribe(data => {
+                this.inventoryService.getInventory().subscribe(data => {
                     console.log(data);
                     if (data.success) {
                         let inventory = data.inventory;
@@ -295,6 +255,7 @@ export class AppComponent implements OnInit {
                         totals.forEach(total => {
                             totalMap.set(total.itemName, total.itemQtyTtoal);
                         });
+                        // callback(userProducts);
                         // Iterate over products from shared service and display in stock not instock
                         // $scope.mookie.products.forEach(function (product) {
                         //     if (itemNameMap.has(product.title)) {
@@ -325,7 +286,7 @@ export class AppComponent implements OnInit {
 
     // Get Subscribers for Management
     getSubscribers = function (callback) {
-        this.auth.getSubscribers().subscribe(data => {
+        this.authService.getSubscribers().subscribe(data => {
             if (data.success) {
                 return callback(data.subscribers);
             }
@@ -334,7 +295,7 @@ export class AppComponent implements OnInit {
 
     // Get Contact Messages for Management
     getContactMessages = function (callback) {
-        this.auth.getContactMessages().subscribe(data => {
+        this.authService.getContactMessages().subscribe(data => {
             if (data.success) {
                 return callback(data.contactMessages);
             }
@@ -354,7 +315,7 @@ export class AppComponent implements OnInit {
     // Get The User's current cart
     getCurrentCart = function (callback) {
         let userData = this.shared.getSharedVar('user');
-        this.user(userData).subscribe(data => {
+        this.cartService.getCart(userData).subscribe(data => {
             console.log(data);
             if (data.success) {
                 if (data.user.cart != null && data.user.cart != "") {
@@ -394,24 +355,28 @@ export class AppComponent implements OnInit {
     //For all intents and purposes getemailAndUsername
     checkUserState = function (callback) {
         let userData = { userEmail: '', username: '', success: false };
+        console.log('in checkuserState');
 
-        if (this.auth.isLoggedIn()) {
-            this.auth.getUser.subscribe(data => {
+        if (this.authService.isLoggedIn()) {
+            this.authService.getUser().subscribe((data) => {
                 userData.userEmail = data.email;
                 userData.username = data.username;
+                console.log(data);
                 this.shared.updateSharedVar('loggedIn', true);
-                this.shared.addMinUser(data.userEmail, data.username);
+                this.shared.addMinUser(userData.userEmail, userData.username);
                 if (data.username === undefined) {
-                    this.auth.logout();
+                    this.authService.logout();
                     this.shared.updateSharedVar('loggedIn', false);
                     this.router.navigate(['/register'], { relativeTo: this.route });
                 }
                 else {
-                    this.userService.getUser(userData).subscribe(data => {
-                        if (data.success) {
+                    this.userService.getUser(userData).subscribe(retUser => {
+                        if (retUser.success) {
                             userData.success = true;
+                            // 
 
                         }
+                        console.log(userData);
                         return callback(userData);
                     });
                     // TODO
@@ -428,8 +393,12 @@ export class AppComponent implements OnInit {
     // Setup interval to check user session every 15 seconds
     // Function to run an interval that checks if the user's token has expired
     checkSession = function () {
-        this.checkUserState(function (userData) {
+        this.checkUserState( (userData) =>{
+            console.log('past check userstate');
+            console.log(userData);
+            this.shared.updateSharedVar('checkingSession', true);
             if (userData.success) {
+              
                 // Run interval ever 30000 milliseconds (30 seconds) 
                 this.checkUser$.subscribe(event => {
                     console.log('in subscribe');
@@ -456,7 +425,6 @@ export class AppComponent implements OnInit {
                         }
                         console.log('still in');
                         this.shared.addMinUser(userData.userEmail, userData.username);
-                        this.shared.updateSharedVar('checkingSession', true);
                         this.getCurrentCart(function (cart) {
                             let total = 0;
                             let count = 0;
@@ -475,88 +443,17 @@ export class AppComponent implements OnInit {
                 // loadme true
             }
             else {
-                this.auth.logout();
+                this.authService.logout();
                 this.shared.updateSharedVar('loggedIn', false);
-                this.router.navigate(['/register'], { relativeTo: this.route });
+                // this.router.navigate(['/register'], { relativeTo: this.route });
 
 
             }
         });
     };
 
-    //     // Call when main controller loads
-    //     app.mookieCheckSession();
-    //     // >
 
-
-    constructor(private authService: AuthService, private router: Router, private cartService: CartService, private shared: SharedService, userService: UserService, product: ProductService) {
-
-        // Toggle Mobile Menu
-        //------------------------------------------------------------------------------
-        var menuToggle = $('.mobile-menu-toggle'),
-            mobileMenu = $('.main-navigation');
-        menuToggle.on('click', function () {
-            $(this).toggleClass('active');
-            mobileMenu.toggleClass('open');
-            $('body').toggleClass('no-scroll-body');
-        });
-
-
-        var $insta = $('#insta');
-        var getInstaHeight = function (event) {
-            if (event.origin.indexOf('http://localhost:8081') || event.origin.indexOf('https://www.mookiedough.co')) {
-                var eventData = JSON.parse(event.data);
-                if (eventData.type === "lightwidget_widget_size") {
-                    $('#insta').css({ height: eventData.size });
-                    window.removeEventListener("message", getInstaHeight, false);
-                }
-            }
-            else {
-                return;
-            }
-        }
-
-        var resizeInsta = function () {
-            window.addEventListener('message', getInstaHeight);
-            // document.getElementById('insta').contentWindow.postMessage('', '*');
-        };
-
-        // document.getElementById('insta').onload = function () {
-        //     resizeInsta();
-        // };
-
-        router.events
-            .pipe(filter(event => event instanceof NavigationStart)
-            ).subscribe((route: ActivatedRoute) => {
-                //     // Will run code every time a route changes
-                console.log(route);
-                if (shared.getSharedVar('checkingSession')) this.checkSession();
-                console.log(shared.getSharedVar('checkingSession'));
-                if (this.authService.isLoggedIn()) {
-                    this.authService.getUser().subscribe(data => {
-                        if (data.username === undefined) {
-                            shared.updateSharedVar('loggedIn', false);
-                            this.authService.logout();
-                            this.router.navigate(['/home']);
-                            console.log('user logged out after username found to be undefined');
-                        }
-                        else {
-                            shared.updateSharedVar('loggedIn', true);
-                            userService.getPermission().subscribe(data => {
-                                if (data.permission === 'amdin') {
-                                    shared.updateSharedVar('admin', true);
-                                }
-                                else {
-                                    shared.updateSharedVar('admin', false);
-                                }
-                            });
-                        }
-                    })
-                }
-                //         if ($location.hash() == '_=_') $location.hash(null); // Check if facebook hash is added to URL
-
-            });
-
+    constructor(private authService: AuthService, private router: Router, private cartService: CartService, private shared: SharedService,private  userService: UserService, private productService: ProductService, private inventoryService: InventoryService, private windowRef: WindowRefService) {
     };
     //     // // Function to redirect users to facebook authentication page
 
@@ -575,7 +472,7 @@ export class AppComponent implements OnInit {
     }
 
     logout = function () {
-        this.auth.logout();
+        this.authService.logout();
         this.shared.updateSharedVar('loggedIn', false);
         this.route.navigate(['/register']);
     };

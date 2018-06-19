@@ -1,0 +1,88 @@
+<!-- Page Wrapper -->
+<div class="page-wrapper">
+  <!-- Container -->
+  <form method="post" class="container padding-top-3x padding-bottom-2x">
+
+    <h1 class="space-top-half text-center">Checkout</h1>
+    <div class="row padding-top">
+
+      <!-- add bitcoin as a payment method -->
+
+
+
+      <!-- Checkout Form -->
+      <div class="col-sm-8 col-md-4 col-md-offset-3 padding-bottom">
+        <!-- .row -->
+        <div class="row">
+          <!-- <a href="#" class="add-to-cart" ng-click="mookie.showStripeModal()">
+                  <em>Checkout Now</em>
+                  <svg x="0px" y="0px" width="32px" height="32px" viewBox="0 0 32 32">
+                    <path stroke-dasharray="19.79 19.79" stroke-dashoffset="19.79" fill="none" stroke="#FFFFFF" stroke-width="2" stroke-linecap="square" stroke-miterlimit="10" d="M9,17l3.9,3.9c0.1,0.1,0.2,0.1,0.3,0L23,11"/>
+                  </svg>
+              </a> -->
+
+          <p> Please use 4242-4242-4242-4242 for card number and any date or zip code during test experience</p>
+          <form>
+            <div class="group">
+              <label>
+                <input name="cardholder-name" class="field is-empty" placeholder="Name Jane Doe" [(ngModel)]="checkoutData.name" />
+              </label>
+              <label>
+                <input class="field is-empty" type="tel" placeholder="Phone number (123) 456-7890" [(ngModel)]="checkoutData.number"
+                  style="color:black" />
+              </label>
+            </div>
+            <div class="group cardGroup">
+              <label>
+                <div id="card-element" class="field is-empty stripeElement" required></div>
+              </label>
+
+            </div>
+          </form>
+
+        </div>
+        <div class="row" *ngIf="chargeSuccessful">
+        </div>
+
+        <!-- <div class="row">
+            <form action="/your-server-side-code" method="POST">
+              <script src="https://checkout.stripe.com/checkout.js" class="stripe-button" data-key="pk_test_EPjnzpxnrgvUiGWsYrJjqN5t" data-amount="2000"
+                data-name="Mookie Dough LLC" data-description="2 widgets" data-image="https://stripe.com/img/documentation/checkout/marketplace.png"
+                data-locale="auto">
+              </script>
+              </form>
+          </div> -->
+      </div>
+
+
+      <!-- .col-sm-8 -->
+
+      <!-- Sidebar -->
+      <div class="col-md-3 col-md-offset-1 col-sm-4 padding-bottom">
+        <aside>
+          <h3>Cart total:</h3>
+          <h4>${{total}}</h4>
+          <a href="/shopping-cart" class="btn btn-default btn-ghost icon-left btn-block">
+            <i class="material-icons arrow_back"></i>
+            Back To Cart
+          </a>
+          <!-- <button type="submit" class="btn btn-primary btn-block waves-effect waves-light space-top-none" ng-click="mookie.showStripeModal()">Checkout</button> -->
+          <button type="submit" class="btn btn-primary btn-block waves-effect waves-light space-top-none checkoutBtn" (click)="doCheckout()">Checkout</button>
+          <label for="card-element" class="checkoutMsg">
+            <span>
+              <span>
+                <p style="position:absolute">
+                  {{cartCtrl.checkoutMessage}}</p>
+              </span>
+            </span>
+          </label>
+
+        </aside>
+      </div>
+      <!-- .col-md-3.col-sm-4 -->
+    </div>
+    <!-- .row -->
+  </form>
+  <!-- .container -->
+</div>
+<!-- .page-wrapper -->

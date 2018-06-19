@@ -26,7 +26,7 @@
           <span>about us</span>
         </a>
       </li>
-      <li *ngIf="loggedIn">
+      <li *ngIf="!loggedIn">
         <a href="/register">
           Sign In/Up
         </a>
@@ -35,9 +35,9 @@
   </nav>
   <div class="toolbar">
     <div class="inner">
-      <a (click)="openMenuToggle()" [ngClass]="{'active':menuToggleOpen}" class="mobile-menu-toggle mookieIcon">
-        <i class="fas fa-bars fa-xs fa-fw menu"></i>
-        <i [ngClass]="{'displayed':menuToggleOpen}" class="fas fa-times fa-xs fa-fw cross"></i>
+      <a (click)="openMenuToggle()" class="mobile-menu-toggle mookieIcon">
+        <i *ngIf="!menuToggleOpen" class="fas fa-bars fa-xs fa-fw menu"></i>
+        <i *ngIf="menuToggleOpen" class="fas fa-times fa-xs fa-fw cross"></i>
       </a>
       <a href="/account" class="mookieIcon" *ngIf="loggedIn">
         <i class="fas fa-user fa-xs fa-fw"></i>

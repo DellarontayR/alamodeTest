@@ -6,12 +6,12 @@
 			<figure class="snip1418">
 				<p [ngClass]="{'inStock': catalogProduct.inStock == 'In Stock', 'notInStock': catalogProduct.inStock == 'Not In Stock'}">{{catalogProduct.inStock}}</p>
 
-				<img class="mookie-product-img" src="{{catalogProduct.imagePath}}" alt="sample85" />
+				<img class="mookie-product-img" (src)="catalogProduct.imagePath" alt="sample85" />
 
 				<div class="add-to-cart" onclick="">
 					<i class="ion-android-add"></i>
 					<span (click)="addToCart(catalogProduct,catalogProduct._id);">
-						<a href="#"></a>Buy Now</span>
+						<a class="nah"></a>Buy Now</span>
 				</div>
 				<figcaption>
 					<h3>{{catalogProduct.title}}</h3>
@@ -25,47 +25,51 @@
 		</div>
 	</section>
 
+	<!-- 
+	<section id="summer-collection">
+		<div class="container">
+			<div class="sc-content">
+				<h1>Exclusive Catering</h1>
+				<p class="description">Contact Andrew Bempah or Oluwaseyi Olaleye at bempah@mookiedough.com and olaleye@mookiedough.com for exclusive catering
+					for Stanford club events and nearby areas
+				</p>
+			</div>
+			<div class="sc-media">
+				<div class="sc-media-bg">
+					<img src="assets/imgs/M00KIE.jpg" alt="sc-image" /> </div>
+			</div>
+		</div>
+	</section> -->
+
 	<!-- NEW HOME -->
 	<div class="newHome">
-		<header>
-			<div id="header-hero">
-				<div class="headerBg">
-					<div class="sc-media">
-						<img class="center-image" src="../imgs/Media/badmookie.svg" alt="header-image" />
-					</div>
-				</div>
-				<!-- <div class="header-bg">
-					<div class="sc-media">
-						<img src="../imgs/Media/chocolatechipdough.JPG" alt="header-image" />
-					</div>
-				</div> -->
-				<div class="header-content">
-					<!-- <p class="heading-1"></p> -->
-					<h1>welcome to
-						<span class="logo-style">Mookie Dough</span>
-					</h1>
-					<p class="description">Artisian cookie dough treats at your door or for your next catering event.</p>
-					<a href="#" class="button shop-now-button" style="display:block;">
-						<p>shop now</p>
-					</a>
-				</div>
-			</div>
-		</header>
 		<section id="summer-collection">
 			<div class="container">
-				<div class="sc-content">
-					<h1>Exclusive Catering</h1>
-					<p class="description">Contact Andrew Bempah or Oluwaseyi Olaleye at bempah@mookiedough.com and olaleye@mookiedough.com for exclusive catering
-						for Stanford club events and nearby areas
-					</p>
-					<a href="#">discover now</a>
+				<div style="text-align:center;">
+					<div class="row">
+						<div class="sc-content col-lg-6">
+							<h1>Exclusive Catering</h1>
+							<p class="description">Contact Andrew Bempah or Oluwaseyi Olaleye at bempah@mookiedough.com and olaleye@mookiedough.com for exclusive catering
+								for Stanford club events and nearby areas
+							</p>
+						</div>
+						<div class="sc-media col-lg-6">
+								<div>
+									<img src="assets/imgs/M00KIE.jpg" alt="sc-image" /> </div>
+							</div>
+						<!-- <div style="width:100%; text-align:center;">
+							
+						</div> -->
+
+					</div>
+
+
 				</div>
-				<div class="sc-media">
-					<div class="sc-media-bg">
-						<img src="../imgs/Media/M00KIE.jpg" alt="sc-image" /> </div>
-				</div>
+
+
 			</div>
 		</section>
+
 		<section id="products">
 			<div class="container">
 				<div class="products-header">
@@ -74,28 +78,28 @@
 				</div>
 				<div class="product product-1">
 					<figure>
-						<img src="../imgs/Media/OGMookiepackaging.png" alt="product-image">
+						<img src="assets/imgs/OGMookiepackaging.png" alt="product-image">
 						<figcaption>Cookie Dough Bricks</figcaption>
 						<figcaption>$ 2.99</figcaption>
 					</figure>
 				</div>
 				<div class="product product-2">
 					<figure>
-						<img src="../updatedFrontend/cookies.png" alt="product-image">
+						<img src="assets/imgs/cookies.png" alt="product-image">
 						<figcaption>Cookie Dough Bricks</figcaption>
 						<figcaption>$ 2.99</figcaption>
 					</figure>
 				</div>
 				<div class="product product-3">
 					<figure>
-						<img src="../imgs/Media/Ogmookieconfetti.png" alt="product-image">
+						<img src="assets/imgs/Ogmookieconfetti.png" alt="product-image">
 						<figcaption>Cookie Dough Bricks</figcaption>
 						<figcaption>$ 2.99</figcaption>
 					</figure>
 				</div>
 				<div class="product product-4">
 					<figure>
-						<img src="../updatedFrontend/redvelvet.png" alt="product-image">
+						<img src="assets/imgs/redvelvet.png" alt="product-image">
 						<figcaption>Cookie Dough Bricks</figcaption>
 						<figcaption>$ 2.99</figcaption>
 					</figure>
@@ -106,24 +110,24 @@
 			<div class="container">
 				<div class="c-1">
 					<div class="c-1-image-holder">
-						<img src="../imgs/Media/mookiecar.svg" alt="image"> </div>
+						<img src="assets/imgs/mookiecar.svg" alt="image"> </div>
 				</div>
 				<div class="c-2">
 					<h2>Work Coming Soon</h2>
 					<hr />
 					<div class="c-2-image-holder">
-						<img class="left" src="../imgs/Media/dorm5-min.jpg" alt="">
-						<img class="right" src="../imgs/Media/header3.png" alt="">
+						<img class="left" src="assets/imgs/dorm5-min.jpg" alt="">
+						<img class="right" src="assets/imgs/header3.png" alt="">
 					</div>
 				</div>
 			</div>
 		</section>
 
-		<div class="back-to-top">
+		<!-- <div class="back-to-top">
 			<a href="#nav">
 				<img title="Back to Top." src="https://res.cloudinary.com/de8cuyd0n/image/upload/v1520412541/E-commerce%20landing%20page/icons/back_-_top_1x.png"
 				 alt="back to top">
 			</a>
-		</div>
+		</div> -->
 	</div>
 </div>

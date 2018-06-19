@@ -53,6 +53,7 @@ export class AuthService {
     }
     else return false;
   }
+  
   socialMedia = function () {
     // setToken()
     // Set socialMedia function's previous uses to simply setToken
@@ -75,6 +76,7 @@ export class AuthService {
 
     if (token) {
       windowRef.localStorage.setItem('token', token);
+      console.log(windowRef.localStorage.getItem('token'));
     }
     else {
       windowRef.localStorage.removeItem('token');
@@ -92,7 +94,7 @@ export class AuthService {
   }
 
   // Schedule Service
-  getOreringSchdule = function(){
+  getOrderingSchedule = function(){
     return this.http.post('/api/checkOrderingSchedule').pipe(map(res=>{
       console.log(res);
       return res;

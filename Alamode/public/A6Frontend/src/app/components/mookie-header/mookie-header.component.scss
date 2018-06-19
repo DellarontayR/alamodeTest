@@ -190,16 +190,22 @@ a.mobile-menu-toggle>i {
     text-align: center;
 }
 
-a.mobile-menu-toggle.active .cross {
-	color: black;
-	display: inline-flex;
-}
+// a.mobile-menu-toggle.active .cross {
+// 	color: black;
+// 	display: inline-flex;
+// }
 
-a.mobile-menu-toggle .cross {
-	display: none;
-}
+// a.mobile-menu-toggle .cross {
+// 	display: none;
+// }
 
 .displayed{
     color: black;
 	display: inline-flex;
+}
+
+
+
+.no-scroll-body {
+	overflow: hidden;
 }

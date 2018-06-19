@@ -10,6 +10,7 @@ import { MookieSocialComponent } from './components/mookie-social/mookie-social.
 import { MookieRegisterComponent } from './components/mookie-register/mookie-register.component';
 import { MookieMenuComponent } from './components/mookie-menu/mookie-menu.component';
 import { MookieAboutComponent } from './components/mookie-about/mookie-about.component';
+import { MookieAccountComponent } from './components/mookie-account/mookie-account.component';
 
 
 
@@ -21,6 +22,7 @@ const routes: Routes = [
   {path:'about', component: MookieAboutComponent},
   { path: 'thesecret', component: MookieSocialComponent },
   { path: 'register', component: MookieRegisterComponent },
+  { path:'account', component: MookieAccountComponent},
   { path: "**", component: MookiePagenotfoundComponent }
 ];
 

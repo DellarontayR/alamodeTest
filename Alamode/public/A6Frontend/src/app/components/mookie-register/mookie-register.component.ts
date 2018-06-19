@@ -11,13 +11,13 @@ import { Router } from '@angular/router';
 })
 export class MookieRegisterComponent implements OnInit {
 
-  constructor(private userService: UserService, private authService: AuthService,private shared:SharedService, private router: Router) { }
+  constructor(private userService: UserService, private authService: AuthService, private shared: SharedService, private router: Router) { }
 
   ngOnInit() {
 
   }
-  loginData = {password:'',email:''};
-  regData = {username:'',password:'',email:''};
+  loginData = { password: '', email: '' };
+  regData = { username: '', password: '', email: '' };
 
   loginMessage = false;
   regMessage = false;
@@ -28,71 +28,77 @@ export class MookieRegisterComponent implements OnInit {
   chooseLogin = true;
   chooseReg = false;
 
-  switchToReg = function(){
+  switchToReg = function () {
     this.chooseLogin = false;
     this.chooseReg = true;
   }
-  switchToLogin = function(){
+  switchToLogin = function () {
     this.chooseReg = false;
     this.chooseLogin = true;
   }
 
-  mookieLogin = function(loginData){
+  mookieLogin = function (loginData) {
     console.log(loginData);
     console.log(this.loginData);
     this.loginMessage = false;
-    this.authService.login(loginData).subscribe(data=>{
-      if(data.success){
+    this.authService.login(loginData).subscribe(data => {
+      if (data.success) {
         this.loginMessage = true;
         this.loginMsg = "User authentication successfull";
         this.username = data.token;
         this.loggedIn = true;
-        this.shared.updateSharedVar('loggedIn',true);
-        setTimeout(()=>{
+        this.authService.setToken(data.token);
+        this.shared.updateSharedVar('loggedIn', true);
+        if(this.shared.getSharedVar('checkingSession')) this.shared.updateSharedVar('checkingSession',true);
+        setTimeout(() => {
           this.loginMessage = false;
           this.loginMsg = "";
           this.router.navigate(['/account']);
-        },2000);
+        }, 2000);
       }
-      else{
+      else {
         this.loginMessage = true;
-        if(data.message){
+        if (data.message) {
           this.loginMsg = data.message;
         }
-        else{
+        else {
           this.loginMsg = "User could not be logged in.";
         }
       }
     })
   };
 
-  mookieLogout = function(){
+  mookieLogout = function () {
     this.authService.logout();
   };
 
-  mookieRegister = function(regData){
-    this.userService.registerMookie(regData).subscribe(data=>{
-      if(data.success){
+  mookieRegister = function (regData) {
+    this.userService.registerMookie(regData).subscribe(data => {
+      if (data.success) {
         this.username = regData.username;
-        this.authService.login(this.regData);
-        this.regMessage = true;
-        this.regMsg = "Sign up was successful. Make sure to look out for a verification email";
+        this.authService.login(this.regData).subscribe(tokenData => {
+          this.regMessage = true;
+          this.regMsg = "Sign up was successful. Make sure to look out for a verification email";
+          this.loggedIn = true;
 
-        this.loggedIn=true;
-        this.shared.updateSharedVar('loggedIn',true);
-        setTimeout(()=>{
-          this.regMessage = false;
-          this.regMsg = "";
-          this.router.navigate(['/account']);
-          // Add check at account to tell user if they have not activated their account
-        },2000);
+          this.authService.setToken(tokenData.token);
+          this.shared.updateSharedVar('loggedIn', true);
+          if(this.shared.getSharedVar('checkingSession')) this.shared.updateSharedVar('checkingSession',true);
+
+          setTimeout(() => {
+            this.regMessage = false;
+            this.regMsg = "";
+            this.router.navigate(['/account']);
+            // Add check at account to tell user if they have not activated their account
+          }, 2000);
+        });
       }
-      else{
+      else {
         this.regMessage = true;
-        if(data.message){
+        if (data.message) {
           this.regMsg = data.message;
         }
-        else{
+        else {
           this.regMsg = "User could not be Registered a this time. Try again later."
         }
       }

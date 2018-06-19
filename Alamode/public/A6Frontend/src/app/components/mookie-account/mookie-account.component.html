@@ -1,0 +1,82 @@
+<div class="page-wrapper">
+  <!-- Content -->
+  <section class="container padding-top-3x">
+    <h1 class="mobile-center">Hey,
+      <span class="text-semibold">{{username}}</span>
+    </h1>
+    <!-- <div class="row padding-top">
+        <h1> Current Order Information</h1>
+      </div> -->
+    <div class="row padding-top">
+      <div class="col-sm-9 padding-bottom-2x">
+        <!-- Nav Tabs -->
+        <ul class="nav-tabs mobile-center" role="tablist">
+          <li class="active">
+            <a href="#orders" role="tab" data-toggle="tab">
+              <!-- <i class="material-icons shopping_cart"></i> -->
+              <i class="fas fa-shopping-cart fa-xs fa-fw"></i>
+
+              Orders
+              <!-- Possible number of previous orders -->
+            </a>
+          </li>
+        </ul>
+        <!-- .nav-tabs -->
+
+        <!-- Tab Panes -->
+        <div class="tab-content">
+
+          <div role="tabpanel" class="tab-pane fade active in" id="orders">
+            <div class="table-responsive">
+              <table>
+                <thead>
+                  <tr>
+                    <th>Order #</th>
+                    <th>Date Purchased</th>
+                    <th>Status</th>
+                    <th>Total</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr *ngFor="let order of orderHistory;trackBy:orderStartedOn">
+                    <td>
+                        <a routerLink="/orders/{{order._id}}">{{order.customerReceipt.receiptNumber}}</a>
+                    </td>
+                    <td>{{order.orderStartedOn | date:"MM/dd/yyyy 'at' h:mma"}}</td>
+                    <td>{{order.orderStatus}}</td>
+                    <td>{{order.customerReceipt.customerCart.total | currency}}</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+        <!-- .tab-content -->
+      </div>
+      <!-- .col-sm-8 -->
+
+      <!-- Sidebar -->
+      <div class="col-sm-3 padding-bottom-2x">
+        <aside class="mobile-center">
+          <!-- <h3>Your Mookie Dough points:</h3>
+            <h3><span class="text-semibold">0</span> <span class="h5">points</span></h3>
+            <p class="text-sm text-gray">You can spend these points on our products</p> -->
+          <a href="/home" class="btn btn-default btn-ghost icon-left btn-block">
+            <i class="material-icons arrow_back"></i>
+            Go to Shop
+          </a>
+          <button type="submit" class="btn btn-primary btn-block waves-effect waves-light space-top-none checkoutBtn" (click)="logout()">Sign Out</button>
+          <button *ngIf="admin" type="submit" class="btn btn-primary btn-block waves-effect waves-light space-top-none checkoutBtn">
+            <a href="/management">Admin Portal</a>
+          </button>
+
+        </aside>
+      </div>
+      <!-- .col-sm-4 -->
+    </div>
+    <!-- .row -->
+  </section>
+  <!-- .container -->
+
+</div>
+<!-- .page-wrapper -->
