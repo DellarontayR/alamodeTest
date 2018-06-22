@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, AfterViewInit, ChangeDetectorRef} from '@angular/core';
 import { SharedService } from '../../services/shared.service';
 import * as $ from 'jquery';
 
@@ -8,16 +8,23 @@ import * as $ from 'jquery';
   templateUrl: './mookie-header.component.html',
   styleUrls: ['./mookie-header.component.scss']
 })
-export class MookieHeaderComponent implements OnInit {
+export class MookieHeaderComponent implements OnInit, AfterViewInit {
 
-  constructor(private shared: SharedService) { }
+  constructor(private shared: SharedService, private changeDetector: ChangeDetectorRef) { }
 
   menuToggleOpen: Boolean = false;
   loggedIn: Boolean = false;
-
+  cartItemCount: Number = 0;
   ngOnInit() {
     this.loggedIn = false;
+    this.cartItemCount = 0;
     this.loggedIn = this.shared.getSharedVar('loggedIn');
+
+  }
+
+  ngAfterViewInit(){
+    this.cartItemCount = this.shared.getSharedVar('cartItemCount');
+    this.changeDetector.detectChanges();
 
   }
 

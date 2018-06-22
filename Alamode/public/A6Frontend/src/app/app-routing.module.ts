@@ -11,6 +11,8 @@ import { MookieRegisterComponent } from './components/mookie-register/mookie-reg
 import { MookieMenuComponent } from './components/mookie-menu/mookie-menu.component';
 import { MookieAboutComponent } from './components/mookie-about/mookie-about.component';
 import { MookieAccountComponent } from './components/mookie-account/mookie-account.component';
+import { MookieCartComponent } from './components/mookie-cart/mookie-cart.component';
+import { MookieCheckoutComponent } from './components/mookie-checkout/mookie-checkout.component';
 
 
 
@@ -23,6 +25,8 @@ const routes: Routes = [
   { path: 'thesecret', component: MookieSocialComponent },
   { path: 'register', component: MookieRegisterComponent },
   { path:'account', component: MookieAccountComponent},
+  {path:'shopping-cart',component:MookieCartComponent},
+  {path:'ontheway',component:MookieCheckoutComponent},
   { path: "**", component: MookiePagenotfoundComponent }
 ];
 

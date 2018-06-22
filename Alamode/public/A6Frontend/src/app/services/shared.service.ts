@@ -1,5 +1,6 @@
 import { Injectable } from '@angular/core';
 import { IProduct } from '../interfaces/product';
+import { ILooseObject } from '../interfaces/looseObject';
 
 @Injectable({
   providedIn: 'root'
@@ -10,7 +11,7 @@ export class SharedService {
 
   checkingSession = false;
   cart = {};
-  cartItemCount = false;
+  cartItemCount:Number = 0;
   admin = false;
   products = {};
   loggedIn = false;
@@ -18,7 +19,7 @@ export class SharedService {
   deliveryLocationChanged = false;
   deliveryLocation = null;
   numberOfSiteVisitors = 0;
-  user = {userEmail:'',username:''};
+  user: ILooseObject = {userEmail:'',username:''};
   contactMes = {};
 
   updateSharedVar = function (varId, data) {

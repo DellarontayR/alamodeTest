@@ -7,7 +7,7 @@
 
   <!-- Main Angular view where routes will be rendered-->
   <!-- <div class="main-view" ng-show="main.loadme" ng-view></div> -->
-  <router-outlet *ngIf="showBody" class="animated fadeIn fadeOut" ></router-outlet>
+  <router-outlet *ngIf="showBody" class="animated fadeIn fadeOut"></router-outlet>
 
   <!-- Mookie footer -->
   <app-mookie-footer *ngIf="showBody"></app-mookie-footer>
@@ -16,5 +16,10 @@
 
   <!-- Stripe elements  -->
   <script src="https://js.stripe.com/v3/"></script>
+  <script type="text/javascript">
+    var stripe = Stripe('pk_test_EPjnzpxnrgvUiGWsYrJjqN5t');
+
+    var elements = stripe.elements();
+  </script>
   <!-- <script src="../mookiedoughfrontend/js/scripts.js"></script> -->
 </body>

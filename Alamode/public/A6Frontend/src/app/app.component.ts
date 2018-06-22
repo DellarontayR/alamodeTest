@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild, AfterViewInit,ViewChildren } from '@angular/core';
 import { AuthService } from './services/auth.service';
 console.log("Hello! :) Welcome Mookie Dough inspector. If you're a Mookie Dough advocate and would like to see more of it near you email readus@mookiedough.com <3");
 
@@ -20,6 +20,7 @@ import { InventoryService } from './services/inventory.service';
 
 import * as $ from 'jquery';
 import { WindowRefService } from './services/window-ref.service';
+import { MookieHeaderComponent } from './components/mookie-header/mookie-header.component';
 
 
 
@@ -29,13 +30,21 @@ import { WindowRefService } from './services/window-ref.service';
     templateUrl: './app.component.html',
     styleUrls: ['./app.component.scss']
 })
-export class AppComponent implements OnInit {
+export class AppComponent implements OnInit, AfterViewInit {
+
+    @ViewChildren(MookieHeaderComponent) headerComponent: MookieHeaderComponent;
+
     title = 'Mookie Dough';
 
     // Item Name map
     itemNameMap = new Map();
     private showBody: Boolean = false;
     private checkUser$ = interval(3000);
+
+
+
+    constructor(private authService: AuthService, private router: Router, private cartService: CartService, private shared: SharedService, private userService: UserService, private productService: ProductService, private inventoryService: InventoryService, private windowRef: WindowRefService) {
+    };
 
     ngOnInit() {
         this.checkUser$ = interval(30000);
@@ -77,14 +86,20 @@ export class AppComponent implements OnInit {
                         }
                     })
                 }
-                setTimeout(()=>{
+                setTimeout(() => {
                     this.showBody = true;
                     // Display page from preloader in one and half seconds
-                },1500);
+                }, 1500);
                 //         if ($location.hash() == '_=_') $location.hash(null); // Check if facebook hash is added to URL
 
             });
 
+    }
+
+    ngAfterViewInit() {
+        console.log(this.shared.getSharedVar('cartItemCount'));
+
+        // this.headerComponent.cartItemCount = this.shared.getSharedVar('cartItemCount');
     }
 
     // Authentication Interceptor that should add jsonwebtoken to header
@@ -315,37 +330,28 @@ export class AppComponent implements OnInit {
     // Get The User's current cart
     getCurrentCart = function (callback) {
         let userData = this.shared.getSharedVar('user');
-        this.cartService.getCart(userData).subscribe(data => {
+
+        this.cartService.getCart({ cartId: userData.user.cart }).subscribe(data => {
             console.log(data);
             if (data.success) {
-                if (data.user.cart != null && data.user.cart != "") {
-                    let cartData = { cartId: data.user.cart };
-                    this.cartService.getCart(cartData).subscribe(data => {
-                        console.log(data);
-                        if (data.success) {
-                            let total = 0;
-                            let count = 0;
-                            data.cart.products.forEach(product => {
-                                total += product.price;
-                                count++;
-                            });
-                            this.shared.updateSharedVar('cartItemCount', count);
-                            this.shared.updateSharedVar('cart', data.cart);
-                            return callback(data.cart);
-                        }
-                        else {
-                            if (!data.cart) {
-                                console.log('no cart on suer');
-                            }
-                        }
-                    });
-                }
-                else {
-                    // user has no cart
-                }
+                let total = 0;
+                let count = 0;
+                data.cart.products.forEach(product => {
+                    total += product.price;
+                    count++;
+                });
+                // this.headerComponent.cartItemCount = count;
+
+                // console.log(this.headerComponent.cartItemCount);
+                this.shared.updateSharedVar('cartItemCount', count);
+                console.log(count);
+                this.shared.updateSharedVar('cart', data.cart);
+                return callback(data.cart);
             }
             else {
-                // could not get user
+                if (!data.cart) {
+                    console.log('no cart on user');
+                }
             }
         });
     };
@@ -355,7 +361,6 @@ export class AppComponent implements OnInit {
     //For all intents and purposes getemailAndUsername
     checkUserState = function (callback) {
         let userData = { userEmail: '', username: '', success: false };
-        console.log('in checkuserState');
 
         if (this.authService.isLoggedIn()) {
             this.authService.getUser().subscribe((data) => {
@@ -363,21 +368,29 @@ export class AppComponent implements OnInit {
                 userData.username = data.username;
                 console.log(data);
                 this.shared.updateSharedVar('loggedIn', true);
-                this.shared.addMinUser(userData.userEmail, userData.username);
+                // this.shared.addMinUser(userData.userEmail, userData.username);
                 if (data.username === undefined) {
                     this.authService.logout();
                     this.shared.updateSharedVar('loggedIn', false);
                     this.router.navigate(['/register'], { relativeTo: this.route });
+                    return callback({ success: false });
                 }
                 else {
                     this.userService.getUser(userData).subscribe(retUser => {
+                        let newUser: ILooseObject;
+                        this.shared.updateSharedVar('user', retUser);
+                        console.log(this.shared.getSharedVar('user'));
                         if (retUser.success) {
-                            userData.success = true;
-                            // 
-
+                            newUser = retUser;
+                            newUser.success = true;
+                            this.getCurrentCart(function (cart) {
+                                return callback(newUser);
+                            });
                         }
-                        console.log(userData);
-                        return callback(userData);
+                        else {
+                            newUser.success = false;
+                            return callback(newUser);
+                        }
                     });
                     // TODO
                     // Create simple http response error handler function
@@ -393,12 +406,9 @@ export class AppComponent implements OnInit {
     // Setup interval to check user session every 15 seconds
     // Function to run an interval that checks if the user's token has expired
     checkSession = function () {
-        this.checkUserState( (userData) =>{
-            console.log('past check userstate');
-            console.log(userData);
+        this.checkUserState((userData) => {
             this.shared.updateSharedVar('checkingSession', true);
             if (userData.success) {
-              
                 // Run interval ever 30000 milliseconds (30 seconds) 
                 this.checkUser$.subscribe(event => {
                     console.log('in subscribe');
@@ -423,20 +433,7 @@ export class AppComponent implements OnInit {
                             this.checkUser$.unsubscribe();
                             // Cancel interval
                         }
-                        console.log('still in');
-                        this.shared.addMinUser(userData.userEmail, userData.username);
-                        this.getCurrentCart(function (cart) {
-                            let total = 0;
-                            let count = 0;
-                            cart.products.forEach(function (product) {
-                                total += product.price;
-                                count++;
-                            });
-                            this.shared.updateSharedVar('cartItemCount', count);
-                            this.shared.updateSharedVar('cart', cart);
-
-                        });
-
+                        // this.shared.addMinUser(userData.userEmail, userData.username);
                     }
 
                 });
@@ -453,8 +450,7 @@ export class AppComponent implements OnInit {
     };
 
 
-    constructor(private authService: AuthService, private router: Router, private cartService: CartService, private shared: SharedService,private  userService: UserService, private productService: ProductService, private inventoryService: InventoryService, private windowRef: WindowRefService) {
-    };
+
     //     // // Function to redirect users to facebook authentication page
 
     facebook = function () {

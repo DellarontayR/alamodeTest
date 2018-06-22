@@ -58,7 +58,7 @@ export class CartService {
     return this.http.post('/api/remove-cart-item', item).pipe(map(res => { console.log(res); return res; }), catchError(err => this.handleError(err)));
   }
   checkout = function (checkoutData) {
-    return this.http.post('/api/cartCheckout', checkoutData).pipe(map(res => { console.log(res); return res; }), catchError(err => this.handleError(err)));
+    return this.http.post('/api/checkout', checkoutData).pipe(map(res => { console.log(res); return res; }), catchError(err => this.handleError(err)));
   }
 
 }
