@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { filter } from 'rxjs/operators';
 import { Router, NavigationStart, ActivatedRoute, ParamMap } from '@angular/router';
 import { AuthService } from '../../services/auth.service';
+import { MookieEmitService } from '../../services/mookie-emit.service';
 
 @Component({
   selector: 'app-mookie-google',
@@ -11,7 +12,7 @@ import { AuthService } from '../../services/auth.service';
 export class MookieGoogleComponent implements OnInit {
   errorMsg: String;
 
-  constructor(private router: Router, private activatedRoute: ActivatedRoute, private authService: AuthService) { }
+  constructor(private router: Router, private activatedRoute: ActivatedRoute, private authService: AuthService, private mookieEmit: MookieEmitService) { }
 
   ngOnInit() {
     let route = this.router.url;
@@ -20,6 +21,7 @@ export class MookieGoogleComponent implements OnInit {
         this.authService.socialMedia(params.get('token'));
         this.errorMsg = "You're google login was successful";
         setTimeout(() => {
+          this.mookieEmit.emitSessionChange();
           this.router.navigate(['/home']);
           // Display page from preloader in one and half seconds
         }, 1500);

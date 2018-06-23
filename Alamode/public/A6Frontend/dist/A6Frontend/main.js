@@ -592,6 +592,14 @@ var AppComponent = /** @class */ (function () {
             _this.headerComponent.cartItemCount = _this.shared.getSharedVar('cartItemCount');
             _this.headerComponent.loggedIn = _this.shared.getSharedVar('loggedIn');
         });
+        this.mookieEmit.sessionEmitted$.subscribe(function (data) {
+            if (_this.shared.getSharedVar('checkingSession')) {
+                if (!_this.actualInterval.closed)
+                    _this.actualInterval.unsubscribe();
+                _this.shared.updateSharedVar('checkingSession', false);
+                _this.checkSession();
+            }
+        });
         this.checkUser$ = Object(rxjs__WEBPACK_IMPORTED_MODULE_4__["interval"])(30000);
         this.showBody = false;
         this.checkIp();
@@ -1583,6 +1591,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _angular_core__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @angular/core */ "./node_modules/@angular/core/fesm5/core.js");
 /* harmony import */ var _angular_router__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @angular/router */ "./node_modules/@angular/router/fesm5/router.js");
 /* harmony import */ var _services_auth_service__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../../services/auth.service */ "./src/app/services/auth.service.ts");
+/* harmony import */ var _services_mookie_emit_service__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../../services/mookie-emit.service */ "./src/app/services/mookie-emit.service.ts");
 var __decorate = (undefined && undefined.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
@@ -1595,11 +1604,13 @@ var __metadata = (undefined && undefined.__metadata) || function (k, v) {
 
 
 
+
 var MookieFacebookComponent = /** @class */ (function () {
-    function MookieFacebookComponent(router, authService, activatedRoute) {
+    function MookieFacebookComponent(router, authService, activatedRoute, mookieEmit) {
         this.router = router;
         this.authService = authService;
         this.activatedRoute = activatedRoute;
+        this.mookieEmit = mookieEmit;
     }
     MookieFacebookComponent.prototype.ngOnInit = function () {
         var _this = this;
@@ -1609,6 +1620,7 @@ var MookieFacebookComponent = /** @class */ (function () {
                 _this.authService.socialMedia(params.get('token'));
                 _this.errorMsg = "You're facebook login was successful";
                 setTimeout(function () {
+                    _this.mookieEmit.emitSessionChange();
                     _this.router.navigate(['/home']);
                     // Display page from preloader in one and half seconds
                 }, 1500);
@@ -1628,7 +1640,7 @@ var MookieFacebookComponent = /** @class */ (function () {
             template: __webpack_require__(/*! ./mookie-facebook.component.html */ "./src/app/components/mookie-facebook/mookie-facebook.component.html"),
             styles: [__webpack_require__(/*! ./mookie-facebook.component.scss */ "./src/app/components/mookie-facebook/mookie-facebook.component.scss")]
         }),
-        __metadata("design:paramtypes", [_angular_router__WEBPACK_IMPORTED_MODULE_1__["Router"], _services_auth_service__WEBPACK_IMPORTED_MODULE_2__["AuthService"], _angular_router__WEBPACK_IMPORTED_MODULE_1__["ActivatedRoute"]])
+        __metadata("design:paramtypes", [_angular_router__WEBPACK_IMPORTED_MODULE_1__["Router"], _services_auth_service__WEBPACK_IMPORTED_MODULE_2__["AuthService"], _angular_router__WEBPACK_IMPORTED_MODULE_1__["ActivatedRoute"], _services_mookie_emit_service__WEBPACK_IMPORTED_MODULE_3__["MookieEmitService"]])
     ], MookieFacebookComponent);
     return MookieFacebookComponent;
 }());
@@ -1764,6 +1776,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _angular_core__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @angular/core */ "./node_modules/@angular/core/fesm5/core.js");
 /* harmony import */ var _angular_router__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @angular/router */ "./node_modules/@angular/router/fesm5/router.js");
 /* harmony import */ var _services_auth_service__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../../services/auth.service */ "./src/app/services/auth.service.ts");
+/* harmony import */ var _services_mookie_emit_service__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../../services/mookie-emit.service */ "./src/app/services/mookie-emit.service.ts");
 var __decorate = (undefined && undefined.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
@@ -1776,11 +1789,13 @@ var __metadata = (undefined && undefined.__metadata) || function (k, v) {
 
 
 
+
 var MookieGoogleComponent = /** @class */ (function () {
-    function MookieGoogleComponent(router, activatedRoute, authService) {
+    function MookieGoogleComponent(router, activatedRoute, authService, mookieEmit) {
         this.router = router;
         this.activatedRoute = activatedRoute;
         this.authService = authService;
+        this.mookieEmit = mookieEmit;
     }
     MookieGoogleComponent.prototype.ngOnInit = function () {
         var _this = this;
@@ -1790,6 +1805,7 @@ var MookieGoogleComponent = /** @class */ (function () {
                 _this.authService.socialMedia(params.get('token'));
                 _this.errorMsg = "You're google login was successful";
                 setTimeout(function () {
+                    _this.mookieEmit.emitSessionChange();
                     _this.router.navigate(['/home']);
                     // Display page from preloader in one and half seconds
                 }, 1500);
@@ -1809,7 +1825,7 @@ var MookieGoogleComponent = /** @class */ (function () {
             template: __webpack_require__(/*! ./mookie-google.component.html */ "./src/app/components/mookie-google/mookie-google.component.html"),
             styles: [__webpack_require__(/*! ./mookie-google.component.scss */ "./src/app/components/mookie-google/mookie-google.component.scss")]
         }),
-        __metadata("design:paramtypes", [_angular_router__WEBPACK_IMPORTED_MODULE_1__["Router"], _angular_router__WEBPACK_IMPORTED_MODULE_1__["ActivatedRoute"], _services_auth_service__WEBPACK_IMPORTED_MODULE_2__["AuthService"]])
+        __metadata("design:paramtypes", [_angular_router__WEBPACK_IMPORTED_MODULE_1__["Router"], _angular_router__WEBPACK_IMPORTED_MODULE_1__["ActivatedRoute"], _services_auth_service__WEBPACK_IMPORTED_MODULE_2__["AuthService"], _services_mookie_emit_service__WEBPACK_IMPORTED_MODULE_3__["MookieEmitService"]])
     ], MookieGoogleComponent);
     return MookieGoogleComponent;
 }());
@@ -3762,14 +3778,19 @@ var MookieEmitService = /** @class */ (function () {
     function MookieEmitService() {
         this.emitChangeSource = new rxjs__WEBPACK_IMPORTED_MODULE_1__["Subject"]();
         this.emitLarge = new rxjs__WEBPACK_IMPORTED_MODULE_1__["Subject"]();
+        this.emitSession = new rxjs__WEBPACK_IMPORTED_MODULE_1__["Subject"]();
         this.changeEmitted$ = this.emitChangeSource.asObservable();
         this.largeChangeEmitted$ = this.emitLarge.asObservable();
+        this.sessionEmitted$ = this.emitSession.asObservable();
     }
     MookieEmitService.prototype.emitChange = function () {
         this.emitChangeSource.next();
     };
     MookieEmitService.prototype.emitLargeChange = function () {
         this.emitLarge.next();
+    };
+    MookieEmitService.prototype.emitSessionChange = function () {
+        this.emitSession.next();
     };
     MookieEmitService = __decorate([
         Object(_angular_core__WEBPACK_IMPORTED_MODULE_0__["Injectable"])({

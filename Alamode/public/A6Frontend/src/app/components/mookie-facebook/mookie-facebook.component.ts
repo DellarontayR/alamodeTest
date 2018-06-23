@@ -3,6 +3,7 @@ import { Router, NavigationStart, ActivatedRoute, ParamMap } from '@angular/rout
 import { filter, switchMap } from 'rxjs/operators';
 import { AuthService } from '../../services/auth.service';
 import { Observable } from 'rxjs';
+import { MookieEmitService } from '../../services/mookie-emit.service';
 
 @Component({
   selector: 'app-mookie-facebook',
@@ -14,7 +15,7 @@ export class MookieFacebookComponent implements OnInit {
   expired: Boolean;
   routeToken$: Observable<any>
 
-  constructor(private router: Router, private authService: AuthService, private activatedRoute: ActivatedRoute) { }
+  constructor(private router: Router, private authService: AuthService, private activatedRoute: ActivatedRoute, private mookieEmit: MookieEmitService) { }
 
   ngOnInit() {
     let route = this.router.url;
@@ -23,6 +24,7 @@ export class MookieFacebookComponent implements OnInit {
         this.authService.socialMedia(params.get('token'));
         this.errorMsg = "You're facebook login was successful";
         setTimeout(() => {
+          this.mookieEmit.emitSessionChange();
           this.router.navigate(['/home']);
           // Display page from preloader in one and half seconds
         }, 1500);

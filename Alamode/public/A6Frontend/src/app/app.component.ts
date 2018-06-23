@@ -41,7 +41,7 @@ export class AppComponent implements OnInit, AfterViewInit {
     itemNameMap = new Map();
     public showBody: Boolean = false;
     private checkUser$ = interval(3000);
-    private actualInterval: Observable<any>;
+    private actualInterval: any;
 
 
 
@@ -56,6 +56,13 @@ export class AppComponent implements OnInit, AfterViewInit {
         this.mookieEmit.largeChangeEmitted$.subscribe(data=>{
             this.headerComponent.cartItemCount = this.shared.getSharedVar('cartItemCount');
             this.headerComponent.loggedIn = this.shared.getSharedVar('loggedIn');
+        });
+        this.mookieEmit.sessionEmitted$.subscribe(data=>{
+            if(this.shared.getSharedVar('checkingSession')){
+                if(!this.actualInterval.closed) this.actualInterval.unsubscribe();
+                this.shared.updateSharedVar('checkingSession',false);
+                this.checkSession();
+            }
         });
         this.checkUser$ = interval(30000);
         this.showBody = false;
