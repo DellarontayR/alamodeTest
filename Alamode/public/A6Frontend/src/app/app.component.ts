@@ -115,9 +115,6 @@ export class AppComponent implements OnInit, AfterViewInit {
     }
 
     ngAfterViewInit() {
-        console.log(this.shared.getSharedVar('cartItemCount'));
-
-        // this.headerComponent.cartItemCount = this.shared.getSharedVar('cartItemCount');
     }
 
     // Authentication Interceptor that should add jsonwebtoken to header
@@ -347,19 +344,8 @@ export class AppComponent implements OnInit, AfterViewInit {
         let userData = this.shared.getSharedVar('user');
 
         this.cartService.getCart({ cartId: userData.user.cart }).subscribe(data => {
-            console.log(data);
             if (data.success) {
-                let total = 0;
-                let count = 0;
-                data.cart.products.forEach(product => {
-                    total += product.price;
-                    count++;
-                });
-                // this.headerComponent.cartItemCount = count;
-
-                // console.log(this.headerComponent.cartItemCount);
-                this.shared.updateSharedVar('cartItemCount', count);
-                console.log(count);
+                this.shared.updateSharedVar('cartItemCount', data.cart.products.length);
                 this.shared.updateSharedVar('cart', data.cart);
                 return callback(data.cart);
             }
@@ -398,10 +384,8 @@ export class AppComponent implements OnInit, AfterViewInit {
                         if (retUser.success) {
                             newUser = retUser;
                             newUser.success = true;
-                            this.getCurrentCart(function (cart) {
-                                console.log(cart.products.length);
-                                this.headerComponent.cartItemCount = cart.products.length;
-                                this.shared.updateSharedVar('cartItemCount',cart.products.length);
+                            this.getCurrentCart( (cart)=> {
+                                this.mookieEmit.emitLargeChange();
                                 return callback(newUser);
                             });
                         }

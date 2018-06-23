@@ -3,14 +3,14 @@
 <body>
 
   <!-- Mookie Header -->
-  <app-mookie-header *ngIf="showBody"></app-mookie-header>
+  <app-mookie-header [ngClass]="{'show':showBody,'hide':!showBody}"></app-mookie-header>
 
   <!-- Main Angular view where routes will be rendered-->
   <!-- <div class="main-view" ng-show="main.loadme" ng-view></div> -->
   <router-outlet *ngIf="showBody" class="animated fadeIn fadeOut"></router-outlet>
 
   <!-- Mookie footer -->
-  <app-mookie-footer *ngIf="showBody"></app-mookie-footer>
+  <app-mookie-footer [ngClass]="{'show':showBody,'hide':!showBody}"></app-mookie-footer>
 
   <app-mookie-preloader class="full" *ngIf="!showBody"></app-mookie-preloader>
 
