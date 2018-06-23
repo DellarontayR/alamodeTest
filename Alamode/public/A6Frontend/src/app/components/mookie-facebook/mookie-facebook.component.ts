@@ -22,6 +22,8 @@ export class MookieFacebookComponent implements OnInit {
       ).subscribe((route: ActivatedRoute) => {
         route.url.subscribe(data => {
           console.log(data);
+          console.log(data.toString());
+          console.log('herrre');
           if (data.toString().startsWith('/facebook') && data.toString() !== '/facebook/error') {
             this.activatedRoute.paramMap.subscribe((params: ParamMap) => {
               this.authService.socialMedia(params.get('token'));
