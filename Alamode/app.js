@@ -31,7 +31,7 @@ app.use('/api', appRoutes);
 // const publicPath = path.resolve(__dirname, "public");
 // const mediaPath = path.join(publicPath, "/imgs/Media");
 
-app.use('/sites/default/files', express.static(mediaPath));
+// app.use('/sites/default/files', express.static(mediaPath));
 mongoose.Promise = global.Promise;
 
 
