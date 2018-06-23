@@ -1,0 +1,86 @@
+<!-- Page Wrapper -->
+<div class="page-wrapper">
+
+  <!-- Container -->
+  <section class="container padding-top-3x padding-bottom">
+
+    <h1 class="space-top-half">Shopping Cart</h1>
+    <div class="row padding-top">
+
+      <!-- Cart -->
+      <div class="col-sm-8 padding-bottom-2x">
+        <p class="text-sm">
+          <span class="text-gray">Currently</span> {{cartItemCount || 0}} items
+          <span class="text-gray"> in cart</span>
+        </p>
+        <div class="shopping-cart container">
+
+          <div class="item row" *ngFor="let cartItem of cartProducts;let index = index;trackBy:trackByIndex">
+            <a  class="item-thumb">
+              <img (src)="cartItem.imagePath" alt="Item">
+            </a>
+            <div class="item-details">
+              <h3 class="item-title">{{cartItem.title}}</h3>
+              <h4 class="item-price">{{cartItem.price}} x {{cartItem.qty}}</h4>
+              <h4 class="item-price">{{cartItem.subtotalOnProduct}}</h4>
+
+              <div class="count-input">
+                <a class="incr-btn" data-action="decrease"  (click)="removeItem(cartItem)" *ngIf="cartItem.qty >=2">-</a>
+                <input class="quantity" type="text" (value)="cartItem.qty">
+                <a class="incr-btn" data-action="increase"  (click)="addItem(cartItem)">+</a>
+              </div>
+            </div>
+            <a  class="item-remove" data-toggle="tooltip" data-placement="top" title="Remove" (click)="deleteItem(cartItem)">
+              <i class="material-icons remove_shopping_cart"></i>
+            </a>
+          </div>
+        </div>
+
+        <!-- Coupon -->
+        <div class="">
+          <p class="text-gray text-sm">Have discount coupon?</p>
+          <form method="post" class="row">
+            <div class="col-md-8 col-sm-7">
+              <div class="form-element">
+                <input type="text" class="form-control" placeholder="Enter coupon" required>
+              </div>
+            </div>
+            <div class="col-md-4 col-sm-5">
+              <button type="submit" class="btn btn-default btn-ghost btn-block space-top-none space-bottom">Apply Coupon</button>
+            </div>
+          </form>
+        </div>
+      </div>
+      <!-- .col-sm-8 -->
+
+      <!-- Sidebar -->
+      <div class="col-md-3 col-md-offset-1 col-sm-4 padding-bottom-2x">
+        <aside>
+          <h4 class="toolbar-title">Cart subtotal:</h4>
+          <h4 class="amount">${{subtotal}}</h4>
+          <h4 class="toolbar-title">Sales Tax</h4>
+          <h4 class="amount">${{tax}}</h4>
+          <h4 class="toolbar-title">Cart Total</h4>
+          <h4 class="amount">${{total}}</h4>
+
+
+
+          <a *ngIf="justCheckout"  class="btn btn-primary btn-block waves-effect waves-light space-top-none checkoutBtn"
+            (click)="justCheckout = false;">Checkout</a>
+          <a *ngIf="cartChanged"  class="btn btn-primary btn-block waves-effect waves-light space-top-none checkoutBtn"
+            (click)="updateCart();">Update Cart</a>
+          <div *ngIf="!justCheckout">
+            <a routerLink="/ontheway" class="btn btn-primary btn-block waves-effect waves-light space-top-none checkoutBtn">Delivery</a>
+            <a  class="btn btn-primary btn-block waves-effect waves-light space-top-none checkoutBtn">Pickup</a>
+            <!-- still have to go to /Checkout at some point -->
+          </div>
+          <!-- instead of going from shopping-car to checkout directly we want to make checkouthappen after the user defines their order type or otherwise -->
+        </aside>
+      </div>
+      <!-- .col-md-3.col-sm-4 -->
+    </div>
+    <!-- .row -->
+  </section>
+  <!-- .container -->
+</div>
+<!-- .page-wrapper -->

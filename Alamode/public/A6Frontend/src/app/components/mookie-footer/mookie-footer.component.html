@@ -1,0 +1,60 @@
+<!-- New footer -->
+<footer id="main-footer">
+  <div class="container">
+    <div class="row">
+      <div class="col-md-6">
+        <p>&copy; 2018 all rights reserved. Mookie Dough LLC</p>
+        <br>
+        <p *ngIf="numberOfSiteVisitors > 0"> Site has been accessed {{numberOfSiteVisitors}} times.</p>
+        <br>
+        <!-- <h3 class="widget-title">
+          <small>Subscribe to the Mookie Dough email list</small>
+        </h3>
+        <form class="subscribe-form" novalidate>
+          <input type="email" name="EMAIL" placeholder="Your e-mail" ng-model="subEmail">
+          <div style="position: absolute; left: -5000px;" aria-hidden="true">
+            <input type="text" name="" tabindex="-1" value="">
+          </div>
+          <button type="submit" ng-click="main.addSubscription(subEmail)">
+            <i class="fas fa-paper-plane"></i>
+          </button>
+        </form> -->
+
+      </div>
+      <div class="col-md-2">
+        <h6>Relevant Links</h6>
+        <ul class="list-unstyled">
+          <li>
+            <a routerLink="/about">About us</a>
+          </li>
+          <li>
+            <a routerLink="/menu">Menu</a>
+          </li>
+          <li>
+            <a routerLink="/thesecret">Social Media</a>
+          </li>
+          <li>
+            <a routerLink="/register">Sign in</a>
+          </li>
+        </ul>
+      </div>
+      <div class="col-md-2">
+        <h6>Our team</h6>
+        <ul class="list-unstyled">
+          <li>
+            <a href="https://www.linkedin.com/in/abempah/">Bempah</a>
+          </li>
+          <li>
+            <a href="https://www.linkedin.com/in/akim-richards-a8303610a/">Akim</a>
+          </li>
+          <li>
+            <a href="https://www.linkedin.com/in/dellarontay/">Dellarontay</a>
+          </li>
+          <li>
+            <a href="https://www.linkedin.com/in/oluwaseyi-olaleye-a523b210a/">Oluwaseyi</a>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</footer>

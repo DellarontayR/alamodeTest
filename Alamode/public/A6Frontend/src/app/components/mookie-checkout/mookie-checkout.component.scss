@@ -1,0 +1,406 @@
+// ontheway css
+.order-input {
+    width: 600px;
+    height: 40px;
+    background-color: #333333;
+    /* position: relative;
+    left: -50%;
+    border: dotted red 1px; */
+    z-index: 9999;
+    margin-top: 40px;
+    padding: 10px;
+    color: white;
+    border: 0px;
+    -webkit-animation: slideUpLong 0.5s;
+    -o-animation: slideUpLong 0.5s;
+    animation: slideUpLong 0.5s;
+}
+
+.hide-input {
+    display: none;
+}
+
+.way-header {
+    text-align: center;
+    vertical-align: center;
+}
+
+#infowindow-content .title {
+    font-weight: bold;
+}
+
+#infowindow-content {
+    display: none;
+}
+
+@keyframes fadein {
+    from {
+        opacity: 0;
+    }
+    to {
+        opacity: 1;
+    }
+}
+
+@keyframes fadeout {
+    from {
+        opacity: 1;
+    }
+    to {
+        opacity: 0;
+    }
+}
+
+.otw-spinner {
+    padding-top: 20px;
+    width: 100%;
+    text-align: center;
+    vertical-align: center;
+}
+
+.mookie-confirm {
+    -webkit-animation: slideInUp 1s;
+    -o-animation: slideInUp 1s;
+    animation: slideInUp 1s;
+    -webkit-animation: fadein 1s;
+    -o-animation: fadein 1s;
+    animation: fadein 1s;
+}
+
+.mookie-confirm.ng-leave {
+    -webkit-animation: fadeout 1s;
+    -o-animation: fadeout 1s;
+    animation: fadeout 1s;
+}
+
+.mookie-confirm-message {
+    background-color: #333333;
+    color: white;
+}
+
+#g-map #infowindow-content {
+    display: inline;
+}
+
+.order-input::placeholder {
+    color: white;
+}
+
+.order-input::-moz-placeholder {
+    color: white;
+}
+
+.order-input:-ms-input-placeholder {
+    /* Internet Explorer 10-11 */
+    color: white;
+}
+
+.order-input::-ms-input-placeholder {
+    /* Microsoft Edge */
+    color: white;
+}
+
+@media screen and (max-width:600px) {
+    .order-input {
+        width: 300px;
+    }
+}
+
+.order-frame {
+    position: absolute;
+    left: 50%;
+    top: 15%;
+}
+
+.receipt {
+    /* background: #ff84a1; */
+    color: #3a3e59;
+    font-family: 'Raleway', Arial, sans-serif;
+    max-width: 400px;
+    margin: 5vh auto 0 auto;
+    transition: .3s;
+    box-shadow: 0 3px 10px rgba(0, 0, 0, .2);
+}
+
+.receipt .hoverable {
+    transition: .3s;
+    box-shadow: 0 3px 10px rgba(0, 0, 0, .2);
+}
+
+.receipt .hoverable:hover {
+    box-shadow: 0 5px 20px rgba(0, 0, 0, .3);
+}
+
+/* receipt header styles */
+
+.receipt-header {
+    width: 100%;
+}
+
+.receipt-header__top {
+    display: flex;
+    align-items: center;
+    background: white;
+    width: 100%;
+    border-radius: 4px 4px 0 0;
+}
+
+// .receipt-header__logo {
+//     width: 10%;
+//     padding: 30px;
+//     background-image: url("../imgs/Media/goodmookie.svg");
+// }
+.receipt-header__meta {
+    position: relative;
+    width: 90%;
+    height: 100%;
+    margin-left: 15px;
+    line-height: 1.7rem;
+    opacity: .3;
+}
+
+.receipt-header__serial {
+    display: block;
+}
+
+.receipt-header__number {
+    position: absolute;
+    top: 15px / 2;
+    right: 0;
+    transform: rotate(270deg);
+    opacity: .2;
+}
+
+.receipt-header__greeting {
+    clear: both;
+}
+
+/* // Greeting styles */
+
+.receipt-header__greeting {
+    position: relative;
+    background: white;
+    padding: 0 15px;
+    padding-left: 15px * 2;
+}
+
+.receipt-header__name {
+    display: block;
+    font-weight: bold;
+    font-size: 1.3rem;
+    margin-bottom: 15px / 2;
+}
+
+.receipt-header__count {
+    opacity: .4;
+    font-size: 90%;
+}
+
+.receipt-header__border {
+    position: absolute;
+    left: 0;
+    top: 0;
+    height: 100%;
+    width: 3px;
+    background-color: #429fff;
+}
+
+.receipt-header__spacing {
+    display: block;
+    background: white;
+    width: 100%;
+    height: 15px * 1.5;
+}
+
+/* // Cart styles */
+
+.cart {
+    background: white;
+    padding: 30px;
+    padding-top: 15px;
+    border-bottom: 2px dashed #333333;
+    border-radius: 0 0 5px 5px;
+}
+
+.cart__receipt-header {
+    margin-top: 0;
+    text-align: center;
+}
+
+.cart__hr {
+    border: none;
+    padding: 0;
+    margin: 0;
+    margin-bottom: 30px;
+    border-bottom: 3px solid #333333;
+}
+
+.list {
+    margin: 0;
+    padding: 0;
+    counter-reset: item-counter;
+}
+
+.list__item {
+    display: flex;
+    width: 100%;
+    padding-top: 30px;
+    padding-bottom: 30px;
+    border-bottom: 1px dashed rgba(0, 0, 0, .1);
+}
+
+.list__item:last-child {
+    border-bottom: none;
+}
+
+.list__item:before {
+    content: counter(item-counter);
+    counter-increment: item-counter;
+    margin-right: 15px;
+}
+
+.list__name {
+    flex: 1;
+    align-self: flex-start;
+}
+
+.list__price {
+    align-self: flex-end;
+    text-align: right;
+    font-weight: bold;
+}
+
+.cart__total {
+    display: flex;
+    width: 100%;
+}
+
+.cart__total-label {
+    margin: 0;
+    flex: 1;
+    text-transform: uppercase;
+}
+
+.cart__total-price {
+    align-self: flex-end;
+    font-weight: bold;
+    text-align: right;
+}
+
+/* p {
+	text-align: center;
+	opacity: .3;
+	transition: .3s;
+	position: absolute;
+	bottom: 2vh;
+	left: 0; right: 0;
+	margin: 0 auto;
+	
+	 &:hover { opacity: 1; } 
+}*/
+
+h3 {
+    font-size: 14px;
+}
+
+// > ontheway css
+// Checkout css
+/* .field {
+    background: transparent;
+    font-weight: 300;
+    border: 0;
+    color: #31325F;
+    outline: none;
+    padding-right: 10px;
+    padding-left: 10px;
+    cursor: text;
+    width: 100%;
+    height: 40px;
+    float: right;
+} */
+
+/* .field::-webkit-input-placeholder {
+    color: #CFD7E0;
+}
+
+.field::-moz-placeholder {
+    color: #CFD7E0;
+}
+
+.field:-ms-input-placeholder {
+    color: #CFD7E0;
+} */
+
+.checkoutBtn,
+.checkoutBtn:hover,
+.checkoutBtn:active,
+.checkoutBtn:focus {
+    background-color: #333333;
+}
+
+.field::placeholder {
+    background-color: #333333;
+    color: white;
+    border: 0;
+    padding: 0;
+}
+
+.field {
+    border: 0px;
+    width: 100%;
+    padding: 0px;
+    color: white;
+    background-color: #333333;
+}
+
+.field:focus {
+    border: 0px;
+    outline-offset: 0px;
+    outline-color: white;
+    background-color: #333333;
+}
+
+.group {
+    box-shadow: 0 7px 14px 0 rgba(49, 49, 93, 0.10), 0 3px 6px 0 rgba(0, 0, 0, 0.08);
+    border-radius: 4px;
+    /* margin-bottom: 20px; */
+    padding: 20px;
+    background-color: #333333;
+    margin-bottom: 20px;
+}
+
+label {
+    display: block;
+    font-size: 14px;
+    margin-bottom: 8px;
+    font-weight: 500;
+    position: relative;
+    font-weight: 300;
+    height: 40px;
+    /* line-height: 40px; */
+    /* margin-left: 20px; */
+}
+
+.checkoutMsg {
+    width: 100%;
+    padding-top: 5px;
+}
+
+.stripeElement {
+    color: white;
+}
+
+// > checkout css
+.hidden {
+    display: none;
+}
+
+shown {
+    display: block;
+}
+
+
+
+.card-body{
+    width:100%;
+}

@@ -25,7 +25,7 @@ var child_process = require('child_process');
 app.use(morgan('dev'));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
-app.use(express.static(__dirname + '/public'));
+app.use(express.static(__dirname + '/public/A6Frontend/dist/A6Frontend/'));
 app.use('/api', appRoutes);
 
 const publicPath = path.resolve(__dirname, "public");
@@ -60,7 +60,9 @@ mongoose.connect('mongodb://13.56.151.113:27017/production', function (err) {
  * Redirect to main template of the single page application
  */
 app.get('*', function (req, res) {
-    res.sendFile(path.join(__dirname + '/public/views/index.html'));
+    // res.sendFile(path.join(__dirname + '/public/views/index.html'));
+    res.sendFile(path.join(__dirname + '/public/A6Frontend/dist/A6Frontend/index.html'));
+
 });
 
 app.get('/imageTest', function (req, res) {

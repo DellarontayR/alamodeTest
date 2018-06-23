@@ -1,0 +1,125 @@
+<div id="mainWrapper" class="container">
+
+	<h1 style="text-align:center;font-family:'Lato" class="logo-style">Mookie Dough Delivery Coming soon</h1>
+	<section class="row">
+		<div class="product-card col-xs-12 col-sm-6 col-md-4 col-lg-3 product-shadow" *ngFor="let catalogProduct of products">
+			<figure class="snip1418">
+				<p [ngClass]="{'inStock': catalogProduct.inStock == 'In Stock', 'notInStock': catalogProduct.inStock == 'Not In Stock'}">{{catalogProduct.inStock}}</p>
+
+				<img class="mookie-product-img" (src)="catalogProduct.imagePath" alt="sample85" />
+
+				<div class="add-to-cart" onclick="">
+					<i class="ion-android-add"></i>
+					<span (click)="addToCart(catalogProduct,catalogProduct._id);">
+						<a class="nah"></a>Buy Now</span>
+				</div>
+				<figcaption>
+					<h3>{{catalogProduct.title}}</h3>
+					<!-- <p>{{catalogProduct.description}}</p> -->
+					<div class="price">
+						{{catalogProduct.price | currency}}
+					</div>
+				</figcaption>
+			</figure>
+		</div>
+	</section>
+
+	<!-- 
+	<section id="summer-collection">
+		<div class="container">
+			<div class="sc-content">
+				<h1>Exclusive Catering</h1>
+				<p class="description">Contact Andrew Bempah or Oluwaseyi Olaleye at bempah@mookiedough.com and olaleye@mookiedough.com for exclusive catering
+					for Stanford club events and nearby areas
+				</p>
+			</div>
+			<div class="sc-media">
+				<div class="sc-media-bg">
+					<img src="assets/imgs/M00KIE.jpg" alt="sc-image" /> </div>
+			</div>
+		</div>
+	</section> -->
+
+	<!-- NEW HOME -->
+	<div class="newHome">
+		<section id="summer-collection">
+			<div class="container">
+				<div style="text-align:center;">
+					<div class="row">
+						<div class="sc-content col-lg-6">
+							<h1>Exclusive Catering</h1>
+							<p class="description">Contact Andrew Bempah or Oluwaseyi Olaleye at bempah@mookiedough.com and olaleye@mookiedough.com for exclusive catering
+								for Stanford club events and nearby areas
+							</p>
+						</div>
+						<div class="sc-media col-lg-6">
+								<div>
+									<img src="assets/imgs/M00KIE.jpg" alt="sc-image" /> </div>
+							</div>
+						<!-- <div style="width:100%; text-align:center;">
+							
+						</div> -->
+
+					</div>
+
+
+				</div>
+
+
+			</div>
+		</section>
+
+		<section id="products">
+			<div class="container">
+				<div class="products-header">
+					<h2>popular products</h2>
+					<p>Our Artisian frozen cookie dough bricks will leave you wanting more</p>
+				</div>
+				<div class="product product-1">
+					<figure>
+						<img src="assets/imgs/OGMookiepackaging.png" alt="product-image">
+						<figcaption>Cookie Dough Bricks</figcaption>
+						<figcaption>$ 2.99</figcaption>
+					</figure>
+				</div>
+				<div class="product product-2">
+					<figure>
+						<img src="assets/imgs/cookies.png" alt="product-image">
+						<figcaption>Cookie Dough Bricks</figcaption>
+						<figcaption>$ 2.99</figcaption>
+					</figure>
+				</div>
+				<div class="product product-3">
+					<figure>
+						<img src="assets/imgs/Ogmookieconfetti.png" alt="product-image">
+						<figcaption>Cookie Dough Bricks</figcaption>
+						<figcaption>$ 2.99</figcaption>
+					</figure>
+				</div>
+				<div class="product product-4">
+					<figure>
+						<img src="assets/imgs/redvelvet.png" alt="product-image">
+						<figcaption>Cookie Dough Bricks</figcaption>
+						<figcaption>$ 2.99</figcaption>
+					</figure>
+				</div>
+			</div>
+		</section>
+		<section id="collections">
+			<div class="container">
+				<div class="c-1">
+					<div class="c-1-image-holder">
+						<img src="assets/imgs/mookiecar.svg" alt="image"> </div>
+				</div>
+				<div class="c-2">
+					<h2>Work Coming Soon</h2>
+					<hr />
+					<div class="c-2-image-holder">
+						<img class="left" src="assets/imgs/dorm5-min.jpg" alt="">
+						<img class="right" src="assets/imgs/header3.png" alt="">
+					</div>
+				</div>
+			</div>
+		</section>
+	</div>
+</div>

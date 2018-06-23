@@ -665,7 +665,7 @@ module.exports = function (router) {
                                             var receipt = new Receipt();
                                             receipt.customerName = req.body.user.username;
                                             receipt.customerAddress = req.body.deliveryLocation;
-                                            receipt.customerCart = req.body.cart._id;
+                                            receipt.customerCart = req.body.cart;
                                             receipt.geometryAddress = req.body.deliveryLatLng;
 
                                             receipt.save(function (err, newReceipt) {
@@ -696,6 +696,7 @@ module.exports = function (router) {
                                                                         from: '6502514237',
                                                                         body: 'New order:\ncustomerName: ' + newOrder.customerReceipt.customerCart.user.username + 'Address: ' +
                                                                             newOrder.customerAddress + ''
+                                                                            // Add link to customer order
                                                                     }, function (err) {
                                                                         console.log('error');
                                                                         console.log(err);
@@ -1072,7 +1073,7 @@ module.exports = function (router) {
     //     }
     // });
 
-    router.post('/updateUserCart', function (req, res) {
+    router.post('/updateCart', function (req, res) {
         if (req.body.cartProducts === null || req.body.cartId === null || req.body.cartId === '') {
             res.json({ success: false, message: 'Cant get cart to update' });
         }
@@ -1272,6 +1273,7 @@ module.exports = function (router) {
 
     // User api Endpoint
     router.post('/getUser', function (req, res) {
+        console.log(req.body);
         User.findOne({ email: req.body.userEmail }).select().exec(function (err, user) {
             if (err || !user) {
                 res.json({ success: false, message: 'There was another error', err: err });
@@ -1288,7 +1290,7 @@ module.exports = function (router) {
     });
 
     // cont.
-    router.get('/getUsers', function (req, res) {
+    router.post('/getUsers', function (req, res) {
         User.find({}).select('email username permission cart').exec(function (err, users) {
             if (err) {
                 res.json({ success: false, message: "User List retrieval failed" });
@@ -1436,6 +1438,7 @@ module.exports = function (router) {
     });
     // Route for user logins
     router.post('/authenticate', function (req, res) {
+        console.log(req.body);
         var loginUser = (req.body.email).toLowerCase(); // Ensure username is checked in lowercase against database
         User.findOne({ email: loginUser }).select('email username password active').exec(function (err, user) {
             if (err) {
@@ -1836,6 +1839,13 @@ module.exports = function (router) {
     // Route to get the currently logged in user    
     router.post('/me', function (req, res) {
         res.send(req.decoded); // Return the token acquired from middleware
+    });
+
+    // Check if user has a database field
+    router.post('/checkUserDB',function(req,res){
+        if(req.decoded.email){
+
+        }
     });
 
     // Route to provide the user with a new token to renew session
