@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild, AfterViewInit,ViewChildren } from '@angular/core';
+import { Component, OnInit, ViewChild, AfterViewInit, ViewChildren } from '@angular/core';
 import { AuthService } from './services/auth.service';
 console.log("Hello! :) Welcome Mookie Dough inspector. If you're a Mookie Dough advocate and would like to see more of it near you email readus@mookiedough.com <3");
 
@@ -44,24 +44,25 @@ export class AppComponent implements OnInit, AfterViewInit {
 
 
 
-    constructor(private authService: AuthService, private router: Router, private cartService: CartService, private shared: SharedService, private userService: UserService, private productService: ProductService, private inventoryService: InventoryService, private windowRef: WindowRefService, private mookieEmit:MookieEmitService) {
-    
+    constructor(private authService: AuthService, private router: Router, private cartService: CartService, private shared: SharedService, private userService: UserService, private productService: ProductService, private inventoryService: InventoryService, private windowRef: WindowRefService, private mookieEmit: MookieEmitService) {
+
     };
 
     ngOnInit() {
-        this.mookieEmit.changeEmitted$.subscribe(data=>{
+        this.mookieEmit.changeEmitted$.subscribe(data => {
             this.headerComponent.cartItemCount = this.shared.getSharedVar('cartItemCount');
         });
-        this.mookieEmit.largeChangeEmitted$.subscribe(data=>{
+        this.mookieEmit.largeChangeEmitted$.subscribe(data => {
             this.headerComponent.cartItemCount = this.shared.getSharedVar('cartItemCount');
             this.headerComponent.loggedIn = this.shared.getSharedVar('loggedIn');
+
         });
-        this.mookieEmit.sessionEmitted$.subscribe(data=>{
-            if(this.shared.getSharedVar('checkingSession')){
-                this.shared.updateSharedVar('checkingSession',false);
+        this.mookieEmit.sessionEmitted$.subscribe(data => {
+            if (this.shared.getSharedVar('checkingSession')) {
+                this.shared.updateSharedVar('checkingSession', false);
                 this.checkSession();
             }
-            else{
+            else {
                 this.checkSession();
             }
         });
@@ -175,7 +176,7 @@ export class AppComponent implements OnInit, AfterViewInit {
 
     // updateCart
 
-    updateCart = function(event){
+    updateCart = function (event) {
         console.log(event);
         this.headerComponent.cartItemCount = event;
     };
@@ -368,7 +369,6 @@ export class AppComponent implements OnInit, AfterViewInit {
                 userData.userEmail = data.email;
                 userData.username = data.username;
                 console.log(data);
-                this.shared.updateSharedVar('loggedIn', true);
                 // this.shared.addMinUser(userData.userEmail, userData.username);
                 if (data.username === undefined) {
                     this.authService.logout();
@@ -380,12 +380,15 @@ export class AppComponent implements OnInit, AfterViewInit {
                     this.userService.getUser().subscribe(retUser => {
                         let newUser: ILooseObject;
                         newUser = {};
-                        this.shared.updateSharedVar('user', retUser);
-                        console.log(this.shared.getSharedVar('user'));
                         if (retUser.success) {
+                            this.shared.updateSharedVar('loggedIn', true);
+                            this.shared.updateSharedVar('user', retUser);
+                            console.log(this.shared.getSharedVar('user'));
                             newUser = retUser;
                             newUser.success = true;
-                            this.getCurrentCart( (cart)=> {
+                            this.mookieEmit.emitLargeChange();
+
+                            this.getCurrentCart((cart) => {
                                 this.mookieEmit.emitLargeChange();
                                 return callback(newUser);
                             });

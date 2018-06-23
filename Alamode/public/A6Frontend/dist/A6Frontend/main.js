@@ -474,7 +474,6 @@ var AppComponent = /** @class */ (function () {
                     userData.userEmail = data.email;
                     userData.username = data.username;
                     console.log(data);
-                    _this.shared.updateSharedVar('loggedIn', true);
                     // this.shared.addMinUser(userData.userEmail, userData.username);
                     if (data.username === undefined) {
                         _this.authService.logout();
@@ -486,11 +485,13 @@ var AppComponent = /** @class */ (function () {
                         _this.userService.getUser().subscribe(function (retUser) {
                             var newUser;
                             newUser = {};
-                            _this.shared.updateSharedVar('user', retUser);
-                            console.log(_this.shared.getSharedVar('user'));
                             if (retUser.success) {
+                                _this.shared.updateSharedVar('loggedIn', true);
+                                _this.shared.updateSharedVar('user', retUser);
+                                console.log(_this.shared.getSharedVar('user'));
                                 newUser = retUser;
                                 newUser.success = true;
+                                _this.mookieEmit.emitLargeChange();
                                 _this.getCurrentCart(function (cart) {
                                     _this.mookieEmit.emitLargeChange();
                                     return callback(newUser);
