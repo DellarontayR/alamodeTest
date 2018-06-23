@@ -21,6 +21,8 @@ import { MookieManageInventoryComponent } from './components/mookie-manage-inven
 import { MookieManageOrderComponent } from './components/mookie-manage-order/mookie-manage-order.component';
 import { MookieFacebookComponent } from './components/mookie-facebook/mookie-facebook.component';
 import { MookieGoogleComponent } from './components/mookie-google/mookie-google.component';
+import { AuthGuard } from './auth.guard';
+import { AdminGuard } from './admin.guard';
 
 
 
@@ -32,33 +34,37 @@ const routes: Routes = [
   { path: 'about', component: MookieAboutComponent },
   { path: 'thesecret', component: MookieSocialComponent },
   { path: 'register', component: MookieRegisterComponent },
-  { path: 'account', component: MookieAccountComponent },
-  { path: 'shopping-cart', component: MookieCartComponent },
-  { path: 'ontheway', component: MookieCheckoutComponent },
-  { path: 'orders/:orderId', component: MookieOrdersComponent },
+  { path: 'account', component: MookieAccountComponent, canLoad: [AuthGuard] },
+  { path: 'shopping-cart', component: MookieCartComponent, canLoad: [AuthGuard] },
+  { path: 'ontheway', component: MookieCheckoutComponent, canLoad: [AuthGuard] },
+  { path: 'orders/:orderId', component: MookieOrdersComponent, canLoad: [AuthGuard] },
   { path: 'facebook/:token', component: MookieFacebookComponent },
   { path: 'facebook/error', component: MookieFacebookComponent },
   { path: 'google/:token', component: MookieGoogleComponent },
   { path: 'google/error', component: MookieGoogleComponent },
   {
-    path: 'management', component: MookieManageComponent,
+    path: 'management', component: MookieManageComponent, canLoad: [AdminGuard],
     children: [{
       path: 'users',
-      component: MookieManageUsersComponent
+      component: MookieManageUsersComponent,
+      canLoad: [AdminGuard]
     },
     {
       path: 'currentorders',
       component: MookieManageOrdersComponent,
+      canLoad: [AdminGuard],
       children: [
         {
           path: 'order/:orderId',
-          component: MookieManageOrderComponent
+          component: MookieManageOrderComponent,
+          canLoad: [AdminGuard]
         }
       ]
     },
     {
       path: 'inventory',
-      component: MookieManageInventoryComponent
+      component: MookieManageInventoryComponent,
+      canLoad: [AdminGuard]
     }
     ]
   },

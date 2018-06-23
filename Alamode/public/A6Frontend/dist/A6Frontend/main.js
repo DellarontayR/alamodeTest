@@ -23,6 +23,62 @@ webpackEmptyAsyncContext.id = "./src/$$_lazy_route_resource lazy recursive";
 
 /***/ }),
 
+/***/ "./src/app/admin.guard.ts":
+/*!********************************!*\
+  !*** ./src/app/admin.guard.ts ***!
+  \********************************/
+/*! exports provided: AdminGuard */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "AdminGuard", function() { return AdminGuard; });
+/* harmony import */ var _angular_core__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @angular/core */ "./node_modules/@angular/core/fesm5/core.js");
+/* harmony import */ var _services_user_service__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./services/user.service */ "./src/app/services/user.service.ts");
+var __decorate = (undefined && undefined.__decorate) || function (decorators, target, key, desc) {
+    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
+    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
+    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+    return c > 3 && r && Object.defineProperty(target, key, r), r;
+};
+var __metadata = (undefined && undefined.__metadata) || function (k, v) {
+    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
+};
+
+
+var AdminGuard = /** @class */ (function () {
+    function AdminGuard(userService) {
+        this.userService = userService;
+        // Check if user has correct permissions
+        this.check = function () {
+            var _this = this;
+            return this.userService.getPermission().subscribe(function (data) {
+                if (data.permission === 'admin') {
+                    return true;
+                }
+                else {
+                    _this.router.navigate(['/home']);
+                    return false;
+                }
+            });
+        };
+    }
+    AdminGuard.prototype.canActivate = function (next, state) {
+        return this.check();
+    };
+    AdminGuard = __decorate([
+        Object(_angular_core__WEBPACK_IMPORTED_MODULE_0__["Injectable"])({
+            providedIn: 'root'
+        }),
+        __metadata("design:paramtypes", [_services_user_service__WEBPACK_IMPORTED_MODULE_1__["UserService"]])
+    ], AdminGuard);
+    return AdminGuard;
+}());
+
+
+
+/***/ }),
+
 /***/ "./src/app/app-routing.module.ts":
 /*!***************************************!*\
   !*** ./src/app/app-routing.module.ts ***!
@@ -52,12 +108,16 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _components_mookie_manage_order_mookie_manage_order_component__WEBPACK_IMPORTED_MODULE_16__ = __webpack_require__(/*! ./components/mookie-manage-order/mookie-manage-order.component */ "./src/app/components/mookie-manage-order/mookie-manage-order.component.ts");
 /* harmony import */ var _components_mookie_facebook_mookie_facebook_component__WEBPACK_IMPORTED_MODULE_17__ = __webpack_require__(/*! ./components/mookie-facebook/mookie-facebook.component */ "./src/app/components/mookie-facebook/mookie-facebook.component.ts");
 /* harmony import */ var _components_mookie_google_mookie_google_component__WEBPACK_IMPORTED_MODULE_18__ = __webpack_require__(/*! ./components/mookie-google/mookie-google.component */ "./src/app/components/mookie-google/mookie-google.component.ts");
+/* harmony import */ var _auth_guard__WEBPACK_IMPORTED_MODULE_19__ = __webpack_require__(/*! ./auth.guard */ "./src/app/auth.guard.ts");
+/* harmony import */ var _admin_guard__WEBPACK_IMPORTED_MODULE_20__ = __webpack_require__(/*! ./admin.guard */ "./src/app/admin.guard.ts");
 var __decorate = (undefined && undefined.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
     else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
     return c > 3 && r && Object.defineProperty(target, key, r), r;
 };
+
+
 
 
 
@@ -84,33 +144,37 @@ var routes = [
     { path: 'about', component: _components_mookie_about_mookie_about_component__WEBPACK_IMPORTED_MODULE_7__["MookieAboutComponent"] },
     { path: 'thesecret', component: _components_mookie_social_mookie_social_component__WEBPACK_IMPORTED_MODULE_4__["MookieSocialComponent"] },
     { path: 'register', component: _components_mookie_register_mookie_register_component__WEBPACK_IMPORTED_MODULE_5__["MookieRegisterComponent"] },
-    { path: 'account', component: _components_mookie_account_mookie_account_component__WEBPACK_IMPORTED_MODULE_8__["MookieAccountComponent"] },
-    { path: 'shopping-cart', component: _components_mookie_cart_mookie_cart_component__WEBPACK_IMPORTED_MODULE_9__["MookieCartComponent"] },
-    { path: 'ontheway', component: _components_mookie_checkout_mookie_checkout_component__WEBPACK_IMPORTED_MODULE_10__["MookieCheckoutComponent"] },
-    { path: 'orders/:orderId', component: _components_mookie_orders_mookie_orders_component__WEBPACK_IMPORTED_MODULE_11__["MookieOrdersComponent"] },
+    { path: 'account', component: _components_mookie_account_mookie_account_component__WEBPACK_IMPORTED_MODULE_8__["MookieAccountComponent"], canLoad: [_auth_guard__WEBPACK_IMPORTED_MODULE_19__["AuthGuard"]] },
+    { path: 'shopping-cart', component: _components_mookie_cart_mookie_cart_component__WEBPACK_IMPORTED_MODULE_9__["MookieCartComponent"], canLoad: [_auth_guard__WEBPACK_IMPORTED_MODULE_19__["AuthGuard"]] },
+    { path: 'ontheway', component: _components_mookie_checkout_mookie_checkout_component__WEBPACK_IMPORTED_MODULE_10__["MookieCheckoutComponent"], canLoad: [_auth_guard__WEBPACK_IMPORTED_MODULE_19__["AuthGuard"]] },
+    { path: 'orders/:orderId', component: _components_mookie_orders_mookie_orders_component__WEBPACK_IMPORTED_MODULE_11__["MookieOrdersComponent"], canLoad: [_auth_guard__WEBPACK_IMPORTED_MODULE_19__["AuthGuard"]] },
     { path: 'facebook/:token', component: _components_mookie_facebook_mookie_facebook_component__WEBPACK_IMPORTED_MODULE_17__["MookieFacebookComponent"] },
     { path: 'facebook/error', component: _components_mookie_facebook_mookie_facebook_component__WEBPACK_IMPORTED_MODULE_17__["MookieFacebookComponent"] },
     { path: 'google/:token', component: _components_mookie_google_mookie_google_component__WEBPACK_IMPORTED_MODULE_18__["MookieGoogleComponent"] },
     { path: 'google/error', component: _components_mookie_google_mookie_google_component__WEBPACK_IMPORTED_MODULE_18__["MookieGoogleComponent"] },
     {
-        path: 'management', component: _components_mookie_manage_mookie_manage_component__WEBPACK_IMPORTED_MODULE_12__["MookieManageComponent"],
+        path: 'management', component: _components_mookie_manage_mookie_manage_component__WEBPACK_IMPORTED_MODULE_12__["MookieManageComponent"], canLoad: [_admin_guard__WEBPACK_IMPORTED_MODULE_20__["AdminGuard"]],
         children: [{
                 path: 'users',
-                component: _components_mookie_manage_users_mookie_manage_users_component__WEBPACK_IMPORTED_MODULE_13__["MookieManageUsersComponent"]
+                component: _components_mookie_manage_users_mookie_manage_users_component__WEBPACK_IMPORTED_MODULE_13__["MookieManageUsersComponent"],
+                canLoad: [_admin_guard__WEBPACK_IMPORTED_MODULE_20__["AdminGuard"]]
             },
             {
                 path: 'currentorders',
                 component: _components_mookie_manage_orders_mookie_manage_orders_component__WEBPACK_IMPORTED_MODULE_14__["MookieManageOrdersComponent"],
+                canLoad: [_admin_guard__WEBPACK_IMPORTED_MODULE_20__["AdminGuard"]],
                 children: [
                     {
                         path: 'order/:orderId',
-                        component: _components_mookie_manage_order_mookie_manage_order_component__WEBPACK_IMPORTED_MODULE_16__["MookieManageOrderComponent"]
+                        component: _components_mookie_manage_order_mookie_manage_order_component__WEBPACK_IMPORTED_MODULE_16__["MookieManageOrderComponent"],
+                        canLoad: [_admin_guard__WEBPACK_IMPORTED_MODULE_20__["AdminGuard"]]
                     }
                 ]
             },
             {
                 path: 'inventory',
-                component: _components_mookie_manage_inventory_mookie_manage_inventory_component__WEBPACK_IMPORTED_MODULE_15__["MookieManageInventoryComponent"]
+                component: _components_mookie_manage_inventory_mookie_manage_inventory_component__WEBPACK_IMPORTED_MODULE_15__["MookieManageInventoryComponent"],
+                canLoad: [_admin_guard__WEBPACK_IMPORTED_MODULE_20__["AdminGuard"]]
             }
         ]
     },
@@ -750,6 +814,59 @@ var AppModule = /** @class */ (function () {
         })
     ], AppModule);
     return AppModule;
+}());
+
+
+
+/***/ }),
+
+/***/ "./src/app/auth.guard.ts":
+/*!*******************************!*\
+  !*** ./src/app/auth.guard.ts ***!
+  \*******************************/
+/*! exports provided: AuthGuard */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "AuthGuard", function() { return AuthGuard; });
+/* harmony import */ var _angular_core__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @angular/core */ "./node_modules/@angular/core/fesm5/core.js");
+/* harmony import */ var _angular_router__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @angular/router */ "./node_modules/@angular/router/fesm5/router.js");
+/* harmony import */ var _services_auth_service__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./services/auth.service */ "./src/app/services/auth.service.ts");
+/* harmony import */ var _services_user_service__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./services/user.service */ "./src/app/services/user.service.ts");
+var __decorate = (undefined && undefined.__decorate) || function (decorators, target, key, desc) {
+    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
+    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
+    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+    return c > 3 && r && Object.defineProperty(target, key, r), r;
+};
+var __metadata = (undefined && undefined.__metadata) || function (k, v) {
+    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
+};
+
+
+
+
+var AuthGuard = /** @class */ (function () {
+    function AuthGuard(authService, router, userService) {
+        this.authService = authService;
+        this.router = router;
+        this.userService = userService;
+        // Check if user has correct permissions
+        this.check = function () {
+            return this.authService.isLoggedIn();
+        };
+    }
+    AuthGuard.prototype.canActivate = function (next, state) {
+        return this.check();
+    };
+    AuthGuard = __decorate([
+        Object(_angular_core__WEBPACK_IMPORTED_MODULE_0__["Injectable"])({
+            providedIn: 'root'
+        }),
+        __metadata("design:paramtypes", [_services_auth_service__WEBPACK_IMPORTED_MODULE_2__["AuthService"], _angular_router__WEBPACK_IMPORTED_MODULE_1__["Router"], _services_user_service__WEBPACK_IMPORTED_MODULE_3__["UserService"]])
+    ], AuthGuard);
+    return AuthGuard;
 }());
 
 
@@ -1465,8 +1582,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "MookieFacebookComponent", function() { return MookieFacebookComponent; });
 /* harmony import */ var _angular_core__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @angular/core */ "./node_modules/@angular/core/fesm5/core.js");
 /* harmony import */ var _angular_router__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @angular/router */ "./node_modules/@angular/router/fesm5/router.js");
-/* harmony import */ var rxjs_operators__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! rxjs/operators */ "./node_modules/rxjs/_esm5/operators/index.js");
-/* harmony import */ var _services_auth_service__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../../services/auth.service */ "./src/app/services/auth.service.ts");
+/* harmony import */ var _services_auth_service__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../../services/auth.service */ "./src/app/services/auth.service.ts");
 var __decorate = (undefined && undefined.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
@@ -1479,7 +1595,6 @@ var __metadata = (undefined && undefined.__metadata) || function (k, v) {
 
 
 
-
 var MookieFacebookComponent = /** @class */ (function () {
     function MookieFacebookComponent(router, authService, activatedRoute) {
         this.router = router;
@@ -1488,34 +1603,24 @@ var MookieFacebookComponent = /** @class */ (function () {
     }
     MookieFacebookComponent.prototype.ngOnInit = function () {
         var _this = this;
-        this.router.events
-            .pipe(Object(rxjs_operators__WEBPACK_IMPORTED_MODULE_2__["filter"])(function (event) { return event instanceof _angular_router__WEBPACK_IMPORTED_MODULE_1__["NavigationStart"]; })).subscribe(function (route) {
-            var url = route.url.toString();
-            console.log(url);
-            console.log(route);
-            route.url.subscribe(function (data) {
-                console.log(data);
-                console.log(data.toString());
-                console.log('herrre');
-                if (data.toString().startsWith('/facebook') && data.toString() !== '/facebook/error') {
-                    _this.activatedRoute.paramMap.subscribe(function (params) {
-                        _this.authService.socialMedia(params.get('token'));
-                        _this.errorMsg = "You're facebook login was successful";
-                        setTimeout(function () {
-                            _this.router.navigate(['/home']);
-                            // Display page from preloader in one and half seconds
-                        }, 1500);
-                    });
-                }
-                else if (data.toString() === '/facebook/error') {
-                    _this.errorMsg = "There was an error trying to login through facebook";
-                    setTimeout(function () {
-                        _this.router.navigate(['/home']);
-                        // Display page from preloader in one and half seconds
-                    }, 1500);
-                }
+        var route = this.router.url;
+        if (route.startsWith('/facebook') && route !== '/facebook/error') {
+            this.activatedRoute.paramMap.subscribe(function (params) {
+                _this.authService.socialMedia(params.get('token'));
+                _this.errorMsg = "You're facebook login was successful";
+                setTimeout(function () {
+                    _this.router.navigate(['/home']);
+                    // Display page from preloader in one and half seconds
+                }, 1500);
             });
-        });
+        }
+        else if (route.toString() === '/facebook/error') {
+            this.errorMsg = "There was an error trying to login through facebook";
+            setTimeout(function () {
+                _this.router.navigate(['/home']);
+                // Display page from preloader in one and half seconds
+            }, 1500);
+        }
     };
     MookieFacebookComponent = __decorate([
         Object(_angular_core__WEBPACK_IMPORTED_MODULE_0__["Component"])({
@@ -1523,7 +1628,7 @@ var MookieFacebookComponent = /** @class */ (function () {
             template: __webpack_require__(/*! ./mookie-facebook.component.html */ "./src/app/components/mookie-facebook/mookie-facebook.component.html"),
             styles: [__webpack_require__(/*! ./mookie-facebook.component.scss */ "./src/app/components/mookie-facebook/mookie-facebook.component.scss")]
         }),
-        __metadata("design:paramtypes", [_angular_router__WEBPACK_IMPORTED_MODULE_1__["Router"], _services_auth_service__WEBPACK_IMPORTED_MODULE_3__["AuthService"], _angular_router__WEBPACK_IMPORTED_MODULE_1__["ActivatedRoute"]])
+        __metadata("design:paramtypes", [_angular_router__WEBPACK_IMPORTED_MODULE_1__["Router"], _services_auth_service__WEBPACK_IMPORTED_MODULE_2__["AuthService"], _angular_router__WEBPACK_IMPORTED_MODULE_1__["ActivatedRoute"]])
     ], MookieFacebookComponent);
     return MookieFacebookComponent;
 }());
@@ -1657,9 +1762,8 @@ module.exports = ""
 __webpack_require__.r(__webpack_exports__);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "MookieGoogleComponent", function() { return MookieGoogleComponent; });
 /* harmony import */ var _angular_core__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @angular/core */ "./node_modules/@angular/core/fesm5/core.js");
-/* harmony import */ var rxjs_operators__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! rxjs/operators */ "./node_modules/rxjs/_esm5/operators/index.js");
-/* harmony import */ var _angular_router__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! @angular/router */ "./node_modules/@angular/router/fesm5/router.js");
-/* harmony import */ var _services_auth_service__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../../services/auth.service */ "./src/app/services/auth.service.ts");
+/* harmony import */ var _angular_router__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @angular/router */ "./node_modules/@angular/router/fesm5/router.js");
+/* harmony import */ var _services_auth_service__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../../services/auth.service */ "./src/app/services/auth.service.ts");
 var __decorate = (undefined && undefined.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
@@ -1672,7 +1776,6 @@ var __metadata = (undefined && undefined.__metadata) || function (k, v) {
 
 
 
-
 var MookieGoogleComponent = /** @class */ (function () {
     function MookieGoogleComponent(router, activatedRoute, authService) {
         this.router = router;
@@ -1681,29 +1784,24 @@ var MookieGoogleComponent = /** @class */ (function () {
     }
     MookieGoogleComponent.prototype.ngOnInit = function () {
         var _this = this;
-        this.router.events
-            .pipe(Object(rxjs_operators__WEBPACK_IMPORTED_MODULE_1__["filter"])(function (event) { return event instanceof _angular_router__WEBPACK_IMPORTED_MODULE_2__["NavigationStart"]; })).subscribe(function (route) {
-            route.url.subscribe(function (data) {
-                console.log(data);
-                if (data.toString().startsWith('/google') && data.toString() !== '/google/error') {
-                    _this.activatedRoute.paramMap.subscribe(function (params) {
-                        _this.authService.socialMedia(params.get('token'));
-                        _this.errorMsg = "You're google login was successful";
-                        setTimeout(function () {
-                            _this.router.navigate(['/home']);
-                            // Display page from preloader in one and half seconds
-                        }, 1500);
-                    });
-                }
-                else if (data.toString() === '/google/error') {
-                    _this.errorMsg = "There was an error trying to login through google";
-                    setTimeout(function () {
-                        _this.router.navigate(['/home']);
-                        // Display page from preloader in one and half seconds
-                    }, 1500);
-                }
+        var route = this.router.url;
+        if (route.startsWith('/google') && route !== '/google/error') {
+            this.activatedRoute.paramMap.subscribe(function (params) {
+                _this.authService.socialMedia(params.get('token'));
+                _this.errorMsg = "You're google login was successful";
+                setTimeout(function () {
+                    _this.router.navigate(['/home']);
+                    // Display page from preloader in one and half seconds
+                }, 1500);
             });
-        });
+        }
+        else if (route.toString() === '/google/error') {
+            this.errorMsg = "There was an error trying to login through google";
+            setTimeout(function () {
+                _this.router.navigate(['/home']);
+                // Display page from preloader in one and half seconds
+            }, 1500);
+        }
     };
     MookieGoogleComponent = __decorate([
         Object(_angular_core__WEBPACK_IMPORTED_MODULE_0__["Component"])({
@@ -1711,7 +1809,7 @@ var MookieGoogleComponent = /** @class */ (function () {
             template: __webpack_require__(/*! ./mookie-google.component.html */ "./src/app/components/mookie-google/mookie-google.component.html"),
             styles: [__webpack_require__(/*! ./mookie-google.component.scss */ "./src/app/components/mookie-google/mookie-google.component.scss")]
         }),
-        __metadata("design:paramtypes", [_angular_router__WEBPACK_IMPORTED_MODULE_2__["Router"], _angular_router__WEBPACK_IMPORTED_MODULE_2__["ActivatedRoute"], _services_auth_service__WEBPACK_IMPORTED_MODULE_3__["AuthService"]])
+        __metadata("design:paramtypes", [_angular_router__WEBPACK_IMPORTED_MODULE_1__["Router"], _angular_router__WEBPACK_IMPORTED_MODULE_1__["ActivatedRoute"], _services_auth_service__WEBPACK_IMPORTED_MODULE_2__["AuthService"]])
     ], MookieGoogleComponent);
     return MookieGoogleComponent;
 }());

@@ -11,35 +11,27 @@ import { AuthService } from '../../services/auth.service';
 export class MookieGoogleComponent implements OnInit {
   errorMsg: String;
 
-  constructor(private router:Router, private activatedRoute:ActivatedRoute, private authService:AuthService) { }
+  constructor(private router: Router, private activatedRoute: ActivatedRoute, private authService: AuthService) { }
 
   ngOnInit() {
-    this.router.events
-    .pipe(filter(event => event instanceof NavigationStart)
-    ).subscribe((route: ActivatedRoute) => {
-      route.url.subscribe(data => {
-        console.log(data);
-        if (data.toString().startsWith('/google') && data.toString() !== '/google/error') {
-          this.activatedRoute.paramMap.subscribe((params: ParamMap) => {
-            this.authService.socialMedia(params.get('token'));
-            this.errorMsg = "You're google login was successful";
-            setTimeout(() => {
-              this.router.navigate(['/home']);
-              // Display page from preloader in one and half seconds
-            }, 1500);
-          });
-        }
-        else if (data.toString() === '/google/error') {
-          this.errorMsg = "There was an error trying to login through google";
-          setTimeout(() => {
-            this.router.navigate(['/home']);
-            // Display page from preloader in one and half seconds
-          }, 1500);
-        }
+    let route = this.router.url;
+    if (route.startsWith('/google') && route !== '/google/error') {
+      this.activatedRoute.paramMap.subscribe((params: ParamMap) => {
+        this.authService.socialMedia(params.get('token'));
+        this.errorMsg = "You're google login was successful";
+        setTimeout(() => {
+          this.router.navigate(['/home']);
+          // Display page from preloader in one and half seconds
+        }, 1500);
       });
-
-
-    });
+    }
+    else if (route.toString() === '/google/error') {
+      this.errorMsg = "There was an error trying to login through google";
+      setTimeout(() => {
+        this.router.navigate(['/home']);
+        // Display page from preloader in one and half seconds
+      }, 1500);
+    }
   }
 
 }
