@@ -28,8 +28,8 @@ app.use(bodyParser.urlencoded({ extended: true }));
 app.use(express.static(__dirname + '/public/A6Frontend/dist/A6Frontend/'));
 app.use('/api', appRoutes);
 
-const publicPath = path.resolve(__dirname, "public");
-const mediaPath = path.join(publicPath, "/imgs/Media");
+// const publicPath = path.resolve(__dirname, "public");
+// const mediaPath = path.join(publicPath, "/imgs/Media");
 
 app.use('/sites/default/files', express.static(mediaPath));
 mongoose.Promise = global.Promise;
