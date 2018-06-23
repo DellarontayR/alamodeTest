@@ -24,7 +24,7 @@ import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { MookiePreloaderComponent } from './components/mookie-preloader/mookie-preloader.component';
 import { MookieAccountComponent } from './components/mookie-account/mookie-account.component';
 
-import {NgxStripeModule} from 'ngx-stripe'
+import { NgxStripeModule } from 'ngx-stripe'
 
 import { AgmCoreModule, GoogleMapsAPIWrapper } from '@agm/core';
 import { MookieOrdersComponent } from './components/mookie-orders/mookie-orders.component';
@@ -33,6 +33,7 @@ import { MookieManageUsersComponent } from './components/mookie-manage-users/moo
 import { MookieManageOrdersComponent } from './components/mookie-manage-orders/mookie-manage-orders.component';
 import { MookieManageInventoryComponent } from './components/mookie-manage-inventory/mookie-manage-inventory.component';
 import { MookieManageOrderComponent } from './components/mookie-manage-order/mookie-manage-order.component';
+import { MookieModalComponent } from './components/mookie-modal/mookie-modal.component';
 
 
 @NgModule({
@@ -55,7 +56,8 @@ import { MookieManageOrderComponent } from './components/mookie-manage-order/moo
     MookieManageUsersComponent,
     MookieManageOrdersComponent,
     MookieManageInventoryComponent,
-    MookieManageOrderComponent],
+    MookieManageOrderComponent,
+    MookieModalComponent],
   imports: [
     BrowserModule,
     HttpClientModule,
@@ -68,7 +70,9 @@ import { MookieManageOrderComponent } from './components/mookie-manage-order/moo
     NgxStripeModule.forRoot('pk_test_EPjnzpxnrgvUiGWsYrJjqN5t'),
     NgbModule.forRoot(),
   ],
-  providers: [AuthService, {provide:HTTP_INTERCEPTORS,useClass:AppComponent,multi:true},GoogleMapsAPIWrapper],
+  entryComponents: [
+    MookieModalComponent
+  ], providers: [AuthService, { provide: HTTP_INTERCEPTORS, useClass: AppComponent, multi: true }, GoogleMapsAPIWrapper],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

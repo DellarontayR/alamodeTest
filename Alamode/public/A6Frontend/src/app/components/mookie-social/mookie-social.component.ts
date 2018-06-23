@@ -15,7 +15,8 @@ export class MookieSocialComponent implements OnInit {
     let $twit = $('#twit');
     let getInstaHeight = function (event) {
       if (event.origin.indexOf('http://localhost:8081') || event.origin.indexOf('https://www.mookiedough.co')) {
-        var eventData = JSON.parse(event.data);
+        let tempData = event.data.trim();
+        var eventData = JSON.parse(tempData);
         if (eventData.type === "lightwidget_widget_size") {
           $('#insta').css({ height: eventData.size });
           window.removeEventListener("message", getInstaHeight, false);

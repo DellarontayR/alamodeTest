@@ -21,6 +21,7 @@ import { InventoryService } from './services/inventory.service';
 import * as $ from 'jquery';
 import { WindowRefService } from './services/window-ref.service';
 import { MookieHeaderComponent } from './components/mookie-header/mookie-header.component';
+import { MookieEmitService } from './services/mookie-emit.service';
 
 
 
@@ -32,7 +33,7 @@ import { MookieHeaderComponent } from './components/mookie-header/mookie-header.
 })
 export class AppComponent implements OnInit, AfterViewInit {
 
-    @ViewChildren(MookieHeaderComponent) headerComponent: MookieHeaderComponent;
+    @ViewChild(MookieHeaderComponent) headerComponent: MookieHeaderComponent;
 
     title = 'Mookie Dough';
 
@@ -43,10 +44,16 @@ export class AppComponent implements OnInit, AfterViewInit {
 
 
 
-    constructor(private authService: AuthService, private router: Router, private cartService: CartService, private shared: SharedService, private userService: UserService, private productService: ProductService, private inventoryService: InventoryService, private windowRef: WindowRefService) {
+    constructor(private authService: AuthService, private router: Router, private cartService: CartService, private shared: SharedService, private userService: UserService, private productService: ProductService, private inventoryService: InventoryService, private windowRef: WindowRefService, private mookieEmit:MookieEmitService) {
+    
     };
 
     ngOnInit() {
+        this.mookieEmit.changeEmitted$.subscribe(data=>{
+            console.log(data);
+            console.log('here');
+            this.headerComponent.cartItemCount = this.shared.getSharedVar('cartItemCount');
+        });
         this.checkUser$ = interval(30000);
         this.showBody = false;
         this.checkIp();
@@ -159,6 +166,11 @@ export class AppComponent implements OnInit, AfterViewInit {
 
 
     // updateCart
+
+    updateCart = function(event){
+        console.log(event);
+        this.headerComponent.cartItemCount = event;
+    };
     // Adds a email subscription to be added for our newsletters and special announcements
     addSubscription = function (subEmail) {
         let subData = { subEmail: subEmail };

@@ -168,6 +168,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _services_inventory_service__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(/*! ./services/inventory.service */ "./src/app/services/inventory.service.ts");
 /* harmony import */ var _services_window_ref_service__WEBPACK_IMPORTED_MODULE_10__ = __webpack_require__(/*! ./services/window-ref.service */ "./src/app/services/window-ref.service.ts");
 /* harmony import */ var _components_mookie_header_mookie_header_component__WEBPACK_IMPORTED_MODULE_11__ = __webpack_require__(/*! ./components/mookie-header/mookie-header.component */ "./src/app/components/mookie-header/mookie-header.component.ts");
+/* harmony import */ var _services_mookie_emit_service__WEBPACK_IMPORTED_MODULE_12__ = __webpack_require__(/*! ./services/mookie-emit.service */ "./src/app/services/mookie-emit.service.ts");
 var __decorate = (undefined && undefined.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
@@ -190,8 +191,9 @@ console.log("Hello! :) Welcome Mookie Dough inspector. If you're a Mookie Dough 
 
 
 
+
 var AppComponent = /** @class */ (function () {
-    function AppComponent(authService, router, cartService, shared, userService, productService, inventoryService, windowRef) {
+    function AppComponent(authService, router, cartService, shared, userService, productService, inventoryService, windowRef, mookieEmit) {
         this.authService = authService;
         this.router = router;
         this.cartService = cartService;
@@ -200,6 +202,7 @@ var AppComponent = /** @class */ (function () {
         this.productService = productService;
         this.inventoryService = inventoryService;
         this.windowRef = windowRef;
+        this.mookieEmit = mookieEmit;
         this.title = 'Mookie Dough';
         // Item Name map
         this.itemNameMap = new Map();
@@ -239,6 +242,10 @@ var AppComponent = /** @class */ (function () {
             });
         };
         // updateCart
+        this.updateCart = function (event) {
+            console.log(event);
+            this.headerComponent.cartItemCount = event;
+        };
         // Adds a email subscription to be added for our newsletters and special announcements
         this.addSubscription = function (subEmail) {
             var subData = { subEmail: subEmail };
@@ -506,6 +513,11 @@ var AppComponent = /** @class */ (function () {
     ;
     AppComponent.prototype.ngOnInit = function () {
         var _this = this;
+        this.mookieEmit.changeEmitted$.subscribe(function (data) {
+            console.log(data);
+            console.log('here');
+            _this.headerComponent.cartItemCount = _this.shared.getSharedVar('cartItemCount');
+        });
         this.checkUser$ = Object(rxjs__WEBPACK_IMPORTED_MODULE_4__["interval"])(30000);
         this.showBody = false;
         this.checkIp();
@@ -584,7 +596,7 @@ var AppComponent = /** @class */ (function () {
         // Displays returning promises and is apart of image manipulation development scenario
     };
     __decorate([
-        Object(_angular_core__WEBPACK_IMPORTED_MODULE_0__["ViewChildren"])(_components_mookie_header_mookie_header_component__WEBPACK_IMPORTED_MODULE_11__["MookieHeaderComponent"]),
+        Object(_angular_core__WEBPACK_IMPORTED_MODULE_0__["ViewChild"])(_components_mookie_header_mookie_header_component__WEBPACK_IMPORTED_MODULE_11__["MookieHeaderComponent"]),
         __metadata("design:type", _components_mookie_header_mookie_header_component__WEBPACK_IMPORTED_MODULE_11__["MookieHeaderComponent"])
     ], AppComponent.prototype, "headerComponent", void 0);
     AppComponent = __decorate([
@@ -593,7 +605,7 @@ var AppComponent = /** @class */ (function () {
             template: __webpack_require__(/*! ./app.component.html */ "./src/app/app.component.html"),
             styles: [__webpack_require__(/*! ./app.component.scss */ "./src/app/app.component.scss")]
         }),
-        __metadata("design:paramtypes", [_services_auth_service__WEBPACK_IMPORTED_MODULE_1__["AuthService"], _angular_router__WEBPACK_IMPORTED_MODULE_2__["Router"], _services_cart_service__WEBPACK_IMPORTED_MODULE_5__["CartService"], _services_shared_service__WEBPACK_IMPORTED_MODULE_6__["SharedService"], _services_user_service__WEBPACK_IMPORTED_MODULE_7__["UserService"], _services_product_service__WEBPACK_IMPORTED_MODULE_8__["ProductService"], _services_inventory_service__WEBPACK_IMPORTED_MODULE_9__["InventoryService"], _services_window_ref_service__WEBPACK_IMPORTED_MODULE_10__["WindowRefService"]])
+        __metadata("design:paramtypes", [_services_auth_service__WEBPACK_IMPORTED_MODULE_1__["AuthService"], _angular_router__WEBPACK_IMPORTED_MODULE_2__["Router"], _services_cart_service__WEBPACK_IMPORTED_MODULE_5__["CartService"], _services_shared_service__WEBPACK_IMPORTED_MODULE_6__["SharedService"], _services_user_service__WEBPACK_IMPORTED_MODULE_7__["UserService"], _services_product_service__WEBPACK_IMPORTED_MODULE_8__["ProductService"], _services_inventory_service__WEBPACK_IMPORTED_MODULE_9__["InventoryService"], _services_window_ref_service__WEBPACK_IMPORTED_MODULE_10__["WindowRefService"], _services_mookie_emit_service__WEBPACK_IMPORTED_MODULE_12__["MookieEmitService"]])
     ], AppComponent);
     return AppComponent;
 }());
@@ -640,12 +652,14 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _components_mookie_manage_orders_mookie_manage_orders_component__WEBPACK_IMPORTED_MODULE_25__ = __webpack_require__(/*! ./components/mookie-manage-orders/mookie-manage-orders.component */ "./src/app/components/mookie-manage-orders/mookie-manage-orders.component.ts");
 /* harmony import */ var _components_mookie_manage_inventory_mookie_manage_inventory_component__WEBPACK_IMPORTED_MODULE_26__ = __webpack_require__(/*! ./components/mookie-manage-inventory/mookie-manage-inventory.component */ "./src/app/components/mookie-manage-inventory/mookie-manage-inventory.component.ts");
 /* harmony import */ var _components_mookie_manage_order_mookie_manage_order_component__WEBPACK_IMPORTED_MODULE_27__ = __webpack_require__(/*! ./components/mookie-manage-order/mookie-manage-order.component */ "./src/app/components/mookie-manage-order/mookie-manage-order.component.ts");
+/* harmony import */ var _components_mookie_modal_mookie_modal_component__WEBPACK_IMPORTED_MODULE_28__ = __webpack_require__(/*! ./components/mookie-modal/mookie-modal.component */ "./src/app/components/mookie-modal/mookie-modal.component.ts");
 var __decorate = (undefined && undefined.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
     else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
     return c > 3 && r && Object.defineProperty(target, key, r), r;
 };
+
 
 
 
@@ -698,7 +712,8 @@ var AppModule = /** @class */ (function () {
                 _components_mookie_manage_users_mookie_manage_users_component__WEBPACK_IMPORTED_MODULE_24__["MookieManageUsersComponent"],
                 _components_mookie_manage_orders_mookie_manage_orders_component__WEBPACK_IMPORTED_MODULE_25__["MookieManageOrdersComponent"],
                 _components_mookie_manage_inventory_mookie_manage_inventory_component__WEBPACK_IMPORTED_MODULE_26__["MookieManageInventoryComponent"],
-                _components_mookie_manage_order_mookie_manage_order_component__WEBPACK_IMPORTED_MODULE_27__["MookieManageOrderComponent"]
+                _components_mookie_manage_order_mookie_manage_order_component__WEBPACK_IMPORTED_MODULE_27__["MookieManageOrderComponent"],
+                _components_mookie_modal_mookie_modal_component__WEBPACK_IMPORTED_MODULE_28__["MookieModalComponent"]
             ],
             imports: [
                 _angular_platform_browser__WEBPACK_IMPORTED_MODULE_0__["BrowserModule"],
@@ -712,7 +727,9 @@ var AppModule = /** @class */ (function () {
                 ngx_stripe__WEBPACK_IMPORTED_MODULE_20__["NgxStripeModule"].forRoot('pk_test_EPjnzpxnrgvUiGWsYrJjqN5t'),
                 _ng_bootstrap_ng_bootstrap__WEBPACK_IMPORTED_MODULE_17__["NgbModule"].forRoot(),
             ],
-            providers: [_services_auth_service__WEBPACK_IMPORTED_MODULE_10__["AuthService"], { provide: _angular_common_http__WEBPACK_IMPORTED_MODULE_2__["HTTP_INTERCEPTORS"], useClass: _app_component__WEBPACK_IMPORTED_MODULE_4__["AppComponent"], multi: true }, _agm_core__WEBPACK_IMPORTED_MODULE_21__["GoogleMapsAPIWrapper"]],
+            entryComponents: [
+                _components_mookie_modal_mookie_modal_component__WEBPACK_IMPORTED_MODULE_28__["MookieModalComponent"]
+            ], providers: [_services_auth_service__WEBPACK_IMPORTED_MODULE_10__["AuthService"], { provide: _angular_common_http__WEBPACK_IMPORTED_MODULE_2__["HTTP_INTERCEPTORS"], useClass: _app_component__WEBPACK_IMPORTED_MODULE_4__["AppComponent"], multi: true }, _agm_core__WEBPACK_IMPORTED_MODULE_21__["GoogleMapsAPIWrapper"]],
             bootstrap: [_app_component__WEBPACK_IMPORTED_MODULE_4__["AppComponent"]]
         })
     ], AppModule);
@@ -793,7 +810,7 @@ var MookieAboutComponent = /** @class */ (function () {
 /*! no static exports found */
 /***/ (function(module, exports) {
 
-module.exports = "<div class=\"page-wrapper\">\n  <!-- Content -->\n  <section class=\"container padding-top-3x\">\n    <h1 class=\"mobile-center\">Hey,\n      <span class=\"text-semibold\">{{username}}</span>\n    </h1>\n    <!-- <div class=\"row padding-top\">\n        <h1> Current Order Information</h1>\n      </div> -->\n    <div class=\"row padding-top\">\n      <div class=\"col-sm-9 padding-bottom-2x\">\n        <!-- Nav Tabs -->\n        <ul class=\"nav-tabs mobile-center\" role=\"tablist\">\n          <li class=\"active\">\n            <a href=\"#orders\" role=\"tab\" data-toggle=\"tab\">\n              <!-- <i class=\"material-icons shopping_cart\"></i> -->\n              <i class=\"fas fa-shopping-cart fa-xs fa-fw\"></i>\n\n              Orders\n              <!-- Possible number of previous orders -->\n            </a>\n          </li>\n        </ul>\n        <!-- .nav-tabs -->\n\n        <!-- Tab Panes -->\n        <div class=\"tab-content\">\n\n          <div role=\"tabpanel\" class=\"tab-pane fade active in\" id=\"orders\">\n            <div class=\"table-responsive\">\n              <table>\n                <thead>\n                  <tr>\n                    <th>Order #</th>\n                    <th>Date Purchased</th>\n                    <th>Status</th>\n                    <th>Total</th>\n                  </tr>\n                </thead>\n                <tbody>\n                  <tr *ngFor=\"let order of orderHistory;trackBy:orderStartedOn\">\n                    <td>\n                        <a routerLink=\"/orders/{{order._id}}\">{{order.customerReceipt.receiptNumber}}</a>\n                    </td>\n                    <td>{{order.orderStartedOn | date:\"MM/dd/yyyy 'at' h:mma\"}}</td>\n                    <td>{{order.orderStatus}}</td>\n                    <td>{{order.customerReceipt.customerCart.total | currency}}</td>\n                  </tr>\n                </tbody>\n              </table>\n            </div>\n          </div>\n        </div>\n        <!-- .tab-content -->\n      </div>\n      <!-- .col-sm-8 -->\n\n      <!-- Sidebar -->\n      <div class=\"col-sm-3 padding-bottom-2x\">\n        <aside class=\"mobile-center\">\n          <!-- <h3>Your Mookie Dough points:</h3>\n            <h3><span class=\"text-semibold\">0</span> <span class=\"h5\">points</span></h3>\n            <p class=\"text-sm text-gray\">You can spend these points on our products</p> -->\n          <a href=\"/home\" class=\"btn btn-default btn-ghost icon-left btn-block\">\n            <i class=\"material-icons arrow_back\"></i>\n            Go to Shop\n          </a>\n          <button type=\"submit\" class=\"btn btn-primary btn-block waves-effect waves-light space-top-none checkoutBtn\" (click)=\"logout()\">Sign Out</button>\n          <button *ngIf=\"admin\" type=\"submit\" class=\"btn btn-primary btn-block waves-effect waves-light space-top-none checkoutBtn\">\n            <a href=\"/management\">Admin Portal</a>\n          </button>\n\n        </aside>\n      </div>\n      <!-- .col-sm-4 -->\n    </div>\n    <!-- .row -->\n  </section>\n  <!-- .container -->\n\n</div>\n<!-- .page-wrapper -->"
+module.exports = "<div class=\"page-wrapper\">\n  <!-- Content -->\n  <section class=\"container padding-top-3x\">\n    <h1 class=\"mobile-center\">Hey,\n      <span class=\"text-semibold\">{{username}}</span>\n    </h1>\n    <!-- <div class=\"row padding-top\">\n        <h1> Current Order Information</h1>\n      </div> -->\n    <div class=\"row padding-top\">\n      <div class=\"col-sm-9 padding-bottom-2x\">\n        <!-- Nav Tabs -->\n        <ul class=\"nav-tabs mobile-center\" role=\"tablist\">\n          <li class=\"active\">\n            <a href=\"#orders\" role=\"tab\" data-toggle=\"tab\">\n              <!-- <i class=\"material-icons shopping_cart\"></i> -->\n              <i class=\"fas fa-shopping-cart fa-xs fa-fw\"></i>\n\n              Orders\n              <!-- Possible number of previous orders -->\n            </a>\n          </li>\n        </ul>\n        <!-- .nav-tabs -->\n\n        <!-- Tab Panes -->\n        <div class=\"tab-content\">\n\n          <div role=\"tabpanel\" class=\"tab-pane fade active in\" id=\"orders\">\n            <div class=\"table-responsive\">\n              <table>\n                <thead>\n                  <tr>\n                    <th>Order #</th>\n                    <th>Date Purchased</th>\n                    <th>Status</th>\n                    <th>Total</th>\n                  </tr>\n                </thead>\n                <tbody>\n                  <tr *ngFor=\"let order of orderHistory;trackBy:orderStartedOn\">\n                    <td>\n                        <a routerLink=\"/orders/{{order._id}}\">{{order.customerReceipt.receiptNumber}}</a>\n                    </td>\n                    <td>{{order.orderStartedOn | date:\"MM/dd/yyyy 'at' h:mma\"}}</td>\n                    <td>{{order.orderStatus}}</td>\n                    <td>{{order.customerReceipt.customerCart.total | currency}}</td>\n                  </tr>\n                </tbody>\n              </table>\n            </div>\n          </div>\n        </div>\n        <!-- .tab-content -->\n      </div>\n      <!-- .col-sm-8 -->\n\n      <!-- Sidebar -->\n      <div class=\"col-sm-3 padding-bottom-2x\">\n        <aside class=\"mobile-center\">\n          <!-- <h3>Your Mookie Dough points:</h3>\n            <h3><span class=\"text-semibold\">0</span> <span class=\"h5\">points</span></h3>\n            <p class=\"text-sm text-gray\">You can spend these points on our products</p> -->\n          <a routerLink=\"/home\" class=\"btn btn-default btn-ghost icon-left btn-block\">\n            <i class=\"material-icons arrow_back\"></i>\n            Go to Shop\n          </a>\n          <button type=\"submit\" class=\"btn btn-primary btn-block waves-effect waves-light space-top-none checkoutBtn\" (click)=\"logout()\">Sign Out</button>\n          <button *ngIf=\"admin\" type=\"submit\" class=\"btn btn-primary btn-block waves-effect waves-light space-top-none checkoutBtn\">\n            <a routerLink=\"/management\">Admin Portal</a>\n          </button>\n\n        </aside>\n      </div>\n      <!-- .col-sm-4 -->\n    </div>\n    <!-- .row -->\n  </section>\n  <!-- .container -->\n\n</div>\n<!-- .page-wrapper -->"
 
 /***/ }),
 
@@ -907,7 +924,7 @@ var MookieAccountComponent = /** @class */ (function () {
 /*! no static exports found */
 /***/ (function(module, exports) {
 
-module.exports = "<!-- Page Wrapper -->\n<div class=\"page-wrapper\">\n\n  <!-- Container -->\n  <section class=\"container padding-top-3x padding-bottom\">\n\n    <h1 class=\"space-top-half\">Shopping Cart</h1>\n    <div class=\"row padding-top\">\n\n      <!-- Cart -->\n      <div class=\"col-sm-8 padding-bottom-2x\">\n        <p class=\"text-sm\">\n          <span class=\"text-gray\">Currently</span> {{cartItemCount || 0}} items\n          <span class=\"text-gray\"> in cart</span>\n        </p>\n        <div class=\"shopping-cart container\">\n\n          <div class=\"item row\" *ngFor=\"let cartItem of cartProducts;let index = index;trackBy:trackByIndex\">\n            <a  class=\"item-thumb\">\n              <img (src)=\"cartItem.imagePath\" alt=\"Item\">\n            </a>\n            <div class=\"item-details\">\n              <h3 class=\"item-title\">{{cartItem.title}}</h3>\n              <h4 class=\"item-price\">{{cartItem.price}} x {{cartItem.qty}}</h4>\n              <h4 class=\"item-price\">{{cartItem.subtotalOnProduct}}</h4>\n\n              <div class=\"count-input\">\n                <a class=\"incr-btn\" data-action=\"decrease\"  (click)=\"removeItem(cartItem)\" *ngIf=\"cartItem.qty >=2\">-</a>\n                <input class=\"quantity\" type=\"text\" (value)=\"cartItem.qty\">\n                <a class=\"incr-btn\" data-action=\"increase\"  (click)=\"addItem(cartItem)\">+</a>\n              </div>\n            </div>\n            <a  class=\"item-remove\" data-toggle=\"tooltip\" data-placement=\"top\" title=\"Remove\" (click)=\"deleteItem(cartItem)\">\n              <i class=\"material-icons remove_shopping_cart\"></i>\n            </a>\n          </div>\n        </div>\n\n        <!-- Coupon -->\n        <div class=\"\">\n          <p class=\"text-gray text-sm\">Have discount coupon?</p>\n          <form method=\"post\" class=\"row\">\n            <div class=\"col-md-8 col-sm-7\">\n              <div class=\"form-element\">\n                <input type=\"text\" class=\"form-control\" placeholder=\"Enter coupon\" required>\n              </div>\n            </div>\n            <div class=\"col-md-4 col-sm-5\">\n              <button type=\"submit\" class=\"btn btn-default btn-ghost btn-block space-top-none space-bottom\">Apply Coupon</button>\n            </div>\n          </form>\n        </div>\n      </div>\n      <!-- .col-sm-8 -->\n\n      <!-- Sidebar -->\n      <div class=\"col-md-3 col-md-offset-1 col-sm-4 padding-bottom-2x\">\n        <aside>\n          <h4 class=\"toolbar-title\">Cart subtotal:</h4>\n          <h4 class=\"amount\">${{subtotal}}</h4>\n          <h4 class=\"toolbar-title\">Sales Tax</h4>\n          <h4 class=\"amount\">${{tax}}</h4>\n          <h4 class=\"toolbar-title\">Cart Total</h4>\n          <h4 class=\"amount\">${{total}}</h4>\n\n\n\n          <!-- <a href=\"#\" class=\"btn btn-default btn-block waves-effect waves-light\">Update Cart</a> -->\n          <a *ngIf=\"justCheckout\"  class=\"btn btn-primary btn-block waves-effect waves-light space-top-none checkoutBtn\"\n            (click)=\"justCheckout = false;\">Checkout</a>\n          <a *ngIf=\"cartChanged\"  class=\"btn btn-primary btn-block waves-effect waves-light space-top-none checkoutBtn\"\n            (click)=\"updateCart();\">Update Cart</a>\n          <div *ngIf=\"!justCheckout\">\n            <a href=\"/ontheway\" class=\"btn btn-primary btn-block waves-effect waves-light space-top-none checkoutBtn\">Delivery</a>\n            <a  class=\"btn btn-primary btn-block waves-effect waves-light space-top-none checkoutBtn\">Pickup</a>\n            <!-- still have to go to /Checkout at some point -->\n          </div>\n          <!-- instead of going from shopping-car to checkout directly we want to make checkouthappen after the user defines their order type or otherwise -->\n        </aside>\n      </div>\n      <!-- .col-md-3.col-sm-4 -->\n    </div>\n    <!-- .row -->\n  </section>\n  <!-- .container -->\n</div>\n<!-- .page-wrapper -->"
+module.exports = "<!-- Page Wrapper -->\n<div class=\"page-wrapper\">\n\n  <!-- Container -->\n  <section class=\"container padding-top-3x padding-bottom\">\n\n    <h1 class=\"space-top-half\">Shopping Cart</h1>\n    <div class=\"row padding-top\">\n\n      <!-- Cart -->\n      <div class=\"col-sm-8 padding-bottom-2x\">\n        <p class=\"text-sm\">\n          <span class=\"text-gray\">Currently</span> {{cartItemCount || 0}} items\n          <span class=\"text-gray\"> in cart</span>\n        </p>\n        <div class=\"shopping-cart container\">\n\n          <div class=\"item row\" *ngFor=\"let cartItem of cartProducts;let index = index;trackBy:trackByIndex\">\n            <a  class=\"item-thumb\">\n              <img (src)=\"cartItem.imagePath\" alt=\"Item\">\n            </a>\n            <div class=\"item-details\">\n              <h3 class=\"item-title\">{{cartItem.title}}</h3>\n              <h4 class=\"item-price\">{{cartItem.price}} x {{cartItem.qty}}</h4>\n              <h4 class=\"item-price\">{{cartItem.subtotalOnProduct}}</h4>\n\n              <div class=\"count-input\">\n                <a class=\"incr-btn\" data-action=\"decrease\"  (click)=\"removeItem(cartItem)\" *ngIf=\"cartItem.qty >=2\">-</a>\n                <input class=\"quantity\" type=\"text\" (value)=\"cartItem.qty\">\n                <a class=\"incr-btn\" data-action=\"increase\"  (click)=\"addItem(cartItem)\">+</a>\n              </div>\n            </div>\n            <a  class=\"item-remove\" data-toggle=\"tooltip\" data-placement=\"top\" title=\"Remove\" (click)=\"deleteItem(cartItem)\">\n              <i class=\"material-icons remove_shopping_cart\"></i>\n            </a>\n          </div>\n        </div>\n\n        <!-- Coupon -->\n        <div class=\"\">\n          <p class=\"text-gray text-sm\">Have discount coupon?</p>\n          <form method=\"post\" class=\"row\">\n            <div class=\"col-md-8 col-sm-7\">\n              <div class=\"form-element\">\n                <input type=\"text\" class=\"form-control\" placeholder=\"Enter coupon\" required>\n              </div>\n            </div>\n            <div class=\"col-md-4 col-sm-5\">\n              <button type=\"submit\" class=\"btn btn-default btn-ghost btn-block space-top-none space-bottom\">Apply Coupon</button>\n            </div>\n          </form>\n        </div>\n      </div>\n      <!-- .col-sm-8 -->\n\n      <!-- Sidebar -->\n      <div class=\"col-md-3 col-md-offset-1 col-sm-4 padding-bottom-2x\">\n        <aside>\n          <h4 class=\"toolbar-title\">Cart subtotal:</h4>\n          <h4 class=\"amount\">${{subtotal}}</h4>\n          <h4 class=\"toolbar-title\">Sales Tax</h4>\n          <h4 class=\"amount\">${{tax}}</h4>\n          <h4 class=\"toolbar-title\">Cart Total</h4>\n          <h4 class=\"amount\">${{total}}</h4>\n\n\n\n          <a *ngIf=\"justCheckout\"  class=\"btn btn-primary btn-block waves-effect waves-light space-top-none checkoutBtn\"\n            (click)=\"justCheckout = false;\">Checkout</a>\n          <a *ngIf=\"cartChanged\"  class=\"btn btn-primary btn-block waves-effect waves-light space-top-none checkoutBtn\"\n            (click)=\"updateCart();\">Update Cart</a>\n          <div *ngIf=\"!justCheckout\">\n            <a routerLink=\"/ontheway\" class=\"btn btn-primary btn-block waves-effect waves-light space-top-none checkoutBtn\">Delivery</a>\n            <a  class=\"btn btn-primary btn-block waves-effect waves-light space-top-none checkoutBtn\">Pickup</a>\n            <!-- still have to go to /Checkout at some point -->\n          </div>\n          <!-- instead of going from shopping-car to checkout directly we want to make checkouthappen after the user defines their order type or otherwise -->\n        </aside>\n      </div>\n      <!-- .col-md-3.col-sm-4 -->\n    </div>\n    <!-- .row -->\n  </section>\n  <!-- .container -->\n</div>\n<!-- .page-wrapper -->"
 
 /***/ }),
 
@@ -935,6 +952,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _angular_core__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @angular/core */ "./node_modules/@angular/core/fesm5/core.js");
 /* harmony import */ var _services_cart_service__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../../services/cart.service */ "./src/app/services/cart.service.ts");
 /* harmony import */ var _services_shared_service__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../../services/shared.service */ "./src/app/services/shared.service.ts");
+/* harmony import */ var _services_mookie_emit_service__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../../services/mookie-emit.service */ "./src/app/services/mookie-emit.service.ts");
 var __decorate = (undefined && undefined.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
@@ -947,22 +965,27 @@ var __metadata = (undefined && undefined.__metadata) || function (k, v) {
 
 
 
+
 var MookieCartComponent = /** @class */ (function () {
     // username, email
-    function MookieCartComponent(cartService, shared, changeDetector) {
+    function MookieCartComponent(cartService, shared, changeDetector, mookieEmit) {
         this.cartService = cartService;
         this.shared = shared;
         this.changeDetector = changeDetector;
+        this.mookieEmit = mookieEmit;
         this.checkout = false;
         this.cartChanged = false;
         this.justCheckout = true;
-        this.updateCart = function (cart) {
+        this.updateCart = function () {
             var _this = this;
             var cartData = { cartProducts: this.cartProducts, cartId: this.cartId };
             this.cartService.updateCart(cartData).subscribe(function (data) {
                 console.log(data);
                 if (data.success) {
                     _this.cartChanged = false;
+                    console.log(_this.cartProducts);
+                    _this.shared.updateSharedVar('cartItemCount', data.cart.products.length);
+                    _this.mookieEmit.emitChange();
                 }
                 else {
                 }
@@ -1026,11 +1049,8 @@ var MookieCartComponent = /** @class */ (function () {
                 var temp = [];
                 var size = 0;
                 productMap.forEach(function (v, k, m) {
-                    console.log(k);
                     for (var _i = 0, _a = userCart.products; _i < _a.length; _i++) {
                         var element = _a[_i];
-                        console.log(k);
-                        console.log(element);
                         if (element._id === k) {
                             element.qty = productMap.get(element._id);
                             element.subtotalOnProduct = element.qty * element.price;
@@ -1065,7 +1085,7 @@ var MookieCartComponent = /** @class */ (function () {
             template: __webpack_require__(/*! ./mookie-cart.component.html */ "./src/app/components/mookie-cart/mookie-cart.component.html"),
             styles: [__webpack_require__(/*! ./mookie-cart.component.scss */ "./src/app/components/mookie-cart/mookie-cart.component.scss")]
         }),
-        __metadata("design:paramtypes", [_services_cart_service__WEBPACK_IMPORTED_MODULE_1__["CartService"], _services_shared_service__WEBPACK_IMPORTED_MODULE_2__["SharedService"], _angular_core__WEBPACK_IMPORTED_MODULE_0__["ChangeDetectorRef"]])
+        __metadata("design:paramtypes", [_services_cart_service__WEBPACK_IMPORTED_MODULE_1__["CartService"], _services_shared_service__WEBPACK_IMPORTED_MODULE_2__["SharedService"], _angular_core__WEBPACK_IMPORTED_MODULE_0__["ChangeDetectorRef"], _services_mookie_emit_service__WEBPACK_IMPORTED_MODULE_3__["MookieEmitService"]])
     ], MookieCartComponent);
     return MookieCartComponent;
 }());
@@ -1394,7 +1414,7 @@ var MookieCheckoutComponent = /** @class */ (function () {
 /*! no static exports found */
 /***/ (function(module, exports) {
 
-module.exports = "<!-- New footer -->\n<footer id=\"main-footer\">\n  <div class=\"container\">\n    <div class=\"row\">\n      <div class=\"col-md-6\">\n        <p>&copy; 2018 all rights reserved. Mookie Dough LLC</p>\n        <br>\n        <p *ngIf=\"numberOfSiteVisitors > 0\"> Site has been accessed {{numberOfSiteVisitors}} times.</p>\n        <br>\n        <!-- <h3 class=\"widget-title\">\n          <small>Subscribe to the Mookie Dough email list</small>\n        </h3>\n        <form class=\"subscribe-form\" novalidate>\n          <input type=\"email\" name=\"EMAIL\" placeholder=\"Your e-mail\" ng-model=\"subEmail\">\n          <div style=\"position: absolute; left: -5000px;\" aria-hidden=\"true\">\n            <input type=\"text\" name=\"\" tabindex=\"-1\" value=\"\">\n          </div>\n          <button type=\"submit\" ng-click=\"main.addSubscription(subEmail)\">\n            <i class=\"fas fa-paper-plane\"></i>\n          </button>\n        </form> -->\n\n      </div>\n      <div class=\"col-md-2\">\n        <h6>Relevant Links</h6>\n        <ul class=\"list-unstyled\">\n          <li>\n            <a href=\"/about\">About us</a>\n          </li>\n          <li>\n            <a href=\"/menu\">Menu</a>\n          </li>\n          <li>\n            <a href=\"/thesecret\">Social Media</a>\n          </li>\n          <li>\n            <a href=\"/register\">Sign in</a>\n          </li>\n        </ul>\n      </div>\n      <div class=\"col-md-2\">\n        <h6>Our team</h6>\n        <ul class=\"list-unstyled\">\n          <li>\n            <a href=\"https://www.linkedin.com/in/abempah/\">Bempah</a>\n          </li>\n          <li>\n            <a href=\"https://www.linkedin.com/in/akim-richards-a8303610a/\">Akim</a>\n          </li>\n          <li>\n            <a href=\"https://www.linkedin.com/in/dellarontay/\">Dellarontay</a>\n          </li>\n          <li>\n            <a href=\"https://www.linkedin.com/in/oluwaseyi-olaleye-a523b210a/\">Oluwaseyi</a>\n          </li>\n        </ul>\n      </div>\n    </div>\n  </div>\n</footer>"
+module.exports = "<!-- New footer -->\n<footer id=\"main-footer\">\n  <div class=\"container\">\n    <div class=\"row\">\n      <div class=\"col-md-6\">\n        <p>&copy; 2018 all rights reserved. Mookie Dough LLC</p>\n        <br>\n        <p *ngIf=\"numberOfSiteVisitors > 0\"> Site has been accessed {{numberOfSiteVisitors}} times.</p>\n        <br>\n        <!-- <h3 class=\"widget-title\">\n          <small>Subscribe to the Mookie Dough email list</small>\n        </h3>\n        <form class=\"subscribe-form\" novalidate>\n          <input type=\"email\" name=\"EMAIL\" placeholder=\"Your e-mail\" ng-model=\"subEmail\">\n          <div style=\"position: absolute; left: -5000px;\" aria-hidden=\"true\">\n            <input type=\"text\" name=\"\" tabindex=\"-1\" value=\"\">\n          </div>\n          <button type=\"submit\" ng-click=\"main.addSubscription(subEmail)\">\n            <i class=\"fas fa-paper-plane\"></i>\n          </button>\n        </form> -->\n\n      </div>\n      <div class=\"col-md-2\">\n        <h6>Relevant Links</h6>\n        <ul class=\"list-unstyled\">\n          <li>\n            <a routerLink=\"/about\">About us</a>\n          </li>\n          <li>\n            <a routerLink=\"/menu\">Menu</a>\n          </li>\n          <li>\n            <a routerLink=\"/thesecret\">Social Media</a>\n          </li>\n          <li>\n            <a routerLink=\"/register\">Sign in</a>\n          </li>\n        </ul>\n      </div>\n      <div class=\"col-md-2\">\n        <h6>Our team</h6>\n        <ul class=\"list-unstyled\">\n          <li>\n            <a href=\"https://www.linkedin.com/in/abempah/\">Bempah</a>\n          </li>\n          <li>\n            <a href=\"https://www.linkedin.com/in/akim-richards-a8303610a/\">Akim</a>\n          </li>\n          <li>\n            <a href=\"https://www.linkedin.com/in/dellarontay/\">Dellarontay</a>\n          </li>\n          <li>\n            <a href=\"https://www.linkedin.com/in/oluwaseyi-olaleye-a523b210a/\">Oluwaseyi</a>\n          </li>\n        </ul>\n      </div>\n    </div>\n  </div>\n</footer>"
 
 /***/ }),
 
@@ -1469,7 +1489,7 @@ var MookieFooterComponent = /** @class */ (function () {
 /*! no static exports found */
 /***/ (function(module, exports) {
 
-module.exports = "<header class=\"navbar navbar-sticky nav-down\">\n  <div id=\"logo\" routerLink=\"/home\">\n    <a routerLink=\"/home\">\n      <img src=\"assets/imgs/toplogo.svg\" alt=\"App Loading\">\n    </a>\n  </div>\n  <nav [ngClass]=\"{'open':menuToggleOpen}\" class=\"main-navigation text-center\">\n    <ul class=\"menu\">\n      <li>\n        <a routerLink=\"/home\">\n          <span>Home</span>\n        </a>\n      </li>\n      <li>\n        <a routerLink=\"/menu\">\n          <span>menu</span>\n        </a>\n      </li>\n      <li>\n        <a routerLink=\"/thesecret\">\n          <span>the secret</span>\n        </a>\n      </li>\n      <li>\n        <a routerLink=\"/about\">\n          <span>about us</span>\n        </a>\n      </li>\n      <li *ngIf=\"!loggedIn\">\n        <a routerLink=\"/register\">\n          Sign In/Up\n        </a>\n      </li>\n    </ul>\n  </nav>\n  <div class=\"toolbar\">\n    <div class=\"inner\">\n      <a (click)=\"openMenuToggle()\" class=\"mobile-menu-toggle mookieIcon\">\n        <i *ngIf=\"!menuToggleOpen\" class=\"fas fa-bars fa-xs fa-fw menu\"></i>\n        <i *ngIf=\"menuToggleOpen\" class=\"fas fa-times fa-xs fa-fw cross\"></i>\n      </a>\n      <a routerLink=\"/account\" class=\"mookieIcon\" *ngIf=\"loggedIn\">\n        <i class=\"fas fa-user fa-xs fa-fw\"></i>\n      </a>\n      <a routerLink=\"/shopping-cart\" class=\"mookieIcon\" *ngIf=\"cartItemCount> 0\">\n        <i class=\"fas fa-shopping-cart fa-xs fa-fw\"></i>\n        <span class=\"shop-count\">{{cartItemCount}}</span>\n      </a>\n    </div>\n  </div>\n</header>"
+module.exports = "<header class=\"navbar navbar-sticky nav-down\">\n  <div id=\"logo\" routerLink=\"/home\" (click)=\"closeMenu()\">\n    <a routerLink=\"/home\">\n      <img src=\"assets/imgs/toplogo.svg\" alt=\"App Loading\">\n    </a>\n  </div>\n  <nav [ngClass]=\"{'open':menuToggleOpen}\" class=\"main-navigation text-center\">\n    <ul class=\"menu\">\n      <li>\n        <a routerLink=\"/home\" (click)=\"closeMenu()\">\n          <span>Home</span>\n        </a>\n      </li>\n      <li>\n        <a routerLink=\"/menu\" (click)=\"closeMenu()\">\n          <span>menu</span>\n        </a>\n      </li>\n      <li>\n        <a routerLink=\"/thesecret\" (click)=\"closeMenu()\">\n          <span>the secret</span>\n        </a>\n      </li>\n      <li>\n        <a routerLink=\"/about\" (click)=\"closeMenu()\">\n          <span>about us</span>\n        </a>\n      </li>\n      <li *ngIf=\"!loggedIn\">\n        <a routerLink=\"/register\" (click)=\"closeMenu()\">\n          Sign In/Up\n        </a>\n      </li>\n    </ul>\n  </nav>\n  <div class=\"toolbar\">\n    <div class=\"inner\">\n      <a (click)=\"toggleMenu()\" class=\"mobile-menu-toggle mookieIcon\">\n        <i *ngIf=\"!menuToggleOpen\" class=\"fas fa-bars fa-xs fa-fw menu\"></i>\n        <i *ngIf=\"menuToggleOpen\" class=\"fas fa-times fa-xs fa-fw cross\"></i>\n      </a>\n      <a routerLink=\"/account\" (click)=\"closeMenu()\" class=\"mookieIcon\" *ngIf=\"loggedIn\">\n        <i class=\"fas fa-user fa-xs fa-fw\"></i>\n      </a>\n      <a routerLink=\"/shopping-cart\" class=\"mookieIcon\" *ngIf=\"cartItemCount> 0\">\n        <i class=\"fas fa-shopping-cart fa-xs fa-fw\"></i>\n        <span class=\"shop-count\">{{cartItemCount}}</span>\n      </a>\n    </div>\n  </div>\n</header>"
 
 /***/ }),
 
@@ -1517,10 +1537,16 @@ var MookieHeaderComponent = /** @class */ (function () {
         this.menuToggleOpen = false;
         this.loggedIn = false;
         this.cartItemCount = 0;
-        this.openMenuToggle = function () {
+        this.toggleMenu = function () {
             this.menuToggleOpen = !this.menuToggleOpen;
             jquery__WEBPACK_IMPORTED_MODULE_2__('body').toggleClass('no-scroll-body');
             // if(this.menuToggleOpen) 
+        };
+        this.closeMenu = function () {
+            if (this.menuToggleOpen) {
+                this.menuToggleOpen = !this.menuToggleOpen;
+                jquery__WEBPACK_IMPORTED_MODULE_2__('body').toggleClass('no-scroll-body');
+            }
         };
     }
     MookieHeaderComponent.prototype.ngOnInit = function () {
@@ -1554,7 +1580,7 @@ var MookieHeaderComponent = /** @class */ (function () {
 /*! no static exports found */
 /***/ (function(module, exports) {
 
-module.exports = "<div class=\"\">\n\n  <div class=\"row centerH\">\n    <div class=\"col-md-8 col-lg-6 mookieC\">\n      <ngb-carousel *ngIf=\"images\" class=\"mookieC\">\n        <ng-template ngbSlide>\n          <img class=\"carousel-img\" [src]=\"images[0]\" alt=\"Random first slide\">\n          <div class=\"carousel-caption\">\n            <h3>Dellarontay Readus</h3>\n            <p>Co-Founder, Head of Technology and Software</p>\n          </div>\n        </ng-template>\n        <ng-template ngbSlide>\n          <img class=\"carousel-img\" [src]=\"images[1]\" alt=\"Random second slide\">\n          <div class=\"carousel-caption\">\n            <h3>Andrew Bempah</h3>\n            <p>President</p>\n          </div>\n        </ng-template>\n        <ng-template ngbSlide>\n          <img class=\"carousel-img\" [src]=\"images[2]\" alt=\"Random third slide\">\n          <div class=\"carousel-caption\">\n            <h3>Oluwaseyi Olaleye</h3>\n            <p>Co-Founder, Head Of Operations</p>\n          </div>\n        </ng-template>\n        <ng-template ngbSlide>\n          <img class=\"carousel-img\" [src]=\"images[3]\" alt=\"Random third slide\">\n          <div class=\"carousel-caption\">\n            <h3>Akim Richards</h3>\n            <p>Co Founder, Head of Strategy Implementation</p>\n          </div>\n        </ng-template>\n      </ngb-carousel>\n\n    </div>\n\n  </div>\n\n  <!-- <div id=\"stage\">\n    <div id=\"stage-caption\">\n      <h1 class=\"display-3\">Welcome to Mookie Dough</h1>\n      <p>Deliveries of cookie dough are in your future.</p>\n      <a href=\"/register\" class=\"btn btn-lg btn-success\" *ngIf=\"!loggedIn\">Sign up now</a>\n      <a href=\"/menu\" class=\"btn btn-lg btn-success\" *ngIf=\"loggedIn\">Order now</a>\n\n    </div>\n  </div> -->\n\n  <section id=\"feature-one\">\n    <div class=\"container text-center\">\n      <div class=\"row\">\n        <div class=\"feature-content\">\n          <div class=\"col-lg-6 \">\n            <h6>Who we are</h6>\n            <h2>Mookie Dough has been serving premium quality cookie dough to our customers since 2017</h2>\n            <p class=\"lead\">In that time Stanford students and our valued customers in the nearby Stanford area have propeled our small company\n              forward into a platform to share amazing content and of course delicious edible cookie dough.</p>\n            <a href=\"/about\">About us</a>\n          </div>\n          <div class=\"col-lg-6\">\n            <img src=\"assets/imgs/colM0.jpg\">\n          </div>\n        </div>\n      </div>\n    </div>\n  </section>\n\n  <section id=\"feature-two\" class=\"feature-dark\">\n    <div class=\"container text-center\">\n      <div class=\"row\">\n        <div class=\"feature-content\">\n          <div class=\"col-lg-6 feature-caption\">\n            <h2>Have a craving for cookie dough?</h2>\n            <p class=\"lead\">Enjoy our safe and delicious artisian quality cookie dough made without eggs!</p>\n          </div>\n          <div class=\"col-lg-6 text-sm-center hidden-md-down lowish\">\n            <img src=\"assets/imgs/beachdo1.jpg\" alt=\"Beach Mookie\">\n          </div>\n        </div>\n      </div>\n    </div>\n  </section>\n\n  <section id=\"feature-three\">\n    <div class=\"container text-center\">\n      <div class=\"row\">\n        <div class=\"feature-content\">\n          <div class=\"col-lg-6 hidden-md-down\">\n            <img src=\"assets/imgs/M00KIE.jpg\" alt=\"M00kie img\">\n          </div>\n          <div class=\"col-lg-5 col-lg-offset-1\">\n            <h6>EXCLUSIVE CATERING</h6>\n            <h2>Serving Stanford and nearby areas</h2>\n            <p class=\"lead\">Contact Andrew Bempah or Oluwaseyi Olaleye at bempah@mookiedough.com and olaleye@mookiedough.com for exclusive\n              catering!\n            </p>\n          </div>\n        </div>\n      </div>\n    </div>\n  </section>\n\n  <section id=\"feature-four\" class=\"feature-alt\">\n    <div class=\"container text-center\">\n      <div class=\"row\">\n        <div class=\"feature-content\">\n          <div class=\"col-lg-6\">\n            <h6>Dream Big</h6>\n            <blockquote class=\"blockquote\">\n              &ldquo; When people eat Mookie Dough Cookie Dough and support our platform, they are cosigning and supporting the dreams\n              of a team of hustlers that weren't afraid to dream &rdquo;\n              <footer class=\"blockquote-footer\">\n                Andrew Bempah,\n                <cite>President of Mookie Dough LLC</cite>\n              </footer>\n            </blockquote>\n          </div>\n          <div class=\"col-lg-6 hidden-md-down\">\n            <img src=\"assets/imgs/side.png\" alt=\"Brelvis Hesley\">\n          </div>\n        </div>\n      </div>\n    </div>\n  </section>\n</div>"
+module.exports = "<div class=\"\">\n\n  <div class=\"row centerH\">\n    <div class=\"col-md-8 col-lg-6 mookieC\">\n      <ngb-carousel *ngIf=\"images\" class=\"mookieC\">\n        <ng-template ngbSlide>\n          <img class=\"carousel-img\" [src]=\"images[0]\" alt=\"Random first slide\">\n          <div class=\"carousel-caption\">\n            <h3>Dellarontay Readus</h3>\n            <p>Co-Founder, Head of Technology and Software</p>\n          </div>\n        </ng-template>\n        <ng-template ngbSlide>\n          <img class=\"carousel-img\" [src]=\"images[1]\" alt=\"Random second slide\">\n          <div class=\"carousel-caption\">\n            <h3>Andrew Bempah</h3>\n            <p>President</p>\n          </div>\n        </ng-template>\n        <ng-template ngbSlide>\n          <img class=\"carousel-img\" [src]=\"images[2]\" alt=\"Random third slide\">\n          <div class=\"carousel-caption\">\n            <h3>Oluwaseyi Olaleye</h3>\n            <p>Co-Founder, Head Of Operations</p>\n          </div>\n        </ng-template>\n        <ng-template ngbSlide>\n          <img class=\"carousel-img\" [src]=\"images[3]\" alt=\"Random third slide\">\n          <div class=\"carousel-caption\">\n            <h3>Akim Richards</h3>\n            <p>Co Founder, Head of Strategy Implementation</p>\n          </div>\n        </ng-template>\n      </ngb-carousel>\n\n    </div>\n\n  </div>\n\n  <section id=\"feature-one\">\n    <div class=\"container text-center\">\n      <div class=\"row\">\n        <div class=\"feature-content\">\n          <div class=\"col-lg-6 \">\n            <h6>Who we are</h6>\n            <h2>Mookie Dough has been serving premium quality cookie dough to our customers since 2017</h2>\n            <p class=\"lead\">In that time Stanford students and our valued customers in the nearby Stanford area have propeled our small company\n              forward into a platform to share amazing content and of course delicious edible cookie dough.</p>\n            <a routerLink=\"/about\">About us</a>\n          </div>\n          <div class=\"col-lg-6\">\n            <img src=\"assets/imgs/colM0.jpg\">\n          </div>\n        </div>\n      </div>\n    </div>\n  </section>\n\n  <section id=\"feature-two\" class=\"feature-dark\">\n    <div class=\"container text-center\">\n      <div class=\"row\">\n        <div class=\"feature-content\">\n          <div class=\"col-lg-6 feature-caption\">\n            <h2>Have a craving for cookie dough?</h2>\n            <p class=\"lead\">Enjoy our safe and delicious artisian quality cookie dough made without eggs!</p>\n          </div>\n          <div class=\"col-lg-6 text-sm-center hidden-md-down lowish\">\n            <img src=\"assets/imgs/beachdo1.jpg\" alt=\"Beach Mookie\">\n          </div>\n        </div>\n      </div>\n    </div>\n  </section>\n\n  <section id=\"feature-three\">\n    <div class=\"container text-center\">\n      <div class=\"row\">\n        <div class=\"feature-content\">\n          <div class=\"col-lg-6 hidden-md-down\">\n            <img src=\"assets/imgs/M00KIE.jpg\" alt=\"M00kie img\">\n          </div>\n          <div class=\"col-lg-5 col-lg-offset-1\">\n            <h6>EXCLUSIVE CATERING</h6>\n            <h2>Serving Stanford and nearby areas</h2>\n            <p class=\"lead\">Contact Andrew Bempah or Oluwaseyi Olaleye at bempah@mookiedough.com and olaleye@mookiedough.com for exclusive\n              catering!\n            </p>\n          </div>\n        </div>\n      </div>\n    </div>\n  </section>\n\n  <section id=\"feature-four\" class=\"feature-alt\">\n    <div class=\"container text-center\">\n      <div class=\"row\">\n        <div class=\"feature-content\">\n          <div class=\"col-lg-6\">\n            <h6>Dream Big</h6>\n            <blockquote class=\"blockquote\">\n              &ldquo; When people eat Mookie Dough Cookie Dough and support our platform, they are cosigning and supporting the dreams\n              of a team of hustlers that weren't afraid to dream &rdquo;\n              <footer class=\"blockquote-footer\">\n                Andrew Bempah,\n                <cite>President of Mookie Dough LLC</cite>\n              </footer>\n            </blockquote>\n          </div>\n          <div class=\"col-lg-6 hidden-md-down\">\n            <img src=\"assets/imgs/side.png\" alt=\"Brelvis Hesley\">\n          </div>\n        </div>\n      </div>\n    </div>\n  </section>\n</div>"
 
 /***/ }),
 
@@ -2196,7 +2222,7 @@ var MookieManageComponent = /** @class */ (function () {
 /*! no static exports found */
 /***/ (function(module, exports) {
 
-module.exports = "<div id=\"mainWrapper\" class=\"container\">\n\n\t<h1 style=\"text-align:center;font-family:'Lato\" class=\"logo-style\">Mookie Dough Delivery Coming soon</h1>\n\t<section class=\"row\">\n\t\t<div class=\"product-card col-xs-12 col-sm-6 col-md-4 col-lg-3 product-shadow\" *ngFor=\"let catalogProduct of products\">\n\t\t\t<figure class=\"snip1418\">\n\t\t\t\t<p [ngClass]=\"{'inStock': catalogProduct.inStock == 'In Stock', 'notInStock': catalogProduct.inStock == 'Not In Stock'}\">{{catalogProduct.inStock}}</p>\n\n\t\t\t\t<img class=\"mookie-product-img\" (src)=\"catalogProduct.imagePath\" alt=\"sample85\" />\n\n\t\t\t\t<div class=\"add-to-cart\" onclick=\"\">\n\t\t\t\t\t<i class=\"ion-android-add\"></i>\n\t\t\t\t\t<span (click)=\"addToCart(catalogProduct,catalogProduct._id);\">\n\t\t\t\t\t\t<a class=\"nah\"></a>Buy Now</span>\n\t\t\t\t</div>\n\t\t\t\t<figcaption>\n\t\t\t\t\t<h3>{{catalogProduct.title}}</h3>\n\t\t\t\t\t<!-- <p>{{catalogProduct.description}}</p> -->\n\t\t\t\t\t<div class=\"price\">\n\t\t\t\t\t\t{{catalogProduct.price | currency}}\n\t\t\t\t\t</div>\n\t\t\t\t</figcaption>\n\t\t\t\t<!-- <a href=\"#\"></a> -->\n\t\t\t</figure>\n\t\t</div>\n\t</section>\n\n\t<!-- \n\t<section id=\"summer-collection\">\n\t\t<div class=\"container\">\n\t\t\t<div class=\"sc-content\">\n\t\t\t\t<h1>Exclusive Catering</h1>\n\t\t\t\t<p class=\"description\">Contact Andrew Bempah or Oluwaseyi Olaleye at bempah@mookiedough.com and olaleye@mookiedough.com for exclusive catering\n\t\t\t\t\tfor Stanford club events and nearby areas\n\t\t\t\t</p>\n\t\t\t</div>\n\t\t\t<div class=\"sc-media\">\n\t\t\t\t<div class=\"sc-media-bg\">\n\t\t\t\t\t<img src=\"assets/imgs/M00KIE.jpg\" alt=\"sc-image\" /> </div>\n\t\t\t</div>\n\t\t</div>\n\t</section> -->\n\n\t<!-- NEW HOME -->\n\t<div class=\"newHome\">\n\t\t<section id=\"summer-collection\">\n\t\t\t<div class=\"container\">\n\t\t\t\t<div style=\"text-align:center;\">\n\t\t\t\t\t<div class=\"row\">\n\t\t\t\t\t\t<div class=\"sc-content col-lg-6\">\n\t\t\t\t\t\t\t<h1>Exclusive Catering</h1>\n\t\t\t\t\t\t\t<p class=\"description\">Contact Andrew Bempah or Oluwaseyi Olaleye at bempah@mookiedough.com and olaleye@mookiedough.com for exclusive catering\n\t\t\t\t\t\t\t\tfor Stanford club events and nearby areas\n\t\t\t\t\t\t\t</p>\n\t\t\t\t\t\t</div>\n\t\t\t\t\t\t<div class=\"sc-media col-lg-6\">\n\t\t\t\t\t\t\t\t<div>\n\t\t\t\t\t\t\t\t\t<img src=\"assets/imgs/M00KIE.jpg\" alt=\"sc-image\" /> </div>\n\t\t\t\t\t\t\t</div>\n\t\t\t\t\t\t<!-- <div style=\"width:100%; text-align:center;\">\n\t\t\t\t\t\t\t\n\t\t\t\t\t\t</div> -->\n\n\t\t\t\t\t</div>\n\n\n\t\t\t\t</div>\n\n\n\t\t\t</div>\n\t\t</section>\n\n\t\t<section id=\"products\">\n\t\t\t<div class=\"container\">\n\t\t\t\t<div class=\"products-header\">\n\t\t\t\t\t<h2>popular products</h2>\n\t\t\t\t\t<p>Our Artisian frozen cookie dough bricks will leave you wanting more</p>\n\t\t\t\t</div>\n\t\t\t\t<div class=\"product product-1\">\n\t\t\t\t\t<figure>\n\t\t\t\t\t\t<img src=\"assets/imgs/OGMookiepackaging.png\" alt=\"product-image\">\n\t\t\t\t\t\t<figcaption>Cookie Dough Bricks</figcaption>\n\t\t\t\t\t\t<figcaption>$ 2.99</figcaption>\n\t\t\t\t\t</figure>\n\t\t\t\t</div>\n\t\t\t\t<div class=\"product product-2\">\n\t\t\t\t\t<figure>\n\t\t\t\t\t\t<img src=\"assets/imgs/cookies.png\" alt=\"product-image\">\n\t\t\t\t\t\t<figcaption>Cookie Dough Bricks</figcaption>\n\t\t\t\t\t\t<figcaption>$ 2.99</figcaption>\n\t\t\t\t\t</figure>\n\t\t\t\t</div>\n\t\t\t\t<div class=\"product product-3\">\n\t\t\t\t\t<figure>\n\t\t\t\t\t\t<img src=\"assets/imgs/Ogmookieconfetti.png\" alt=\"product-image\">\n\t\t\t\t\t\t<figcaption>Cookie Dough Bricks</figcaption>\n\t\t\t\t\t\t<figcaption>$ 2.99</figcaption>\n\t\t\t\t\t</figure>\n\t\t\t\t</div>\n\t\t\t\t<div class=\"product product-4\">\n\t\t\t\t\t<figure>\n\t\t\t\t\t\t<img src=\"assets/imgs/redvelvet.png\" alt=\"product-image\">\n\t\t\t\t\t\t<figcaption>Cookie Dough Bricks</figcaption>\n\t\t\t\t\t\t<figcaption>$ 2.99</figcaption>\n\t\t\t\t\t</figure>\n\t\t\t\t</div>\n\t\t\t</div>\n\t\t</section>\n\t\t<section id=\"collections\">\n\t\t\t<div class=\"container\">\n\t\t\t\t<div class=\"c-1\">\n\t\t\t\t\t<div class=\"c-1-image-holder\">\n\t\t\t\t\t\t<img src=\"assets/imgs/mookiecar.svg\" alt=\"image\"> </div>\n\t\t\t\t</div>\n\t\t\t\t<div class=\"c-2\">\n\t\t\t\t\t<h2>Work Coming Soon</h2>\n\t\t\t\t\t<hr />\n\t\t\t\t\t<div class=\"c-2-image-holder\">\n\t\t\t\t\t\t<img class=\"left\" src=\"assets/imgs/dorm5-min.jpg\" alt=\"\">\n\t\t\t\t\t\t<img class=\"right\" src=\"assets/imgs/header3.png\" alt=\"\">\n\t\t\t\t\t</div>\n\t\t\t\t</div>\n\t\t\t</div>\n\t\t</section>\n\n\t\t<!-- <div class=\"back-to-top\">\n\t\t\t<a href=\"#nav\">\n\t\t\t\t<img title=\"Back to Top.\" src=\"https://res.cloudinary.com/de8cuyd0n/image/upload/v1520412541/E-commerce%20landing%20page/icons/back_-_top_1x.png\"\n\t\t\t\t alt=\"back to top\">\n\t\t\t</a>\n\t\t</div> -->\n\t</div>\n</div>"
+module.exports = "<div id=\"mainWrapper\" class=\"container\">\n\n\t<h1 style=\"text-align:center;font-family:'Lato\" class=\"logo-style\">Mookie Dough Delivery Coming soon</h1>\n\t<section class=\"row\">\n\t\t<div class=\"product-card col-xs-12 col-sm-6 col-md-4 col-lg-3 product-shadow\" *ngFor=\"let catalogProduct of products\">\n\t\t\t<figure class=\"snip1418\">\n\t\t\t\t<p [ngClass]=\"{'inStock': catalogProduct.inStock == 'In Stock', 'notInStock': catalogProduct.inStock == 'Not In Stock'}\">{{catalogProduct.inStock}}</p>\n\n\t\t\t\t<img class=\"mookie-product-img\" (src)=\"catalogProduct.imagePath\" alt=\"sample85\" />\n\n\t\t\t\t<div class=\"add-to-cart\" onclick=\"\">\n\t\t\t\t\t<i class=\"ion-android-add\"></i>\n\t\t\t\t\t<span (click)=\"addToCart(catalogProduct,catalogProduct._id);\">\n\t\t\t\t\t\t<a class=\"nah\"></a>Buy Now</span>\n\t\t\t\t</div>\n\t\t\t\t<figcaption>\n\t\t\t\t\t<h3>{{catalogProduct.title}}</h3>\n\t\t\t\t\t<!-- <p>{{catalogProduct.description}}</p> -->\n\t\t\t\t\t<div class=\"price\">\n\t\t\t\t\t\t{{catalogProduct.price | currency}}\n\t\t\t\t\t</div>\n\t\t\t\t</figcaption>\n\t\t\t</figure>\n\t\t</div>\n\t</section>\n\n\t<!-- \n\t<section id=\"summer-collection\">\n\t\t<div class=\"container\">\n\t\t\t<div class=\"sc-content\">\n\t\t\t\t<h1>Exclusive Catering</h1>\n\t\t\t\t<p class=\"description\">Contact Andrew Bempah or Oluwaseyi Olaleye at bempah@mookiedough.com and olaleye@mookiedough.com for exclusive catering\n\t\t\t\t\tfor Stanford club events and nearby areas\n\t\t\t\t</p>\n\t\t\t</div>\n\t\t\t<div class=\"sc-media\">\n\t\t\t\t<div class=\"sc-media-bg\">\n\t\t\t\t\t<img src=\"assets/imgs/M00KIE.jpg\" alt=\"sc-image\" /> </div>\n\t\t\t</div>\n\t\t</div>\n\t</section> -->\n\n\t<!-- NEW HOME -->\n\t<div class=\"newHome\">\n\t\t<section id=\"summer-collection\">\n\t\t\t<div class=\"container\">\n\t\t\t\t<div style=\"text-align:center;\">\n\t\t\t\t\t<div class=\"row\">\n\t\t\t\t\t\t<div class=\"sc-content col-lg-6\">\n\t\t\t\t\t\t\t<h1>Exclusive Catering</h1>\n\t\t\t\t\t\t\t<p class=\"description\">Contact Andrew Bempah or Oluwaseyi Olaleye at bempah@mookiedough.com and olaleye@mookiedough.com for exclusive catering\n\t\t\t\t\t\t\t\tfor Stanford club events and nearby areas\n\t\t\t\t\t\t\t</p>\n\t\t\t\t\t\t</div>\n\t\t\t\t\t\t<div class=\"sc-media col-lg-6\">\n\t\t\t\t\t\t\t\t<div>\n\t\t\t\t\t\t\t\t\t<img src=\"assets/imgs/M00KIE.jpg\" alt=\"sc-image\" /> </div>\n\t\t\t\t\t\t\t</div>\n\t\t\t\t\t\t<!-- <div style=\"width:100%; text-align:center;\">\n\t\t\t\t\t\t\t\n\t\t\t\t\t\t</div> -->\n\n\t\t\t\t\t</div>\n\n\n\t\t\t\t</div>\n\n\n\t\t\t</div>\n\t\t</section>\n\n\t\t<section id=\"products\">\n\t\t\t<div class=\"container\">\n\t\t\t\t<div class=\"products-header\">\n\t\t\t\t\t<h2>popular products</h2>\n\t\t\t\t\t<p>Our Artisian frozen cookie dough bricks will leave you wanting more</p>\n\t\t\t\t</div>\n\t\t\t\t<div class=\"product product-1\">\n\t\t\t\t\t<figure>\n\t\t\t\t\t\t<img src=\"assets/imgs/OGMookiepackaging.png\" alt=\"product-image\">\n\t\t\t\t\t\t<figcaption>Cookie Dough Bricks</figcaption>\n\t\t\t\t\t\t<figcaption>$ 2.99</figcaption>\n\t\t\t\t\t</figure>\n\t\t\t\t</div>\n\t\t\t\t<div class=\"product product-2\">\n\t\t\t\t\t<figure>\n\t\t\t\t\t\t<img src=\"assets/imgs/cookies.png\" alt=\"product-image\">\n\t\t\t\t\t\t<figcaption>Cookie Dough Bricks</figcaption>\n\t\t\t\t\t\t<figcaption>$ 2.99</figcaption>\n\t\t\t\t\t</figure>\n\t\t\t\t</div>\n\t\t\t\t<div class=\"product product-3\">\n\t\t\t\t\t<figure>\n\t\t\t\t\t\t<img src=\"assets/imgs/Ogmookieconfetti.png\" alt=\"product-image\">\n\t\t\t\t\t\t<figcaption>Cookie Dough Bricks</figcaption>\n\t\t\t\t\t\t<figcaption>$ 2.99</figcaption>\n\t\t\t\t\t</figure>\n\t\t\t\t</div>\n\t\t\t\t<div class=\"product product-4\">\n\t\t\t\t\t<figure>\n\t\t\t\t\t\t<img src=\"assets/imgs/redvelvet.png\" alt=\"product-image\">\n\t\t\t\t\t\t<figcaption>Cookie Dough Bricks</figcaption>\n\t\t\t\t\t\t<figcaption>$ 2.99</figcaption>\n\t\t\t\t\t</figure>\n\t\t\t\t</div>\n\t\t\t</div>\n\t\t</section>\n\t\t<section id=\"collections\">\n\t\t\t<div class=\"container\">\n\t\t\t\t<div class=\"c-1\">\n\t\t\t\t\t<div class=\"c-1-image-holder\">\n\t\t\t\t\t\t<img src=\"assets/imgs/mookiecar.svg\" alt=\"image\"> </div>\n\t\t\t\t</div>\n\t\t\t\t<div class=\"c-2\">\n\t\t\t\t\t<h2>Work Coming Soon</h2>\n\t\t\t\t\t<hr />\n\t\t\t\t\t<div class=\"c-2-image-holder\">\n\t\t\t\t\t\t<img class=\"left\" src=\"assets/imgs/dorm5-min.jpg\" alt=\"\">\n\t\t\t\t\t\t<img class=\"right\" src=\"assets/imgs/header3.png\" alt=\"\">\n\t\t\t\t\t</div>\n\t\t\t\t</div>\n\t\t\t</div>\n\t\t</section>\n\t</div>\n</div>"
 
 /***/ }),
 
@@ -2228,6 +2254,9 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _services_cart_service__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ../../services/cart.service */ "./src/app/services/cart.service.ts");
 /* harmony import */ var _services_user_service__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ../../services/user.service */ "./src/app/services/user.service.ts");
 /* harmony import */ var _services_auth_service__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ../../services/auth.service */ "./src/app/services/auth.service.ts");
+/* harmony import */ var _services_mookie_emit_service__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! ../../services/mookie-emit.service */ "./src/app/services/mookie-emit.service.ts");
+/* harmony import */ var _ng_bootstrap_ng_bootstrap__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! @ng-bootstrap/ng-bootstrap */ "./node_modules/@ng-bootstrap/ng-bootstrap/index.js");
+/* harmony import */ var _mookie_modal_mookie_modal_component__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(/*! ../mookie-modal/mookie-modal.component */ "./src/app/components/mookie-modal/mookie-modal.component.ts");
 var __decorate = (undefined && undefined.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
@@ -2244,14 +2273,20 @@ var __metadata = (undefined && undefined.__metadata) || function (k, v) {
 
 
 
+
+
+
 var MookieMenuComponent = /** @class */ (function () {
-    function MookieMenuComponent(productService, shared, inventoryService, cartService, userService, authService) {
+    function MookieMenuComponent(productService, shared, inventoryService, cartService, userService, authService, mookieEmit, modalService) {
         this.productService = productService;
         this.shared = shared;
         this.inventoryService = inventoryService;
         this.cartService = cartService;
         this.userService = userService;
         this.authService = authService;
+        this.mookieEmit = mookieEmit;
+        this.modalService = modalService;
+        this.valueChange = new _angular_core__WEBPACK_IMPORTED_MODULE_0__["EventEmitter"]();
         this.handleProduct = function (products) {
             console.log(products);
         };
@@ -2337,11 +2372,8 @@ var MookieMenuComponent = /** @class */ (function () {
                                             _this.cartService.addItemToCart(cartData).subscribe(function (resData) {
                                                 console.log(resData);
                                                 if (resData.success) {
-                                                    var getCartData = { cartId: resData.cart._id };
-                                                    _this.updateCart(getCartData, function (moreData) {
-                                                        console.log(moreData);
-                                                        _this.shared.updateSharedVar('cartItemCount', moreData.itemCount);
-                                                    });
+                                                    _this.shared.updateSharedVar('cartItemCount', resData.cart.products.length);
+                                                    _this.mookieEmit.emitChange();
                                                 }
                                                 else {
                                                     // Show Error
@@ -2354,11 +2386,24 @@ var MookieMenuComponent = /** @class */ (function () {
                             }
                         });
                     }
+                    else {
+                        var modalRef = _this.modalService.open(_mookie_modal_mookie_modal_component__WEBPACK_IMPORTED_MODULE_9__["MookieModalComponent"]);
+                        console.log('here');
+                        modalRef.componentInstance.modalTitle = "Ordering is closed for now.";
+                        modalRef.componentInstance.modalBody = "Mookie Dough hours will be from 8 am to 7pm Monday Through Sunday with delivery starting at 9pm. ";
+                        console.log(modalRef);
+                    }
                 }
                 else {
+                    // modal service show modal
                     // Show Error
                     // var title = "Ordering is closed for now.";
                     //                 var body = "Mookie Dough hours will be from 8 am to 7pm Monday Through Sunday with delivery starting at 9pm.  ";
+                    var modalRef = _this.modalService.open(_mookie_modal_mookie_modal_component__WEBPACK_IMPORTED_MODULE_9__["MookieModalComponent"]);
+                    console.log('here');
+                    modalRef.componentInstance.modalTitle = "Ordering is closed for now.";
+                    modalRef.componentInstance.modalBody = "Mookie Dough hours will be from 8 am to 7pm Monday Through Sunday with delivery starting at 9pm. ";
+                    console.log(modalRef);
                 }
             });
         };
@@ -2373,15 +2418,93 @@ var MookieMenuComponent = /** @class */ (function () {
         this.itemNameMap.set("dark chocolate mocha", "Dark chocolate");
         this.getProductsFromServer();
     };
+    __decorate([
+        Object(_angular_core__WEBPACK_IMPORTED_MODULE_0__["Output"])(),
+        __metadata("design:type", Object)
+    ], MookieMenuComponent.prototype, "valueChange", void 0);
     MookieMenuComponent = __decorate([
         Object(_angular_core__WEBPACK_IMPORTED_MODULE_0__["Component"])({
             selector: 'app-mookie-menu',
             template: __webpack_require__(/*! ./mookie-menu.component.html */ "./src/app/components/mookie-menu/mookie-menu.component.html"),
             styles: [__webpack_require__(/*! ./mookie-menu.component.scss */ "./src/app/components/mookie-menu/mookie-menu.component.scss")]
         }),
-        __metadata("design:paramtypes", [_services_product_service__WEBPACK_IMPORTED_MODULE_1__["ProductService"], _services_shared_service__WEBPACK_IMPORTED_MODULE_2__["SharedService"], _services_inventory_service__WEBPACK_IMPORTED_MODULE_3__["InventoryService"], _services_cart_service__WEBPACK_IMPORTED_MODULE_4__["CartService"], _services_user_service__WEBPACK_IMPORTED_MODULE_5__["UserService"], _services_auth_service__WEBPACK_IMPORTED_MODULE_6__["AuthService"]])
+        __metadata("design:paramtypes", [_services_product_service__WEBPACK_IMPORTED_MODULE_1__["ProductService"], _services_shared_service__WEBPACK_IMPORTED_MODULE_2__["SharedService"], _services_inventory_service__WEBPACK_IMPORTED_MODULE_3__["InventoryService"], _services_cart_service__WEBPACK_IMPORTED_MODULE_4__["CartService"], _services_user_service__WEBPACK_IMPORTED_MODULE_5__["UserService"], _services_auth_service__WEBPACK_IMPORTED_MODULE_6__["AuthService"], _services_mookie_emit_service__WEBPACK_IMPORTED_MODULE_7__["MookieEmitService"], _ng_bootstrap_ng_bootstrap__WEBPACK_IMPORTED_MODULE_8__["NgbModal"]])
     ], MookieMenuComponent);
     return MookieMenuComponent;
+}());
+
+
+
+/***/ }),
+
+/***/ "./src/app/components/mookie-modal/mookie-modal.component.html":
+/*!*********************************************************************!*\
+  !*** ./src/app/components/mookie-modal/mookie-modal.component.html ***!
+  \*********************************************************************/
+/*! no static exports found */
+/***/ (function(module, exports) {
+
+module.exports = "<div class=\"modal-header\">\n  <h4 class=\"modal-title\">{{modalTitle}}</h4>\n  <button type=\"button\" class=\"close\" aria-label=\"Close\" (click)=\"activeModal.dismiss('Cross click')\">\n    <span aria-hidden=\"true\">&times;</span>\n  </button>\n</div>\n<div class=\"modal-body\">\n  <p>{{modalBody}}</p>\n</div>\n<div class=\"modal-footer\">\n  <button type=\"button\" class=\"btn btn-outline-dark\" (click)=\"activeModal.close('Close click')\">Close</button>\n</div>"
+
+/***/ }),
+
+/***/ "./src/app/components/mookie-modal/mookie-modal.component.scss":
+/*!*********************************************************************!*\
+  !*** ./src/app/components/mookie-modal/mookie-modal.component.scss ***!
+  \*********************************************************************/
+/*! no static exports found */
+/***/ (function(module, exports) {
+
+module.exports = ""
+
+/***/ }),
+
+/***/ "./src/app/components/mookie-modal/mookie-modal.component.ts":
+/*!*******************************************************************!*\
+  !*** ./src/app/components/mookie-modal/mookie-modal.component.ts ***!
+  \*******************************************************************/
+/*! exports provided: MookieModalComponent */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "MookieModalComponent", function() { return MookieModalComponent; });
+/* harmony import */ var _angular_core__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @angular/core */ "./node_modules/@angular/core/fesm5/core.js");
+/* harmony import */ var _ng_bootstrap_ng_bootstrap__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @ng-bootstrap/ng-bootstrap */ "./node_modules/@ng-bootstrap/ng-bootstrap/index.js");
+var __decorate = (undefined && undefined.__decorate) || function (decorators, target, key, desc) {
+    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
+    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
+    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+    return c > 3 && r && Object.defineProperty(target, key, r), r;
+};
+var __metadata = (undefined && undefined.__metadata) || function (k, v) {
+    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
+};
+
+
+var MookieModalComponent = /** @class */ (function () {
+    function MookieModalComponent(activeModal) {
+        this.activeModal = activeModal;
+    }
+    MookieModalComponent.prototype.ngOnInit = function () {
+    };
+    __decorate([
+        Object(_angular_core__WEBPACK_IMPORTED_MODULE_0__["Input"])(),
+        __metadata("design:type", Object)
+    ], MookieModalComponent.prototype, "modalTitle", void 0);
+    __decorate([
+        Object(_angular_core__WEBPACK_IMPORTED_MODULE_0__["Input"])(),
+        __metadata("design:type", Object)
+    ], MookieModalComponent.prototype, "modalBody", void 0);
+    MookieModalComponent = __decorate([
+        Object(_angular_core__WEBPACK_IMPORTED_MODULE_0__["Component"])({
+            selector: 'app-mookie-modal',
+            template: __webpack_require__(/*! ./mookie-modal.component.html */ "./src/app/components/mookie-modal/mookie-modal.component.html"),
+            styles: [__webpack_require__(/*! ./mookie-modal.component.scss */ "./src/app/components/mookie-modal/mookie-modal.component.scss")]
+        }),
+        __metadata("design:paramtypes", [_ng_bootstrap_ng_bootstrap__WEBPACK_IMPORTED_MODULE_1__["NgbActiveModal"]])
+    ], MookieModalComponent);
+    return MookieModalComponent;
 }());
 
 
@@ -2395,7 +2518,7 @@ var MookieMenuComponent = /** @class */ (function () {
 /*! no static exports found */
 /***/ (function(module, exports) {
 
-module.exports = "<div>\n\n  <div class=\"container\">\n    <div class=\"row\">\n      <div class=\"col-sm-12\">\n        <agm-map [latitude]=\"latitude\" [longitude]=\"longitude\" [scrollwheel]=\"false\" [zoom]=\"zoom\">\n          <agm-marker [latitude]=\"latitude\" [longitude]=\"longitude\">\n            <agm-info-window class=\"info-window\" [isOpen]=\"true\">Your location</agm-info-window>\n          </agm-marker>\n        </agm-map>\n      </div>\n    </div>\n  </div>\n  <!-- User map input to be replaced by agm map -->\n  <!-- <user-maps id=\"user-map\" receipt=\"order.customerReceipt\" style=\"height:400px;width:100%;border: 2px solid black;\"></user-maps> -->\n\n  <div class=\"order-message-container\">\n    <p class=\"order-message pending\">Mookie Dough Delivery</p>\n    <p class=\"order-message\">{{orderMessage}}</p>\n  </div>\n\n  <div class=\"receipt mookie-confirm\" *ngIf=\"order.customerReceipt\">\n    <div class=\"receipt-header\">\n      <div class=\"receipt-header__top\">\n        <div class=\"receipt-header__logo\">\n        </div>\n        <div class=\"receipt-header__meta\">\n          <!-- 25.04.2016 -->\n          <span class=\"receipt-header__date\">{{order.customerReceipt.created | date:\"MM/dd/yyyy 'at' h:mma\"}}</span>\n          <span class=\"receipt-header__serial\">Receipt Number: #{{order.customerReceipt.receiptNumber}} </span>\n          <!-- <span class=\"receipt-header__number\">{{order.customerReceipt.receiptNumber}}</span> -->\n        </div>\n      </div>\n      <div class=\"receipt-header__greeting\">\n        <span class=\"receipt-header__name\">Hi, {{order.customerReceipt.customerName}}</span>\n        <span class=\"receipt-header__count\">You've purchased {{order.customerReceipt.customerCart.products.length}} items in our store.</span>\n        <span class=\"receipt-header__border\"></span>\n      </div>\n      <div class=\"receipt-header__spacing\"></div>\n    </div>\n\n    <section class=\"cart\">\n      <h2 class=\"cart__receipt-header\">Cart:</h2>\n      <ol class=\"list\">\n        <li class=\"list__item\" *ngFor=\"let product of order.customerReceipt.customerCart.products\">\n          <span class=\"list__name\">{{product.title}}</span>\n          <span class=\"list__price\">{{product.price}}</span>\n        </li>\n      </ol>\n      <hr class=\"cart__hr\" />\n      <div class=\"cart__total\">\n        <h3 class=\"cart__total-label\">Subtotal</h3>\n        <span class=\"cart__total-price\">{{order.customerReceipt.customerCart.subtotal}}</span>\n      </div>\n      <div class=\"cart__total\">\n        <h6 class=\"cart__total-label\">Sales Tax</h6>\n        <span class=\"cart__total-price\">{{order.customerReceipt.customerCart.tax}}</span>\n      </div>\n      <div class=\"cart__total\">\n        <h3 class=\"cart__total-label\">Total</h3>\n        <span class=\"cart__total-price\">{{order.customerReceipt.customerCart.total}}</span>\n      </div>\n    </section>\n\n  </div>\n</div>"
+module.exports = "<div>\n\n  <div class=\"container\">\n    <div class=\"row\">\n      <div class=\"col-sm-12\">\n        <agm-map [latitude]=\"latitude\" [longitude]=\"longitude\" [scrollwheel]=\"false\" [zoom]=\"zoom\">\n          <agm-marker [latitude]=\"latitude\" [longitude]=\"longitude\">\n            <agm-info-window class=\"info-window\" [isOpen]=\"true\">Your location</agm-info-window>\n          </agm-marker>\n        </agm-map>\n      </div>\n    </div>\n  </div>\n\n  <div class=\"order-message-container\">\n    <p class=\"order-message pending\">Mookie Dough Delivery</p>\n    <p class=\"order-message\">{{orderMessage}}</p>\n  </div>\n\n  <div class=\"receipt mookie-confirm\" *ngIf=\"order.customerReceipt\">\n    <div class=\"receipt-header\">\n      <div class=\"receipt-header__top\">\n        <div class=\"receipt-header__logo\">\n        </div>\n        <div class=\"receipt-header__meta\">\n          <!-- 25.04.2016 -->\n          <span class=\"receipt-header__date\">{{order.customerReceipt.created | date:\"MM/dd/yyyy 'at' h:mma\"}}</span>\n          <span class=\"receipt-header__serial\">Receipt Number: #{{order.customerReceipt.receiptNumber}} </span>\n          <!-- <span class=\"receipt-header__number\">{{order.customerReceipt.receiptNumber}}</span> -->\n        </div>\n      </div>\n      <div class=\"receipt-header__greeting\">\n        <span class=\"receipt-header__name\">Hi, {{order.customerReceipt.customerName}}</span>\n        <span class=\"receipt-header__count\">You've purchased {{order.customerReceipt.customerCart.products.length}} items in our store.</span>\n        <span class=\"receipt-header__border\"></span>\n      </div>\n      <div class=\"receipt-header__spacing\"></div>\n    </div>\n\n    <section class=\"cart\">\n      <h2 class=\"cart__receipt-header\">Cart:</h2>\n      <ol class=\"list\">\n        <li class=\"list__item\" *ngFor=\"let product of order.customerReceipt.customerCart.products\">\n          <span class=\"list__name\">{{product.title}}</span>\n          <span class=\"list__price\">{{product.price}}</span>\n        </li>\n      </ol>\n      <hr class=\"cart__hr\" />\n      <div class=\"cart__total\">\n        <h3 class=\"cart__total-label\">Subtotal</h3>\n        <span class=\"cart__total-price\">{{order.customerReceipt.customerCart.subtotal}}</span>\n      </div>\n      <div class=\"cart__total\">\n        <h6 class=\"cart__total-label\">Sales Tax</h6>\n        <span class=\"cart__total-price\">{{order.customerReceipt.customerCart.tax}}</span>\n      </div>\n      <div class=\"cart__total\">\n        <h3 class=\"cart__total-label\">Total</h3>\n        <span class=\"cart__total-price\">{{order.customerReceipt.customerCart.total}}</span>\n      </div>\n    </section>\n\n  </div>\n</div>"
 
 /***/ }),
 
@@ -2656,7 +2779,7 @@ var MookiePreloaderComponent = /** @class */ (function () {
 /*! no static exports found */
 /***/ (function(module, exports) {
 
-module.exports = "<!-- Page Wrapper -->\n<div class=\"page-wrapper text-center\">\n  <!-- Content -->\n  <section class=\"container padding-top-3x padding-bottom-2x\">\n    <!-- TODO Change ng-show/hide to *ngIf -->\n    <h1 *ngIf=\"!loggedIn\">User Account</h1>\n\n    <div class=\"row match-my-cols\">\n\n      <div class=\"col-md-4 offset-md-3 padding-bottom\" *ngIf=\"chooseLogin\">\n        <h3>Login</h3>\n        <form method=\"post\" class=\"login-form\" (ngSubmit)=\"mookieLogin(loginData)\">\n          <input type=\"email\" class=\"form-control\" placeholder=\"Email\" required [(ngModel)]=\"loginData.email\" name=\"loginEmail\">\n          <input type=\"password\" class=\"form-control\" placeholder=\"Password\" required [(ngModel)]=\"loginData.password\" name=\"loginPassword\">\n          <div class=\"form-footer row\">\n            <div class=\"rememberme\">\n              <label class=\"checkbox\">\n                <input type=\"checkbox\" checked> Remember me\n              </label>\n            </div>\n            <div class=\"form-submit\">\n              <button type=\"submit\" class=\"btn btn-primary btn-block waves-effect waves-light inlineButton\">Login</button>\n            </div>\n          </div>\n          <div class=\"form-element help-block\" *ngIf=\"loginMessage\">\n            <p> {{loginMsg}}</p>\n          </div>\n        </form>\n        <!-- .login-form -->\n        <p class=\"text-danger switchText aButton\" *ngIf=\"chooseLogin\" (click)=\"switchToReg()\">Sign up?</p>\n      </div>\n      <!-- .col-md-4 -->\n\n\n      <div class=\"col-md-4 offset-md-3 padding-bottom\" *ngIf=\"chooseReg\">\n        <h3>Register</h3>\n        <div class=\"inner\">\n          <form method=\"post\" class=\"login-form\" (ngSubmit)=\"mookieRegister(regData)\">\n            <input type=\"text\" class=\"form-control\" placeholder=\"Name\" required [(ngModel)]=\"regData.username\" name=\"regUsername\">\n            <input type=\"email\" class=\"form-control\" placeholder=\"E-mail\" required [(ngModel)]=\"regData.email\" name=\"regEmail\">\n            <input type=\"password\" class=\"form-control\" placeholder=\"Password\" required [(ngModel)]=\"regData.password\" name=\"regEmail\">\n            <div class=\"form-footer row\">\n              <div class=\"rememberme\"></div>\n              <div class=\"form-submit\">\n                <button type=\"submit\" class=\"btn btn-primary btn-block waves-effect waves-light inlineButton\">Sign up</button>\n              </div>\n            </div>\n            <div class=\"form-element help-block\" *ngIf=\"regMessage\">\n              <p> {{regMsg}}</p>\n            </div>\n          </form>\n          <!-- .login-form -->\n        </div>\n        <!-- .inner -->\n        <p class=\"text-success switchText aButton\" *ngIf=\"chooseReg\" (click)=\"switchToLogin()\">Login?</p>\n      </div>\n      <!-- .col-md-4.col-md-offset-1 -->\n\n      <!-- Social media login links -->\n      <div class=\"col-md-3 padding-top-2x sethalf\" *ngIf=\"chooseLogin\">\n        <a href=\"/auth/facebook\" target=\"_\" class=\"social-signup-btn ssb-facebook\">\n          <i class=\"fab fa-facebook-f\"></i>\n          <span>Login with Facebook</span>\n        </a>\n        <a href=\"/auth/google\" target=\"_\" class=\"social-signup-btn ssb-google\">\n          <i class=\"fab fa-google\"></i>\n          <span>Login with Google+</span>\n        </a>\n      </div>\n      <!-- .col-md-3 -->\n      <div class=\"col-md-3 padding-top-2x sethalf\" *ngIf=\"chooseReg\">\n        <a href=\"/auth/facebook\" target=\"_\" class=\"social-signup-btn ssb-facebook\">\n          <i class=\"fab fa-facebook-f\"></i>\n          <span>Signup with Facebook</span>\n        </a>\n        <a href=\"/auth/google\" target=\"_\" class=\"social-signup-btn ssb-google\">\n          <i class=\"fab fa-google\"></i>\n          <span>Signup with Google+</span>\n        </a>\n      </div>\n      <!-- .col-md-3 -->\n\n    </div>\n    <!-- .row -->\n  </section>\n  <!-- .container -->\n</div>\n<!-- .page-wrapper -->"
+module.exports = "<!-- Page Wrapper -->\n<div class=\"page-wrapper text-center\">\n  <!-- Content -->\n  <section class=\"container padding-top-3x padding-bottom-2x\">\n    <!-- TODO Change ng-show/hide to *ngIf -->\n    <h1 *ngIf=\"!loggedIn\">User Account</h1>\n\n    <div class=\"row match-my-cols\">\n\n      <div class=\"col-md-4 offset-md-3 padding-bottom\" *ngIf=\"chooseLogin\">\n        <h3>Login</h3>\n        <form method=\"post\" class=\"login-form\" (ngSubmit)=\"mookieLogin(loginData)\">\n          <input type=\"email\" class=\"form-control\" placeholder=\"Email\" required [(ngModel)]=\"loginData.email\" name=\"loginEmail\">\n          <input type=\"password\" class=\"form-control\" placeholder=\"Password\" required [(ngModel)]=\"loginData.password\" name=\"loginPassword\">\n          <div class=\"form-footer row\">\n            <div class=\"rememberme\">\n              <label class=\"checkbox\">\n                <input type=\"checkbox\" checked> Remember me\n              </label>\n            </div>\n            <div class=\"form-submit\">\n              <button type=\"submit\" class=\"btn btn-primary btn-block waves-effect waves-light inlineButton\">Login</button>\n            </div>\n          </div>\n          <div class=\"form-element help-block\" *ngIf=\"loginMessage\">\n            <p> {{loginMsg}}</p>\n          </div>\n        </form>\n        <!-- .login-form -->\n        <p class=\"text-danger switchText aButton\" *ngIf=\"chooseLogin\" (click)=\"switchToReg()\">Sign up?</p>\n      </div>\n      <!-- .col-md-4 -->\n\n\n      <div class=\"col-md-4 offset-md-3 padding-bottom\" *ngIf=\"chooseReg\">\n        <h3>Register</h3>\n        <div class=\"inner\">\n          <form method=\"post\" class=\"login-form\" (ngSubmit)=\"mookieRegister(regData)\">\n            <input type=\"text\" class=\"form-control\" placeholder=\"Name\" required [(ngModel)]=\"regData.username\" name=\"regUsername\">\n            <input type=\"email\" class=\"form-control\" placeholder=\"E-mail\" required [(ngModel)]=\"regData.email\" name=\"regEmail\">\n            <input type=\"password\" class=\"form-control\" placeholder=\"Password\" required [(ngModel)]=\"regData.password\" name=\"regEmail\">\n            <div class=\"form-footer row\">\n              <div class=\"rememberme\"></div>\n              <div class=\"form-submit\">\n                <button type=\"submit\" class=\"btn btn-primary btn-block waves-effect waves-light inlineButton\">Sign up</button>\n              </div>\n            </div>\n            <div class=\"form-element help-block\" *ngIf=\"regMessage\">\n              <p> {{regMsg}}</p>\n            </div>\n          </form>\n          <!-- .login-form -->\n        </div>\n        <!-- .inner -->\n        <p class=\"text-success switchText aButton\" *ngIf=\"chooseReg\" (click)=\"switchToLogin()\">Login?</p>\n      </div>\n      <!-- .col-md-4.col-md-offset-1 -->\n\n      <!-- Social media login links -->\n      <div class=\"col-md-3 padding-top-2x sethalf\" *ngIf=\"chooseLogin\">\n        <a routerLink=\"/auth/facebook\" target=\"_\" class=\"social-signup-btn ssb-facebook\">\n          <i class=\"fab fa-facebook-f\"></i>\n          <span>Login with Facebook</span>\n        </a>\n        <a routerLink=\"/auth/google\" target=\"_\" class=\"social-signup-btn ssb-google\">\n          <i class=\"fab fa-google\"></i>\n          <span>Login with Google+</span>\n        </a>\n      </div>\n      <!-- .col-md-3 -->\n      <div class=\"col-md-3 padding-top-2x sethalf\" *ngIf=\"chooseReg\">\n        <a routerLink=\"/auth/facebook\" target=\"_\" class=\"social-signup-btn ssb-facebook\">\n          <i class=\"fab fa-facebook-f\"></i>\n          <span>Signup with Facebook</span>\n        </a>\n        <a routerLink=\"/auth/google\" target=\"_\" class=\"social-signup-btn ssb-google\">\n          <i class=\"fab fa-google\"></i>\n          <span>Signup with Google+</span>\n        </a>\n      </div>\n      <!-- .col-md-3 -->\n\n    </div>\n    <!-- .row -->\n  </section>\n  <!-- .container -->\n</div>\n<!-- .page-wrapper -->"
 
 /***/ }),
 
@@ -2865,7 +2988,8 @@ var MookieSocialComponent = /** @class */ (function () {
         var $twit = jquery__WEBPACK_IMPORTED_MODULE_1__('#twit');
         var getInstaHeight = function (event) {
             if (event.origin.indexOf('http://localhost:8081') || event.origin.indexOf('https://www.mookiedough.co')) {
-                var eventData = JSON.parse(event.data);
+                var tempData = event.data.trim();
+                var eventData = JSON.parse(tempData);
                 if (eventData.type === "lightwidget_widget_size") {
                     jquery__WEBPACK_IMPORTED_MODULE_1__('#insta').css({ height: eventData.size });
                     window.removeEventListener("message", getInstaHeight, false);
@@ -3128,7 +3252,7 @@ var CartService = /** @class */ (function () {
         };
         this.updateCart = function (cartData) {
             var _this = this;
-            return this.http.post('/api/updateUserCart', cartData).pipe(Object(rxjs_operators__WEBPACK_IMPORTED_MODULE_3__["map"])(function (res) { console.log(res); return res; }), Object(rxjs_operators__WEBPACK_IMPORTED_MODULE_3__["catchError"])(function (err) { return _this.handleError(err); }));
+            return this.http.post('/api/updateCart', cartData).pipe(Object(rxjs_operators__WEBPACK_IMPORTED_MODULE_3__["map"])(function (res) { console.log(res); return res; }), Object(rxjs_operators__WEBPACK_IMPORTED_MODULE_3__["catchError"])(function (err) { return _this.handleError(err); }));
         };
         this.getCart = function (cartId) {
             var _this = this;
@@ -3263,6 +3387,50 @@ var InventoryService = /** @class */ (function () {
         __metadata("design:paramtypes", [_angular_common_http__WEBPACK_IMPORTED_MODULE_1__["HttpClient"], _window_ref_service__WEBPACK_IMPORTED_MODULE_4__["WindowRefService"]])
     ], InventoryService);
     return InventoryService;
+}());
+
+
+
+/***/ }),
+
+/***/ "./src/app/services/mookie-emit.service.ts":
+/*!*************************************************!*\
+  !*** ./src/app/services/mookie-emit.service.ts ***!
+  \*************************************************/
+/*! exports provided: MookieEmitService */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "MookieEmitService", function() { return MookieEmitService; });
+/* harmony import */ var _angular_core__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @angular/core */ "./node_modules/@angular/core/fesm5/core.js");
+/* harmony import */ var rxjs__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! rxjs */ "./node_modules/rxjs/_esm5/index.js");
+var __decorate = (undefined && undefined.__decorate) || function (decorators, target, key, desc) {
+    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
+    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
+    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+    return c > 3 && r && Object.defineProperty(target, key, r), r;
+};
+var __metadata = (undefined && undefined.__metadata) || function (k, v) {
+    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
+};
+
+
+var MookieEmitService = /** @class */ (function () {
+    function MookieEmitService() {
+        this.emitChangeSource = new rxjs__WEBPACK_IMPORTED_MODULE_1__["Subject"]();
+        this.changeEmitted$ = this.emitChangeSource.asObservable();
+    }
+    MookieEmitService.prototype.emitChange = function () {
+        this.emitChangeSource.next();
+    };
+    MookieEmitService = __decorate([
+        Object(_angular_core__WEBPACK_IMPORTED_MODULE_0__["Injectable"])({
+            providedIn: 'root'
+        }),
+        __metadata("design:paramtypes", [])
+    ], MookieEmitService);
+    return MookieEmitService;
 }());
 
 

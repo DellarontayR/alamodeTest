@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, EventEmitter, Output } from '@angular/core';
 import { ProductService } from '../../services/product.service';
 import { SharedService } from '../../services/shared.service';
 import { Observable } from 'rxjs';
@@ -7,6 +7,9 @@ import { ILooseObject } from '../../interfaces/looseObject';
 import { CartService } from '../../services/cart.service';
 import { UserService } from '../../services/user.service';
 import { AuthService } from '../../services/auth.service';
+import { MookieEmitService } from '../../services/mookie-emit.service';
+import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
+import { MookieModalComponent } from '../mookie-modal/mookie-modal.component';
 
 
 @Component({
@@ -16,11 +19,12 @@ import { AuthService } from '../../services/auth.service';
 })
 export class MookieMenuComponent implements OnInit {
 
-  constructor(private productService: ProductService, private shared: SharedService, private inventoryService: InventoryService, private cartService: CartService, private userService: UserService, private authService: AuthService) { }
+  constructor(private productService: ProductService, private shared: SharedService, private inventoryService: InventoryService, private cartService: CartService, private userService: UserService, private authService: AuthService, private mookieEmit: MookieEmitService, private modalService: NgbModal) { }
 
   products;
 
   itemNameMap: any;
+  @Output() valueChange = new EventEmitter();
 
   // Authentication I
 
@@ -33,6 +37,7 @@ export class MookieMenuComponent implements OnInit {
     this.itemNameMap.set("dark chocolate mocha", "Dark chocolate");
 
     this.getProductsFromServer();
+
   }
 
   handleProduct = function (products) {
@@ -124,11 +129,8 @@ export class MookieMenuComponent implements OnInit {
                     this.cartService.addItemToCart(cartData).subscribe(resData => {
                       console.log(resData);
                       if (resData.success) {
-                        let getCartData = { cartId: resData.cart._id };
-                        this.updateCart(getCartData, moreData => {
-                          console.log(moreData);
-                          this.shared.updateSharedVar('cartItemCount', moreData.itemCount);
-                        });
+                        this.shared.updateSharedVar('cartItemCount', resData.cart.products.length);
+                        this.mookieEmit.emitChange();
                       }
                       else {
                         // Show Error
@@ -144,12 +146,25 @@ export class MookieMenuComponent implements OnInit {
 
           });
         }
+        else {
+          const modalRef = this.modalService.open(MookieModalComponent);
+          console.log('here');
+          modalRef.componentInstance.modalTitle = "Ordering is closed for now.";
+          modalRef.componentInstance.modalBody = "Mookie Dough hours will be from 8 am to 7pm Monday Through Sunday with delivery starting at 9pm. ";
+          console.log(modalRef);
 
+        }
       }
       else {
+        // modal service show modal
         // Show Error
         // var title = "Ordering is closed for now.";
         //                 var body = "Mookie Dough hours will be from 8 am to 7pm Monday Through Sunday with delivery starting at 9pm.  ";
+        const modalRef = this.modalService.open(MookieModalComponent);
+        console.log('here');
+        modalRef.componentInstance.modalTitle = "Ordering is closed for now.";
+        modalRef.componentInstance.modalBody = "Mookie Dough hours will be from 8 am to 7pm Monday Through Sunday with delivery starting at 9pm. ";
+        console.log(modalRef);
       }
     });
   }

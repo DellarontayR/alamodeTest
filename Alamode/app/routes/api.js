@@ -1073,7 +1073,7 @@ module.exports = function (router) {
     //     }
     // });
 
-    router.post('/updateUserCart', function (req, res) {
+    router.post('/updateCart', function (req, res) {
         if (req.body.cartProducts === null || req.body.cartId === null || req.body.cartId === '') {
             res.json({ success: false, message: 'Cant get cart to update' });
         }

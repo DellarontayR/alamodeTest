@@ -28,10 +28,17 @@ export class MookieHeaderComponent implements OnInit, AfterViewInit {
 
   }
 
-  openMenuToggle = function(){
+  toggleMenu = function(){
     this.menuToggleOpen = !this.menuToggleOpen;
 		$('body').toggleClass('no-scroll-body');
     // if(this.menuToggleOpen) 
-  }
+  };
+
+  closeMenu = function(){
+    if(this.menuToggleOpen){
+      this.menuToggleOpen = !this.menuToggleOpen;
+      $('body').toggleClass('no-scroll-body');
+    }
+  };
 
 }

@@ -2,6 +2,7 @@ import { Component, OnInit, AfterViewInit, ChangeDetectorRef } from '@angular/co
 import { IProduct } from '../../interfaces/product';
 import { CartService } from '../../services/cart.service';
 import { SharedService } from '../../services/shared.service';
+import { MookieEmitService } from '../../services/mookie-emit.service';
 
 @Component({
   selector: 'app-mookie-cart',
@@ -22,7 +23,7 @@ export class MookieCartComponent implements OnInit, AfterViewInit {
   total: Number;
   // username, email
 
-  constructor(private cartService: CartService, private shared: SharedService, private changeDetector: ChangeDetectorRef) { }
+  constructor(private cartService: CartService, private shared: SharedService, private changeDetector: ChangeDetectorRef,private mookieEmit: MookieEmitService) { }
   // constructor(private changeDetector: ChangeDetectorRef) {}
 
   // ngAfterViewChecked(){
@@ -73,10 +74,7 @@ export class MookieCartComponent implements OnInit, AfterViewInit {
 
         let size = 0;
         productMap.forEach((v,k,m)=>{
-          console.log(k);
           for(let element of userCart.products){
-            console.log(k);
-            console.log(element);
             if (element._id === k) {
               element.qty = productMap.get(element._id);
               element.subtotalOnProduct = element.qty * element.price;
@@ -113,12 +111,15 @@ export class MookieCartComponent implements OnInit, AfterViewInit {
     this.changeDetector.detectChanges();
   }
 
-  updateCart = function (cart) {
+  updateCart = function () {
     let cartData = { cartProducts: this.cartProducts, cartId: this.cartId };
     this.cartService.updateCart(cartData).subscribe(data => {
       console.log(data);
       if (data.success) {
         this.cartChanged = false;
+        console.log(this.cartProducts);
+        this.shared.updateSharedVar('cartItemCount',data.cart.products.length);
+        this.mookieEmit.emitChange();
       }
       else {
 

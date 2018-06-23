@@ -33,7 +33,7 @@ export class CartService {
     return this.http.post('/api/deleteCartProduct', productData).pipe(map(res => { console.log(res); return res; }), catchError(err => this.handleError(err)));
   }
   updateCart = function (cartData) {
-    return this.http.post('/api/updateUserCart', cartData).pipe(map(res => { console.log(res); return res; }), catchError(err => this.handleError(err)));
+    return this.http.post('/api/updateCart', cartData).pipe(map(res => { console.log(res); return res; }), catchError(err => this.handleError(err)));
   }
   getCart = function (cartId) {
     return this.http.post('/api/getCart', cartId).pipe(map(res => { console.log(res); return res; }), catchError(err => this.handleError(err)));

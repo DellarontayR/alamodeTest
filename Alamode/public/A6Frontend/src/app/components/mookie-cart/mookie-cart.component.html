@@ -65,13 +65,12 @@
 
 
 
-          <!-- <a href="#" class="btn btn-default btn-block waves-effect waves-light">Update Cart</a> -->
           <a *ngIf="justCheckout"  class="btn btn-primary btn-block waves-effect waves-light space-top-none checkoutBtn"
             (click)="justCheckout = false;">Checkout</a>
           <a *ngIf="cartChanged"  class="btn btn-primary btn-block waves-effect waves-light space-top-none checkoutBtn"
             (click)="updateCart();">Update Cart</a>
           <div *ngIf="!justCheckout">
-            <a href="/ontheway" class="btn btn-primary btn-block waves-effect waves-light space-top-none checkoutBtn">Delivery</a>
+            <a routerLink="/ontheway" class="btn btn-primary btn-block waves-effect waves-light space-top-none checkoutBtn">Delivery</a>
             <a  class="btn btn-primary btn-block waves-effect waves-light space-top-none checkoutBtn">Pickup</a>
             <!-- still have to go to /Checkout at some point -->
           </div>

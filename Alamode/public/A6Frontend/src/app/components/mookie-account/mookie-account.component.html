@@ -61,13 +61,13 @@
           <!-- <h3>Your Mookie Dough points:</h3>
             <h3><span class="text-semibold">0</span> <span class="h5">points</span></h3>
             <p class="text-sm text-gray">You can spend these points on our products</p> -->
-          <a href="/home" class="btn btn-default btn-ghost icon-left btn-block">
+          <a routerLink="/home" class="btn btn-default btn-ghost icon-left btn-block">
             <i class="material-icons arrow_back"></i>
             Go to Shop
           </a>
           <button type="submit" class="btn btn-primary btn-block waves-effect waves-light space-top-none checkoutBtn" (click)="logout()">Sign Out</button>
           <button *ngIf="admin" type="submit" class="btn btn-primary btn-block waves-effect waves-light space-top-none checkoutBtn">
-            <a href="/management">Admin Portal</a>
+            <a routerLink="/management">Admin Portal</a>
           </button>
 
         </aside>
