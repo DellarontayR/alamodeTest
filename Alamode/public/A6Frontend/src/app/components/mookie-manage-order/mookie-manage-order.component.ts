@@ -35,7 +35,7 @@ export class MookieManageOrderComponent implements OnInit {
     this.timeFromUser = "";
     this.longitude = -122.15756340000002;
     this.latitude = 37.4266083;
-    this.order = {customerReceipt:{customerCart:{products:[]}}};
+    this.order = { customerReceipt: { customerCart: { products: [] } } };
     // Get param
     this.order$ = this.activatedRoute.paramMap.pipe(
       switchMap((params: ParamMap) => {
@@ -44,7 +44,7 @@ export class MookieManageOrderComponent implements OnInit {
     this.order$.subscribe(data => {
       if (data.success) {
         if (data.order) {
-          
+
           this.order = data.order;
           this.latitude = this.order.customerReceipt.geometryAddress.lat;
           this.longitude = this.order.customerReceipt.geometryAddress.lng;
@@ -117,7 +117,7 @@ export class MookieManageOrderComponent implements OnInit {
 
   updateCurrentLocation = function () {
     if ("geolocation" in navigator) {
-      navigator.geolocation.getCurrentPosition(this.updateCurrentLocation, this.handleErr, { timeout: 500, maximumAge: Infinity });//Did not work with option enableHighAccuracy set to true
+      navigator.geolocation.getCurrentPosition(this.updateDriverLocation, this.handleErr, { timeout: 500, maximumAge: Infinity });//Did not work with option enableHighAccuracy set to true
     }
   };
 

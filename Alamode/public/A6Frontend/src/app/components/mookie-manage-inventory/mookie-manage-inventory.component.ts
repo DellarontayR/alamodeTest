@@ -15,6 +15,7 @@ export class MookieManageInventoryComponent implements OnInit {
   currentNames: [String];
   inventoryMapZ;
   newItem: ILooseObject;
+  totals: [ILooseObject];
 
   constructor(private inventoryService: InventoryService) { 
     this.newItem = {itemName:'',itemQty:0,addInventory:false,removeInventory:false,oldInventory:false};

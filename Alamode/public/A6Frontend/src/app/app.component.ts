@@ -39,7 +39,7 @@ export class AppComponent implements OnInit, AfterViewInit {
 
     // Item Name map
     itemNameMap = new Map();
-    private showBody: Boolean = false;
+    public showBody: Boolean = false;
     private checkUser$ = interval(3000);
 
 

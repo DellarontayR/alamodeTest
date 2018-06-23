@@ -38,7 +38,7 @@
                   </tr>
                 </thead>
                 <tbody>
-                  <tr *ngFor="let order of orderHistory;trackBy:orderStartedOn">
+                  <tr *ngFor="let order of orderHistory;">
                     <td>
                         <a routerLink="/orders/{{order._id}}">{{order.customerReceipt.receiptNumber}}</a>
                     </td>
