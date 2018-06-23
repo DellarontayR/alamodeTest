@@ -1,6 +1,8 @@
 # Elastic Beanstalk Files
 
-.elasticbeanstalk/*
+.elasticbeanstalk/
+# dependencies
+/node_modules
 
 !.elasticbeanstalk/*.cfg.yml
 
