@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { CanActivate, ActivatedRouteSnapshot, RouterStateSnapshot } from '@angular/router';
+import { CanActivate, ActivatedRouteSnapshot, RouterStateSnapshot, Router } from '@angular/router';
 import { Observable } from 'rxjs';
 import { UserService } from './services/user.service';
 
@@ -7,7 +7,7 @@ import { UserService } from './services/user.service';
   providedIn: 'root'
 })
 export class AdminGuard implements CanActivate {
-  constructor(private userService:UserService){}
+  constructor(private userService:UserService,private router:Router){}
   // Check if user has correct permissions
   check = function (): boolean | Promise<boolean> {
 
