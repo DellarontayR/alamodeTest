@@ -41,6 +41,7 @@ export class AppComponent implements OnInit, AfterViewInit {
     itemNameMap = new Map();
     public showBody: Boolean = false;
     private checkUser$ = interval(3000);
+    private actualInterval: Observable<any>;
 
 
 
@@ -50,9 +51,11 @@ export class AppComponent implements OnInit, AfterViewInit {
 
     ngOnInit() {
         this.mookieEmit.changeEmitted$.subscribe(data=>{
-            console.log(data);
-            console.log('here');
             this.headerComponent.cartItemCount = this.shared.getSharedVar('cartItemCount');
+        });
+        this.mookieEmit.largeChangeEmitted$.subscribe(data=>{
+            this.headerComponent.cartItemCount = this.shared.getSharedVar('cartItemCount');
+            this.headerComponent.loggedIn = this.shared.getSharedVar('loggedIn');
         });
         this.checkUser$ = interval(30000);
         this.showBody = false;
@@ -414,14 +417,14 @@ export class AppComponent implements OnInit, AfterViewInit {
             this.shared.updateSharedVar('checkingSession', true);
             if (userData.success) {
                 // Run interval ever 30000 milliseconds (30 seconds) 
-                this.checkUser$.subscribe(event => {
+                this.actualInterval = this.checkUser$.subscribe(event => {
                     console.log('in subscribe');
                     let mWindow = this.windowRef.nativeWindow;
                     let token = mWindow.localStorage.getItem('token');
                     if (token === null) {
                         // Cancel interval somehow
                         console.log('espcaing interval');
-                        this.checkUser$.unsubscribe();
+                        this.actualInterval.unsubscribe();
                     }
                     else {
                         let parseJwt = function (token) {
@@ -434,7 +437,7 @@ export class AppComponent implements OnInit, AfterViewInit {
                         let timeCheck = expireTime.exp - timeStamp;
                         if (timeCheck <= 1800) {
                             console.log('espcaing interval');
-                            this.checkUser$.unsubscribe();
+                            this.actualInterval.unsubscribe();
                             // Cancel interval
                         }
                         // this.shared.addMinUser(userData.userEmail, userData.username);

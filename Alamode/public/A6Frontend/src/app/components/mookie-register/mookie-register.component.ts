@@ -3,6 +3,7 @@ import { UserService } from '../../services/user.service';
 import { AuthService } from '../../services/auth.service';
 import { SharedService } from '../../services/shared.service';
 import { Router } from '@angular/router';
+import { MookieEmitService } from '../../services/mookie-emit.service';
 
 @Component({
   selector: 'app-mookie-register',
@@ -11,7 +12,7 @@ import { Router } from '@angular/router';
 })
 export class MookieRegisterComponent implements OnInit {
 
-  constructor(private userService: UserService, private authService: AuthService, private shared: SharedService, private router: Router) { }
+  constructor(private userService: UserService, private authService: AuthService, private shared: SharedService, private router: Router,private mookieEmit:MookieEmitService) { }
 
   ngOnInit() {
 
@@ -49,7 +50,8 @@ export class MookieRegisterComponent implements OnInit {
         this.loggedIn = true;
         this.authService.setToken(data.token);
         this.shared.updateSharedVar('loggedIn', true);
-        if(this.shared.getSharedVar('checkingSession')) this.shared.updateSharedVar('checkingSession',true);
+        if(this.shared.getSharedVar('checkingSession')) this.shared.updateSharedVar('checkingSession',false);
+        this.mookieEmit.emitLargeChange();
         setTimeout(() => {
           this.loginMessage = false;
           this.loginMsg = "";
@@ -83,7 +85,8 @@ export class MookieRegisterComponent implements OnInit {
 
           this.authService.setToken(tokenData.token);
           this.shared.updateSharedVar('loggedIn', true);
-          if(this.shared.getSharedVar('checkingSession')) this.shared.updateSharedVar('checkingSession',true);
+          if(this.shared.getSharedVar('checkingSession')) this.shared.updateSharedVar('checkingSession',false);
+          this.mookieEmit.emitLargeChange();
 
           setTimeout(() => {
             this.regMessage = false;

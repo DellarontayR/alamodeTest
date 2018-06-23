@@ -11,8 +11,8 @@
       <div class="col-sm-9 padding-bottom-2x">
         <!-- Nav Tabs -->
         <ul class="nav-tabs mobile-center" role="tablist">
-          <li class="active">
-            <a href="#orders" role="tab" data-toggle="tab">
+          <li>
+            <a role="tab" data-toggle="tab">
               <!-- <i class="material-icons shopping_cart"></i> -->
               <i class="fas fa-shopping-cart fa-xs fa-fw"></i>
 
@@ -26,7 +26,7 @@
         <!-- Tab Panes -->
         <div class="tab-content">
 
-          <div role="tabpanel" class="tab-pane fade active in" id="orders">
+          <div role="tabpanel" class="tab-pane active in" id="orders">
             <div class="table-responsive">
               <table>
                 <thead>
@@ -38,7 +38,7 @@
                   </tr>
                 </thead>
                 <tbody>
-                  <tr *ngFor="let order of orderHistory;">
+                  <tr *ngFor="let order of orderHistory">
                     <td>
                         <a routerLink="/orders/{{order._id}}">{{order.customerReceipt.receiptNumber}}</a>
                     </td>

@@ -54,7 +54,8 @@ export class AuthService {
     else return false;
   }
   
-  socialMedia = function () {
+  socialMedia = function (token) {
+    this.setToken(token);
     // setToken()
     // Set socialMedia function's previous uses to simply setToken
   }

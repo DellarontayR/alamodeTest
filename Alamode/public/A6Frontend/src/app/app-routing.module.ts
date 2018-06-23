@@ -19,6 +19,8 @@ import { MookieManageUsersComponent } from './components/mookie-manage-users/moo
 import { MookieManageOrdersComponent } from './components/mookie-manage-orders/mookie-manage-orders.component';
 import { MookieManageInventoryComponent } from './components/mookie-manage-inventory/mookie-manage-inventory.component';
 import { MookieManageOrderComponent } from './components/mookie-manage-order/mookie-manage-order.component';
+import { MookieFacebookComponent } from './components/mookie-facebook/mookie-facebook.component';
+import { MookieGoogleComponent } from './components/mookie-google/mookie-google.component';
 
 
 
@@ -34,6 +36,10 @@ const routes: Routes = [
   { path: 'shopping-cart', component: MookieCartComponent },
   { path: 'ontheway', component: MookieCheckoutComponent },
   { path: 'orders/:orderId', component: MookieOrdersComponent },
+  { path: 'facebook/:token', component: MookieFacebookComponent },
+  { path: 'facebook/error', component: MookieFacebookComponent },
+  { path: 'google/:token', component: MookieGoogleComponent },
+  { path: 'google/error', component: MookieGoogleComponent },
   {
     path: 'management', component: MookieManageComponent,
     children: [{
@@ -56,7 +62,7 @@ const routes: Routes = [
     }
     ]
   },
-  
+
   { path: "**", component: MookiePagenotfoundComponent }
 ];
 

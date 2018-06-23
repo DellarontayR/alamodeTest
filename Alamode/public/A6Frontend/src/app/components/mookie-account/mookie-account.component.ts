@@ -4,6 +4,7 @@ import { UserService } from '../../services/user.service';
 import { OrderService } from '../../services/order.service';
 import { AuthService } from '../../services/auth.service';
 import { Router } from '@angular/router';
+import { MookieEmitService } from '../../services/mookie-emit.service';
 
 @Component({
   selector: 'app-mookie-account',
@@ -12,7 +13,7 @@ import { Router } from '@angular/router';
 })
 export class MookieAccountComponent implements OnInit {
 
-  constructor(private shared: SharedService, private userService: UserService, private orderService: OrderService, private authService:AuthService, private router: Router) { }
+  constructor(private shared: SharedService, private userService: UserService, private orderService: OrderService, private authService:AuthService, private router: Router, private mookieEmit:MookieEmitService) { }
 
   ngOnInit() {
     this.admin =false;
@@ -28,8 +29,8 @@ export class MookieAccountComponent implements OnInit {
         let getOrderData = { userId: data.user._id };
         if(data.user.permission === 'admin') this.admin = true;
         this.orderService.getUserOrders(getOrderData).subscribe(orderData => {
-          if (data.success) {
-            this.orderHistory = data.orders;
+          if (orderData.success) {
+            this.orderHistory = orderData.orders;
           }
           else {
             // Couldn't get order history
@@ -51,6 +52,13 @@ export class MookieAccountComponent implements OnInit {
 
   logout = function(){
     this.authService.logout();
+    this.shared.updateSharedVar('loggedIn',false);
+    this.shared.updateSharedVar('admin',false);
+    this.shared.updateSharedVar('user',{});
+    this.shared.updateSharedVar('cartItemCount',0);
+    this.mookieEmit.emitLargeChange();
+
+
     this.router.navigate(['/home']);
   }
 

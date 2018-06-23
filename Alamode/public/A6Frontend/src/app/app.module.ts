@@ -34,6 +34,8 @@ import { MookieManageOrdersComponent } from './components/mookie-manage-orders/m
 import { MookieManageInventoryComponent } from './components/mookie-manage-inventory/mookie-manage-inventory.component';
 import { MookieManageOrderComponent } from './components/mookie-manage-order/mookie-manage-order.component';
 import { MookieModalComponent } from './components/mookie-modal/mookie-modal.component';
+import { MookieFacebookComponent } from './components/mookie-facebook/mookie-facebook.component';
+import { MookieGoogleComponent } from './components/mookie-google/mookie-google.component';
 
 
 @NgModule({
@@ -57,7 +59,9 @@ import { MookieModalComponent } from './components/mookie-modal/mookie-modal.com
     MookieManageOrdersComponent,
     MookieManageInventoryComponent,
     MookieManageOrderComponent,
-    MookieModalComponent],
+    MookieModalComponent,
+    MookieFacebookComponent,
+    MookieGoogleComponent],
   imports: [
     BrowserModule,
     HttpClientModule,
