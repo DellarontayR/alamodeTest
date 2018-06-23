@@ -1490,6 +1490,9 @@ var MookieFacebookComponent = /** @class */ (function () {
         var _this = this;
         this.router.events
             .pipe(Object(rxjs_operators__WEBPACK_IMPORTED_MODULE_2__["filter"])(function (event) { return event instanceof _angular_router__WEBPACK_IMPORTED_MODULE_1__["NavigationStart"]; })).subscribe(function (route) {
+            var url = route.url.toString();
+            console.log(url);
+            console.log(route);
             route.url.subscribe(function (data) {
                 console.log(data);
                 console.log(data.toString());

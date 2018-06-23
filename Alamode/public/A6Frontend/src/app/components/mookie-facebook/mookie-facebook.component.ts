@@ -20,6 +20,9 @@ export class MookieFacebookComponent implements OnInit {
     this.router.events
       .pipe(filter(event => event instanceof NavigationStart)
       ).subscribe((route: ActivatedRoute) => {
+        let url = route.url.toString();
+        console.log(url);
+        console.log(route);
         route.url.subscribe(data => {
           console.log(data);
           console.log(data.toString());
