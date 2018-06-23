@@ -59,8 +59,11 @@ export class AppComponent implements OnInit, AfterViewInit {
         });
         this.mookieEmit.sessionEmitted$.subscribe(data=>{
             if(this.shared.getSharedVar('checkingSession')){
-                if(!this.actualInterval.closed) this.actualInterval.unsubscribe();
+                // if(!this.actualInterval.closed) this.actualInterval.unsubscribe();
                 this.shared.updateSharedVar('checkingSession',false);
+                this.checkSession();
+            }
+            else{
                 this.checkSession();
             }
         });
@@ -78,7 +81,7 @@ export class AppComponent implements OnInit, AfterViewInit {
             .pipe(filter(event => event instanceof NavigationStart)
             ).subscribe((route: ActivatedRoute) => {
                 //     // Will run code every time a route changes
-                console.log(route);
+                // console.log(route);
                 if (!this.shared.getSharedVar('checkingSession')) this.checkSession();
                 console.log(this.shared.getSharedVar('checkingSession'));
                 if (this.authService.isLoggedIn()) {

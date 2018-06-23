@@ -1885,7 +1885,7 @@ module.exports = function (router) {
     // Route to get the current user's permission level
     router.get('/permission', function (req, res) {
         console.log(req.decoded);
-        User.findOne({ username: req.decoded.username }, function (err, user) {
+        User.findOne({ email: req.decoded.userEmail }, function (err, user) {
             if (err) {
                 res.json({ success: false, message: 'Something went wrong. This error has been logged and will be addressed by our staff. We apologize for this inconvenience!' });
             } else {

@@ -594,9 +594,11 @@ var AppComponent = /** @class */ (function () {
         });
         this.mookieEmit.sessionEmitted$.subscribe(function (data) {
             if (_this.shared.getSharedVar('checkingSession')) {
-                if (!_this.actualInterval.closed)
-                    _this.actualInterval.unsubscribe();
+                // if(!this.actualInterval.closed) this.actualInterval.unsubscribe();
                 _this.shared.updateSharedVar('checkingSession', false);
+                _this.checkSession();
+            }
+            else {
                 _this.checkSession();
             }
         });
@@ -613,7 +615,7 @@ var AppComponent = /** @class */ (function () {
         this.router.events
             .pipe(Object(rxjs_operators__WEBPACK_IMPORTED_MODULE_3__["filter"])(function (event) { return event instanceof _angular_router__WEBPACK_IMPORTED_MODULE_2__["NavigationStart"]; })).subscribe(function (route) {
             //     // Will run code every time a route changes
-            console.log(route);
+            // console.log(route);
             if (!_this.shared.getSharedVar('checkingSession'))
                 _this.checkSession();
             console.log(_this.shared.getSharedVar('checkingSession'));
