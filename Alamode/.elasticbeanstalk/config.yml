@@ -2,6 +2,10 @@ branch-defaults:
   default:
     environment: MookieDough-dev
     group_suffix: null
+environment-defaults:
+  MookieDough-dev:
+    branch: null
+    repository: null
 global:
   application_name: Mookie Dough
   branch: null
