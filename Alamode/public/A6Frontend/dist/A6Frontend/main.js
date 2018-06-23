@@ -504,6 +504,9 @@ var AppComponent = /** @class */ (function () {
                                 newUser = retUser;
                                 newUser.success = true;
                                 _this.getCurrentCart(function (cart) {
+                                    console.log(cart.products.length);
+                                    this.headerComponent.cartItemCount = cart.products.length;
+                                    this.shared.updateSharedVar('cartItemCount', cart.products.length);
                                     return callback(newUser);
                                 });
                             }
@@ -529,14 +532,14 @@ var AppComponent = /** @class */ (function () {
                 _this.shared.updateSharedVar('checkingSession', true);
                 if (userData.success) {
                     // Run interval ever 30000 milliseconds (30 seconds) 
-                    _this.actualInterval = _this.checkUser$.subscribe(function (event) {
+                    _this.checkUser$ = _this.checkUser$.subscribe(function (event) {
                         console.log('in subscribe');
                         var mWindow = _this.windowRef.nativeWindow;
                         var token = mWindow.localStorage.getItem('token');
                         if (token === null) {
                             // Cancel interval somehow
                             console.log('espcaing interval');
-                            _this.actualInterval.unsubscribe();
+                            _this.checkUser$.unsubscribe();
                         }
                         else {
                             var parseJwt = function (token) {
@@ -549,7 +552,7 @@ var AppComponent = /** @class */ (function () {
                             var timeCheck = expireTime.exp - timeStamp;
                             if (timeCheck <= 1800) {
                                 console.log('espcaing interval');
-                                _this.actualInterval.unsubscribe();
+                                _this.checkUser$.unsubscribe();
                                 // Cancel interval
                             }
                             // this.shared.addMinUser(userData.userEmail, userData.username);
@@ -594,7 +597,6 @@ var AppComponent = /** @class */ (function () {
         });
         this.mookieEmit.sessionEmitted$.subscribe(function (data) {
             if (_this.shared.getSharedVar('checkingSession')) {
-                // if(!this.actualInterval.closed) this.actualInterval.unsubscribe();
                 _this.shared.updateSharedVar('checkingSession', false);
                 _this.checkSession();
             }

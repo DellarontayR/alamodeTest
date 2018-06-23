@@ -41,7 +41,6 @@ export class AppComponent implements OnInit, AfterViewInit {
     itemNameMap = new Map();
     public showBody: Boolean = false;
     private checkUser$ = interval(3000);
-    private actualInterval: any;
 
 
 
@@ -59,7 +58,6 @@ export class AppComponent implements OnInit, AfterViewInit {
         });
         this.mookieEmit.sessionEmitted$.subscribe(data=>{
             if(this.shared.getSharedVar('checkingSession')){
-                // if(!this.actualInterval.closed) this.actualInterval.unsubscribe();
                 this.shared.updateSharedVar('checkingSession',false);
                 this.checkSession();
             }
@@ -401,6 +399,9 @@ export class AppComponent implements OnInit, AfterViewInit {
                             newUser = retUser;
                             newUser.success = true;
                             this.getCurrentCart(function (cart) {
+                                console.log(cart.products.length);
+                                this.headerComponent.cartItemCount = cart.products.length;
+                                this.shared.updateSharedVar('cartItemCount',cart.products.length);
                                 return callback(newUser);
                             });
                         }
@@ -427,14 +428,14 @@ export class AppComponent implements OnInit, AfterViewInit {
             this.shared.updateSharedVar('checkingSession', true);
             if (userData.success) {
                 // Run interval ever 30000 milliseconds (30 seconds) 
-                this.actualInterval = this.checkUser$.subscribe(event => {
+                this.checkUser$ = this.checkUser$.subscribe(event => {
                     console.log('in subscribe');
                     let mWindow = this.windowRef.nativeWindow;
                     let token = mWindow.localStorage.getItem('token');
                     if (token === null) {
                         // Cancel interval somehow
                         console.log('espcaing interval');
-                        this.actualInterval.unsubscribe();
+                        this.checkUser$.unsubscribe();
                     }
                     else {
                         let parseJwt = function (token) {
@@ -447,7 +448,7 @@ export class AppComponent implements OnInit, AfterViewInit {
                         let timeCheck = expireTime.exp - timeStamp;
                         if (timeCheck <= 1800) {
                             console.log('espcaing interval');
-                            this.actualInterval.unsubscribe();
+                            this.checkUser$.unsubscribe();
                             // Cancel interval
                         }
                         // this.shared.addMinUser(userData.userEmail, userData.username);
