@@ -16,12 +16,13 @@
     animation: slideUpLong 0.5s;
 }
 
-.hide-input{
-    display:none;
+.hide-input {
+    display: none;
 }
-.way-header{
-    text-align:center;
-    vertical-align:center;
+
+.way-header {
+    text-align: center;
+    vertical-align: center;
 }
 
 #infowindow-content .title {
@@ -33,23 +34,31 @@
 }
 
 @keyframes fadein {
-    from { opacity: 0; }
-    to { opacity: 1; }
+    from {
+        opacity: 0;
+    }
+    to {
+        opacity: 1;
+    }
 }
+
 @keyframes fadeout {
-    from { opacity: 1; }
-    to { opacity: 0; }
+    from {
+        opacity: 1;
+    }
+    to {
+        opacity: 0;
+    }
 }
 
-.otw-spinner{
-    padding-top:20px;
-    width:100%;
-    text-align:center;
-    vertical-align:center;
+.otw-spinner {
+    padding-top: 20px;
+    width: 100%;
+    text-align: center;
+    vertical-align: center;
 }
 
-
-.mookie-confirm{
+.mookie-confirm {
     -webkit-animation: slideInUp 1s;
     -o-animation: slideInUp 1s;
     animation: slideInUp 1s;
@@ -58,15 +67,17 @@
     animation: fadein 1s;
 }
 
-.mookie-confirm.ng-leave{
+.mookie-confirm.ng-leave {
     -webkit-animation: fadeout 1s;
     -o-animation: fadeout 1s;
     animation: fadeout 1s;
 }
-.mookie-confirm-message{
-    background-color:#333333;
-    color:white;
+
+.mookie-confirm-message {
+    background-color: #333333;
+    color: white;
 }
+
 #g-map #infowindow-content {
     display: inline;
 }
@@ -91,7 +102,7 @@
 
 @media screen and (max-width:600px) {
     .order-input {
-        width:300px;
+        width: 300px;
     }
 }
 
@@ -103,26 +114,25 @@
 
 .receipt {
     /* background: #ff84a1; */
-	color: #3a3e59;
+    color: #3a3e59;
     font-family: 'Raleway', Arial, sans-serif;
     max-width: 400px;
     margin: 5vh auto 0 auto;
     transition: .3s;
     box-shadow: 0 3px 10px rgba(0, 0, 0, .2);
-
-
 }
 
 .receipt .hoverable {
     transition: .3s;
     box-shadow: 0 3px 10px rgba(0, 0, 0, .2);
 }
-.receipt .hoverable:hover{
-    box-shadow: 0 5px 20px rgba(0, 0, 0, .3);
 
+.receipt .hoverable:hover {
+    box-shadow: 0 5px 20px rgba(0, 0, 0, .3);
 }
 
 /* receipt header styles */
+
 .receipt-header {
     width: 100%;
 }
@@ -140,7 +150,6 @@
 //     padding: 30px;
 //     background-image: url("../imgs/Media/goodmookie.svg");
 // }
-
 .receipt-header__meta {
     position: relative;
     width: 90%;
@@ -167,6 +176,7 @@
 }
 
 /* // Greeting styles */
+
 .receipt-header__greeting {
     position: relative;
     background: white;
@@ -203,6 +213,7 @@
 }
 
 /* // Cart styles */
+
 .cart {
     background: white;
     padding: 30px;
@@ -238,14 +249,14 @@
     border-bottom: 1px dashed rgba(0, 0, 0, .1);
 }
 
-.list__item:last-child{
+.list__item:last-child {
     border-bottom: none;
 }
 
-.list__item:before{
+.list__item:before {
     content: counter(item-counter);
-    counter-increment:item-counter;
-    margin-right:15px;
+    counter-increment: item-counter;
+    margin-right: 15px;
 }
 
 .list__name {
@@ -288,12 +299,11 @@
 	 &:hover { opacity: 1; } 
 }*/
 
-h3{
-    font-size:14px;
+h3 {
+    font-size: 14px;
 }
 
 // > ontheway css
-
 // Checkout css
 /* .field {
     background: transparent;
@@ -321,9 +331,13 @@ h3{
     color: #CFD7E0;
 } */
 
-.checkoutBtn, .checkoutBtn:hover, .checkoutBtn:active,.checkoutBtn:focus{
-    background-color:#333333;
+.checkoutBtn,
+.checkoutBtn:hover,
+.checkoutBtn:active,
+.checkoutBtn:focus {
+    background-color: #333333;
 }
+
 .field::placeholder {
     background-color: #333333;
     color: white;
@@ -371,8 +385,22 @@ label {
     width: 100%;
     padding-top: 5px;
 }
-.stripeElement{
-    color:white;
+
+.stripeElement {
+    color: white;
 }
 
 // > checkout css
+.hidden {
+    display: none;
+}
+
+shown {
+    display: block;
+}
+
+
+
+.card-body{
+    width:100%;
+}

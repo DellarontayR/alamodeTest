@@ -33,6 +33,7 @@
     "passport-twitter": "^1.0.4",
     "python": "0.0.4",
     "stream-buffers": "^3.0.1",
+    "stripe": "^6.1.1",
     "through": "^2.3.8",
     "tiff": "^3.0.0",
     "tiff.js": "^1.0.0",

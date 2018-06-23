@@ -665,7 +665,7 @@ module.exports = function (router) {
                                             var receipt = new Receipt();
                                             receipt.customerName = req.body.user.username;
                                             receipt.customerAddress = req.body.deliveryLocation;
-                                            receipt.customerCart = req.body.cart._id;
+                                            receipt.customerCart = req.body.cart;
                                             receipt.geometryAddress = req.body.deliveryLatLng;
 
                                             receipt.save(function (err, newReceipt) {
@@ -696,6 +696,7 @@ module.exports = function (router) {
                                                                         from: '6502514237',
                                                                         body: 'New order:\ncustomerName: ' + newOrder.customerReceipt.customerCart.user.username + 'Address: ' +
                                                                             newOrder.customerAddress + ''
+                                                                            // Add link to customer order
                                                                     }, function (err) {
                                                                         console.log('error');
                                                                         console.log(err);
@@ -1289,7 +1290,7 @@ module.exports = function (router) {
     });
 
     // cont.
-    router.get('/getUsers', function (req, res) {
+    router.post('/getUsers', function (req, res) {
         User.find({}).select('email username permission cart').exec(function (err, users) {
             if (err) {
                 res.json({ success: false, message: "User List retrieval failed" });

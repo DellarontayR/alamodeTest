@@ -18,8 +18,8 @@ export class MookieAccountComponent implements OnInit {
     this.admin =false;
 
     let sessionVars = this.shared.getSharedVars();
-    if (sessionVars.user.username) this.username = sessionVars.user.username;
-    if (sessionVars.user.userEmail) this.userEmail = sessionVars.user.userEmail;
+    if (sessionVars.user.user.username) this.username = sessionVars.user.user.username;
+    if (sessionVars.user.user.email) this.userEmail = sessionVars.user.user.email;
     let userData = { username: this.username, userEmail: this.userEmail };
     console.log(userData);
 

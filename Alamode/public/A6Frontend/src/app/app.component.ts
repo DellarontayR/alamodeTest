@@ -317,15 +317,7 @@ export class AppComponent implements OnInit, AfterViewInit {
         });
     };
 
-    // Get Users for Management
-    getUsers = function (callback) {
-        this.userService.subscribe(data => {
-            if (data.success) {
-                return callback(data.users);
-            }
-        });
-    };
-    // >
+
 
     // Get The User's current cart
     getCurrentCart = function (callback) {

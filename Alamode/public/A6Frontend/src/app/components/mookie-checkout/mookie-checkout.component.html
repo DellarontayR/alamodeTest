@@ -1,82 +1,157 @@
-<!-- Page Wrapper -->
-<div class="page-wrapper">
-  <!-- Container -->
-  <form method="post" class="container padding-top-3x padding-bottom-2x">
+<div class="container">
+  <div class="way-header">
+    <h3>Welcome to Mookie Dough Delivery</h3>
+  </div>
+  <!-- <input id="order-input" class="order-input"> -->
 
-    <h1 class="space-top-half text-center">Checkout</h1>
-    <div class="row padding-top">
-
-      <!-- add bitcoin as a payment method -->
-
-
-
-      <!-- Checkout Form -->
-      <div class="col-sm-8 col-md-4 col-md-offset-3 padding-bottom">
-        <!-- .row -->
-        <div class="row">
-
-          <p> Please use 4242-4242-4242-4242 for card number and any date or zip code during test experience</p>
-          <form>
-            <div class="group">
-              <label>
-                <input name="cardholder-name" class="field is-empty" placeholder="Name Jane Doe" [(ngModel)]="checkoutData.name" />
-              </label>
-              <label>
-                <input class="field is-empty" type="tel" placeholder="Phone number (123) 456-7890" [(ngModel)]="checkoutData.number"
-                  style="color:black" />
-              </label>
-            </div>
-            <div class="group cardGroup">
-              <label>
-                <div id="card-element" class="field is-empty stripeElement" required></div>
-              </label>
-
-            </div>
-          </form>
-
+  <div class="container">
+    <div class="row">
+      <div class="col-sm-12">
+        <div class="form-group">
+          <input placeholder="search for location" autocorrect="off" autocapitalize="off" spellcheck="off" type="text" class="form-control"
+            #search>
         </div>
-        <div class="row" *ngIf="chargeSuccessful">
-        </div>
-
-        <!-- <div class="row">
-            <form action="/your-server-side-code" method="POST">
-              <script src="https://checkout.stripe.com/checkout.js" class="stripe-button" data-key="pk_test_EPjnzpxnrgvUiGWsYrJjqN5t" data-amount="2000"
-                data-name="Mookie Dough LLC" data-description="2 widgets" data-image="https://stripe.com/img/documentation/checkout/marketplace.png"
-                data-locale="auto">
-              </script>
-              </form>
-          </div> -->
+        <agm-map [latitude]="latitude" [longitude]="longitude" [scrollwheel]="false" [zoom]="zoom">
+          <agm-marker [latitude]="latitude" [longitude]="longitude">
+              <agm-info-window class="info-window" [isOpen]="deliveryLocation">{{deliveryLocation}}</agm-info-window>
+          </agm-marker>
+        </agm-map>
       </div>
-
-
-      <!-- .col-sm-8 -->
-
-      <!-- Sidebar -->
-      <div class="col-md-3 col-md-offset-1 col-sm-4 padding-bottom">
-        <aside>
-          <h3>Cart total:</h3>
-          <h4>${{total}}</h4>
-          <a href="/shopping-cart" class="btn btn-default btn-ghost icon-left btn-block">
-            <i class="material-icons arrow_back"></i>
-            Back To Cart
-          </a>
-          <!-- <button type="submit" class="btn btn-primary btn-block waves-effect waves-light space-top-none" ng-click="mookie.showStripeModal()">Checkout</button> -->
-          <button type="submit" class="btn btn-primary btn-block waves-effect waves-light space-top-none checkoutBtn" (click)="doCheckout()">Checkout</button>
-          <label for="card-element" class="checkoutMsg">
-            <span>
-              <span>
-                <p style="position:absolute">
-                  {{cartCtrl.checkoutMessage}}</p>
-              </span>
-            </span>
-          </label>
-
-        </aside>
-      </div>
-      <!-- .col-md-3.col-sm-4 -->
     </div>
-    <!-- .row -->
-  </form>
-  <!-- .container -->
+  </div>
+  
+  <!-- Order maps directive from angualr 1 -->
+  <!-- <order-maps id="g-map" style="height:400px;width:100%;border: 2px solid black;"></order-maps> -->
+  <div id="infowindow-content">
+    <img src="" width="16" height="16" id="place-icon">
+    <span id="place-name" class="title"></span>
+    <br>
+    <span id="place-address"></span>
+  </div>
+  <!-- Create a variable that will stand for location changed. Based on lcoation changing and the other variable stored with new location an update should be display for the user to fully checkout. Maybe bring checkout.css into here as well -->
+
+  <!-- Spinner for old receipt display -->
+
+  <!-- <div class="otw-spinner" *ngIf="!deliveryLocationChanged">
+      <i class="fas fa-spinner fa-spin fa-3x"></i>
+      <div *ngIf="receipt">Order Pending</div>
+  </div> -->
+  <!-- [ngClass]="{'inStock': catalogProduct.inStock == 'In Stock', 'notInStock': catalogProduct.inStock == 'Not In Stock'}" -->
+  <!-- Mookie confirm -->
+  <div class="mookie-confirm" [ngClass]="{'hidden':deliveryLocationChanged === false, 'shown':deliveryLocationChanged ===true}">
+    <p class="mookie-confirm-message">Delivery set to {{deliveryLocation}}</p>
+    <!-- maybe a fa spinner to show we're doing something. then -->
+    <!-- With delivery location in tow we can send email to user's account and  -->
+    <form method="post" class="container padding-top-3x padding-bottom-2x">
+
+      <h1 class="space-top-half text-center">Checkout</h1>
+      <div class="row padding-top">
+
+        <!-- add bitcoin as a payment method -->
+
+
+        <!-- Checkout Form -->
+        <div class="col-sm-6 col-md-8 col-md-offset-3 padding-bottom">
+          <!-- .row -->
+          <div class="row">
+            <p> Please use 4242-4242-4242-4242 for card number and any date or zip code during test experience</p>
+            <form class="card-body">
+              <div class="group">
+                <label>
+                  <input name="cardholder-name" class="field is-empty" placeholder="Name Jane Doe" [(ngModel)]="checkoutData.name" />
+                </label>
+                <label>
+                  <input name="cardholder-number" class="field is-empty" type="tel" placeholder="Phone number (123) 456-7890" [(ngModel)]="checkoutData.number"
+                  />
+                </label>
+              </div>
+              <div class="group cardGroup">
+                <label>
+                  <div id="card-element" class="field is-empty stripeElement" required></div>
+                </label>
+
+              </div>
+            </form>
+
+          </div>
+          <div class="row" *ngIf="chargeSuccessful">
+          </div>
+        </div>
+        <!-- .col-sm-8 -->
+
+        <!-- Sidebar -->
+        <div class="col-md-3 col-md-offset-1 col-sm-4 padding-bottom">
+          <aside>
+            <h3>Cart subtotal:</h3>
+            <h4>${{cart.subtotal}}</h4>
+            <h3>Cart tax:</h3>
+            <h4>${{cart.tax}}</h4>
+            <h3>Cart total:</h3>
+            <h4>${{cart.total}}</h4>
+            <a routerLink="/shopping-cart" class="btn btn-default btn-ghost icon-left btn-block">
+              <i class="material-icons arrow_back"></i>
+              Back To Cart
+            </a>
+            <!-- <button type="submit" class="btn btn-primary btn-block waves-effect waves-light space-top-none" ng-click="mookie.showStripeModal()">Checkout</button> -->
+            <button *ngIf="deliveryLocation" type="submit" class="btn btn-primary btn-block waves-effect waves-light space-top-none checkoutBtn" (click)="doCheckout()">Checkout</button>
+            <label for="card-element" class="checkoutMsg">
+              <span>
+                <span>
+                  <p style="position:absolute">
+                    {{checkoutMessage}}</p>
+                </span>
+              </span>
+            </label>
+
+          </aside>
+        </div>
+        <!-- .col-md-3.col-sm-4 -->
+      </div>
+      <!-- .row -->
+    </form>
+  </div>
+  <!--  -->
+
+  <!-- 
+  <div class="receipt mookie-confirm" ng-show="checkoutCtrl.receipt">
+      <div class="receipt-header">
+          <div class="receipt-header__top">
+              <div class="receipt-header__logo">
+              </div>
+              <div class="receipt-header__meta">
+                  <span class="receipt-header__date">{{checkoutCtrl.receipt.created | date:"MM/dd/yyyy 'at' h:mma"}}}</span>
+                  <span class="receipt-header__serial">Receipt Number: #{{checkoutCtrl.receipt.receiptNumber}} </span>
+              </div>
+          </div>
+          <div class="receipt-header__greeting">
+              <span class="receipt-header__name">Hi, {{checkoutCtrl.receipt.customerName}}</span>
+              <span class="receipt-header__count">You've purchased {{checkoutCtrl.receipt.customerCart.products.length}} items in our store.</span>
+              <span class="receipt-header__border"></span>
+          </div>
+          <div class="receipt-header__spacing"></div>
+      </div>
+
+      <section class="cart">
+          <h2 class="cart__receipt-header">Cart:</h2>
+          <ol class="list">
+              <li class="list__item" ng-repeat="product in checkoutCtrl.receipt.customerCart.products">
+                  <span class="list__name">{{product.title}}</span>
+                  <span class="list__price">{{product.price}}</span>
+              </li>
+          </ol>
+          <hr class="cart__hr" />
+          <div class="cart__total">
+              <h3 class="cart__total-label">Subtotal</h3>
+              <span class="cart__total-price">{{checkoutCtrl.receipt.customerCart.subtotal}}</span>
+          </div>
+          <div class="cart__total">
+              <h6 class="cart__total-label">Sales Tax</h6>
+              <span class="cart__total-price">{{checkoutCtrl.receipt.customerCart.tax}}</span>
+          </div>
+          <div class="cart__total">
+              <h3 class="cart__total-label">Total</h3>
+              <span class="cart__total-price">{{checkoutCtrl.receipt.customerCart.total}}</span>
+          </div>
+      </section>
+  </div> -->
 </div>
-<!-- .page-wrapper -->

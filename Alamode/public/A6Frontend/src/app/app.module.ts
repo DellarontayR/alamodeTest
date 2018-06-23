@@ -24,6 +24,15 @@ import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { MookiePreloaderComponent } from './components/mookie-preloader/mookie-preloader.component';
 import { MookieAccountComponent } from './components/mookie-account/mookie-account.component';
 
+import {NgxStripeModule} from 'ngx-stripe'
+
+import { AgmCoreModule, GoogleMapsAPIWrapper } from '@agm/core';
+import { MookieOrdersComponent } from './components/mookie-orders/mookie-orders.component';
+import { MookieManageComponent } from './components/mookie-manage/mookie-manage.component';
+import { MookieManageUsersComponent } from './components/mookie-manage-users/mookie-manage-users.component';
+import { MookieManageOrdersComponent } from './components/mookie-manage-orders/mookie-manage-orders.component';
+import { MookieManageInventoryComponent } from './components/mookie-manage-inventory/mookie-manage-inventory.component';
+import { MookieManageOrderComponent } from './components/mookie-manage-order/mookie-manage-order.component';
 
 
 @NgModule({
@@ -40,15 +49,26 @@ import { MookieAccountComponent } from './components/mookie-account/mookie-accou
     MookieCheckoutComponent,
     MookieCartComponent,
     MookiePreloaderComponent,
-    MookieAccountComponent],
+    MookieAccountComponent,
+    MookieOrdersComponent,
+    MookieManageComponent,
+    MookieManageUsersComponent,
+    MookieManageOrdersComponent,
+    MookieManageInventoryComponent,
+    MookieManageOrderComponent],
   imports: [
     BrowserModule,
     HttpClientModule,
     AppRoutingModule,
     FormsModule,
+    AgmCoreModule.forRoot({
+      libraries: ["places"],
+      apiKey: "AIzaSyDIK5nijNemroAnlHUxH6iElr3HVBtniH4"
+    }),
+    NgxStripeModule.forRoot('pk_test_EPjnzpxnrgvUiGWsYrJjqN5t'),
     NgbModule.forRoot(),
   ],
-  providers: [AuthService, {provide:HTTP_INTERCEPTORS,useClass:AppComponent,multi:true}],
+  providers: [AuthService, {provide:HTTP_INTERCEPTORS,useClass:AppComponent,multi:true},GoogleMapsAPIWrapper],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

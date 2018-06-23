@@ -1,0 +1,16 @@
+<div class="container">
+    <div class="row">
+        <div class="col-md-6">
+            <h1>Users</h1>
+        </div>
+    </div>
+    <div class="row">
+    
+        <div class="col-md-6" *ngFor="let user of users">
+    
+            <h1>username: {{user.username}}</h1>
+            <h3>email: {{user.email}}</h3>
+            <h3>permission: {{user.permission}}</h3>
+        </div>
+    </div>
+</div>
