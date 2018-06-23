@@ -12,7 +12,10 @@ export class AuthGuard implements CanActivate {
 
   // Check if user has correct permissions
   check = function (): boolean | Promise<boolean> {
-    return this.authService.isLoggedIn();
+    if(!this.authService.isLoggedIn()){
+      this.router.navigate(['/home']);
+    }
+    return true;
   };
 
   canActivate(

@@ -377,8 +377,9 @@ export class AppComponent implements OnInit, AfterViewInit {
                     return callback({ success: false });
                 }
                 else {
-                    this.userService.getUser(userData).subscribe(retUser => {
+                    this.userService.getUser().subscribe(retUser => {
                         let newUser: ILooseObject;
+                        newUser = {};
                         this.shared.updateSharedVar('user', retUser);
                         console.log(this.shared.getSharedVar('user'));
                         if (retUser.success) {

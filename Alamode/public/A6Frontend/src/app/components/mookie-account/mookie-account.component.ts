@@ -18,15 +18,17 @@ export class MookieAccountComponent implements OnInit {
   ngOnInit() {
     this.admin =false;
 
-    let sessionVars = this.shared.getSharedVars();
-    if (sessionVars.user.user.username) this.username = sessionVars.user.user.username;
-    if (sessionVars.user.user.email) this.userEmail = sessionVars.user.user.email;
+    // let sessionVars = this.shared.getSharedVars();
+    // if (sessionVars.user.user.username) this.username = sessionVars.user.user.username;
+    // if (sessionVars.user.user.email) this.userEmail = sessionVars.user.user.email;
     let userData = { username: this.username, userEmail: this.userEmail };
     console.log(userData);
 
-    this.userService.getUser(userData).subscribe(data => {
+    this.userService.getUser().subscribe(data => {
       if (data.success) {
         let getOrderData = { userId: data.user._id };
+        this.userEmail = data.user.email;
+        this.username = data.user.username;
         if(data.user.permission === 'admin') this.admin = true;
         this.orderService.getUserOrders(getOrderData).subscribe(orderData => {
           if (orderData.success) {

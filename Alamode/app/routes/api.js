@@ -696,7 +696,7 @@ module.exports = function (router) {
                                                                         from: '6502514237',
                                                                         body: 'New order:\ncustomerName: ' + newOrder.customerReceipt.customerCart.user.username + 'Address: ' +
                                                                             newOrder.customerAddress + ''
-                                                                            // Add link to customer order
+                                                                        // Add link to customer order
                                                                     }, function (err) {
                                                                         console.log('error');
                                                                         console.log(err);
@@ -1272,22 +1272,7 @@ module.exports = function (router) {
 
 
     // User api Endpoint
-    router.post('/getUser', function (req, res) {
-        console.log(req.body);
-        User.findOne({ email: req.body.userEmail }).select().exec(function (err, user) {
-            if (err || !user) {
-                res.json({ success: false, message: 'There was another error', err: err });
-            }
-            else {
-                if (!user) {
-                    res.json({ success: false, message: 'Incorrect user infomation' });
-                }
-                else {
-                    res.json({ success: true, user: user });
-                }
-            }
-        });
-    });
+
 
     // cont.
     router.post('/getUsers', function (req, res) {
@@ -1836,17 +1821,36 @@ module.exports = function (router) {
         }
     });
 
+    // Route to get user using decoded token
+    router.post('/getUser', function (req, res) {
+        console.log(req.decoded);
+        console.log("decoded value here");
+        User.findOne({ email: req.decoded.email }).select().exec(function (err, user) {
+            if (err || !user) {
+                res.json({ success: false, message: 'There was another error', err: err });
+            }
+            else {
+                if (!user) {
+                    res.json({ success: false, message: 'Incorrect user infomation' });
+                }
+                else {
+                    res.json({ success: true, user: user });
+                }
+            }
+        });
+    });
+
     // Route to get the currently logged in user    
     router.post('/me', function (req, res) {
         res.send(req.decoded); // Return the token acquired from middleware
     });
 
-    // Check if user has a database field
-    router.post('/checkUserDB',function(req,res){
-        if(req.decoded.email){
+    // // Check if user has a database field
+    // router.post('/checkUserDB', function (req, res) {
+    //     if (req.decoded.email) {
 
-        }
-    });
+    //     }
+    // });
 
     // Route to provide the user with a new token to renew session
     router.get('/renewToken/:username', function (req, res) {

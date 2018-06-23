@@ -52,8 +52,8 @@ export class UserService {
     return this.http.get('/api/getUserId').pipe(map(res => { console.log(res); return res; }), catchError(err => this.handleError(err)));
   };
 
-  getUser = function (userData) {
-    return this.http.post('/api/getUser', userData).pipe(map(res => { console.log(res); return res; }), catchError(err => this.handleError(err)));
+  getUser = function () {
+    return this.http.post('/api/getUser').pipe(map(res => { console.log(res); return res; }), catchError(err => this.handleError(err)));
   };
 
   removeCart = function (userData) {

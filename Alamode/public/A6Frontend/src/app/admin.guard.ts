@@ -12,16 +12,13 @@ export class AdminGuard implements CanActivate {
   check = function (): boolean | Promise<boolean> {
 
     return this.userService.getPermission().subscribe(data => {
-      if (data.permission === 'admin') {
-        return true;
-      }
-      else {
+      if (data.permission !== 'admin') {
         this.router.navigate(['/home']);
-        return false;
       }
-
+      return true;
     });
   };
+
 
   canActivate(
     next: ActivatedRouteSnapshot,

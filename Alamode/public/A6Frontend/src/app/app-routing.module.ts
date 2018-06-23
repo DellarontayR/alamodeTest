@@ -34,37 +34,37 @@ const routes: Routes = [
   { path: 'about', component: MookieAboutComponent },
   { path: 'thesecret', component: MookieSocialComponent },
   { path: 'register', component: MookieRegisterComponent },
-  { path: 'account', component: MookieAccountComponent, canLoad: [AuthGuard] },
-  { path: 'shopping-cart', component: MookieCartComponent, canLoad: [AuthGuard] },
-  { path: 'ontheway', component: MookieCheckoutComponent, canLoad: [AuthGuard] },
-  { path: 'orders/:orderId', component: MookieOrdersComponent, canLoad: [AuthGuard] },
+  { path: 'account', component: MookieAccountComponent, canActivate: [AuthGuard] },
+  { path: 'shopping-cart', component: MookieCartComponent, canActivate: [AuthGuard] },
+  { path: 'ontheway', component: MookieCheckoutComponent, canActivate: [AuthGuard] },
+  { path: 'orders/:orderId', component: MookieOrdersComponent, canActivate: [AuthGuard] },
   { path: 'facebook/:token', component: MookieFacebookComponent },
   { path: 'facebook/error', component: MookieFacebookComponent },
   { path: 'google/:token', component: MookieGoogleComponent },
   { path: 'google/error', component: MookieGoogleComponent },
   {
-    path: 'management', component: MookieManageComponent, canLoad: [AdminGuard],
+    path: 'management', component: MookieManageComponent, canActivate: [AdminGuard],
     children: [{
       path: 'users',
       component: MookieManageUsersComponent,
-      canLoad: [AdminGuard]
+      canActivate: [AdminGuard]
     },
     {
       path: 'currentorders',
       component: MookieManageOrdersComponent,
-      canLoad: [AdminGuard],
+      canActivate: [AdminGuard],
       children: [
         {
           path: 'order/:orderId',
           component: MookieManageOrderComponent,
-          canLoad: [AdminGuard]
+          canActivate: [AdminGuard]
         }
       ]
     },
     {
       path: 'inventory',
       component: MookieManageInventoryComponent,
-      canLoad: [AdminGuard]
+      canActivate: [AdminGuard]
     }
     ]
   },

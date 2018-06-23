@@ -114,8 +114,7 @@ export class MookieMenuComponent implements OnInit {
           this.authService.getUser().subscribe(tokenData => {
             if (tokenData.email) {
               this.shared.updateSharedVar('user', { userEmail: tokenData.email, username: tokenData.usernmae });
-              let userData = { userEmail: tokenData.email };
-              this.userService.getUser(userData).subscribe(data => {
+              this.userService.getUser().subscribe(data => {
                 if (data.success) {
                   let cartData: ILooseObject = {};
                   cartData.qty = 1;
