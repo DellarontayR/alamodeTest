@@ -23,6 +23,7 @@ import { MookieFacebookComponent } from './components/mookie-facebook/mookie-fac
 import { MookieGoogleComponent } from './components/mookie-google/mookie-google.component';
 import { AuthGuard } from './auth.guard';
 import { AdminGuard } from './admin.guard';
+import { MookieActivateComponent } from './components/mookie-activate/mookie-activate.component';
 
 
 
@@ -42,6 +43,7 @@ const routes: Routes = [
   { path: 'facebook/error', component: MookieFacebookComponent },
   { path: 'google/:token', component: MookieGoogleComponent },
   { path: 'google/error', component: MookieGoogleComponent },
+  { path: 'activate/:token', component: MookieActivateComponent },
   {
     path: 'management', component: MookieManageComponent, canActivate: [AdminGuard],
     children: [{
@@ -68,7 +70,6 @@ const routes: Routes = [
     }
     ]
   },
-
   { path: "**", component: MookiePagenotfoundComponent }
 ];
 
