@@ -7,15 +7,15 @@ import { UserService } from './services/user.service';
   providedIn: 'root'
 })
 export class AdminGuard implements CanActivate {
-  constructor(private userService:UserService,private router:Router){}
+  constructor(private userService: UserService, private router: Router) { }
   // Check if user has correct permissions
-  check = function (): boolean | Promise<boolean> {
+  check = function () {
 
-    return this.userService.getPermission().subscribe(data => {
+    this.userService.getPermission().subscribe(data => {
+      console.log(data.permission !== "admin");
       if (data.permission !== "admin") {
         this.router.navigate(['/home']);
       }
-      return true;
     });
   };
 
@@ -23,6 +23,6 @@ export class AdminGuard implements CanActivate {
   canActivate(
     next: ActivatedRouteSnapshot,
     state: RouterStateSnapshot): Observable<boolean> | Promise<boolean> | boolean {
-    return this.check();
+    return true;
   }
 }
