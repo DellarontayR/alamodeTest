@@ -1,35 +1,52 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, AfterViewInit, NgZone, ChangeDetectorRef } from '@angular/core';
 import { ILooseObject } from '../../interfaces/looseObject';
 import { OrderService } from '../../services/order.service';
 import { ActivatedRoute, ParamMap } from '@angular/router';
 import { switchMap } from 'rxjs/operators';
 import { Observable } from 'rxjs';
 import { MapsAPILoader, GoogleMapsAPIWrapper } from '@agm/core';
+import { } from 'googlemaps';
+
+import { faMapMarker } from '../../../assets/fontawesome-free-5.0.3/advanced-options/use-with-node-js/fontawesome-free-solid';
 
 @Component({
   selector: 'app-mookie-manage-order',
   templateUrl: './mookie-manage-order.component.html',
   styleUrls: ['./mookie-manage-order.component.scss']
 })
-export class MookieManageOrderComponent implements OnInit {
-
+export class MookieManageOrderComponent implements OnInit, AfterViewInit {
+  updateLocationSuccess: Boolean;
+  updateLocationFailure: Boolean;
   order: ILooseObject;
   order$: Observable<any>;
   deliveryStatus: [String];
+  deliveryLocation: String;
   distanceFromUser: String;
   timeFromUser: String;
   userContactNumber;
   directionsDisplay: any;
+  directionsFailed: Boolean;
+  userMarker: ILooseObject = {};
+  driverMarker: ILooseObject = {};
 
   // for google maps
   public latitude: number;
   public longitude: number;
   public zoom: number;
+  public map: google.maps.Map;
+
+  // markers: [{}];
 
 
-  constructor(private orderService: OrderService, private activatedRoute: ActivatedRoute, private mapsLoader: MapsAPILoader, private mapsWrapper: GoogleMapsAPIWrapper) { }
+  constructor(private orderService: OrderService, private activatedRoute: ActivatedRoute, private mapsLoader: MapsAPILoader, private mapsWrapper: GoogleMapsAPIWrapper, private ngZone: NgZone, private changeDetectorRef: ChangeDetectorRef) { }
 
   ngOnInit() {
+    this.deliveryLocation = "";
+
+    this.updateLocationSuccess = false;
+    this.updateLocationFailure = false;
+    this.directionsFailed = false;
+    // this.markers = [{}];
     this.zoom = 14;
     this.distanceFromUser = "";
     this.timeFromUser = "";
@@ -41,6 +58,14 @@ export class MookieManageOrderComponent implements OnInit {
       switchMap((params: ParamMap) => {
         return this.orderService.getOrder({ orderId: params.get('orderId') });
       }));
+
+  }
+
+  ngAfterViewInit() {
+    // this.mapsWrapper.getNativeMap().then(map => { this.directionsDisplay.setMap(map); }, err => { console.log(err); });
+
+    this.updateLocationSuccess = false;
+    this.updateLocationFailure = false;
     this.order$.subscribe(data => {
       if (data.success) {
         if (data.order) {
@@ -49,28 +74,51 @@ export class MookieManageOrderComponent implements OnInit {
           this.latitude = this.order.customerReceipt.geometryAddress.lat;
           this.longitude = this.order.customerReceipt.geometryAddress.lng;
 
-          this.mapsWrapper.getNativeMap().then((map) => {
+          this.mapsLoader.load().then(() => {
             let directionsService = new google.maps.DirectionsService();
             this.directionsDisplay = new google.maps.DirectionsRenderer;
-            this.directionsDisplay.setMap(map);
-            this.directionsDisplay.setOptions({
-              polylineOptions: {
-                strokeWeight: 8,
-                strokeOpacity: 0.7,
-                strokeColor: '#00468c'
-              }
+
+            let userLatLng = new google.maps.LatLng(this.order.customerReceipt.geometryAddress.lat, this.order.customerReceipt.geometryAddress.lng);
+            let driverLatLng = new google.maps.LatLng(this.order.currentDriverLocation.lat, this.order.currentDriverLocation.lng);
+            let mapOptions = {
+              center: userLatLng,
+              zoom: 15,
+              mapTypeId: google.maps.MapTypeId.ROADMAP
+            };
+            this.map = new google.maps.Map(document.getElementById('mookieManageMap'), mapOptions);
+
+            this.userMarker = { latitude: this.order.customerReceipt.geometryAddress.lat as Number, longitude: this.order.customerReceipt.geometryAddress.lng as Number };
+            this.driverMarker = { latitude: this.order.currentDriverLocation.lat as Number, longitude: this.order.currentDriverLocation.lng as Number };
+            this.deliveryLocation = this.order.customerReceipt.customerAddress;
+
+            let mUserMarker = new google.maps.Marker({
+              position: userLatLng,
+              map: this.map,
+              title: this.deliveryLocation.toString()
+            });
+            let mDriverMarker = new google.maps.Marker({
+              position: driverLatLng,
+              map: this.map,
+              title: 'Driver'
             });
 
+            // mUserMarker.setMap(this.map);
+            // mDriverMarker.setMap(this.map);
+            this.directionsDisplay.setMap(this.map);
 
             let request = {
-              origin: new google.maps.LatLng(this.order.currentDriverLocation.lat, this.order.currentDriverLocation.lng),
-              destination: new google.maps.LatLng(this.order.customerReceipt.geometryAddress.lat, this.order.customerReceipt.geometryAddress.lng)
+              origin: userLatLng,
+              destination: driverLatLng,
+              travelMode: google.maps.TravelMode["BICYCLING"]
             };
-            directionsService.route(request, function (result, status) {
+
+            console.log(request);
+            directionsService.route(request, (result, status) => {
               console.log(result);
               console.log(status);
               if (status.toString() === 'OK') {
-                this.directionsDisplay.setDirections(result);
+                console.log(result);
+
                 var route = result.routes[0];
 
                 // for (var i = 0; i < route.legs.length; i++) {
@@ -80,6 +128,21 @@ export class MookieManageOrderComponent implements OnInit {
                 // }
                 this.distanceFromUser = route.legs[0].distance.text.replace(/[^0-9.]/g, "");
                 this.timeFromUser = route.legs[0].duration.text.replace(/[^0-9.]/g, "");
+
+                this.directionsDisplay.setOptions({
+                  polylineOptions: {
+                    strokeWeight: 8,
+                    strokeOpacity: 0.7,
+                    strokeColor: '#00468c'
+                  }
+                });
+                this.directionsDisplay.setDirections(result);
+                google.maps.event.trigger(this.map, "resize");
+
+
+              }
+              else {
+                this.directionsFailed = true;
               }
             });
 
@@ -90,34 +153,45 @@ export class MookieManageOrderComponent implements OnInit {
         // Display general admin error
       }
     });
+
   }
 
   updateDriverLocation = function (pos) {
     let coords = pos.coords;
+    this.updateLocationSuccess = false;
+    this.updateLocationFailure = false;
 
-    this.deliveryStatuses = ['Pending', 'OutForOrders', 'OnTheWay', 'Completed'];
+    // this.deliveryStatuses = ['Pending', 'OutForOrders', 'OnTheWay', 'Completed'];
     // Set order Id as well to get order from route
+    console.log(this);
 
+    this.ngZone.run(() => {
+      let orderData = { lat: coords.latitude, lng: coords.longitude, order: this.order._id };
 
-    let orderData = { lat: coords.latitude, lng: coords.longitude, order: this.order._id };
+      this.orderService.updateDriverLocation(orderData).subscribe(data => {
+        if (data.success) {
+          this.updateLocationSuccess = true;
+          // update admin on success
+          // this.
+        }
+        else {
+          //update admin on failure
+          this.updateLocationFailure = true
+        }
+      });
+    })
 
-    this.orderService.updateDriverLocation(orderData).subscribe(data => {
-      if (data.success) {
-        // update admin on success
-      }
-      else {
-        //update admin on failure
-      }
-    });
   };
   handleErr = function (err) {
-    console.log('position could not be set');
-    console.log(err);
+    this.updateLocationFailure = true;
   }
 
   updateCurrentLocation = function () {
     if ("geolocation" in navigator) {
-      navigator.geolocation.getCurrentPosition(this.updateDriverLocation, this.handleErr, { timeout: 500, maximumAge: Infinity });//Did not work with option enableHighAccuracy set to true
+
+      navigator.geolocation.getCurrentPosition((pos) => {
+        this.updateDriverLocation(pos);
+      }, this.handleErr, { timeout: 500, maximumAge: Infinity });//Did not work with option enableHighAccuracy set to true
     }
   };
 
@@ -135,8 +209,6 @@ export class MookieManageOrderComponent implements OnInit {
     });
   };
 }
-
-
 //         // //Tracking users position
 //         // watchId = navigator.geolocation.watchPosition(
 //         //     processGeolocation,

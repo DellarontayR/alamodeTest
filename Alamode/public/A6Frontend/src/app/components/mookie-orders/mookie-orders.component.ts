@@ -23,11 +23,15 @@ export class MookieOrdersComponent implements OnInit {
   statusMap: Map<String, String>;
   order$: Observable<any>;
   orderMessage: String;
+  orderUpdate:String;
+  directionsFailed:Boolean = false;
 
   // for google maps
   public latitude: number;
   public longitude: number;
   public zoom: number;
+  public map: google.maps.Map;
+  public directionsDisplay: any;
 
 
   ngOnInit() {
@@ -56,10 +60,63 @@ export class MookieOrdersComponent implements OnInit {
         console.log(this.order);
 
         this.mapsLoader.load().then(() => {
-          this.ngZone.run(()=>{
-            this.latitude = this.order.customerReceipt.geometryAddress.lat;
-            this.longitude = this.order.customerReceipt.geometryAddress.lng;
-            this.zoom = 16;
+          this.ngZone.run(() => {
+            let directionsService = new google.maps.DirectionsService();
+            this.directionsDisplay = new google.maps.DirectionsRenderer;
+            let userLatLng = new google.maps.LatLng(this.order.customerReceipt.geometryAddress.lat, this.order.customerReceipt.geometryAddress.lng);
+            let driverLatLng = new google.maps.LatLng(this.order.currentDriverLocation.lat, this.order.currentDriverLocation.lng);
+            let mapOptions = {
+              center: userLatLng,
+              zoom: 15,
+              mapTypeId: google.maps.MapTypeId.ROADMAP
+            };
+
+            this.map = new google.maps.Map(document.getElementById('mookieUserMap'), mapOptions);
+            this.directionsDisplay.setMap(this.map);
+
+            let request = {
+              origin: userLatLng,
+              destination: driverLatLng,
+              travelMode: google.maps.TravelMode["BICYCLING"]
+            };
+
+            directionsService.route(request, (result, status) => {
+              console.log(result);
+              console.log(status);
+              if (status.toString() === 'OK') {
+                console.log(result);
+
+                var route = result.routes[0];
+
+                // for (var i = 0; i < route.legs.length; i++) {
+                //   // ("123 hello everybody 4").replace(/(^\d+)(.+$)/i,'$1'); //=> '123' regex to first integer from string
+                //   // replace(/[^0-9.]/g, ""); Regex to get only numbers from string
+                //   // scope.manager.distanceFromUser += route.legs[i].distance.text.replace(/[^0-9.]/g, "");//Possibly to count up total time
+                // }
+
+                this.orderUpdate = "Driver is " + route.legs[0].distance.text.replace(/[^0-9.]/g, "")+ " miles  away. The driver is  " + route.legs[0].duration.text.replace(/[^0-9.]/g, "") + " minutes away from your location.";
+
+                this.directionsDisplay.setOptions({
+                  polylineOptions: {
+                    strokeWeight: 8,
+                    strokeOpacity: 0.7,
+                    strokeColor: '#00468c'
+                  }
+                });
+                this.directionsDisplay.setDirections(result);
+                google.maps.event.trigger(this.map, "resize");
+
+
+              }
+              else {
+                this.directionsFailed = true;
+              }
+            });
+
+
+            // this.latitude = this.order.customerReceipt.geometryAddress.lat;
+            // this.longitude = this.order.customerReceipt.geometryAddress.lng;
+            // this.zoom = 16;
           });
         });
       }

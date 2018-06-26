@@ -5,16 +5,21 @@
   <div class="container">
     <div class="row">
       <div class="col-sm-12">
-        <agm-map [latitude]="latitude" [longitude]="longitude" [scrollwheel]="false" [zoom]="zoom">
-          <agm-marker [latitude]="latitude" [longitude]="longitude">
-            <agm-info-window class="info-window" [isOpen]="true">Your location</agm-info-window>
+        <div id="mookieManageMap" style="width:100%;height:300px;"></div>
+        <!-- <agm-map [latitude]="latitude" [longitude]="longitude" [scrollwheel]="false" [zoom]="zoom">
+          <agm-marker [latitude]="userMarker.latitude" [longitude]="userMarker.longitude">
+            <agm-info-window [isOpen]="deliveryLocation">{{deliveryLocation}}</agm-info-window>
           </agm-marker>
-        </agm-map>
+          <agm-marker [latitude]="driverMarker.latitude" [longitude]="driverMarker.longitude">
+            <agm-info-window [isOpen]="deliveryLocation">Mookie Driver</agm-info-window>
+          </agm-marker>
+        </agm-map> -->
       </div>
     </div>
   </div>
 
   <div class="order-message-container">
+    <p class="hide" [ngClass]="{'show':directionsFailed}" style="color:red">The admin page has failed to directions correctly this time. Reload to try to get directions again.</p>
     <p class="order-message pending">Mookie Dough Delivery</p>
     <p class="order-message">Customer {{distanceFromUser}} Miles and {{timeFromUser}} Minutes from driver</p>
     <p class="order-message">Customer Contact Number: {{order.userContactNumber}}</p>
@@ -35,6 +40,12 @@
       <button class="secondary" (click)="updateCurrentLocation()">
         Update user on location
       </button>
+      <div [ngClass]="{'show':updateLocationSuccess}" class="hide">
+        <p>Driver's location successfully updated</p>
+      </div>
+      <div [ngClass]="{'show':updateLocationFailure}" class="hide">
+        <p>Driver's location failed to update. Try again</p>
+      </div>
     </div>
   </div>
 
