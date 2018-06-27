@@ -22,6 +22,7 @@ export class MookieMenuComponent implements OnInit {
   constructor(private productService: ProductService, private shared: SharedService, private inventoryService: InventoryService, private cartService: CartService, private userService: UserService, private authService: AuthService, private mookieEmit: MookieEmitService, private modalService: NgbModal) { }
 
   products;
+  productAdded:Boolean = false;
 
   itemNameMap: any;
   @Output() valueChange = new EventEmitter();
@@ -130,7 +131,14 @@ export class MookieMenuComponent implements OnInit {
                       if (resData.success) {
                         this.shared.updateSharedVar('cartItemCount', resData.cart.products.length);
                         this.shared.updateSharedVar('cart',resData.cart);
+                        this.productAdded = true;
+                      
+
                         this.mookieEmit.emitChange();
+                        setTimeout(()=>{
+                          this.productAdded = false;
+
+                        },1000);
                       }
                       else {
                         const modalRef = this.modalService.open(MookieModalComponent);

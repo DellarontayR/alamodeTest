@@ -66,7 +66,7 @@
 
 
           <a *ngIf="justCheckout"  class="btn btn-primary btn-block waves-effect waves-light space-top-none checkoutBtn"
-            (click)="justCheckout = false;">Checkout</a>
+            (click)="justCheckout = false;" style="color:white">Checkout</a>
           <a *ngIf="cartChanged"  class="btn btn-primary btn-block waves-effect waves-light space-top-none checkoutBtn"
             (click)="updateCart();">Update Cart</a>
           <div *ngIf="!justCheckout">

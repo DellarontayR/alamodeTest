@@ -9,7 +9,7 @@
 				<img class="mookie-product-img" [src]="catalogProduct.imagePath" alt="sample85" />
 
 				<div *ngIf="catalogProduct.inStock === 'In Stock'" class="add-to-cart" onclick="">
-					<i class="ion-android-add"></i>
+					<i class="fas fa-plus" [ngClass]="{'fa-spin fa-3x fa-fw':productAdded}"></i>
 					<span (click)="addToCart(catalogProduct,catalogProduct._id);">
 						<a class="nah"></a>Buy Now</span>
 				</div>
