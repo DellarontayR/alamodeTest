@@ -33,7 +33,7 @@ export class UserService {
   };
 
   activateAccount = function (token) {
-    return this.http.put('/api/activate' + token).pipe(map(res => { console.log(res); return res; }), catchError(err => this.handleError(err)));
+    return this.http.put('/api/activate/' + token).pipe(map(res => { console.log(res); return res; }), catchError(err => this.handleError(err)));
   };
 
   registerMookie = function (regData) {
