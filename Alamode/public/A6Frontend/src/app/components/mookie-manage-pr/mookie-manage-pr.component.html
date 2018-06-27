@@ -1,0 +1,18 @@
+<div class="container">
+  <div class="row">
+    <div class="col-md-12">
+      <p>Input your title here</p>
+      <input class="pressTitle" [(ngModel)]="title">
+    </div>
+    <div class="col-md-12">
+      <p>Input your textBody here</p>
+      <input class="pressBody" [(ngModel)]="textBody">
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-md-12">
+        <button *ngIf="!createdRelease" (click)="createPR()"> Create Press Release</button>
+
+    </div>
+  </div>
+</div>

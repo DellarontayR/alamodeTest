@@ -6,6 +6,8 @@
 @import './assets/fontawesome-free-5.0.3/web-fonts-with-css/css/fontawesome-all.css';
 // Really use brands and solid?
 @import './assets/animate.css';
+@import '~@ngx-share/button/styles/share-buttons';
+@import '~@ngx-share/button/styles/themes/default/default-theme';
 //   <link href="../libs/fontawesome-free-5.0.3/svg-with-js/css/fa-svg-with-js.css" rel="stylesheet">
 .list-unstyled {
     padding-left: 0;

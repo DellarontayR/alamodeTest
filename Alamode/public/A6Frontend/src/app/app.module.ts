@@ -1,6 +1,6 @@
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
-import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
+import { HttpClientModule, HTTP_INTERCEPTORS, HttpClientJsonpModule } from '@angular/common/http';
 
 
 import { AppRoutingModule } from './app-routing.module';
@@ -37,6 +37,10 @@ import { MookieModalComponent } from './components/mookie-modal/mookie-modal.com
 import { MookieFacebookComponent } from './components/mookie-facebook/mookie-facebook.component';
 import { MookieGoogleComponent } from './components/mookie-google/mookie-google.component';
 import { MookieActivateComponent } from './components/mookie-activate/mookie-activate.component';
+import { ShareButtonsModule } from '@ngx-share/buttons';
+import { MookiePressComponent } from './components/mookie-press/mookie-press.component';
+import { MookiePrComponent } from './components/mookie-pr/mookie-pr.component';
+import { MookieManagePrComponent } from './components/mookie-manage-pr/mookie-manage-pr.component';
 
 
 @NgModule({
@@ -63,10 +67,15 @@ import { MookieActivateComponent } from './components/mookie-activate/mookie-act
     MookieModalComponent,
     MookieFacebookComponent,
     MookieGoogleComponent,
-    MookieActivateComponent],
+    MookieActivateComponent,
+    MookiePressComponent,
+    MookiePrComponent,
+    MookieManagePrComponent],
   imports: [
     BrowserModule,
     HttpClientModule,
+    HttpClientJsonpModule,
+    ShareButtonsModule.forRoot(),
     AppRoutingModule,
     FormsModule,
     AgmCoreModule.forRoot({

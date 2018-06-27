@@ -24,6 +24,9 @@ import { MookieGoogleComponent } from './components/mookie-google/mookie-google.
 import { AuthGuard } from './auth.guard';
 import { AdminGuard } from './admin.guard';
 import { MookieActivateComponent } from './components/mookie-activate/mookie-activate.component';
+import { MookiePressComponent } from './components/mookie-press/mookie-press.component';
+import { MookiePrComponent } from './components/mookie-pr/mookie-pr.component';
+import { MookieManagePrComponent } from './components/mookie-manage-pr/mookie-manage-pr.component';
 
 
 
@@ -67,7 +70,18 @@ const routes: Routes = [
       path: 'inventory',
       component: MookieManageInventoryComponent,
       canActivate: [AdminGuard]
+    },
+    {
+      path:'press',
+      component:MookieManagePrComponent,
+      canActivate:[AdminGuard]
     }
+    ]
+  },
+  {
+    path: 'press', component: MookiePressComponent,
+    children: [
+      { path: 'prs/:prid', component: MookiePrComponent }
     ]
   },
   { path: "**", component: MookiePagenotfoundComponent }

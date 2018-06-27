@@ -11,6 +11,7 @@ var Receipt = require('../models/receipt');
 var ReceiptCounter = require('../models/receiptcounter');
 var Inventory = require('../models/inventory');
 var DeliverySchedule = require('../models/deliveryschedule');
+var PR = require('../models/pr');
 // >
 
 // Libs
@@ -69,6 +70,32 @@ module.exports = function (router) {
 
     // >
 
+    router.post('/getPRs', function (req, res) {
+        PR.find().exec(function (err, prs) {
+            if (err || !prs) {
+                res.json({ succes: false, message: 'There was an issue trying to get the press releases. Try again later' });
+            }
+            else {
+                res.json({ success: true, message: 'Press releases retrieved', prs: prs });
+            }
+        });
+    });
+
+    router.post('/getPR', function (req, res) {
+        if (req.body.prid === null || req.body.prid === '') {
+            res.json({ success: false, message: 'There was an issue trying to retrieve this PR' });
+        }
+        else {
+            PR.findById(req.body.prid).exec(function (err, pr) {
+                if (err || !pr) {
+                    res.json({ success: false, message: 'There was issue trying to retrive this press release from server' });
+                }
+                else {
+                    res.json({ success: true, message: 'Pr retrieved', pr: pr });
+                }
+            });
+        }
+    });
 
 
     // Create delivery schedule
@@ -692,17 +719,19 @@ module.exports = function (router) {
                                                                 // Should be used to allow text communication for admins 6502514237
                                                                 // olu 3162090923
                                                                 var doughboys = ['9013649552', '6308815799'];
-                                                                twilioClient.messages.create({
-                                                                    to: doughboys,
-                                                                    from: '6502514237',
-                                                                    body: 'New order:\ncustomerName: ' + newOrder.customerReceipt.customerCart.user.username + 'Address: ' +
-                                                                        newOrder.customerAddress + ''
-                                                                    // Add link to customer order
-                                                                }, function (err) {
-                                                                    console.log('error');
-                                                                    console.log(err);
+                                                                doughboys.forEach(val=>{
+                                                                    twilioClient.messages.create({
+                                                                        to: val,
+                                                                        from: '6502514237',
+                                                                        body: 'New order:\ncustomerName: ' + newOrder.customerReceipt.customerCart.user.username + 'Address: ' +
+                                                                            newOrder.customerAddress + ''
+                                                                        // Add link to customer order
+                                                                    }, function (err) {
+                                                                        console.log('error');
+                                                                        console.log(err);
+                                                                    });
                                                                 });
-
+                                                          
                                                                 updateInventory(cart.products).then(function (value) {
                                                                     console.log('update inventory');
                                                                     console.log(value);
@@ -1840,6 +1869,44 @@ module.exports = function (router) {
             }
         });
     });
+
+
+    router.post('/createPR', function (req, res) {
+        // check admin
+        if (req.body.title === null || req.body.title === '' || req.body.textBody === null || req.body.textBody === '') {
+            res.json({ success: false, message: 'Could not create press release, Press title or text not initialized' });
+        }
+        else {
+            User.findOne({ email: req.decoded.email }).select().exec(function (err, user) {
+                if (err || !user) {
+                    res.json({ success: false, message: 'user could not be identified' });
+                }
+                else {
+                    if (user.permission === 'admin') {
+                        var pr = new PR();
+                        pr.textBody = req.body.textBody;
+                        pr.title = req.body.title;
+                        pr.author = user.username;
+
+                        pr.save(function (err, newPR) {
+                            if (err || !newPR) {
+                                res.json({ success: false, message: 'There was an error trying to save the pr' });
+                            }
+                            else {
+                                res.json({ success: true, message: 'Press release updated. Please set its image.', pr: newPR });
+                            }
+                        });
+                    }
+                    else {
+                        res.json({ success: false, message: 'User does not have correct credentials' })
+                    }
+                }
+
+            });
+
+        }
+    });
+
 
     // Route to get the currently logged in user    
     router.post('/me', function (req, res) {

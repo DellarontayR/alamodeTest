@@ -1,0 +1,16 @@
+<div class="container">
+  <div class="row">
+    <div class="col-md-6">
+      <div class="pr" *ngFor="let pr of prs;">
+        <p class="pressTitle">{{pr.title}}</p>
+        <p class="pressAuthor">{{pr.author}}</p>
+        <a class="pressLink" routerLink="/press/prs/{{pr._id}}">View Press Release</a>
+
+        <img class="pressImage" [src]="pr.imagePath">
+      </div>
+    </div>
+    <div class="col-md-6">
+      <router-outlet></router-outlet>
+    </div>
+  </div>
+</div>
