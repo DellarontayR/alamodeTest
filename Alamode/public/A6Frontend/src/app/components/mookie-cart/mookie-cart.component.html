@@ -17,7 +17,7 @@
 
           <div class="item row" *ngFor="let cartItem of cartProducts;let index = index;">
             <a  class="item-thumb">
-              <img (src)="cartItem.imagePath" alt="Item">
+              <img [src]="cartItem.imagePath" alt="Item">
             </a>
             <div class="item-details">
               <h3 class="item-title">{{cartItem.title}}</h3>
@@ -31,7 +31,7 @@
               </div>
             </div>
             <a  class="item-remove" data-toggle="tooltip" data-placement="top" title="Remove" (click)="deleteItem(cartItem)">
-              <i class="material-icons remove_shopping_cart"></i>
+             <i class="fas fa-times"></i>
             </a>
           </div>
         </div>

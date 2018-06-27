@@ -3,6 +3,8 @@ import { IProduct } from '../../interfaces/product';
 import { CartService } from '../../services/cart.service';
 import { SharedService } from '../../services/shared.service';
 import { MookieEmitService } from '../../services/mookie-emit.service';
+import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
+import { MookieModalComponent } from '../mookie-modal/mookie-modal.component';
 
 @Component({
   selector: 'app-mookie-cart',
@@ -23,7 +25,7 @@ export class MookieCartComponent implements OnInit, AfterViewInit {
   total: Number;
   // username, email
 
-  constructor(private cartService: CartService, private shared: SharedService, private changeDetector: ChangeDetectorRef,private mookieEmit: MookieEmitService) { }
+  constructor(private cartService: CartService, private shared: SharedService, private changeDetector: ChangeDetectorRef, private mookieEmit: MookieEmitService, private modalService: NgbModal) { }
   // constructor(private changeDetector: ChangeDetectorRef) {}
 
   // ngAfterViewChecked(){
@@ -37,7 +39,6 @@ export class MookieCartComponent implements OnInit, AfterViewInit {
   //  // Update cart in database when user changes cart on frontend
 
   ngAfterViewInit() {
-    console.log(this.justCheckout);
     let userCart = this.shared.getSharedVar('cart');
 
     // Create product map to get quantity of each product from array of products
@@ -51,30 +52,18 @@ export class MookieCartComponent implements OnInit, AfterViewInit {
       }
     });
     // >
-    
+
     // Create array of products with quantities set to productMap vars
-    let cartProducts= {};
-    // productMap.keys
-    // productMap.keys().forEach(element => {
-      
-    // });(key =>{
+    let cartProducts = {};
 
-    // });
-    
-    // productMap.(el=>{
-
-    // });
-
-    
-
-    let makeProducts = function(){
+    let makeProducts = function () {
 
       return new Promise(function (resolve, reject) {
-        let temp =[];
+        let temp = [];
 
         let size = 0;
-        productMap.forEach((v,k,m)=>{
-          for(let element of userCart.products){
+        productMap.forEach((v, k, m) => {
+          for (let element of userCart.products) {
             if (element._id === k) {
               element.qty = productMap.get(element._id);
               element.subtotalOnProduct = element.qty * element.price;
@@ -83,23 +72,23 @@ export class MookieCartComponent implements OnInit, AfterViewInit {
             }
           }
           size++;
-          if(size>= productMap.size){
+          if (size >= productMap.size) {
             resolve(temp);
           }
         });
         // for (let key in productMap.keys()) {
-       
+
         // }
-    });
+      });
 
     }
 
-    makeProducts().then(cartProducts=>{
+    makeProducts().then(cartProducts => {
       console.log(cartProducts);
       this.cartProducts = cartProducts;
     });
 
-   
+
     // >
 
 
@@ -114,14 +103,20 @@ export class MookieCartComponent implements OnInit, AfterViewInit {
   updateCart = function () {
     let cartData = { cartProducts: this.cartProducts, cartId: this.cartId };
     this.cartService.updateCart(cartData).subscribe(data => {
-      console.log(data);
       if (data.success) {
         this.cartChanged = false;
-        console.log(this.cartProducts);
-        this.shared.updateSharedVar('cartItemCount',data.cart.products.length);
+        
+        this.shared.updateSharedVar('cartItemCount', data.cart.products.length);
+        this.cartItemCount = data.cart.products.length;
+        this.subtotal = data.cart.subtotal;
+        this.tax = data.cart.tax;
+        this.total = data.cart.total;
         this.mookieEmit.emitChange();
       }
       else {
+        const modalRef = this.modalService.open(MookieModalComponent);
+        modalRef.componentInstance.modalTitle = "There was an issue with updating the item from in the cart";
+        modalRef.componentInstance.modalBody = "Please try again later";
 
       }
     });
@@ -143,13 +138,23 @@ export class MookieCartComponent implements OnInit, AfterViewInit {
 
   deleteItem = function (cartProduct) {
     let productData = { productId: cartProduct._id, cartId: this.cartId };
-    this.cartProducts.splice(this.cartProduct.indexOf(cartProduct), 1);
+    this.cartProducts.splice(this.cartProducts.indexOf(cartProduct), 1);
     this.cartService.deleteCartProduct(productData).subscribe(data => {
       console.log(data);
       if (data.success) {
+        this.shared.updateSharedVar('cartItemCount', data.cart.products.length);
+        this.cartItemCount = data.cart.products.length;
+        this.subtotal = data.cart.subtotal;
+        this.tax = data.cart.tax;
+        this.total = data.cart.total;
+        this.mookieEmit.emitChange();
+
 
       }
       else {
+        const modalRef = this.modalService.open(MookieModalComponent);
+        modalRef.componentInstance.modalTitle = "There was an issue with deleting the item from the cart";
+        modalRef.componentInstance.modalBody = "Please try again later";
 
       }
     });

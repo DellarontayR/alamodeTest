@@ -103,7 +103,7 @@ export class MookieMenuComponent implements OnInit {
   // TODO
   // Add message for non active user's to active their accounts
 
-  addToCart = function (product, catalogProduct) {
+  addToCart = function (product, productId) {
     this.authService.getOrderingSchedule().subscribe(data => {
       console.log(data);
       if (data.success) {
@@ -123,23 +123,29 @@ export class MookieMenuComponent implements OnInit {
                   cartData.title = product.title;
                   cartData.imagePath = product.imagePath;
                   cartData.userId = data.user._id;
-                  cartData.product = catalogProduct;
+                  cartData.product = productId;
                   if (data.user.active) {
                     this.cartService.addItemToCart(cartData).subscribe(resData => {
                       console.log(resData);
                       if (resData.success) {
                         this.shared.updateSharedVar('cartItemCount', resData.cart.products.length);
+                        this.shared.updateSharedVar('cart');
                         this.mookieEmit.emitChange();
                       }
                       else {
                         const modalRef = this.modalService.open(MookieModalComponent);
-                        modalRef.componentInstance.modalTitle = "Your account might not be activated.";
-                        modalRef.componentInstance.modalBody = "Please activate your activate your account before attempting to add to your cart. ";
+                        modalRef.componentInstance.modalTitle = "We're sorry there was an issue here.";
+                        modalRef.componentInstance.modalBody = "Please try again later. ";
                         // Show Error
                         // User might need to activate account
 
                       }
                     })
+                  }
+                  else{
+                    const modalRef = this.modalService.open(MookieModalComponent);
+                    modalRef.componentInstance.modalTitle = "It appears your account isn't activated";
+                    modalRef.componentInstance.modalBody = "Please activate your activate your account before attempting to add to your cart. ";
                   }
 
                 }

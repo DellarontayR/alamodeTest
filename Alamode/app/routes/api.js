@@ -1024,7 +1024,7 @@ module.exports = function (router) {
                         }
                     });
                 } else {
-                    Cart.findById(user.cart).select().exec(function (err, cart) {
+                    Cart.findById(user.cart).populate('products').exec(function (err, cart) {
                         if (err) {
                             res.json({ success: false, message: 'cart could not be found from user in this amazing mess' });
                         }
