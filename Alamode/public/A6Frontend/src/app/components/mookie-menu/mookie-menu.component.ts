@@ -132,6 +132,9 @@ export class MookieMenuComponent implements OnInit {
                         this.mookieEmit.emitChange();
                       }
                       else {
+                        const modalRef = this.modalService.open(MookieModalComponent);
+                        modalRef.componentInstance.modalTitle = "Your account might not be activated.";
+                        modalRef.componentInstance.modalBody = "Please activate your activate your account before attempting to add to your cart. ";
                         // Show Error
                         // User might need to activate account
 
@@ -142,30 +145,26 @@ export class MookieMenuComponent implements OnInit {
                 }
               });
             }
+            else {
+              const modalRef = this.modalService.open(MookieModalComponent);
+              modalRef.componentInstance.modalTitle = "It appears you aren't signed in.";
+              modalRef.componentInstance.modalBody = "Please register and account your account or sign in before attempting to add to cart. ";
+            }
 
           });
         }
         else {
           const modalRef = this.modalService.open(MookieModalComponent);
-          console.log('here');
           modalRef.componentInstance.modalTitle = "Ordering is closed for now.";
           modalRef.componentInstance.modalBody = "Mookie Dough hours will be from 8 am to 7pm Monday Through Sunday with delivery starting at 9pm. ";
-          console.log(modalRef);
 
         }
       }
       else {
-        // modal service show modal
-        // Show Error
-        // var title = "Ordering is closed for now.";
-        //                 var body = "Mookie Dough hours will be from 8 am to 7pm Monday Through Sunday with delivery starting at 9pm.  ";
         const modalRef = this.modalService.open(MookieModalComponent);
-        console.log('here');
         modalRef.componentInstance.modalTitle = "Ordering is closed for now.";
         modalRef.componentInstance.modalBody = "Mookie Dough hours will be from 8 am to 7pm Monday Through Sunday with delivery starting at 9pm. ";
-        console.log(modalRef);
       }
     });
-  }
-
+  };
 }
