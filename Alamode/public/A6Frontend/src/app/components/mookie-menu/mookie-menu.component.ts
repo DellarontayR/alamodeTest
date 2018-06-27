@@ -129,7 +129,7 @@ export class MookieMenuComponent implements OnInit {
                       console.log(resData);
                       if (resData.success) {
                         this.shared.updateSharedVar('cartItemCount', resData.cart.products.length);
-                        this.shared.updateSharedVar('cart');
+                        this.shared.updateSharedVar('cart',resData.cart);
                         this.mookieEmit.emitChange();
                       }
                       else {
