@@ -23,6 +23,7 @@ export class MookieManageInventoryComponent implements OnInit {
   }
 
   ngOnInit() {
+    this.newItem = {};
     this.inventoryMapZ = [];
     this.loadInventory();
   }
@@ -78,7 +79,7 @@ export class MookieManageInventoryComponent implements OnInit {
 
   // // Update inventory
   updateInventory = function () {
-    if (this.newitem.itemName && this.newItem.itemPrice && this.newItem.itemQty) {
+    if (this.newItem.itemName && this.newItem.itemPrice && this.newItem.itemQty) {
       this.inventoryService.updateInventory(this.newItem).subscribe(data => {
         if (data.success) {
           this.inventory = data.inventory.itemInventory;

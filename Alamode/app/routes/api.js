@@ -22,7 +22,8 @@ var twilio = require('twilio');
 var twilioClient = new twilio('ACf3ae9f0709c19efe2b96fd5ba3d3c854', '7ca3bc06e1cbc968d80c1bc44fda2212');
 var emailValidator = require("email-validator");
 
-var stripe = require('stripe')('sk_test_N3kcDk7Gi6QdJewLusdBT2Tc');
+// var stripe = require('stripe')('sk_test_N3kcDk7Gi6QdJewLusdBT2Tc');
+var stripe = require('stripe')('sk_live_HjpnyFCfOWIhcOIBiOhdwu7h');
 // >
 
 // Test libs
@@ -689,19 +690,19 @@ module.exports = function (router) {
                                                             }
                                                             else {
                                                                 // Should be used to allow text communication for admins 6502514237
-                                                                var doughboys = ['9013649552', '6308815799', '3162090923'];
-                                                                if (false) {
-                                                                    twilioClient.messages.create({
-                                                                        to: doughboys,
-                                                                        from: '6502514237',
-                                                                        body: 'New order:\ncustomerName: ' + newOrder.customerReceipt.customerCart.user.username + 'Address: ' +
-                                                                            newOrder.customerAddress + ''
-                                                                        // Add link to customer order
-                                                                    }, function (err) {
-                                                                        console.log('error');
-                                                                        console.log(err);
-                                                                    });
-                                                                }
+                                                                // olu 3162090923
+                                                                var doughboys = ['9013649552', '6308815799'];
+                                                                twilioClient.messages.create({
+                                                                    to: doughboys,
+                                                                    from: '6502514237',
+                                                                    body: 'New order:\ncustomerName: ' + newOrder.customerReceipt.customerCart.user.username + 'Address: ' +
+                                                                        newOrder.customerAddress + ''
+                                                                    // Add link to customer order
+                                                                }, function (err) {
+                                                                    console.log('error');
+                                                                    console.log(err);
+                                                                });
+
                                                                 updateInventory(cart.products).then(function (value) {
                                                                     console.log('update inventory');
                                                                     console.log(value);

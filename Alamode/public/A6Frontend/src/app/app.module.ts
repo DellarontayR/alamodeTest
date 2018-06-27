@@ -73,7 +73,7 @@ import { MookieActivateComponent } from './components/mookie-activate/mookie-act
       libraries: ["places"],
       apiKey: "AIzaSyDIK5nijNemroAnlHUxH6iElr3HVBtniH4"
     }),
-    NgxStripeModule.forRoot('pk_test_EPjnzpxnrgvUiGWsYrJjqN5t'),
+    NgxStripeModule.forRoot('pk_live_Ic6zEI8pzoofTRtAleNB1q0v'),
     NgbModule.forRoot(),
   ],
   entryComponents: [
