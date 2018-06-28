@@ -107,6 +107,7 @@ export class MookieCartComponent implements OnInit, AfterViewInit {
         this.cartChanged = false;
         
         this.shared.updateSharedVar('cartItemCount', data.cart.products.length);
+        this.shared.updateSharedVar('cart',data.cart);
         this.cartItemCount = data.cart.products.length;
         this.subtotal = data.cart.subtotal;
         this.tax = data.cart.tax;

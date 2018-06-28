@@ -1108,7 +1108,7 @@ module.exports = function (router) {
             res.json({ success: false, message: 'Cant get cart to update' });
         }
         else {
-            Cart.findById(req.body.cartId).select().exec(function (err, cart) {
+            Cart.findById(req.body.cartId).populate('products').exec(function (err, cart) {
                 if (err || !cart) {
                     res.json({ success: false, message: 'Error attempting to get cart', err: err });
                 }
