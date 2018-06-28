@@ -1,4 +1,4 @@
-import { Component, OnInit, AfterViewInit, ChangeDetectorRef, ViewChild,NgZone,ElementRef } from '@angular/core';
+import { Component, OnInit, AfterViewInit, ChangeDetectorRef, ViewChild, NgZone, ElementRef } from '@angular/core';
 import { FormControl } from '@angular/forms';
 import { ILooseObject } from '../../interfaces/looseObject';
 import { CartService } from '../../services/cart.service';
@@ -9,6 +9,7 @@ import { StripeService, Elements, Element as StripeElement, ElementsOptions } fr
 import { MapsAPILoader } from '@agm/core';
 // import {} from '@t';
 import { } from 'googlemaps';
+import { MookieEmitService } from '../../services/mookie-emit.service';
 
 
 
@@ -26,7 +27,7 @@ export class MookieCheckoutComponent implements OnInit, AfterViewInit {
   chargeSuccessful: Boolean = false;
   total: DoubleRange;
   checkoutData: ILooseObject;
-  cart:ILooseObject;
+  cart: ILooseObject;
 
   deliveryLocation;
   deliveryLocationChanged: Boolean;
@@ -45,16 +46,16 @@ export class MookieCheckoutComponent implements OnInit, AfterViewInit {
   public searchElementRef: ElementRef;
 
 
-  constructor(private cartService: CartService, private router: Router, private shared: SharedService, private stripeService: StripeService, private changeDetectoRef: ChangeDetectorRef, private mapsLoader:MapsAPILoader, private ngZone: NgZone) { }
+  constructor(private cartService: CartService, private router: Router, private shared: SharedService, private stripeService: StripeService, private changeDetectoRef: ChangeDetectorRef, private mapsLoader: MapsAPILoader, private ngZone: NgZone, private mookieEmit: MookieEmitService) { }
 
   ngOnInit() {
-     //set google maps defaults
-     this.zoom = 4;
-     this.latitude = 39.8282;
-     this.longitude = -98.5795;
+    //set google maps defaults
+    this.zoom = 4;
+    this.latitude = 39.8282;
+    this.longitude = -98.5795;
 
-     this.setCurrentPosition();
-         //load Places Autocomplete
+    this.setCurrentPosition();
+    //load Places Autocomplete
     this.mapsLoader.load().then(() => {
       let autocomplete = new google.maps.places.Autocomplete(this.searchElementRef.nativeElement, {
         types: ["address"]
@@ -69,7 +70,7 @@ export class MookieCheckoutComponent implements OnInit, AfterViewInit {
           if (place.geometry === undefined || place.geometry === null) {
             return;
           }
-          
+
           this.deliveryLocation = place.formatted_address;
 
           //set latitude, longitude and zoom
@@ -79,10 +80,10 @@ export class MookieCheckoutComponent implements OnInit, AfterViewInit {
         });
       });
     });
- 
+
 
     this.checkoutData = { name: "", number: "" };
-    this.cart = {subtotal:0,tax:0,total:0};
+    this.cart = { subtotal: 0, tax: 0, total: 0 };
   }
 
   private setCurrentPosition() {
@@ -155,24 +156,18 @@ export class MookieCheckoutComponent implements OnInit, AfterViewInit {
   };
 
   doCheckout = function () {
+    let user = this.shared.getSharedVar('user');
+
     let extraDetails = {
-      name: 'jph'
+      name: user.user.username
     };
 
-    this.stripeService.createToken(this.card, extraDetails).subscribe( (res) => {
+    this.stripeService.createToken(this.card, extraDetails).subscribe((res) => {
       if (res.token) {
-        let stripeData: ILooseObject = { token: res.token.id, name: 'jph' };
-        let user = this.shared.getSharedVar('user');
-        let cart = this.shared.getSharedVar('cart');
-        console.log(user);
-        console.log(cart);
-        stripeData.userEmail = user.user.email;
-        stripeData.cart = user.user.cart;
-        stripeData.price = cart.total * 100;
-        stripeData.user = user.user;
+        let stripeData: ILooseObject = { stripeToken: res.token.id };
         stripeData.userContactNumber = this.checkoutData.number;//this.checkoutData.number;
         stripeData.deliveryLocation = this.deliveryLocation;//this.shared.getSharedVar('deliveryLocation');
-        stripeData.deliveryLatLng = {lat:this.latitude,lng:this.longitude};// this.shared.getSharedVar('deliveryLatLng');
+        stripeData.deliveryLatLng = { lat: this.latitude, lng: this.longitude };// this.shared.getSharedVar('deliveryLatLng');
         this.cartService.checkout(stripeData).subscribe(data => {
           if (data.success) {
             this.checkoutMessage = "Charge successful";
@@ -182,9 +177,10 @@ export class MookieCheckoutComponent implements OnInit, AfterViewInit {
             setTimeout(() => {
               this.shared.updateSharedVar('cart', {});
               this.shared.updateSharedVar('cartItemCount', 0);
+              this.mookieEmit.emitChange();
 
               this.deliveryInProgress = true;// Maybe a session var
-              this.router.navigate(['/orders/'+data.order._id]);
+              this.router.navigate(['/orders/' + data.order._id]);
             }, 1000);
             // this.shared.updateSharedVar('deliveryLocationChanged',false);
             // this.shared.updateSharedVar('deliveryInProgress',false);
