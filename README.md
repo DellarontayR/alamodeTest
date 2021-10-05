@@ -9,17 +9,17 @@
 Important Folder Structure
 
 ```
-Alamode\
-├── public\
-│   └── A6Frontend\
-│     └──  src  -- Contains Angular frontend code including HTML and TypeScript\
-│       └──  app -- Contains Angular content: TypeScript\
-├── app -- Backend code\
-│   ├── models -- Contains numerous MongoDB models that are used to populate and upate the database\
-│   ├── passport\
-|     └──  passport.js -- Api file containing services for social media and email login\
-│   ├── routes\
-|     └──  api.js -- Api file containing full RESTful api for ecommerce application\
+Alamode
+├── public
+│   └── A6Frontend
+│     └──  src  -- Contains Angular frontend code including HTML and TypeScript
+│       └──  app -- Contains Angular content: TypeScript
+├── app -- Backend code
+│   ├── models -- Contains numerous MongoDB models that are used to populate and upate the database
+│   ├── passport
+|     └──  passport.js -- Api file containing services for social media and email login
+│   ├── routes
+|     └──  api.js -- Api file containing full RESTful api for ecommerce application
 ├── ...
 └── README.md
 ```
