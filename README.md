@@ -29,5 +29,5 @@ run command "npm install"
 Open terminal in folder Alamode/public/A6Frontend
 run command "npm install"
 
-After installation one should be able to run the command "ng serve" in Alamode/public/A6Frontend to view the web application at http://localhost:4200/home.  
+After installation one should be able to run the command "ng serve" in Alamode/public/A6Frontend to view the web application at http://localhost:4200/home. 
 
