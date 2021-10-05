@@ -8,6 +8,7 @@
 
 Important Folder Structure
 
+```
 Alamode\
 ├── public\
 │   └── A6Frontend\
@@ -18,7 +19,10 @@ Alamode\
 │   ├── passport\
 |     └──  passport.js -- Api file containing services for social media and email login\
 │   ├── routes\
-|     └──  api.js -- Api file containing full RESTful api for ecommerce application
+|     └──  api.js -- Api file containing full RESTful api for ecommerce application\
+├── ...
+└── README.md
+```
 
 To attempt to run the application after cloning the repo with NodeJS installed:
 
